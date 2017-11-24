@@ -1,0 +1,189 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="my-icons.html">
+<link rel="import" href="platypus-menu.html"/>
+<link rel="import" href="platypus-page-loader.html"/>
+<!--<link rel="lazy-import" href="my-view404.html">-->
+
+<dom-module id="my-app">
+    <template>
+        <style>
+            :host {
+                --app-primary-color: #4285f4;
+                --app-secondary-color: black;
+
+                display: block;
+            }
+
+            app-drawer-layout:not([narrow]) [drawer-toggle] {
+                display: none;
+            }
+
+            app-header {
+                color: #fff;
+                background-color: var(--app-primary-color);
+            }
+
+            app-header paper-icon-button {
+                --paper-icon-button-ink-color: white;
+            }
+        </style>
+
+        <app-location route="{{route}}"></app-location>
+
+        <app-route route="{{route}}" pattern="/web/views/:model"
+                   data="{{routeModel}}" tail="{{tailRouteModel}}"
+                   query-params="{{routeModelParam}}"></app-route>
+        <app-route route="{{tailRouteModel}}" pattern="/:id"
+                   data="{{routeId}}" tail="{{subroute}}" query-params="{{routeIdParam}}"></app-route>
+
+
+        <app-drawer-layout fullbleed narrow="{{narrow}}">
+            <!--Drawer content-->
+            <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
+                <platypus-menu selected-menu="{{selectedMenu}}"></platypus-menu>
+            </app-drawer>
+            <!-- Main content -->
+            <app-header-layout has-scrolling-region>
+                <app-header slot="header" condenses reveals effects="waterfall">
+                    <app-toolbar>
+                        <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
+                        <div main-title>[[selectedMenu.name]]</div>
+                    </app-toolbar>
+                </app-header>
+                <platypus-page-loader ui-action="[[selectedMenu.action]]"></platypus-page-loader>
+            </app-header-layout>
+        </app-drawer-layout>
+    </template>
+
+    <script>
+        class MyApp extends Polymer.Element {
+            static get is() {
+                return 'my-app';
+            }
+
+            static get properties() {
+                return {
+                    model: {
+                        type: String,
+                        reflectToAttribute: true,
+                        observer: '_modelChanged',
+                    },
+                    type: {
+                        type: String,
+                        observer: '_viewTypeChanged',
+                    },
+                    id: {
+                        type: Number,
+                        reflectToAttribute: true,
+                        observer: '_elementIdChanged',
+                    },
+                    selectedMenu: {
+                        type: Object,
+//                        get default route depends of {{route}}
+                        value: {
+                            action: {
+                                model: "dashboard",
+                                viewType: "form",
+                                defaultViewType: "form"
+                            }
+                        },
+                        notify: true
+                    },
+                    pageToLoad: {
+                        type: String,
+                    },
+                    routeModel: Object,
+                    tailRouteModel: Object,
+                    routeModelParam: Object,
+                    routeId: Object,
+                    routeIdParam: Object,
+                    subroute: String,
+                    // This shouldn't be neccessary, but the Analyzer isn't picking up
+                    // Polymer.Element#rootPath
+                    rootPath: String,
+                };
+            }
+
+            ready() {
+                super.ready();
+            }
+
+            static get observers() {
+                return [
+                    '_routeModelChanged(routeModel.model)',
+                    '_routeElementIdChanged(routeId.id)',
+                    '_routeModelParamChanged(routeModelParam)',
+                    '_routeIdParamChanged(routeIdParam)',
+                    '_selectedMenuChange(selectedMenu)',
+                ];
+            }
+
+            handleResponse(event) {
+                console.log(event)
+            }
+
+            _selectedMenuChange(menu) {
+                console.log(menu)
+            }
+
+            _routeModelChanged(model) {
+                this.model = model;
+                console.log(model)
+            }
+
+            _routeModelParamChanged(param) {
+                console.log(param)
+            }
+
+            _routeIdParamChanged(param) {
+                console.log(param)
+            }
+
+            _routeElementIdChanged(elementId) {
+                this.id = elementId;
+                console.log(elementId)
+            }
+
+            _modelChanged(model) {
+                console.log(this.resolveUrl('my-' + model + '.html'));
+            }
+
+            _elementIdChanged(elementId) {
+                console.log(this.resolveUrl('my-' + elementId + '.html'));
+            }
+
+            _showPage404() {
+                var resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
+                Polymer.importHref(
+                    resolvedPageUrl,
+                    null,
+                    this._showPage404.bind(this),
+                    true);
+                this.page = 'view404';
+            }
+        }
+
+        window.customElements.define(MyApp.is, MyApp);
+    </script>
+</dom-module>

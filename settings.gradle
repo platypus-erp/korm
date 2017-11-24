@@ -1,2 +1,5 @@
-rootProject.name = 'korm'
+rootProject.name = 'platypus'
+include 'product'
+include 'korm'
+include 'parser'
 

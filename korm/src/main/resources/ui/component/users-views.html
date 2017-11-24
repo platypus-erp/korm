@@ -1,0 +1,127 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="/component/users/tree.html">
+<link rel="import" href="/component/users/form.html">
+<link rel="import" href="/src/shared-styles.html">
+
+<dom-module id="platypus-dashboard-form">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+
+                padding: 10px;
+            }
+            #pageTypeSelector.hided > .btn-type, #pageTypeSelector.hided > .btn-type-hide, #pageTypeSelector.showed > .btn-type-show {
+                display: none;
+            }
+        </style>
+        <app-toolbar>
+            <div id="pageTypeSelector" class="hided">
+                <paper-icon-button class="btn-type" id="typeTree" on-click="type_tree_clk"
+                                   icon="editor:format-list-bulleted" title="Tree View"></paper-icon-button>
+                <paper-icon-button class="btn-type" id="typeForm" on-click="type_form_clk"
+                                   icon="image:filter-none" title="Form View"></paper-icon-button>
+                <paper-icon-button class="btn-type" id="typePivot" on-click="type_pivot_clk"
+                                   icon="image:grid-on"></paper-icon-button>
+                <paper-icon-button class="btn-type" id="typeKanban" on-click="type_kanban_clk"
+                                   icon="icons:view-week"></paper-icon-button>
+                <paper-icon-button class="btn-type" id="typeCalendar" on-click="type_calendar_clk"
+                                   icon="icons:perm-contact-calendar"></paper-icon-button>
+                <paper-icon-button class="btn-type" id="typeTimeline" on-click="type_timeline_clk"
+                                   icon="editor:wrap-text"></paper-icon-button>
+                <paper-icon-button class="btn-type-show" id="buttonShowType" on-click="showType"
+                                   icon="icons:chevron-right"></paper-icon-button>
+                <paper-icon-button class="btn-type-hide" id="buttonHideType" on-click="hideType"
+                                   icon="icons:chevron-left"></paper-icon-button>
+            </div>
+            <div main-title></div>
+            <paper-icon-button icon="search"></paper-icon-button>
+        </app-toolbar>
+        <iron-pages
+                selected="[[pageType]]"
+                attr-for-selected="view-type"
+                fallback-selection="form"
+                role="main">
+            <platypus-users-tree name="new-view" view-type="tree"></platypus-users-tree>
+            <platypus-users-form view-type="form"></platypus-users-form>
+        </iron-pages>
+    </template>
+
+    <script>
+        class PlatypusUserViews extends Polymer.Element {
+            static get is() {
+                return 'platypus-dashboard-form';
+            }
+
+            static get properties() {
+                return {
+                    pageType: {
+                        type: String,
+                        reflectToAttribute: true,
+                        observer: '_pageChanged',
+                    },
+                    uiAction: {
+                        type: Object,
+                        reflectToAttribute: true,
+                        observer: '_actionChanged'
+                    },
+                }
+            }
+
+            _pageChanged(page) {
+                console.log(page)
+            }
+
+            type_tree_clk() {
+                this.pageType = 'tree'
+            }
+
+            type_form_clk() {
+                this.pageType = 'form'
+            }
+
+            type_pivot_clk() {
+                console.log(this);
+            }
+
+            type_kanban_clk() {
+                console.log(this);
+            }
+
+            type_calendar_clk() {
+                console.log(this);
+            }
+
+            type_timeline_clk() {
+                console.log(this);
+            }
+
+            showType() {
+                this.$.pageTypeSelector.classList.remove("hided");
+                this.$.pageTypeSelector.classList.add("showed");
+            }
+
+            hideType() {
+                this.$.pageTypeSelector.classList.remove("showed");
+                this.$.pageTypeSelector.classList.add("hided");
+            }
+
+
+        }
+
+        window.customElements.define(PlatypusUserViews.is, PlatypusUserViews);
+    </script>
+</dom-module>

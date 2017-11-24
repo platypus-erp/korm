@@ -1,0 +1,15 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/vaadin-text-field/vaadin-text-field.html">
+<dom-module id="platypus-calendar-field">
+    <template>
+        <vaadin-text-field></vaadin-text-field>
+    </template>
+    <script>
+        class PlatypusStringField extends Polymer.Element {
+            static get is() {
+                return 'platypus-calendar-field';
+            }
+        }
+        window.customElements.define(PlatypusStringField.is, PlatypusStringField);
+    </script>
+</dom-module>

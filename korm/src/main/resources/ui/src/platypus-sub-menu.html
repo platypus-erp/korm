@@ -1,0 +1,86 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="my-icons.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="platypus-sub-menu">
+    <template>
+        <style include="shared-styles">
+            .paper-item-link {
+                color: inherit;
+                text-decoration: none;
+            }
+            paper-item {
+                --paper-item-focused: {
+                    background: var(--paper-amber-500);
+                    font-weight: bold;
+                };
+            }
+            div.link > paper-item {
+                display: none;
+            }
+            div.title > paper-item {
+                color: var(--paper-light-green-700);
+                font-size: 20px;
+            }
+            div.title > a.paper-item-link {
+                display: none;
+            }
+        </style>
+        <div id="item_wrapper" class$="[[_getCssBox(menu)]]">
+            <paper-item disabled>[[menu.name]]</paper-item>
+            <a id="item_link" class="paper-item-link" tabindex="-1">
+                <paper-item on-click="_onMenuClick">[[menu.name]]</paper-item>
+            </a>
+            <template is="dom-repeat" items="[[menu.children]]">
+                <platypus-sub-menu selected-menu="{{selectedMenu}}" menu="[[item]]"></platypus-sub-menu>
+            </template>
+        </div>
+    </template>
+    <script>
+        // Your new element extends the Polymer.Element base class
+        class PlatypusSubMenu extends Polymer.Element {
+            static get is() {
+                return 'platypus-sub-menu';
+            }
+
+            static get properties() {
+                return {
+                    selectedMenu:{
+                        type:Object,
+                        notify: true
+                    },
+                    menu: {
+                        type: Object,
+                        reflectToAttribute: true,
+                    }
+                };
+            }
+
+            ready() {
+                super.ready();
+                this.$.item_wrapper.className = this._getCssBox();
+                if (this.menu.action){
+                    this.$.item_link.href = "/web/views/"+this.menu.action.model+"?type="+this.menu.action.viewType
+                }
+            }
+
+            _onMenuClick(){
+                this.selectedMenu = this.menu
+            }
+
+
+            _getCssBox() {
+                if (this.menu.children && this.menu.children.length > 0){
+                    return "title"
+                } else {
+                    return "link"
+                }
+            }
+        }
+
+        //Now, register your new custom element so the browser can use it
+        customElements.define(PlatypusSubMenu.is, PlatypusSubMenu);
+    </script>
+
+</dom-module>

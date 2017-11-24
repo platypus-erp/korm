@@ -1,0 +1,70 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="my-icons.html">
+<link rel="import" href="platypus-sub-menu.html">
+
+<dom-module id="platypus-menu">
+    <template>
+        <style >
+            .drawer-list a {
+                display: block;
+                padding: 0 16px;
+                text-decoration: none;
+                color: var(--app-secondary-color);
+                line-height: 40px;
+            }
+
+            .drawer-list a.iron-selected {
+                color: black;
+                font-weight: bold;
+            }
+        </style>
+        <iron-ajax
+                auto
+                id="requestRepos"
+                url="http://127.0.0.1:8080/menu"
+                params='{"lazy":false}'
+                handle-as="json"
+                on-response="handleResponse"
+                method="GET"
+                debounce-duration="300"></iron-ajax>
+        <app-toolbar>[[menu.name]]</app-toolbar>
+        <paper-listbox>
+            <template is="dom-repeat" items="[[menu.children]]">
+                <platypus-sub-menu selected-menu="{{selectedMenu}}" menu="[[item]]"></platypus-sub-menu>
+            </template>
+        </paper-listbox>
+    </template>
+    <script>
+        // Your new element extends the Polymer.Element base class
+        class PlatypusMenu extends Polymer.Element {
+            static get is() {
+                return 'platypus-menu';
+            }
+
+            static get properties() {
+                return {
+                    selectedMenu:{
+                        type:Object,
+                        notify: true
+                    },
+                    menu: {
+                        type: Object
+                    }
+                };
+            }
+
+            handleResponse(event) {
+                this.menu = event.detail.response;
+            }
+        }
+
+        //Now, register your new custom element so the browser can use it
+        customElements.define(PlatypusMenu.is, PlatypusMenu);
+    </script>
+
+</dom-module>

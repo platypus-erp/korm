@@ -1,0 +1,73 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="my-icons.html">
+<link rel="import" href="platypus-sub-menu.html">
+
+<dom-module id="platypus-page-loader">
+    <template>
+        <style>
+        </style>
+        <div id="data_content"></div>
+    </template>
+    <script>
+        // Your new element extends the Polymer.Element base class
+        class PlatypusPageLoader extends Polymer.Element {
+            static get is() {
+                return 'platypus-page-loader';
+            }
+
+            static get properties() {
+                return {
+                    uiAction: {
+                        type: Object,
+                        reflectToAttribute: true,
+                        observer: '_actionChanged'
+                    },
+                    data: {
+                        type: String,
+                        value: "TOTO"
+                    }
+                };
+            }
+
+            ready() {
+                super.ready();
+            }
+
+            loadComponent(act) {
+                console.log(act);
+                Polymer.importHref(
+                    "http://127.0.0.1:8080/component/" + act.model,
+                    this._onLoadHRef.bind(this),
+                    this._onErrorLoadHRef.bind(this),
+                    false
+                )
+            }
+
+            _onLoadHRef(e) {
+                let webComponent = document.createElement(
+                    "platypus-" + this.uiAction.model + "-" + this.uiAction.viewType);
+                while (this.$.data_content.firstChild) {
+                    this.$.data_content.removeChild(this.$.data_content.firstChild);
+                }
+                this.$.data_content.appendChild(webComponent)
+            }
+
+            _onErrorLoadHRef(e) {
+                console.log(e)
+            }
+
+            _actionChanged(uiAction) {
+                this.loadComponent(uiAction)
+            }
+        }
+
+        //Now, register your new custom element so the browser can use it
+        customElements.define(PlatypusPageLoader.is, PlatypusPageLoader);
+    </script>
+
+</dom-module>
