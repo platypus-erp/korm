@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="korm@localhost">
+  <database-model serializer="dbm" rdbms="POSTGRES" format-version="4.4">
+    <root id="1"/>
+    <database id="2" parent="1" name="korm">
+      <ObjectId>2371682</ObjectId>
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </database>
+    <database id="3" parent="1" name="postgres">
+      <ObjectId>12413</ObjectId>
+    </database>
+    <database id="4" parent="1" name="labadis_restore">
+      <ObjectId>1629543</ObjectId>
+    </database>
+    <database id="5" parent="1" name="hexya">
+      <ObjectId>1642399</ObjectId>
+    </database>
+    <database id="6" parent="1" name="entrepot">
+      <ObjectId>1836129</ObjectId>
+    </database>
+    <database id="7" parent="1" name="project-gitlab">
+      <ObjectId>2143183</ObjectId>
+    </database>
+    <database id="8" parent="1" name="siraildump">
+      <ObjectId>2168932</ObjectId>
+    </database>
+    <database id="9" parent="1" name="sirail_copy">
+      <ObjectId>2266556</ObjectId>
+    </database>
+    <database id="10" parent="1" name="sirail-test">
+      <ObjectId>2280034</ObjectId>
+    </database>
+    <database id="11" parent="1" name="devedump">
+      <ObjectId>2315119</ObjectId>
+    </database>
+    <database id="12" parent="1" name="reanovadump">
+      <ObjectId>2356898</ObjectId>
+    </database>
+    <database id="13" parent="1" name="reanovatest">
+      <ObjectId>2375464</ObjectId>
+    </database>
+    <schema id="14" parent="2" name="public">
+      <ObjectId>2200</ObjectId>
+      <IntrospectionTimestamp>2017-11-24.08:55:10.945</IntrospectionTimestamp>
+      <IntrospectionStateNumber>2346907</IntrospectionStateNumber>
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="15" parent="2" name="pg_catalog">
+      <ObjectId>11</ObjectId>
+    </schema>
+    <schema id="16" parent="2" name="pg_toast">
+      <ObjectId>99</ObjectId>
+    </schema>
+    <schema id="17" parent="2" name="pg_temp_1">
+      <ObjectId>11816</ObjectId>
+    </schema>
+    <schema id="18" parent="2" name="pg_toast_temp_1">
+      <ObjectId>11817</ObjectId>
+    </schema>
+    <schema id="19" parent="2" name="information_schema">
+      <ObjectId>12121</ObjectId>
+    </schema>
+    <table id="20" parent="14" name="group">
+      <ObjectId>2388887</ObjectId>
+      <StateNumber>2346907</StateNumber>
+    </table>
+    <table id="21" parent="14" name="role">
+      <ObjectId>2388875</ObjectId>
+      <StateNumber>2346907</StateNumber>
+    </table>
+    <table id="22" parent="14" name="user">
+      <ObjectId>2388881</ObjectId>
+      <StateNumber>2346907</StateNumber>
+    </table>
+    <column id="23" parent="20" name="name">
+      <Position>1</Position>
+      <DataType>text|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2346907</StateNumber>
+    </column>
+    <column id="24" parent="21" name="name">
+      <Position>1</Position>
+      <DataType>text|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2346907</StateNumber>
+    </column>
+    <column id="25" parent="22" name="name">
+      <Position>1</Position>
+      <DataType>text|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2346907</StateNumber>
+    </column>
+  </database-model>
+</dataSource>
