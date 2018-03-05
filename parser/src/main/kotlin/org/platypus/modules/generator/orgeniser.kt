@@ -30,8 +30,8 @@ class ModuleModelOrganiser(models: Set<ModelGenerate>) {
 
 }
 //object UsersGroupRel : Many2ManyModel() {
-//    val user = ref("user", Users)
-//    val group = ref("group", Groups)
+//    val user = dataRef("user", Users)
+//    val group = dataRef("group", Groups)
 //
 //}
 
@@ -49,8 +49,8 @@ object M2MRegistry {
     private fun generateSingleM2M(m2m: M2MModel): String {
         return """
 object ${m2m.name} : Many2ManyModel() {
-    val ${m2m.field1.name} = ref("${m2m.field1.name}", ${m2m.field1.target})
-    val ${m2m.field2.name} = ref("${m2m.field2.name}", ${m2m.field2.target})
+    val ${m2m.field1.name} = dataRef("${m2m.field1.name}", ${m2m.field1.target})
+    val ${m2m.field2.name} = dataRef("${m2m.field2.name}", ${m2m.field2.target})
 }"""
     }
 

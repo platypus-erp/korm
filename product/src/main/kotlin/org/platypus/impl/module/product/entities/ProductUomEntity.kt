@@ -1,8 +1,7 @@
 package org.platypus.impl.module.product.entities
 
 import org.platypus.api.env.PlatypusEnvironement
-import org.platypus.base.EmptyUser
-import org.platypus.impl.korm.entity.many2one
+import org.platypus.module.base.EmptyUser
 import org.platypus.impl.korm.entity.stored.EmptyEntity
 import org.platypus.impl.korm.entity.stored.RWNamedEntity
 import org.platypus.impl.module.product.models.ProductUomCategoryModel

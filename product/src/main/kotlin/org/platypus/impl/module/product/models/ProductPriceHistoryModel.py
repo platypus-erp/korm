@@ -1,5 +1,5 @@
 class ProductPriceHistory(models.Model):
-    """ Keep track of the ``product.template`` standard prices as they are changed. """
+    """ Keep track of the ``product.domModule`` standard prices as they are changed. """
     _name = 'product.price.history'
     _rec_name = 'datetime'
     _order = 'datetime desc'

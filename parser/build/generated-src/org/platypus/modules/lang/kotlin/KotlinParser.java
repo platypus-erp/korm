@@ -53,7 +53,7 @@ public class KotlinParser extends Parser {
 		"'::'", "'true'", "'false'", "'null'", "'->'", "'/'", "'%'", "'+'", "'-'", 
 		"'in'", "'!in'", "'is'", "'!is'", "'as'", "'as?'", "'+='", "'-='", "'*='", 
 		"'/='", "'%='", "'--'", "'++'", "'!!'", "'!'", "'['", "']'", "'val'", 
-		"'var'", "'vararg'", "'by'", "'dynamic'", "'where'", "'get'", "'set'", 
+		"'var'", "'vararg'", "'by'", "'dynamic'", "'where'", "'get'", "'fieldSet'",
 		"'abstract'", "'open'", "'final'", "'override'", "'operator'", "'infix'", 
 		"'inline'", "'enum'", "'annotation'", "'data'", "'sealed'", "'private'", 
 		"'protected'", "'public'", "'internal'", "'const'", "'out'", "'@'", "'file'", 

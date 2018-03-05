@@ -1,0 +1,4 @@
+package org.platypus
+
+annotation class PlatypusHandleAsField
+annotation class DefaultNull

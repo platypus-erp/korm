@@ -1,9 +1,9 @@
 class ProductProduct(models.Model):
     _name = "product.product"
     _description = "Product"
-    _inherits = {'product.template': 'product_tmpl_id'}
+    _inherits = {'product.domModule': 'product_tmpl_id'}
     _inherit = ['mail.thread']
-    _order = 'default_code, name, id'
+    _order = 'default_code, fieldName, id'
 
     price = fields.Float(
         'Price', compute='_compute_product_price',
@@ -15,7 +15,7 @@ class ProductProduct(models.Model):
     lst_price = fields.Float(
         'Sale Price', compute='_compute_product_lst_price',
         digits=dp.get_precision('Product Price'), inverse='_set_product_lst_price',
-        help="The sale price is managed from the product template. Click on the 'Variant Prices' button to set the extra attribute prices.")
+        help="The sale price is managed from the product domModule. Click on the 'Variant Prices' button to fieldSet the extra attribute prices.")
 
     default_code = fields.Char('Internal Reference', index=True)
     code = fields.Char('Internal Reference', compute='_compute_product_code')
@@ -25,33 +25,33 @@ class ProductProduct(models.Model):
         'Active', default=True,
         help="If unchecked, it will allow you to hide the product without removing it.")
     product_tmpl_id = fields.Many2one(
-        'product.template', 'Product Template',
+        'product.domModule', 'Product Template',
         auto_join=True, index=True, ondelete="cascade", required=True)
     barcode = fields.Char(
         'Barcode', copy=False, oldname='ean13',
         help="International Article Number used for product identification.")
     attribute_value_ids = fields.Many2many(
-        'product.attribute.value', string='Attributes', ondelete='restrict')
-    # image: all image fields are base64 encoded and PIL-supported
+        'product.attribute.min', string='Attributes', ondelete='restrict')
+    # image: all image fieldsExpression are base64 encoded and PIL-supported
     image_variant = fields.Binary(
         "Variant Image", attachment=True,
         help="This field holds the image used as image for the product variant, limited to 1024x1024px.")
     image = fields.Binary(
         "Big-sized image", compute='_compute_images', inverse='_set_image',
-        help="Image of the product variant (Big-sized image of product template if false). It is automatically "
+        help="Image of the product variant (Big-sized image of product domModule if false). It is automatically "
              "resized as a 1024x1024px image, with aspect ratio preserved.")
     image_small = fields.Binary(
         "Small-sized image", compute='_compute_images', inverse='_set_image_small',
-        help="Image of the product variant (Small-sized image of product template if false).")
+        help="Image of the product variant (Small-sized image of product domModule if false).")
     image_medium = fields.Binary(
         "Medium-sized image", compute='_compute_images', inverse='_set_image_medium',
-        help="Image of the product variant (Medium-sized image of product template if false).")
+        help="Image of the product variant (Medium-sized image of product domModule if false).")
 
     standard_price = fields.Float(
         'Cost', company_dependent=True,
         digits=dp.get_precision('Product Price'),
         groups="base.group_user",
-        help="Cost of the product template used for standard stock valuation in accounting and used as a base price on purchase orders. "
+        help="Cost of the product domModule used for standard stock valuation in accounting and used as a base price on purchase orders. "
              "Expressed in the default unit of measure of the product.")
     volume = fields.Float('Volume', help="The volume in m3.")
     weight = fields.Float(
@@ -199,7 +199,7 @@ class ProductProduct(models.Model):
             attributes = self.env['product.attribute']
             for value in product.attribute_value_ids:
                 if value.attribute_id in attributes:
-                    raise ValidationError(_('Error! It is not allowed to choose more than one value for a given attribute.'))
+                    raise ValidationError(_('Error! It is not allowed to choose more than one min for a given attribute.'))
                 if value.attribute_id.create_variant:
                     attributes |= value.attribute_id
         return True
@@ -212,7 +212,7 @@ class ProductProduct(models.Model):
     @api.model
     def create(self, vals):
         product = super(ProductProduct, self.with_context(create_product_product=True)).create(vals)
-        # When a unique variant is created from tmpl then the standard price is set by _set_standard_price
+        # When a unique variant is created from tmpl then the standard price is fieldSet by _set_standard_price
         if not (self.env.context.get('create_from_tmpl') and len(product.product_tmpl_id.product_variant_ids) == 1):
             product._set_standard_price(vals.get('standard_price') or 0.0)
         return product
@@ -228,18 +228,18 @@ class ProductProduct(models.Model):
     @api.multi
     def unlink(self):
         unlink_products = self.env['product.product']
-        unlink_templates = self.env['product.template']
+        unlink_templates = self.env['product.domModule']
         for product in self:
-            # Check if product still exists, in case it has been unlinked by unlinking its template
+            # Check if product still exists, in case it has been unlinked by unlinking its domModule
             if not product.exists():
                 continue
-            # Check if the product is last product of this template
+            # Check if the product is last product of this domModule
             other_products = self.search([('product_tmpl_id', '=', product.product_tmpl_id.id), ('id', '!=', product.id)])
             if not other_products:
                 unlink_templates |= product.product_tmpl_id
             unlink_products |= product
         res = super(ProductProduct, unlink_products).unlink()
-        # delete templates after calling super, as deleting template could lead to deleting
+        # delete templates after calling super, as deleting domModule could lead to deleting
         # products due to ondelete='cascade'
         unlink_templates.unlink()
         return res
@@ -250,10 +250,10 @@ class ProductProduct(models.Model):
         if default is None:
             default = {}
         if self._context.get('variant'):
-            # if we copy a variant or create one, we keep the same template
+            # if we copy a variant or create one, we keep the same domModule
             default['product_tmpl_id'] = self.product_tmpl_id.id
-        elif 'name' not in default:
-            default['name'] = self.name
+        elif 'fieldName' not in default:
+            default['fieldName'] = self.name
 
         return super(ProductProduct, self).copy(default=default)
 
@@ -269,7 +269,7 @@ class ProductProduct(models.Model):
         # TDE: this could be cleaned a bit I think
 
         def _name_get(d):
-            name = d.get('name', '')
+            name = d.get('fieldName', '')
             code = self._context.get('display_default_code', True) and d.get('default_code', False) or False
             if code:
                 name = '[%s] %s' % (code,name)
@@ -288,7 +288,7 @@ class ProductProduct(models.Model):
 
         result = []
         for product in self.sudo():
-            # display only the attributes with multiple possible values on the template
+            # display only the attributes with multiple possible values on the domModule
             variable_attributes = product.attribute_line_ids.filtered(lambda l: len(l.value_ids) > 1).mapped('attribute_id')
             variant = product.attribute_value_ids._variant_name(variable_attributes)
 
@@ -305,7 +305,7 @@ class ProductProduct(models.Model):
                     ) or False
                     mydict = {
                         'id': product.id,
-                        'name': seller_variant or name,
+                        'fieldName': seller_variant or name,
                         'default_code': s.product_code or product.default_code,
                     }
                     temp = _name_get(mydict)
@@ -314,7 +314,7 @@ class ProductProduct(models.Model):
             else:
                 mydict = {
                     'id': product.id,
-                    'name': name,
+                    'fieldName': name,
                     'default_code': product.default_code,
                 }
                 result.append(_name_get(mydict))
@@ -334,15 +334,15 @@ class ProductProduct(models.Model):
             if not products and operator not in expression.NEGATIVE_TERM_OPERATORS:
                 # Do not merge the 2 next lines into one single search, SQL search performance would be abysmal
                 # on a database with thousands of matching products, due to the huge merge+unique needed for the
-                # OR operator (and given the fact that the 'name' lookup results come from the ir.translation table
+                # OR operator (and given the fact that the 'fieldName' lookup results come from the ir.translation models
                 # Performing a quick memory merge of ids in Python will give much better performance
                 products = self.search(args + [('default_code', operator, name)], limit=limit)
                 if not limit or len(products) < limit:
                     # we may underrun the limit because of dupes in the results, that's fine
                     limit2 = (limit - len(products)) if limit else False
-                    products += self.search(args + [('name', operator, name), ('id', 'not in', products.ids)], limit=limit2)
+                    products += self.search(args + [('fieldName', operator, name), ('id', 'not in', products.ids)], limit=limit2)
             elif not products and operator in expression.NEGATIVE_TERM_OPERATORS:
-                products = self.search(args + ['&', ('default_code', operator, name), ('name', operator, name)], limit=limit)
+                products = self.search(args + ['&', ('default_code', operator, name), ('fieldName', operator, name)], limit=limit)
             if not products and operator in positive_operators:
                 ptrn = re.compile('(\[(.*?)\])')
                 res = ptrn.search(name)
@@ -351,7 +351,7 @@ class ProductProduct(models.Model):
             # still no results, partner in context: search on supplier info as last hope to find something
             if not products and self._context.get('partner_id'):
                 suppliers = self.env['product.supplierinfo'].search([
-                    ('name', '=', self._context.get('partner_id')),
+                    ('fieldName', '=', self._context.get('partner_id')),
                     '|',
                     ('product_code', operator, name),
                     ('product_name', operator, name)])
@@ -370,10 +370,10 @@ class ProductProduct(models.Model):
 
     @api.multi
     def open_product_template(self):
-        """ Utility method used to add an "Open Template" button in product views """
+        """ Utility method used to add an "Open Template" button in product actions """
         self.ensure_one()
         return {'type': 'ir.actions.act_window',
-                'res_model': 'product.template',
+                'res_model': 'product.domModule',
                 'view_mode': 'form',
                 'res_id': self.product_tmpl_id.id,
                 'target': 'new'}
@@ -407,7 +407,7 @@ class ProductProduct(models.Model):
 
     @api.multi
     def price_compute(self, price_type, uom=False, currency=False, company=False):
-        # TDE FIXME: delegate to template or not ? fields are reencoded here ...
+        # TDE FIXME: delegate to domModule or not ? fieldsExpression are reencoded here ...
         # compatibility about context keys used a bit everywhere in the code
         if not uom and self._context.get('uom'):
             uom = self.env['product.uom'].browse(self._context['uom'])
@@ -417,7 +417,7 @@ class ProductProduct(models.Model):
         products = self
         if price_type == 'standard_price':
             # standard_price field can only be seen by users in base.group_user
-            # Thus, in order to compute the sale price from the cost for users not in this group
+            # Thus, in order to onGet the sale price from the cost for users not in this group
             # We fetch the standard price as the superuser
             products = self.with_context(force_company=company and company.id or self._context.get('force_company', self.env.user.company_id.id)).sudo()
 

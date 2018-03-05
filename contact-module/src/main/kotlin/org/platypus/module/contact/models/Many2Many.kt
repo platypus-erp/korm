@@ -1,0 +1,10 @@
+package org.platypus.module.contact.models
+
+import org.platypus.model.ModelMany2Many
+import org.platypus.model.many2manyLink
+import org.platypus.module.base.models.Users
+
+val ModelMany2Many.partner_to_partner_rel by PartnersCategories many2manyLink PartnersCategories
+val ModelMany2Many.partner_to_partner_category_rel by Partners many2manyLink PartnersCategories
+val ModelMany2Many.coutry_to_county_group_rel by Countries many2manyLink CountriesGroup
+val ModelMany2Many.user_to_company_rel by Users many2manyLink ResCompanies

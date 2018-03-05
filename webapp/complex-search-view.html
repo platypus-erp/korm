@@ -1,0 +1,137 @@
+<link rel="import" href="/components/polymer/polymer-element.html">
+
+<link rel="import" href="/components/app-layout/app-toolbar/app-toolbar.html"/>
+
+<link rel="import" href="/components/iron-ajax/iron-ajax.html"/>
+<link rel="import" href="/components/iron-icons/iron-icons.html"/>
+<link rel="import" href="/components/iron-collapse/iron-collapse.html">
+
+<link rel="import" href="/components/vaadin-text-field/vaadin-text-field.html">
+<link rel="import" href="/components/vaadin-button/vaadin-button.html">
+<link rel="import" href="/components/vaadin-ordered-layout/vaadin-vertical-layout.html">
+<link rel="import" href="/components/vaadin-ordered-layout/vaadin-horizontal-layout.html">
+<link rel="import" href="/components/vaadin-material-theme/vaadin-button.html">
+<link rel="import" href="/components/vaadin-text-field/vaadin-text-field.html">
+<link rel="import" href="/components/vaadin-combo-box/vaadin-combo-box.html">
+<link rel="import" href="/components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="/components/vaadin-grid/vaadin-grid-column.html">
+<link rel="import" href="/components/vaadin-dialog/vaadin-dialog.html">
+
+<link rel="import" href="/components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="/components/paper-listbox/paper-listbox.html">
+<link rel="import" href="/components/paper-item/paper-item.html">
+<link rel="import" href="/components/paper-input/paper-input.html">
+<link rel="import" href="/components/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="/components/neon-animation/web-animations.html">
+
+<dom-module id="complex-search-view">
+    <template>
+        <style>
+            .hide {
+                display: none;
+            }
+        </style>
+        <vaadin-dropdown-menu label="Field" required="true">
+            <template>
+                <vaadin-list-box id="listBoxField" selected="{{fieldSelected}}">
+                    <vaadin-item value="name" field-type="str">Name</vaadin-item>
+                    <vaadin-item value="locale" field-type="str">Locale Code</vaadin-item>
+                    <vaadin-item value="code" field-type="str">ISO Code</vaadin-item>
+                    <vaadin-item value="archived" field-type="bool">Archived</vaadin-item>
+                </vaadin-list-box>
+            </template>
+        </vaadin-dropdown-menu>
+        <vaadin-dropdown-menu id="dropDownOp" label="Operator" selected="{{opSelected}}"
+                              error-message="Please choose one option" required="true">
+            <template>
+                <vaadin-list-box id="listBoxOp">
+                    <vaadin-item value>Select an Operator</vaadin-item>
+                    <hr>
+                    <vaadin-item value="eq" label="=">Equal To</vaadin-item>
+                    <vaadin-item value="eq" label="!=">Not Equal</vaadin-item>
+                    <vaadin-item value="like" label="contains">Like</vaadin-item>
+                    <vaadin-item value="between" label="between">Between</vaadin-item>
+                    <vaadin-item value="!null" label="is set">Is Set</vaadin-item>
+                    <vaadin-item value="null" label="is not set">Is Not Set</vaadin-item>
+                    <vaadin-item value="start" label="start with">Start With</vaadin-item>
+                    <vaadin-item value="!start" label="don't start with">Don't Start With</vaadin-item>
+                    <vaadin-item value="end" label="end with">End With</vaadin-item>
+                    <vaadin-item value="!end" label="don't end with">Don't End With</vaadin-item>
+                    <vaadin-item value="!end" label="<">Less Than</vaadin-item>
+                    <vaadin-item value="!end" label="<=">Less Or Equal Than</vaadin-item>
+                    <vaadin-item value="!end" label=">">More Than</vaadin-item>
+                    <vaadin-item value="!end" label=">=">More Or Equal Than</vaadin-item>
+                </vaadin-list-box>
+            </template>
+        </vaadin-dropdown-menu>
+        <div>
+            <vadin-text-field id="strField" class="hide"></vadin-text-field>
+            <vaadin-combo-box id="referenceField" class="hide"></vaadin-combo-box>
+        </div>
+    </template>
+    </template>
+    <script>
+        class ComplexSearchView extends Polymer.Element {
+            static get is() {
+                return 'complex-search-view';
+            }
+
+            ready() {
+                super.ready();
+            }
+
+            static get properties() {
+                return {
+                    model: {
+                        type: String,
+                        value: 'res_language',
+                        reflectToAttribute: true,
+                    },
+                    filters: {
+                        type: Array,
+                        value: [{
+                            field: null,
+                            operator: null
+                        }]
+                    },
+                    opByType: {
+                        type: Object,
+                        value: {
+                            str: ["eq", "!eq", "null", "!null", "like", "!like", "start", "!start", "end", "!end"],
+                            compare: ["eq", "!eq", "null", "!null", "<", "<=", ">", ">=", "between"],
+                            bool: ["null", "!null"],
+                            selection: ["eq", "!eq", "null", "!null"],
+                            reference: ["eq", "!eq", "null", "!null"],
+                        },
+                        readonly: true
+                    }
+                };
+            }
+
+            _add() {
+                this.push('filters', {field: "", operator: ""});
+            }
+
+            _remove() {
+                this.pop('filters');
+            }
+
+            cancelDialog() {
+                this.$.filterDialog.opened = false
+            }
+
+            validateFilter() {
+                this.$.filterDialog.opened = false
+            }
+
+            openDialog() {
+                this.$.filterDialog.opened = true
+            }
+
+
+        }
+
+        window.customElements.define(ComplexSearchView.is, ComplexSearchView);
+    </script>
+</dom-module>

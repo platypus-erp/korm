@@ -1,13 +1,11 @@
 package org.platypus.impl.module.product.models
 
-import org.platypus.impl.korm.entity.PlatypusSelection
-import org.platypus.impl.korm.entity.PlatypusSelectionCompanion
+import org.platypus.entity.PlatypusSelection
+import org.platypus.entity.PlatypusSelectionCompanion
 import org.platypus.impl.korm.model.ModelNamed
 import org.platypus.impl.korm.model.property.KormProperty
-import org.platypus.impl.korm.sql.intLiteral
+import org.platypus.impl.orm.sql.intLiteral
 import org.platypus.impl.module.product.entities.ProductTemplate
-import org.platypus.impl.module.product.entities.ProductUom
-import org.platypus.impl.module.product.models.UomType.Companion.reference
 
 class ProductTemplateType(value: String, label: String) : PlatypusSelection<ProductTemplateModel, ProductTemplate>(value, label) {
     companion object : PlatypusSelectionCompanion<ProductTemplateModel, ProductTemplate, ProductTemplateType>(ProductTemplateType::class, { v, l -> ProductTemplateType(v, l) }) {
@@ -20,7 +18,7 @@ class ProductTemplateType(value: String, label: String) : PlatypusSelection<Prod
     }
 }
 
-object ProductTemplateModel : ModelNamed<ProductTemplateModel, ProductTemplate>("product.template") {
+object ProductTemplateModel : ModelNamed<ProductTemplateModel, ProductTemplate>("product.domModule") {
     override val modelHelp: String
         get() = "Product Template"
     override val order: KormProperty<ProductTemplateModel, *>
@@ -32,7 +30,7 @@ object ProductTemplateModel : ModelNamed<ProductTemplateModel, ProductTemplate>(
         name.extend(required = true, l10n = true, index = true)
     }
 
-    //    sequence = fields.Integer('Sequence', default=1, help='Gives the sequence order when displaying a product list')
+    //    sequence = fieldsExpression.Integer('Sequence', default=1, help='Gives the sequence order when displaying a product list')
     val sequence = field.integer("sequence", defaultValue = intLiteral(1),
         help = "Gives the sequence order when displaying a product list")
     val description = field.text("modelHelp", l10n=true,

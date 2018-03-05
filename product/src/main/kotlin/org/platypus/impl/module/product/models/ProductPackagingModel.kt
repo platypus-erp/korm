@@ -2,7 +2,7 @@ package org.platypus.impl.module.product.models
 
 import org.platypus.impl.korm.model.ModelNamed
 import org.platypus.impl.korm.model.property.KormProperty
-import org.platypus.impl.korm.sql.intLiteral
+import org.platypus.impl.orm.sql.intLiteral
 import org.platypus.impl.module.product.entities.ProductPackaging
 
 object ProductPackagingModel : ModelNamed<ProductPackagingModel, ProductPackaging>("product.packaging") {

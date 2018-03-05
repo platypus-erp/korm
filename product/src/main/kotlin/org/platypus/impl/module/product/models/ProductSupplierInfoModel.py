@@ -9,7 +9,7 @@ class SuppliferInfo(models.Model):
         help="Vendor of this product")
     product_name = fields.Char(
         'Vendor Product Name',
-        help="This vendor's product name will be used when printing a request for quotation. Keep empty to use the internal one.")
+        help="This vendor's product fieldName will be used when printing a request for quotation. Keep empty to use the internal one.")
     product_code = fields.Char(
         'Vendor Product Code',
         help="This vendor's product code will be used when printing a request for quotation. Keep empty to use the internal one.")
@@ -38,7 +38,7 @@ class SuppliferInfo(models.Model):
         'product.product', 'Product Variant',
         help="When this field is filled in, the vendor data will only apply to the variant.")
     product_tmpl_id = fields.Many2one(
-        'product.template', 'Product Template',
+        'product.domModule', 'Product Template',
         index=True, ondelete='cascade', oldname='product_id')
     delay = fields.Integer(
         'Delivery Lead Time', default=1, required=True,

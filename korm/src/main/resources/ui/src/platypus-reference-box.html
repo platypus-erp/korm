@@ -1,0 +1,93 @@
+<link rel="import" href="../components/polymer/polymer-element.html">
+<link rel="import" href="../components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../components/vaadin-combo-box/vaadin-combo-box.html">
+
+<dom-module id="platypus-reference-box">
+    <template>
+        <style>
+            .hide{
+                display: none;
+            }
+        </style>
+        <vaadin-combo-box id="combo"></vaadin-combo-box>
+
+    </template>
+    <script>
+        class PlatypusReferenceBox extends Polymer.Element {
+            static get is() {
+                return 'platypus-reference-box';
+            }
+
+            ready(){
+                super.ready();
+            }
+
+            static get properties() {
+                return {
+                    model: {
+                        type: String,
+                        value: 'res_language',
+                        reflectToAttribute: true,
+                    },
+                    filters: {
+                        type: Object,
+                        observer: '_onFilterChanged',
+                    },
+                    page: Number,
+                    limit: Number,
+                    data: {
+                        type: Array,
+                        reflectToAttribute: true,
+                        notify: true,
+                        readonly: true
+                    },
+                };
+            }
+
+            onSearch(model) {
+                this.$.searchQuery.generateRequest()
+            }
+
+            toggleFilters() {
+                this.$.filters.toggle();
+            }
+
+            _onFilterChanged() {
+
+            }
+
+            _onFieldChanged() {
+                if (this.fieldSelected != null) {
+                    let fieldType = this.fieldSelected.getAttribute("field-type")
+                    const allowedOp = this.opByType[fieldType];
+                    this.$.listBoxOp.getEffectiveChildren().forEach(function (element) {
+                        element.classList.toggle("hide", !allowedOp.some(item => item === element.getAttribute("op-name")));
+                    });
+                    this.$.opSelected = null;
+                    this.$.dropDownOp.disabled = false
+                    if (fieldType === "str"){
+                        this.$.strField.classList.remove("hide")
+
+                    }
+                }
+            }
+
+            _onOpChanged() {
+                if (this.opSelected != null) {
+                    console.log(this.opSelected.getAttribute("op-name"))
+                }
+            }
+
+            onClickFilter(filter) {
+                console.log(filter.currentTarget.id);
+            }
+
+            onClickGroupBy(groupBy, d) {
+                console.log(groupBy.currentTarget.id);
+            }
+
+        }
+
+        window.customElements.define(SearchView.is, SearchView);
+    </script>
+</dom-module>

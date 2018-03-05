@@ -21,7 +21,7 @@ import kotlin.reflect.KClass
  * @since 0.1
  * on 07/10/17.
  */
-//val platypusEntity = org.platypus.core.orm.PlatypusEntity::class.asClassName()
+//val platypusEntity = org.platypus.core.orm.StoredEntity::class.asClassName()
 //val platypusEntityClass = org.platypus.core.orm.PlatypusEntityClass::class.asClassName()
 val sizedIterator = SizedIterable::class.asClassName()
 val entityId = EntityID::class.asParameterType(Long::class)
@@ -40,7 +40,7 @@ val integerClass = Int::class.asClassName()
 val floatClass = Float::class.asClassName()
 val decimalClass = BigDecimal::class.asClassName()
 //val platypusTable = PlatypusTable::class.asClassName()
-//val platypusEntiy = PlatypusEntity::class.asClassName()
+//val platypusEntiy = StoredEntity::class.asClassName()
 //val platypusEntiyClass = PlatypusEntityClass::class.asClassName()
 val stringColumn = Column::class.asParameterType(String::class)
 val columnEntityLong = Column::class.asParameterType(EntityID::class.asParameterType(Long::class))
@@ -156,7 +156,7 @@ enum class SimplePropertyType(val simple: Boolean,
                         .initializer("many2oneColumn(%S, %T.%N, %N)", f.name, model, f.name, "${f.target!!.first}Table")
             },
             { f, table ->
-                val targetClass = com.squareup.kotlinpoet.ClassName("", "${f.target!!.first}Entity")
+                val targetClass = com.squareup.kotlinpoet.ClassName("", "${f.target!!.first}ClassicEntity")
                 PropertySpec.builder(f.name, targetClass)
                         .delegate("%T referencedOn  %T.%N", targetClass, table, f.name).mutable(f.readonly)
             }),
@@ -174,7 +174,7 @@ enum class SimplePropertyType(val simple: Boolean,
                         .initializer("one2manyColumn(%S, %T.%N, %N.%N)", f.name, model, f.name, "${f.target!!.first}Table", f.target.second)
             },
             { f, table ->
-                val targetClass = ClassName("", "${f.target!!.first}Entity")
+                val targetClass = ClassName("", "${f.target!!.first}ClassicEntity")
                 PropertySpec.builder(f.name, sizedIterator.asParameterType(targetClass))
                         .delegate("%T referrersOn  %T.%N", targetClass, table, f.name).mutable(f.readonly)
             }),
@@ -220,7 +220,7 @@ data class ModelProperty(val name: String,
                          val type: SimplePropertyType,
                          val target: Pair<String, String>? = null)
 
-//data class ModelMethod(val name: String,
+//data class ModelMethod(val fieldName: String,
 //                       val type: MethodType,
 //                       val paramType: String,
 //                       val returnType: String)

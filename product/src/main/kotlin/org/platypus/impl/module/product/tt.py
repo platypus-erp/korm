@@ -1,8 +1,8 @@
 class ProductTemplate(models.Model):
-    _name = "product.template"
+    _name = "product.domModule"
     _inherit = ['mail.thread']
     _description = "Product Template"
-    _order = "name"
+    _order = "fieldName"
 
     def _get_default_category_id(self):
         if self._context.get('categ_id') or self._context.get('default_categ_id'):
@@ -43,14 +43,14 @@ class ProductTemplate(models.Model):
     currency_id = fields.Many2one(
         'res.currency', 'Currency', compute='_compute_currency_id')
 
-    # price fields
+    # price fieldsExpression
     price = fields.Float(
         'Price', compute='_compute_template_price', inverse='_set_template_price',
         digits=dp.get_precision('Product Price'))
     list_price = fields.Float(
         'Sale Price', default=1.0,
         digits=dp.get_precision('Product Price'),
-        help="Base price to compute the customer price. Sometimes called the catalog price.")
+        help="Base price to onGet the customer price. Sometimes called the catalog price.")
     lst_price = fields.Float(
         'Public Price', related='list_price',
         digits=dp.get_precision('Product Price'))
@@ -86,7 +86,7 @@ class ProductTemplate(models.Model):
         help="Default Unit of Measure used for purchase orders. It must be in the same category than the default unit of measure.")
     company_id = fields.Many2one(
         'res.company', 'Company',
-        default=lambda self: self.env['res.company']._company_default_get('product.template'), index=1)
+        default=lambda self: self.env['res.company']._company_default_get('product.domModule'), index=1)
     packaging_ids = fields.One2many(
         'product.packaging', 'product_tmpl_id', 'Logistical Units',
         help="Gives the different ways to package the same product. This has no impact on "
@@ -112,7 +112,7 @@ class ProductTemplate(models.Model):
 
     item_ids = fields.One2many('product.pricelist.item', 'product_tmpl_id', 'Pricelist Items')
 
-    # image: all image fields are base64 encoded and PIL-supported
+    # image: all image fieldsExpression are base64 encoded and PIL-supported
     image = fields.Binary(
         "Image", attachment=True,
         help="This field holds the image used as image for the product, limited to 1024x1024px.")
@@ -120,7 +120,7 @@ class ProductTemplate(models.Model):
         "Medium-sized image", attachment=True,
         help="Medium-sized image of the product. It is automatically "
              "resized as a 128x128px image, with aspect ratio preserved, "
-             "only when the image exceeds one of those sizes. Use this field in form views or some kanban views.")
+             "only when the image exceeds one of those sizes. Use this field in form actions or some kanban actions.")
     image_small = fields.Binary(
         "Small-sized image", attachment=True,
         help="Small-sized image of the product. It is automatically "
@@ -249,14 +249,14 @@ class ProductTemplate(models.Model):
 
     @api.model
     def create(self, vals):
-        ''' Store the initial standard price in order to be able to retrieve the cost of a product template for a given date'''
+        ''' Store the initial standard price in order to be able to retrieve the cost of a product domModule for a given date'''
         # TDE FIXME: context brol
         tools.image_resize_images(vals)
         template = super(ProductTemplate, self).create(vals)
         if "create_product_product" not in self._context:
             template.with_context(create_from_tmpl=True).create_variant_ids()
 
-        # This is needed to set given values to first variant after creation
+        # This is needed to fieldSet given values to first variant after creation
         related_vals = {}
         if vals.get('barcode'):
             related_vals['barcode'] = vals['barcode']
@@ -288,8 +288,8 @@ class ProductTemplate(models.Model):
         self.ensure_one()
         if default is None:
             default = {}
-        if 'name' not in default:
-            default['name'] = _("%s (copy)") % self.name
+        if 'fieldName' not in default:
+            default['fieldName'] = _("%s (copy)") % self.name
         return super(ProductTemplate, self).copy(default=default)
 
     @api.multi
@@ -300,7 +300,7 @@ class ProductTemplate(models.Model):
     @api.model
     def name_search(self, name='', args=None, operator='ilike', limit=100):
         # Only use the product.product heuristics if there is a search term and the domain
-        # does not specify a match on `product.template` IDs.
+        # does not specify a match on `product.domModule` IDs.
         if not name or any(term[0] == 'id' for term in (args or [])):
             return super(ProductTemplate, self).name_search(name=name, args=args, operator=operator, limit=limit)
 
@@ -315,14 +315,14 @@ class ProductTemplate(models.Model):
             if (not products) or (limit and (len(templates) > limit)):
                 break
 
-        # re-apply product.template order + name_get
+        # re-apply product.domModule order + name_get
         return super(ProductTemplate, self).name_search(
             '', args=[('id', 'in', list(set(templates.ids)))],
             operator='ilike', limit=limit)
 
     @api.multi
     def price_compute(self, price_type, uom=False, currency=False, company=False):
-        # TDE FIXME: delegate to template or not ? fields are reencoded here ...
+        # TDE FIXME: delegate to domModule or not ? fieldsExpression are reencoded here ...
         # compatibility about context keys used a bit everywhere in the code
         if not uom and self._context.get('uom'):
             uom = self.env['product.uom'].browse(self._context['uom'])
@@ -332,7 +332,7 @@ class ProductTemplate(models.Model):
         templates = self
         if price_type == 'standard_price':
             # standard_price field can only be seen by users in base.group_user
-            # Thus, in order to compute the sale price from the cost for users not in this group
+            # Thus, in order to onGet the sale price from the cost for users not in this group
             # We fetch the standard price as the superuser
             templates = self.with_context(force_company=company and company.id or self._context.get('force_company', self.env.user.company_id.id)).sudo()
 
@@ -359,7 +359,7 @@ class ProductTemplate(models.Model):
     def create_variant_ids(self):
         Product = self.env["product.product"]
         for tmpl_id in self.with_context(active_test=False):
-            # adding an attribute with only one value should not recreate product
+            # adding an attribute with only one min should not recreate product
             # write this attribute on every product to make sure we don't lose them
             variant_alone = tmpl_id.attribute_line_ids.filtered(lambda line: len(line.value_ids) == 1).mapped('value_ids')
             for value_id in variant_alone:
@@ -369,7 +369,7 @@ class ProductTemplate(models.Model):
             # list of values combination
             existing_variants = [set(variant.attribute_value_ids.filtered(lambda r: r.attribute_id.create_variant).ids) for variant in tmpl_id.product_variant_ids]
             variant_matrix = itertools.product(*(line.value_ids for line in tmpl_id.attribute_line_ids if line.value_ids and line.value_ids[0].attribute_id.create_variant))
-            variant_matrix = map(lambda record_list: reduce(lambda x, y: x+y, record_list, self.env['product.attribute.value']), variant_matrix)
+            variant_matrix = map(lambda record_list: reduce(lambda x, y: x+y, record_list, self.env['product.attribute.min']), variant_matrix)
             to_create_variants = filter(lambda rec_set: set(rec_set.ids) not in existing_variants, variant_matrix)
 
             # check product

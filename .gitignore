@@ -71,4 +71,4 @@ fabric.properties
 .idea/inspectionProfiles/
 src/main/java/
 
-korm/src/main/resources/ui/bower_components
+korm/src/main/resources/ui/components/

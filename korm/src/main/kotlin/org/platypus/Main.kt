@@ -1,12 +1,21 @@
 package org.platypus
 
+import org.platypus.module.base.BaseModule
 
-fun main(args: Array<String>) {
-    val platypusServer = Platypus.create {
-        web {
-            httpPort = 80
-        }
+val platypus = Platypus.create {
+    db {
+        dbName = "platypus-base"
     }
-    platypusServer.start()
+    web {
+        httpPort = 8080
+    }
+    ui {
+        pathPlatypus = "/home/chmuche/workspace/kotlin/korm/platypus"
+        pathViews = "/home/chmuche/workspace/kotlin/korm/platypus/actions"
+    }
+    loadModule = BaseModule
 }
 
+fun main(args: Array<String>) {
+    platypus.start()
+}

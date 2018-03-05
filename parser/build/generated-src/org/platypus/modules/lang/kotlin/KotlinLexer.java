@@ -60,7 +60,7 @@ public class KotlinLexer extends Lexer {
 		"'null'", "'->'", "'/'", "'%'", "'+'", "'-'", "'in'", "'!in'", "'is'", 
 		"'!is'", "'as'", "'as?'", "'+='", "'-='", "'*='", "'/='", "'%='", "'--'", 
 		"'++'", "'!!'", "'!'", "'['", "']'", "'val'", "'var'", "'vararg'", "'by'", 
-		"'dynamic'", "'where'", "'get'", "'set'", "'abstract'", "'open'", "'final'", 
+		"'dynamic'", "'where'", "'get'", "'fieldSet'", "'abstract'", "'open'", "'final'",
 		"'override'", "'operator'", "'infix'", "'inline'", "'enum'", "'annotation'", 
 		"'data'", "'sealed'", "'private'", "'protected'", "'public'", "'internal'", 
 		"'const'", "'out'", "'@'", "'file'", "'choice'", "'property'", "'param'", 

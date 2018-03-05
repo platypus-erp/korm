@@ -18,7 +18,7 @@ func init(){
 1 * (this unit) = ratio * (reference unit)`,
 			Depends: []string{"Factor"}},
 		"Rounding": models.FloatField{String: "Rounding Precision", Default: models.DefaultValue(0.01),
-			Required: true, Help: `The computed quantity will be a multiple of this value.
+			Required: true, Help: `The computed quantity will be a multiple of this min.
 Use 1.0 for a Unit of Measure that cannot be further split, such as a piece.`},
 		"Active": models.BooleanField{Default: models.DefaultValue(true),
 			Help: "Uncheck the active field to disable a unit of measure without deleting it."},

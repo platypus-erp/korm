@@ -3,7 +3,7 @@ class ProductCategory(models.Model):
     _description = "Product Category"
     _parent_name = "parent_id"
     _parent_store = True
-    _parent_order = 'name'
+    _parent_order = 'fieldName'
     _order = 'parent_left'
 
     name = fields.Char('Name', index=True, required=True, translate=True)
@@ -20,7 +20,7 @@ class ProductCategory(models.Model):
         help="The number of products under this category (Does not consider the children categories)")
 
     def _compute_product_count(self):
-        read_group_res = self.env['product.template'].read_group([('categ_id', 'in', self.ids)], ['categ_id'], ['categ_id'])
+        read_group_res = self.env['product.domModule'].read_group([('categ_id', 'in', self.ids)], ['categ_id'], ['categ_id'])
         group_data = dict((data['categ_id'][0], data['categ_id_count']) for data in read_group_res)
         for categ in self:
             categ.product_count = group_data.get(categ.id, 0)
@@ -34,7 +34,7 @@ class ProductCategory(models.Model):
     @api.multi
     def name_get(self):
         def get_names(cat):
-            """ Return the list [cat.name, cat.parent_id.name, ...] """
+            """ Return the list [cat.fieldName, cat.parent_id.fieldName, ...] """
             res = []
             while cat:
                 res.append(cat.name)
@@ -52,7 +52,7 @@ class ProductCategory(models.Model):
             category_names = name.split(' / ')
             parents = list(category_names)
             child = parents.pop()
-            domain = [('name', operator, child)]
+            domain = [('fieldName', operator, child)]
             if parents:
                 names_ids = self.name_search(' / '.join(parents), args=args, operator='ilike', limit=limit)
                 category_ids = [name_id[0] for name_id in names_ids]
@@ -62,7 +62,7 @@ class ProductCategory(models.Model):
                 else:
                     domain = expression.AND([[('parent_id', 'in', category_ids)], domain])
                 for i in range(1, len(category_names)):
-                    domain = [[('name', operator, ' / '.join(category_names[-1 - i:]))], domain]
+                    domain = [[('fieldName', operator, ' / '.join(category_names[-1 - i:]))], domain]
                     if operator in expression.NEGATIVE_TERM_OPERATORS:
                         domain = expression.AND(domain)
                     else:

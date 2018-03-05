@@ -73,7 +73,7 @@ object RelPropertyVisitor : KotlinParserBaseVisitor<NewReletationFieldAntlr>() {
 object SimplePropertyValidator : KotlinParserBaseVisitor<Boolean>() {
     override fun visitPostfixUnaryExpression(ctx: KotlinParser.PostfixUnaryExpressionContext): Boolean {
         val mName = GetAtomicExpressionName.visitAtomicExpression(ctx.atomicExpression())
-        val valid = mName == "field" || mName == "compute" || mName == "computeStore"
+        val valid = mName == "field" || mName == "onGet" || mName == "computeStore"
         if (valid){
             print("\t $mName : ")
         }
@@ -94,7 +94,7 @@ object SimplePropertyVisitor : KotlinParserBaseVisitor<NewSimpleFieldAntlr?>() {
             val type = GetNewFieldType.visitPostfixUnaryOperation(ctx.postfixUnaryOperation(0))
             return NewSimpleFieldAntlr(false, false, FieldTypeCompute.NEWFIELD, type)
         }
-        if (mName == "compute") {
+        if (mName == "onGet") {
             val type = SimplePropertyVisitor.visitCallSuffix(ctx.callSuffix())
             return NewSimpleFieldAntlr(type.readonly, type.required, FieldTypeCompute.COMPUTE, type.type)
         }

@@ -1,22 +1,20 @@
 package org.platypus.impl.module.product.models
 
-import org.platypus.UserError
-import org.platypus.impl.korm.entity.PlatypusSelection
-import org.platypus.impl.korm.entity.PlatypusSelectionCompanion
+import org.platypus.utils.UserError
+import org.platypus.entity.PlatypusSelection
+import org.platypus.entity.PlatypusSelectionCompanion
 import org.platypus.impl.korm.model.ModelNamed
-import org.platypus.impl.korm.model.functions.PublicApiReturn
+import org.platypus.model.functions.PublicApiReturn
 import org.platypus.impl.korm.model.property.KormProperty
 import org.platypus.impl.korm.model.property.KormSelectionProperty
 import org.platypus.impl.korm.sql.ReferenceOption
-import org.platypus.impl.korm.sql.decimalLiteral
-import org.platypus.impl.korm.sql.neq
+import org.platypus.impl.orm.sql.decimalLiteral
 import org.platypus.impl.module.product.entities.ProductUom
 import org.platypus.impl.module.product.entities.ProductUomCategory
 import org.platypus.impl.module.product.entities.category
 import org.platypus.impl.module.product.entities.factor
 import org.platypus.impl.module.product.entities.rounding
-import org.platypus.impl.module.product.entities.uomType
-import org.platypus.api.context.throwError
+import org.platypus.context.throwError
 import java.math.BigDecimal
 import java.math.MathContext
 import java.math.RoundingMode
@@ -66,7 +64,7 @@ object ProductUomModel : ModelNamed<ProductUomModel, ProductUom>("product.uom") 
         help = "How many times this Unit of Measure is bigger than the reference Unit of Measure in this category: 1 * (this unit) = ratio * (reference unit)")
 
     val rounding = field.decimal("rounding", "Rounding Precision", defaultValue = decimalLiteral(BigDecimal.valueOf(0.01)),
-        required = true, help = """The computed quantity will be a multiple of this value.
+        required = true, help = """The computed quantity will be a multiple of this min.
             |Use 1.0 for a Unit of Measure that cannot be further split, such as a piece.
         """.trimMargin())
 

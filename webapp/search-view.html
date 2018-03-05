@@ -1,0 +1,232 @@
+<link rel="import" href="/components/polymer/polymer-element.html">
+
+<link rel="import" href="/components/app-layout/app-toolbar/app-toolbar.html"/>
+
+<link rel="import" href="/components/iron-ajax/iron-ajax.html"/>
+<link rel="import" href="/components/iron-icons/iron-icons.html"/>
+<link rel="import" href="/components/iron-collapse/iron-collapse.html">
+
+<link rel="import" href="/components/vaadin-text-field/vaadin-text-field.html">
+<link rel="import" href="/components/vaadin-button/vaadin-button.html">
+<link rel="import" href="/components/vaadin-ordered-layout/vaadin-vertical-layout.html">
+<link rel="import" href="/components/vaadin-ordered-layout/vaadin-horizontal-layout.html">
+<link rel="import" href="/components/vaadin-text-field/vaadin-text-field.html">
+<link rel="import" href="/components/vaadin-combo-box/vaadin-combo-box.html">
+<link rel="import" href="/components/vaadin-dropdown-menu/vaadin-dropdown-menu.html">
+<link rel="import" href="/components/vaadin-list-box/vaadin-list-box.html">
+<link rel="import" href="/components/vaadin-item/vaadin-item.html">
+
+<link rel="import" href="/components/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="/components/neon-animation/web-animations.html">
+
+<dom-module id="search-view">
+    <template>
+        <style>
+            .hide {
+                display: none;
+            }
+        </style>
+        <iron-ajax id="searchQuery" auto="true" url="http://127.0.0.1:8080/[[model]]/views/[[actName]]/search"
+                   handle-as="json" last-response="{{data}}"></iron-ajax>
+
+        <iron-ajax id="nameSearchFilter" auto="false"
+                   handle-as="json" last-response="{{referenceItems}}"></iron-ajax>
+        <app-toolbar>
+            <paper-icon-button icon="menu"></paper-icon-button>
+            <div main-title="true">List of SEARCH</div>
+            <paper-icon-button icon="search" on-click="onSearch"></paper-icon-button>
+            <paper-icon-button icon="expand-more" on-click="toggleFilters"></paper-icon-button>
+        </app-toolbar>
+        <iron-collapse id="filters">
+            <vaadin-horizontal-layout>
+                <vaadin-vertical-layout style="width: 70%">
+                    <vaadin-vertical-layout id="filterButton">
+                        <vaadin-horizontal-layout>
+                            <vaadin-button id="filter1" on-click="onClickFilter">
+                                Filter 1
+                            </vaadin-button>
+                            <vaadin-button id="filter2" on-click="onClickFilter">
+                                Filter 2
+                            </vaadin-button>
+                        </vaadin-horizontal-layout>
+                        <vaadin-horizontal-layout>
+                            <vaadin-button id="filter3" on-click="onClickFilter">
+                                Filter 3
+                            </vaadin-button>
+                        </vaadin-horizontal-layout>
+                    </vaadin-vertical-layout>
+                    <vaadin-horizontal-layout id="groupByButton">
+                        <vaadin-button id="groubpy1" on-click="onClickGroupBy">
+                            Group By 1
+                        </vaadin-button>
+                    </vaadin-horizontal-layout>
+                </vaadin-vertical-layout>
+                <vaadin-horizontal-layout>
+                    <vaadin-dropdown-menu label="Field" required="true">
+                        <template>
+                            <vaadin-list-box id="listBoxField" selected="{{fieldSelected}}">
+                                <vaadin-item value="name" field-type="str">Name</vaadin-item>
+                                <vaadin-item value="locale" field-type="str">Locale Code</vaadin-item>
+                                <vaadin-item value="code" field-type="str">ISO Code</vaadin-item>
+                                <vaadin-item value="archived" field-type="bool">Archived</vaadin-item>
+                            </vaadin-list-box>
+                        </template>
+                    </vaadin-dropdown-menu>
+                    <vaadin-dropdown-menu id="dropDownOp" label="Operator" selected="{{opSelected}}"
+                                          error-message="Please choose one option" required="true">
+                        <template>
+                            <vaadin-list-box id="listBoxOp">
+                                <vaadin-item value>Select an Operator</vaadin-item>
+                                <hr>
+                                <vaadin-item value="eq" label="=">Equal To</vaadin-item>
+                                <vaadin-item value="eq" label="!=">Not Equal</vaadin-item>
+                                <vaadin-item value="like" label="contains">Like</vaadin-item>
+                                <vaadin-item value="between" label="between">Between</vaadin-item>
+                                <vaadin-item value="!null" label="is set">Is Set</vaadin-item>
+                                <vaadin-item value="null" label="is not set">Is Not Set</vaadin-item>
+                                <vaadin-item value="start" label="start with">Start With</vaadin-item>
+                                <vaadin-item value="!start" label="don't start with">Don't Start With</vaadin-item>
+                                <vaadin-item value="end" label="end with">End With</vaadin-item>
+                                <vaadin-item value="!end" label="don't end with">Don't End With</vaadin-item>
+                                <vaadin-item value="!end" label="<">Less Than</vaadin-item>
+                                <vaadin-item value="!end" label="<=">Less Or Equal Than</vaadin-item>
+                                <vaadin-item value="!end" label=">">More Than</vaadin-item>
+                                <vaadin-item value="!end" label=">=">More Or Equal Than</vaadin-item>
+                            </vaadin-list-box>
+                        </template>
+                    </vaadin-dropdown-menu>
+                    <div>
+                        <vadin-text-field id="strField" class="hide"></vadin-text-field>
+                        <vaadin-combo-box id="referenceField" class="hide"></vaadin-combo-box>
+                    </div>
+                    <paper-icon-button icon="add" id="buttonAddFilter" on-click="addFilter"></paper-icon-button>
+
+                </vaadin-horizontal-layout>
+            </vaadin-horizontal-layout>
+        </iron-collapse>
+    </template>
+    <script>
+        class SearchView extends Polymer.Element {
+            static get is() {
+                return 'search-view';
+            }
+
+            ready() {
+                super.ready();
+                this.$.dropDownOp.disabled = true
+            }
+
+            static get properties() {
+                return {
+                    model: {
+                        type: String,
+                        value: 'res_language',
+                        reflectToAttribute: true,
+                    },
+                    filters: {
+                        type: Object,
+                        observer: '_onFilterChanged',
+                    },
+                    page: Number,
+                    limit: Number,
+                    sort: {
+                        type: Array
+                    },
+                    fieldSelected: {
+                        type: Object,
+                        observer: '_onFieldChanged',
+                    },
+                    opSelected: {
+                        type: Object,
+                        observer: '_onOpChanged',
+                    },
+                    data: {
+                        type: Array,
+                        reflectToAttribute: true,
+                        notify: true,
+                        readonly: true
+                    },
+                    actName: {
+                        type: String
+                    },
+                    opByType: {
+                        type: Object,
+                        value: {
+                            str: ["eq", "!eq", "null", "!null", "like", "!like", "start", "!start", "end", "!end"],
+                            compare: ["eq", "!eq", "null", "!null", "<", "<=", ">", ">=", "between"],
+                            bool: ["null", "!null"],
+                            selection: ["eq", "!eq", "null", "!null"],
+                            reference: ["eq", "!eq", "null", "!null"],
+                        },
+                        readonly: true
+                    }
+                };
+            }
+
+            onSearch(model) {
+                this.$.searchQuery.generateRequest()
+            }
+
+            toggleFilters() {
+                this.$.filters.toggle();
+            }
+
+            _onFilterChanged() {
+
+            }
+
+            _onFieldChanged() {
+                if (this.fieldSelected != null) {
+                    let current = this.$.listBoxField.getEffectiveChildren()[this.fieldSelected];
+                    console.log(fieldSelected);
+                    console.log(current);
+                }
+
+                //     let fieldType = this.fieldSelected.getAttribute("field-type");
+                //     const allowedOp = this.opByType[fieldType];
+                //     this.$.listBoxOp.getEffectiveChildren().forEach(function (element) {
+                //         element.classList.toggle("hide", !allowedOp.some(item => item === element.getAttribute("op-name")));
+                //     });
+                //     this.$.opSelected = null;
+                //     this.$.dropDownOp.disabled = false
+                //     if (fieldType === "str") {
+                //         this.$.strField.classList.remove("hide");
+                //         this.$.referenceField.classList.add("hide");
+                //     }
+                //     if (fieldType === "reference") {
+                //         let referenceFilterModel = this.fieldSelected.getAttribute("field-ref-model");
+                //         this.$.nameSearchFilter.url = "http://127.0.0.1:8080/" + referenceFilterModel;
+                //         this.$.nameSearchFilter.param = {"name": "name"};
+                //     }
+                // }
+            }
+
+            validateFilter() {
+
+            }
+
+            addFilter() {
+
+            }
+
+
+            _onOpChanged() {
+                if (this.opSelected != null) {
+                    console.log(this.opSelected.getAttribute("op-name"))
+                }
+            }
+
+            onClickFilter(filter) {
+                console.log(filter.currentTarget.id);
+            }
+
+            onClickGroupBy(groupBy, d) {
+                console.log(groupBy.currentTarget.id);
+            }
+
+        }
+
+        window.customElements.define(SearchView.is, SearchView);
+    </script>
+</dom-module>

@@ -9,15 +9,15 @@
 //
 //
 //fun generateTable(m: ModelGenerate): TypeSpec.Builder {
-//    val model = ClassName(m.pkg, m.name)
-//    val table = ClassName(m.pkg,"${m.name.firstUpper()}Table")
-//    println("${m.name.firstUpper()}Table")
-//    val tableBuilder = TypeSpec.objectBuilder(table)
-//            .superclass(platypusTable).addSuperclassConstructorParameter("%S", m.name.toSneakeCase())
+//    val models = ClassName(m.pkg, m.fieldName)
+//    val models = ClassName(m.pkg,"${m.fieldName.firstUpper()}Table")
+//    println("${m.fieldName.firstUpper()}Table")
+//    val tableBuilder = TypeSpec.objectBuilder(models)
+//            .superclass(platypusTable).addSuperclassConstructorParameter("%S", m.fieldName.toSneakeCase())
 //
 //    for (f in m.simpleField) {
-//        println("\t"+ f.name + " " + f.type)
-//        tableBuilder.addProperty(f.type.templateGenerateTable(f, model).build())
+//        println("\t"+ f.fieldName + " " + f.type)
+//        tableBuilder.addProperty(f.type.templateGenerateTable(f, models).build())
 //    }
 //    return tableBuilder
 //}

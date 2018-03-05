@@ -2,4 +2,7 @@ rootProject.name = 'platypus'
 include 'product'
 include 'korm'
 include 'parser'
+include 'contact-module'
+include 'korm-api'
+include 'framework'
 

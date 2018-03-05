@@ -1,11 +1,10 @@
 package org.platypus.impl.module.product.models
 
-import org.platypus.UserError
-import org.platypus.impl.korm.entity.PlatypusSelection
-import org.platypus.impl.korm.entity.PlatypusSelectionCompanion
+import org.platypus.entity.PlatypusSelection
+import org.platypus.entity.PlatypusSelectionCompanion
 import org.platypus.impl.korm.model.HierarchyModel
 import org.platypus.impl.korm.model.ModelNamed
-import org.platypus.impl.korm.model.functions.PublicApiReturn
+import org.platypus.model.functions.PublicApiReturn
 import org.platypus.impl.korm.sql.ReferenceOption
 import org.platypus.impl.module.product.entities.ProductCategory
 
@@ -25,7 +24,7 @@ object ProductCategoryModel : HierarchyModel<ProductCategoryModel, ProductCatego
 
     //    TODO _parent_name = "parent_id"
 //    TODO _parent_store = True
-//    TODO _parent_order = 'name'
+//    TODO _parent_order = 'fieldName'
 //    TODO _order = 'parent_left'
     init {
         name.extend(index = true, required = true, l10n = true)
