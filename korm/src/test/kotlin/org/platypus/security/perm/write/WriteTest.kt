@@ -9,7 +9,7 @@ import org.platypus.PlatypusEnvironment
 import org.platypus.bag.Bag
 import org.platypus.data.DataRef
 import org.platypus.entity.Record
-import org.platypus.exceptions.PlatypusForbiddenAction
+import org.platypus.exceptions.PlatypusForbiddenActionGroup
 import org.platypus.model.Model
 import org.platypus.module.ModuleBuilder
 import org.platypus.module.ModuleDataType
@@ -95,7 +95,7 @@ class CreateTest {
         e.name `should equal` "New Name"
         env.flush()
 //        An error is throw because the entity e is in database
-        assertThrows<PlatypusForbiddenAction> {
+        assertThrows<PlatypusForbiddenActionGroup> {
             e.name = "EntityRule"
         }
 //        The name is not change

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.platypus.Platypus
 import org.platypus.PlatypusEnvironment
-import org.platypus.exceptions.PlatypusForbiddenAction
+import org.platypus.exceptions.PlatypusForbiddenActionGroup
 import org.platypus.model.Model
 import org.platypus.module.ModuleBuilder
 import org.platypus.module.ModuleDataType
@@ -75,7 +75,7 @@ class DeleteWithGroupTest {
         val platypus = Platypus.newTest(CreateTestModule)
         val tmpEnv = platypus.newEnv()
         val env = tmpEnv.connect(tmpEnv.users["simple_user"])
-        val error = assertThrows<PlatypusForbiddenAction> {
+        val error = assertThrows<PlatypusForbiddenActionGroup> {
             env.entity1Repo["entity1"].delete()
         }
         error.methodName `should equal` Model1.delete.methodName

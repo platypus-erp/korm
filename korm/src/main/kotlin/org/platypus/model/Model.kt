@@ -53,6 +53,7 @@ import org.platypus.module.base.models.Groups
 import org.platypus.orm.CheckConstraint
 import org.platypus.orm.UniqueConstraint
 import org.platypus.orm.sql.and
+import org.platypus.orm.sql.dml.statements.DeleteStatement
 import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.expression.TypedExpression
 import org.platypus.orm.sql.query.SmartQueryBuilder
@@ -186,6 +187,8 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
     private val sqlCheck = HashMap<String, CheckConstraint<M>>()
     private val sqlUnique = HashMap<String, UniqueConstraint<M>>()
 
+    val metadata:ModelMetaData = ModelMetaDataImpl()
+
 
     protected fun check(name: String, errorMsg: String? = null, checkPredicate: M.() -> Expression<Boolean>) {
         sqlCheck[name] = CheckConstraint(name, errorMsg, checkPredicate)
@@ -230,6 +233,9 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
 
     val delete = api.public("delete",
             fun(self: Record<M>): PublicApiReturn<Int> {
+                val where = self.model.metadata.deleteRule(self.env.sudoUser, self.model.id eq id)
+                DeleteStatement(self.env, self.model, where)
+                self.warmCache().remove(self.modelID)
                 return 0.asResult()
             }
     )
@@ -277,7 +283,7 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
             }
     )
 
-    val search = api.public("search",
+    val searchRead = api.public("search",
             fun(empty: RecordRepository<M>, param: SearchQueryParam<M>): PublicApiReturn<Bag<M>> {
                 val query = if (param.fields.isNotEmpty()) {
                     val fieldToLoad :MutableSet<Expression<*>> = param.fields.filter { it.store }.toMutableSet()
@@ -296,7 +302,7 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
             }
     )
 
-    val otherSearch = api.public("otherSearch",
+    val search = api.public("otherSearch",
             fun(empty: RecordRepository<M>, query: SmartQueryBuilder<M>.(M) -> Unit): PublicApiReturn<Bag<M>> {
                 val q = SmartQueryBuilder(empty.model)
                 q.query(empty.model)

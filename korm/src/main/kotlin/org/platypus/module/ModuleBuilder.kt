@@ -5,9 +5,10 @@ import org.platypus.i18n.PlatypusI18N
 import org.platypus.model.Model
 import org.platypus.model.functions.PublicApiReturn
 import org.platypus.model.functions.one.ApiOneNoParamStacker
-import org.platypus.orm.sql.expression.Expression
 import org.platypus.repository.RecordRepository
 import org.platypus.repository.RecordRepositoryImpl
+import org.platypus.security.ModelGroupBuilder
+import org.platypus.security.ModelRuleBuilder
 import org.platypus.ui.ToViewApi
 import org.platypus.ui.action.UIMenuAction
 import org.platypus.ui.menu.UIMenu
@@ -157,18 +158,22 @@ class ModelDataHolder<M : Model<M>>(val model: M) {
         views.def()
     }
 
-    fun rules(def: ModelRuleHolder<M>.() -> Unit) {
+    fun security(def: ModelSecurityHolder<M>.() -> Unit) {
 
     }
 }
 
-class ModelRuleHolder<M : Model<M>>() {
+class ModelSecurityHolder<M : Model<M>>() {
     internal val datas = HashSet<RouteFactory>()
 
     val routes: Set<RouteFactory>
         get() = datas
 
-    fun on(rule: (M) -> Expression<Boolean>) {
+    fun rule(name: String, rule: ModelRuleBuilder<M>.() -> Unit) {
+
+    }
+
+    fun group(rule: ModelGroupBuilder<M>.() -> Unit) {
 
     }
 }

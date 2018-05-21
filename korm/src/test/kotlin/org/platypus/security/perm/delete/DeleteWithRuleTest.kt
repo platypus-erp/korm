@@ -8,7 +8,7 @@ import org.platypus.PlatypusEnvironment
 import org.platypus.bag.Bag
 import org.platypus.data.DataRef
 import org.platypus.entity.Record
-import org.platypus.exceptions.PlatypusForbiddenAction
+import org.platypus.exceptions.PlatypusForbiddenActionRule
 import org.platypus.model.Model
 import org.platypus.module.ModuleBuilder
 import org.platypus.module.ModuleDataType
@@ -56,7 +56,16 @@ private val PlatypusEnvironment.entity1Repo: Entity1RuleRepository
 private object CreateTestRuleModule : ModuleBuilder("perm_read", {
     dependsOf { setOf(BaseModule) }
     models {
-        add(Model1Rule)
+        add(Model1Rule) {
+            security {
+                rule("rule1") {
+                    delete = true
+                    rule = {
+                        it.name ilike "%enti%"
+                    }
+                }
+            }
+        }
     }
     datas {
         add(dataUserModule)
@@ -83,10 +92,10 @@ class DeleteWithRuleTest {
         val platypus = Platypus.newTest(CreateTestRuleModule)
         val tmpEnv = platypus.newEnv()
         val env = tmpEnv.connect(tmpEnv.users["simple_user"])
-        val error = assertThrows<PlatypusForbiddenAction> {
+        val error = assertThrows<PlatypusForbiddenActionRule> {
             env.entity1Repo["entity1"].delete()
         }
-        error.methodName `should equal` Model1Rule.delete.methodName
+        error.rule.uniqueId `should equal` "rule1"
         val e = env.entity1Repo.search {
             where {
                 it.name ilike "%enti%"
