@@ -5,6 +5,7 @@ import org.platypus.context.withDefault
 import org.platypus.module.contact.models.Currencies
 import org.platypus.module.contact.models.CurrencyRateModel
 import org.platypus.orm.sql.expression.Expression
+import org.platypus.orm.sql.expression.eq
 import org.platypus.ui.action.MenuAction
 import org.platypus.ui.action.MenuAction.getValue
 import org.platypus.ui.action.newMenuAction

@@ -1,5 +1,7 @@
 package org.platypus.orm.sql.expression
 
+import org.platypus.model.Model
+import org.platypus.model.field.api.ReferencedField
 import org.platypus.model.field.api.type.SqlFieldType
 import org.platypus.orm.sql.literal
 import org.platypus.orm.sql.or
@@ -21,80 +23,87 @@ import java.util.*
 
 interface Expression<T> {
     fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN
-
-    infix fun <S : T> eq(other: Expression<S>): Expression<Boolean> = EqOp(this, other)
-    infix fun <S : T> eqOrNull(other: Expression<S>): Expression<Boolean> = EqOp(this, other) or this.isNull()
-
-    fun isNull(): Expression<Boolean> = IsNullOp(this)
-
-    fun isNotNull(): Expression<Boolean> = IsNotNullOp(this)
-
-    fun <S : T> less(other: Expression<S>): Expression<Boolean> = LessOp(this, other)
-
-    fun <S : T> lessEq(other: Expression<S>): Expression<Boolean> = LessEqOp(this, other)
-
-    fun <S : T> greater(other: Expression<S>): Expression<Boolean> = GreaterOp(this, other)
-
-    fun <S : T> greaterEq(other: Expression<S>): Expression<Boolean> = GreaterEqOp(this, other)
-
-    operator fun <S : T> plus(other: Expression<S>): Expression<T> = PlusOp(this, other)
-
-    operator fun <S : T> minus(other: Expression<S>): Expression<T> = MinusOp(this, other)
-
-    operator fun <S : T> times(other: Expression<S>): Expression<T> = MultiplyOp(this, other)
-
-    operator fun <S : T> div(other: Expression<S>): Expression<T> = DivideOp(this, other)
 }
 
 interface TypedExpression<T> : Expression<T> {
     val type: SqlFieldType
-
-    fun wrap(value: T): Expression<T> = QueryParameter(this.type, value)
-
-    infix fun eq(t: T?): Expression<Boolean> {
-        if (t == null) {
-            return isNull()
-        }
-        return EqOp(this, wrap(t))
-    }
-
-    infix fun neq(other: T): Expression<Boolean> {
-        if (other == null) {
-            return isNotNull()
-        }
-
-        return NeqOp(this, wrap(other))
-    }
-
-    infix fun eqOrNull(t: T): Expression<Boolean> = EqOp(this, wrap(t)) or this.isNull()
-
-    infix fun less(t: T): Expression<Boolean> = LessOp(this, wrap(t))
-
-    infix fun lessEq(t: T): Expression<Boolean> = LessEqOp(this, wrap(t))
-
-    infix fun greater(t: T): Expression<Boolean> = GreaterOp(this, wrap(t))
-
-    infix fun greaterEq(t: T): Expression<Boolean> = GreaterEqOp(this, wrap(t))
-
-    operator fun plus(t: T): Expression<T> = PlusOp(this, wrap(t))
-
-    operator fun minus(t: T): Expression<T> = MinusOp(this, wrap(t))
-
-    operator fun times(t: T): Expression<T> = MultiplyOp(this, wrap(t))
-
-    operator fun div(t: T): Expression<T> = DivideOp(this, wrap(t))
-
-    infix fun inList(list: Iterable<T>): Expression<Boolean> = InList(this, list)
-
-    infix fun notInList(list: Iterable<T>): Expression<Boolean> = NotInList(this, list)
-
-
-    fun asLiteralOrNull(value: T?) = if (value == null) null else asLiteral(value)
-
-    fun between(from: T, to: T): Expression<Boolean> = BetweenOp(this, asLiteral(from), asLiteral(to))
-
-
 }
+
+infix fun <S : T, T> Expression<T>.eq(other: Expression<S>): Expression<Boolean> = EqOp(this, other)
+infix fun <S : T, T> Expression<T>.eqOrNull(other: Expression<S>): Expression<Boolean> = EqOp(this, other) or this.isNull()
+
+fun <S : T, T> Expression<T>.isNull(): Expression<Boolean> = IsNullOp(this)
+
+fun <S : T, T> Expression<T>.isNotNull(): Expression<Boolean> = IsNotNullOp(this)
+
+fun <S : T, T> Expression<T>.less(other: Expression<S>): Expression<Boolean> = LessOp(this, other)
+
+fun <S : T, T> Expression<T>.lessEq(other: Expression<S>): Expression<Boolean> = LessEqOp(this, other)
+
+fun <S : T, T> Expression<T>.greater(other: Expression<S>): Expression<Boolean> = GreaterOp(this, other)
+
+fun <S : T, T> Expression<T>.greaterEq(other: Expression<S>): Expression<Boolean> = GreaterEqOp(this, other)
+
+operator fun <S : T, T> Expression<T>.plus(other: Expression<S>): Expression<T> = PlusOp(this, other)
+
+operator fun <S : T, T> Expression<T>.minus(other: Expression<S>): Expression<T> = MinusOp(this, other)
+
+operator fun <S : T, T> Expression<T>.times(other: Expression<S>): Expression<T> = MultiplyOp(this, other)
+
+operator fun <S : T, T> Expression<T>.div(other: Expression<S>): Expression<T> = DivideOp(this, other)
+
+
+infix fun <M : Model<M>, TM : Model<TM>> ReferencedField<M, TM>.eq(t: Int?): Expression<Boolean> {
+    if (t == null) {
+        return isNull()
+    }
+    return EqOp(this, QueryParameter(this.type, t))
+}
+
+infix fun <T> TypedExpression<T>.eq(t: T?): Expression<Boolean> {
+    if (t == null) {
+        return isNull()
+    }
+    return EqOp(this, wrap(t))
+}
+
+fun <T> TypedExpression<T>.wrap(value: T): Expression<T> = QueryParameter(this.type, value)
+
+infix fun <T> TypedExpression<T>.neq(other: T): Expression<Boolean> {
+    if (other == null) {
+        return isNotNull()
+    }
+
+    return NeqOp(this, wrap(other))
+}
+
+infix fun <T> TypedExpression<T>.eqOrNull(t: T): Expression<Boolean> = EqOp(this, wrap(t)) or this.isNull()
+
+infix fun <T> TypedExpression<T>.less(t: T): Expression<Boolean> = LessOp(this, wrap(t))
+
+infix fun <T> TypedExpression<T>.lessEq(t: T): Expression<Boolean> = LessEqOp(this, wrap(t))
+
+infix fun <T> TypedExpression<T>.greater(t: T): Expression<Boolean> = GreaterOp(this, wrap(t))
+
+infix fun <T> TypedExpression<T>.greaterEq(t: T): Expression<Boolean> = GreaterEqOp(this, wrap(t))
+
+operator fun <T> TypedExpression<T>.plus(t: T): Expression<T> = PlusOp(this, wrap(t))
+
+operator fun <T> TypedExpression<T>.minus(t: T): Expression<T> = MinusOp(this, wrap(t))
+
+operator fun <T> TypedExpression<T>.times(t: T): Expression<T> = MultiplyOp(this, wrap(t))
+
+operator fun <T> TypedExpression<T>.div(t: T): Expression<T> = DivideOp(this, wrap(t))
+
+infix fun <T> TypedExpression<T>.inList(list: Iterable<T>): Expression<Boolean> = InList(this, list)
+
+infix fun <T> TypedExpression<T>.notInList(list: Iterable<T>): Expression<Boolean> = NotInList(this, list)
+
+
+fun <T> TypedExpression<T>.asLiteralOrNull(value: T?) = if (value == null) null else asLiteral(value)
+
+fun <T> TypedExpression<T>.between(from: T, to: T): Expression<Boolean> = BetweenOp(this, asLiteral(from), asLiteral(to))
+
 
 fun <S> asLiteral(value: S) = when (value) {
     is Boolean -> value.literal()

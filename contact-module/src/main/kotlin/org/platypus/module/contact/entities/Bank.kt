@@ -3,19 +3,18 @@ package org.platypus.module.contact.entities
 import org.platypus.PlatypusEnvironment
 import org.platypus.bag.Bag
 import org.platypus.data.DataRef
-import org.platypus.entity.impl.StoredEntity
+import org.platypus.entity.Record
 import org.platypus.module.contact.models.Banks
-import org.platypus.ui.ModelViews
+import org.platypus.repository.RecordRepository
+import org.platypus.repository.RecordRepositoryImpl
 
-class Bank(id: Int, env: PlatypusEnvironment) : StoredEntity<Bank, Banks>(id, env, Banks, { it.banksRepo })
+typealias Bank = Record<Banks>
+typealias BankRepository = RecordRepository<Banks>
+typealias BankBag = Bag<Banks>
+typealias BankData = DataRef<Banks>
 
-typealias BankRepository = StoredRepository<Bank, Banks>
-typealias BankBag = Bag<Bank, Banks>
-typealias BankData = DataRef<Bank, Banks>
-typealias BankViews = ModelViews<Bank, Banks>
-
-val PlatypusEnvironment.banksRepo: BankRepository
-    get() = BankRepository(this, Banks, { id, env -> Bank(id, env) })
+val PlatypusEnvironment.bankRepo: BankRepository
+    get() = RecordRepositoryImpl(this, Banks)
 
 var Bank.bic by Banks.bic
 var Bank.email by Banks.email

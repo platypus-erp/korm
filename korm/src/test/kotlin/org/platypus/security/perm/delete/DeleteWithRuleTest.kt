@@ -14,8 +14,8 @@ import org.platypus.module.ModuleBuilder
 import org.platypus.module.ModuleDataType
 import org.platypus.module.UpdateDataType
 import org.platypus.module.base.BaseModule
-import org.platypus.module.base.entities.GroupData
-import org.platypus.module.base.entities.groupsRepo
+import org.platypus.security.GroupData
+import org.platypus.security.groupsRepo
 import org.platypus.module.base.entities.users
 import org.platypus.module.data
 import org.platypus.newTest
@@ -58,11 +58,12 @@ private object CreateTestRuleModule : ModuleBuilder("perm_read", {
     models {
         add(Model1Rule) {
             security {
-                rule("rule1") {
+                newRule("rule1") {
                     delete = true
                     rule = {
                         it.name ilike "%enti%"
                     }
+                    groups = setOf()
                 }
             }
         }

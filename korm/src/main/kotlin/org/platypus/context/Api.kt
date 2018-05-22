@@ -14,4 +14,5 @@ fun newContext(vararg ctx: ContextKey.Value<*>): PlatypusContext {
     return PlatypusContext(ctx.associate { it.key to it.value })
 }
 
-infix fun <T1 : Any> ModelField<*, T1>.withDefault(value: T1):ContextKey.Value<T1> = DefaultKeyContextNonNull(this, value).of(value)
+infix fun <T1 : Any> ModelField<*, T1>.withDefault(value: T1): ContextKey.Value<T1> =
+        DefaultKeyContextNonNull(this, value).of(value)

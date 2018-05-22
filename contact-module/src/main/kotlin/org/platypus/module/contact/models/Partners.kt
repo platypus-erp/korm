@@ -1,17 +1,13 @@
 package org.platypus.module.contact.models
 
-import org.platypus.model.type.RecursiveStoredModel
+import org.platypus.model.Model
 import org.platypus.module.base.models.Languages
 import org.platypus.module.base.models.Users
-import org.platypus.module.contact.entities.Partner
 import org.platypus.module.contact.entities.resCompaniesRepo
-import org.platypus.module.contact.mainCompany
 import org.platypus.orm.sql.and
 import org.platypus.orm.sql.or
-import java.time.Instant
-import java.time.ZonedDateTime
 
-object Partners : RecursiveStoredModel<Partners, Partner>("res.partners") {
+object Partners : Model<Partners>("res.partners") {
 
     init {
         archived.enable()
@@ -24,6 +20,8 @@ object Partners : RecursiveStoredModel<Partners, Partner>("res.partners") {
         index = true
         store = true
     }
+
+    val parent = many2one("parent", Partners)
 
     val parentName = parent.related(readonly = true) { name }
 
@@ -190,40 +188,40 @@ object Partners : RecursiveStoredModel<Partners, Partner>("res.partners") {
         }
     }
 
-    val computeEmailFormatted = emailFormated.onGet {
-        TODO("To transpose")
-    }
-
-    val compute_commercial_company_name = commercialCompanyName.onGet {
-        TODO("To transpose")
-    }
-
-    val _compute_commercial_partner = commercialPartner.onGet {
-        TODO("To transpose")
-    }
-
-    val compute_contact_address = contactAddress.onGet {
-        TODO("To transpose")
-    }
-
-    val compute_partner_share = partnerShare.onGet {
-        TODO("To transpose")
-    }
-
-    val compute_company_type = companyType.onGet {
-        TODO("To transpose")
-    }
-
-    val write_company_type = companyType.onSet { partner, partnerCompanyType ->
-        TODO("To transpose")
-    }
-
-
-    val onGetTzOffset = tzOffset.onGet {
-        ZonedDateTime.now().zone.rules.getOffset(Instant.now()).id
-    }
-
-    val compute_display_name = displayName.onGet {
-        it.withContext().nameGet()
-    }
+//    val computeEmailFormatted = emailFormated.onGet {
+//        TODO("To transpose")
+//    }
+//
+//    val compute_commercial_company_name = commercialCompanyName.onGet {
+//        TODO("To transpose")
+//    }
+//
+//    val _compute_commercial_partner = commercialPartner.onGet {
+//        TODO("To transpose")
+//    }
+//
+//    val compute_contact_address = contactAddress.onGet {
+//        TODO("To transpose")
+//    }
+//
+//    val compute_partner_share = partnerShare.onGet {
+//        TODO("To transpose")
+//    }
+//
+//    val compute_company_type = companyType.onGet {
+//        TODO("To transpose")
+//    }
+//
+//    val write_company_type = companyType.onSet { partner, partnerCompanyType ->
+//        TODO("To transpose")
+//    }
+//
+//
+//    val onGetTzOffset = tzOffset.onGet {
+//        ZonedDateTime.now().zone.rules.getOffset(Instant.now()).id
+//    }
+//
+//    val compute_display_name = displayName.onGet {
+//        it.withContext().nameGet()
+//    }
 }

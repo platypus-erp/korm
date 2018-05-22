@@ -3,17 +3,18 @@ package org.platypus.module.contact.entities
 import org.platypus.PlatypusEnvironment
 import org.platypus.bag.Bag
 import org.platypus.data.DataRef
-import org.platypus.entity.impl.StoredEntity
-import org.platypus.bag.relation.link
+import org.platypus.entity.Record
 import org.platypus.module.contact.models.CountriesGroup
+import org.platypus.repository.RecordRepository
+import org.platypus.repository.RecordRepositoryImpl
 
-class CountryGroup(id: Int, env: PlatypusEnvironment) : StoredEntity<CountryGroup, CountriesGroup>(id, env, CountriesGroup, { it.countriesGroupRepo })
+typealias CountryGroup = Record<CountriesGroup>
+typealias CountryGroupRepository = RecordRepository<CountriesGroup>
+typealias CountryGroupBag = Bag<CountriesGroup>
+typealias CountryGroupData = DataRef<CountriesGroup>
 
-typealias CountryGroupRepository = StoredRepository<CountryGroup, CountriesGroup>
-typealias CountryGroupBag = Bag<CountryGroup, CountriesGroup>
-typealias CountryGroupData = DataRef<CountryGroup, CountriesGroup>
+val PlatypusEnvironment.countryGroupRepo: CountryGroupRepository
+    get() = RecordRepositoryImpl(this, CountriesGroup)
 
-val PlatypusEnvironment.countriesGroupRepo: CountryGroupRepository
-    get() = CountryGroupRepository(this, CountriesGroup, { id, env -> CountryGroup(id, env) })
 
-val CountryGroup.countries by CountriesGroup.countries link { it.countriesRepo }
+val CountryGroup.countries by CountriesGroup.countries

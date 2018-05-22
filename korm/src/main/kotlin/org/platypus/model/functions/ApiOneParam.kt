@@ -5,9 +5,9 @@ import org.platypus.PlatypusEnvironment
 import org.platypus.bag.Bag
 import org.platypus.exceptions.PlatypusForbiddenAction
 import org.platypus.model.IModel
-import org.platypus.module.base.entities.GroupData
+import org.platypus.security.GroupData
 import org.platypus.module.base.entities.groups
-import org.platypus.module.base.entities.groupsRepo
+import org.platypus.security.groupsRepo
 import org.platypus.module.base.models.Groups
 import java.util.*
 

@@ -9,6 +9,7 @@ import org.platypus.repository.RecordRepository
 import org.platypus.repository.RecordRepositoryImpl
 import org.platypus.security.ModelGroupBuilder
 import org.platypus.security.ModelRuleBuilder
+import org.platypus.security.toBuilder
 import org.platypus.ui.ToViewApi
 import org.platypus.ui.action.UIMenuAction
 import org.platypus.ui.menu.UIMenu
@@ -163,17 +164,22 @@ class ModelDataHolder<M : Model<M>>(val model: M) {
     }
 }
 
-class ModelSecurityHolder<M : Model<M>>() {
-    internal val datas = HashSet<RouteFactory>()
+class ModelSecurityHolder<M : Model<M>>(val model: M) {
 
-    val routes: Set<RouteFactory>
-        get() = datas
+    fun newRule(name: String, ruleDef: ModelRuleBuilder<M>.() -> Unit) {
+        model.metadata.addRule(ModelRuleBuilder<M>(name).apply{ ruleDef() }.build())
+    }
 
-    fun rule(name: String, rule: ModelRuleBuilder<M>.() -> Unit) {
+    fun extendRule(name:String, ruleDef:ModelRuleBuilder<M>.() -> Unit){
+        val rule = model.metadata.getRule(name).toBuilder().apply { ruleDef() }
+        model.metadata.addRule(rule.build())
+    }
+
+    fun newGroupRule(name:String, ruleDef: ModelGroupBuilder<M>.() -> Unit) {
 
     }
 
-    fun group(rule: ModelGroupBuilder<M>.() -> Unit) {
+    fun extendGroupRule(name:String, ruleDef: ModelGroupBuilder<M>.() -> Unit) {
 
     }
 }

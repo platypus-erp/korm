@@ -7,17 +7,17 @@ import org.platypus.model.functions.ApiNoParamExtends
 import org.platypus.model.functions.ApiNoParamOriginal
 import org.platypus.model.functions.ApiNoParamStacker
 
-class ApiMultiExtends<
+class ApiMultiNoParamExtends<
         M : Model<M>,
         R>(
-        funn: ApiMultiExtends<M, R>.(Bag<M>) -> R,
+        funn: ApiMultiNoParamExtends<M, R>.(Bag<M>) -> R,
         superStack: ApiNoParam<Bag<M>, M, R>
 ) : ApiNoParamExtends<
         Bag<M>,
         M,
         R,
         ApiMultiNoParamOriginal<M, R>,
-        ApiMultiExtends<M, R>
+        ApiMultiNoParamExtends<M, R>
         >(funn, superStack)
 
 class ApiMultiNoParamOriginal<M : Model<M>, R>
@@ -27,17 +27,17 @@ class ApiMultiNoParamOriginal<M : Model<M>, R>
         M,
         R,
         ApiMultiNoParamOriginal<M, R>,
-        ApiMultiExtends<M, R>
+        ApiMultiNoParamExtends<M, R>
         >(originalFunction)
 
 class ApiMultiNoParamStacker<M : Model<M>, R>(
         originalFunction: (Bag<M>) -> R
-) : ApiNoParamStacker<Bag<M>, M, R, ApiMultiNoParamOriginal<M, R>, ApiMultiExtends<M, R>>(originalFunction) {
+) : ApiNoParamStacker<Bag<M>, M, R, ApiMultiNoParamOriginal<M, R>, ApiMultiNoParamExtends<M, R>>(originalFunction) {
 
     override fun createApiNoParamOriginal(funn: (Bag<M>) -> R) = ApiMultiNoParamOriginal(funn)
 
     override fun createApiNoParamExtends(
-            funn: ApiMultiExtends<M, R>.(Bag<M>) -> R,
-            superStack: ApiNoParam<Bag<M>, M, R>) = ApiMultiExtends(funn, superStack)
+            funn: ApiMultiNoParamExtends<M, R>.(Bag<M>) -> R,
+            superStack: ApiNoParam<Bag<M>, M, R>) = ApiMultiNoParamExtends(funn, superStack)
 
 }

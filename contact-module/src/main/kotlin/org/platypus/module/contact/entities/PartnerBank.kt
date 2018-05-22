@@ -3,24 +3,25 @@ package org.platypus.module.contact.entities
 import org.platypus.PlatypusEnvironment
 import org.platypus.bag.Bag
 import org.platypus.data.DataRef
-import org.platypus.entity.impl.StoredEntity
-import org.platypus.bag.relation.link
+import org.platypus.entity.Record
 import org.platypus.module.contact.models.PartnerBanks
+import org.platypus.repository.RecordRepository
+import org.platypus.repository.RecordRepositoryImpl
 
-class PartnerBank(id: Int, env: PlatypusEnvironment) : StoredEntity<PartnerBank, PartnerBanks>(id, env, PartnerBanks, { it.partnerBankRepo })
-
-typealias PartnerBankRepository = StoredRepository<PartnerBank, PartnerBanks>
-typealias PartnerBankBag = Bag<PartnerBank, PartnerBanks>
-typealias PartnerBankData = DataRef<PartnerBank, PartnerBanks>
+typealias PartnerBank = Record<PartnerBanks>
+typealias PartnerBankRepository = RecordRepository<PartnerBanks>
+typealias PartnerBankBag = Bag<PartnerBanks>
+typealias PartnerBankData = DataRef<PartnerBanks>
 
 val PlatypusEnvironment.partnerBankRepo: PartnerBankRepository
-    get() = PartnerBankRepository(this, PartnerBanks, { id, env -> PartnerBank(id, env) })
+    get() = RecordRepositoryImpl(this, PartnerBanks)
+
 
 var PartnerBank.accType by PartnerBanks.accType
 var PartnerBank.accNumber by PartnerBanks.accNumber
-var PartnerBank.bank by PartnerBanks.bank link { it.banksRepo }
-var PartnerBank.partner by PartnerBanks.partner link { it.partnersRepo }
+var PartnerBank.bank by PartnerBanks.bank
+var PartnerBank.partner by PartnerBanks.partner
 var PartnerBank.sequence by PartnerBanks.sequence
-var PartnerBank.currency by PartnerBanks.currency link { it.currenciesRepo }
-var PartnerBank.company by PartnerBanks.company link { it.resCompaniesRepo }
+var PartnerBank.currency by PartnerBanks.currency
+var PartnerBank.company by PartnerBanks.company
 var PartnerBank.sanitized_acc_number by PartnerBanks.sanitizedAccNumber

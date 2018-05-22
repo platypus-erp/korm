@@ -1,6 +1,6 @@
 package org.platypus.module.base.models
 
-import org.platypus.module.base.entities.Group
+import org.platypus.security.Group
 
 data class UserLoginSuccess(val success: Boolean, val error: String? = null)
 data class UserDisconnectReturn(val success: Boolean, val error: String? = null)

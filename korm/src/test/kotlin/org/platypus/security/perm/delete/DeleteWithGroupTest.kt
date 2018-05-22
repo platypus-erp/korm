@@ -11,13 +11,13 @@ import org.platypus.module.ModuleBuilder
 import org.platypus.module.ModuleDataType
 import org.platypus.module.UpdateDataType
 import org.platypus.module.base.BaseModule
-import org.platypus.module.base.entities.GroupData
-import org.platypus.module.base.entities.groupsRepo
 import org.platypus.module.base.entities.users
 import org.platypus.module.data
 import org.platypus.newTest
 import org.platypus.repository.RecordRepository
 import org.platypus.repository.RecordRepositoryImpl
+import org.platypus.security.GroupData
+import org.platypus.security.groupsRepo
 
 private val GroupData.group1
     get() = env.groupsRepo["group1"]
@@ -34,6 +34,12 @@ private val dataUserModule = data(ModuleDataType.DEMO, UpdateDataType.ALWAYS) {
         name = "EntityRule"
     }
 }
+
+object Group1 : GroupBuilder("group1"){
+
+}
+
+abstract class GroupBuilder(name:String)
 
 private object Model1 : Model<Model1>("model1") {
     init {

@@ -1,8 +1,9 @@
 package org.platypus.module.contact.models
 
-import org.platypus.module.contact.entities.Currency
+import org.platypus.model.Model
+import org.platypus.model.field.constraints.minSize
 
-object Currencies : StoredModel<Currencies, Currency>("res.currency") {
+object Currencies : Model<Currencies>("res.currency") {
     init {
         archived.enable()
     }
@@ -37,15 +38,15 @@ object Currencies : StoredModel<Currencies, Currency>("res.currency") {
         unique("unique_name", "The currency code must be unique!", name)
     }
 
-    val compute_current_rate = rate.onGet {
-        TODO()
-    }
-
-    val compute_decimal_places = decimalPlaces.onGet {
-        TODO()
-    }
-
-    val compute_date = date.onGet {
-        TODO()
-    }
+//    val compute_current_rate = rate.onGet {
+//        TODO()
+//    }
+//
+//    val compute_decimal_places = decimalPlaces.onGet {
+//        TODO()
+//    }
+//
+//    val compute_date = date.onGet {
+//        TODO()
+//    }
 }

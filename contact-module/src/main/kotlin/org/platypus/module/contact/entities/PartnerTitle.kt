@@ -3,16 +3,18 @@ package org.platypus.module.contact.entities
 import org.platypus.PlatypusEnvironment
 import org.platypus.bag.Bag
 import org.platypus.data.DataRef
-import org.platypus.entity.impl.StoredEntity
+import org.platypus.entity.Record
 import org.platypus.module.contact.models.PartnerTitles
+import org.platypus.repository.RecordRepository
+import org.platypus.repository.RecordRepositoryImpl
 
-class PartnerTitle(id: Int, env: PlatypusEnvironment) : StoredEntity<PartnerTitle, PartnerTitles>(id, env, PartnerTitles, { it.partnerTitleRepoRepo })
+typealias PartnerTitle = Record<PartnerTitles>
+typealias PartnerTitleRepository = RecordRepository<PartnerTitles>
+typealias PartnerTitleBag = Bag<PartnerTitles>
+typealias PartnerTitleData = DataRef<PartnerTitles>
 
-typealias PartnerTitleRepository = StoredRepository<PartnerTitle, PartnerTitles>
-typealias PartnerTitleBag = Bag<PartnerTitle, PartnerTitles>
-typealias PartnerTitleData = DataRef<PartnerTitle, PartnerTitles>
+val PlatypusEnvironment.partnerTitleRepo: PartnerTitleRepository
+    get() = RecordRepositoryImpl(this, PartnerTitles)
 
-val PlatypusEnvironment.partnerTitleRepoRepo: PartnerTitleRepository
-    get() = PartnerTitleRepository(this, PartnerTitles, { id, env -> PartnerTitle(id, env) })
 
 var PartnerTitle.shortcut by PartnerTitles.shortcut

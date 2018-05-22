@@ -40,15 +40,18 @@ import org.platypus.model.field.impl.WriteUID
 import org.platypus.model.functions.ModelFunction
 import org.platypus.model.functions.PublicApiReturn
 import org.platypus.model.functions.asResult
+import org.platypus.model.functions.empty.ApiEmptyNoParamExtends
 import org.platypus.model.functions.empty.ApiEmptyNoParamStacker
+import org.platypus.model.functions.empty.ApiEmptyParamExtends
 import org.platypus.model.functions.empty.ApiEmptyParamStacker
+import org.platypus.model.functions.multi.ApiMultiNoParamExtends
 import org.platypus.model.functions.multi.ApiMultiNoParamStacker
+import org.platypus.model.functions.multi.ApiMultiParamExtends
 import org.platypus.model.functions.multi.ApiMultiParamStacker
 import org.platypus.model.functions.one.ApiOneNoParamExtends
 import org.platypus.model.functions.one.ApiOneNoParamStacker
 import org.platypus.model.functions.one.ApiOneParamExtends
 import org.platypus.model.functions.one.ApiOneParamStacker
-import org.platypus.module.base.entities.GroupData
 import org.platypus.module.base.models.Groups
 import org.platypus.orm.CheckConstraint
 import org.platypus.orm.UniqueConstraint
@@ -60,6 +63,7 @@ import org.platypus.orm.sql.query.SmartQueryBuilder
 import org.platypus.orm.sql.select
 import org.platypus.repository.RecordRepository
 import org.platypus.repository.newTmpWithId
+import org.platypus.security.GroupData
 import org.platypus.utils.to_sneak_case
 import java.util.*
 
@@ -77,7 +81,6 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
 //            throw UnValidModelName(modelName)
 //        }
     }
-
 
 
     protected val thisModel: M
@@ -187,7 +190,7 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
     private val sqlCheck = HashMap<String, CheckConstraint<M>>()
     private val sqlUnique = HashMap<String, UniqueConstraint<M>>()
 
-    val metadata:ModelMetaData = ModelMetaDataImpl()
+    val metadata: ModelMetaDataImpl<M> = ModelMetaDataImpl()
 
 
     protected fun check(name: String, errorMsg: String? = null, checkPredicate: M.() -> Expression<Boolean>) {
@@ -286,7 +289,7 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
     val searchRead = api.public("search",
             fun(empty: RecordRepository<M>, param: SearchQueryParam<M>): PublicApiReturn<Bag<M>> {
                 val query = if (param.fields.isNotEmpty()) {
-                    val fieldToLoad :MutableSet<Expression<*>> = param.fields.filter { it.store }.toMutableSet()
+                    val fieldToLoad: MutableSet<Expression<*>> = param.fields.filter { it.store }.toMutableSet()
                     fieldToLoad.add(id)
                     thisModel.slice(fieldToLoad).select(empty.env, param.where)
                 } else {
@@ -430,6 +433,22 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
     }
 
     protected infix fun <P, R> ApiOneParamStacker<M, P, R>.extends(function: ApiOneParamExtends<M, P, R>.(Record<M>, P) -> R) {
+        this.addExtend(function)
+    }
+
+    protected infix fun <R> ApiMultiNoParamStacker<M, R>.extends(function: ApiMultiNoParamExtends<M, R>.(Bag<M>) -> R) {
+        this.addExtend(function)
+    }
+
+    protected infix fun <P, R> ApiMultiParamStacker<M, P, R>.extends(function: ApiMultiParamExtends<M, P, R>.(Bag<M>, P) -> R) {
+        this.addExtend(function)
+    }
+
+    protected infix fun <R> ApiEmptyNoParamStacker<M, R>.extends(function: ApiEmptyNoParamExtends<M, R>.(RecordRepository<M>) -> R) {
+        this.addExtend(function)
+    }
+
+    protected infix fun <P, R> ApiEmptyParamStacker<M, P, R>.extends(function: ApiEmptyParamExtends<M, P, R>.(RecordRepository<M>, P) -> R) {
         this.addExtend(function)
     }
 

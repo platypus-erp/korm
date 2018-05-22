@@ -1,24 +1,26 @@
 package org.platypus.module.contact.entities
 
+import org.platypus.module.contact.models.Currencies
+import java.util.*
+
 import org.platypus.PlatypusEnvironment
 import org.platypus.bag.Bag
 import org.platypus.data.DataRef
-import org.platypus.entity.impl.StoredEntity
-import org.platypus.bag.relation.link
-import org.platypus.module.contact.models.Currencies
+import org.platypus.entity.Record
+import org.platypus.repository.RecordRepository
+import org.platypus.repository.RecordRepositoryImpl
 
-class Currency(id: Int, env: PlatypusEnvironment) : StoredEntity<Currency, Currencies>(id, env, Currencies, { it.currenciesRepo })
+typealias Currency = Record<Currencies>
+typealias CurrencyRepository = RecordRepository<Currencies>
+typealias CurrencyBag = Bag<Currencies>
+typealias CurrencyData = DataRef<Currencies>
 
-typealias CurrencyRepository = StoredRepository<Currency, Currencies>
-typealias CurrencyBag = Bag<Currency, Currencies>
-typealias CurrencyData = DataRef<Currency, Currencies>
-
-val PlatypusEnvironment.currenciesRepo: CurrencyRepository
-    get() = CurrencyRepository(this, Currencies, { id, env -> Currency(id, env) })
+val PlatypusEnvironment.currencyRepo: CurrencyRepository
+    get() = RecordRepositoryImpl(this, Currencies)
 
 var Currency.symbol by Currencies.symbol
 var Currency.rate by Currencies.rate
-var Currency.rates by Currencies.rates link { it.currencyRateRepo }
+var Currency.rates by Currencies.rates
 var Currency.rounding by Currencies.rounding
 var Currency.decimalPlaces by Currencies.decimalPlaces
 var Currency.position by Currencies.position

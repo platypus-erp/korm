@@ -1,9 +1,9 @@
 package org.platypus.module.contact.models
 
-import org.platypus.module.contact.entities.CurrencyRate
+import org.platypus.model.Model
 import java.time.LocalDateTime
 
-object CurrencyRateModel : StoredModel<CurrencyRateModel, CurrencyRate>("res.currency.rate") {
+object CurrencyRateModel : Model<CurrencyRateModel>("res.currency.rate") {
     val date = dateTime("date") {
         required = true
         index = true
@@ -29,8 +29,8 @@ object CurrencyRateModel : StoredModel<CurrencyRateModel, CurrencyRate>("res.cur
         name extends {
             TODO("onGet date")
         }
-        nameSearch extends { self, param ->
-            //            if operator in ['=', '!=']:
+//        nameSearch extends { self, param ->
+//            //            if operator in ['=', '!=']:
 //            try:
 //                date_format = '%Y-%m-%d'
 //                if self._context.get('lang'):
@@ -45,7 +45,7 @@ object CurrencyRateModel : StoredModel<CurrencyRateModel, CurrencyRate>("res.cur
 //                    return []
 //                    name = ''
 //                    operator = 'ilike'
-            self.callSuper(param)
-        }
+//            self.callSuper(param)
+//        }
     }
 }

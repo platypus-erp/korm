@@ -1,9 +1,10 @@
 package org.platypus.module.contact.models
 
-import org.platypus.model.type.RecursiveStoredModel
-import org.platypus.module.contact.entities.ResCompany
+import org.platypus.model.Model
 
-object ResCompanies : RecursiveStoredModel<ResCompanies, ResCompany>("res.company") {
+object ResCompanies : Model<ResCompanies>("res.company") {
+
+    val parent = many2one("parent", ResCompanies)
     val currency = many2one("currency", target = Currencies)
     val partner = many2one("partner", Partners) {
         label = "Partner"

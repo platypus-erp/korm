@@ -1,9 +1,9 @@
 package org.platypus.module.contact.models
 
-import org.platypus.module.contact.entities.PartnerBank
+import org.platypus.model.Model
 
 
-object PartnerBanks : StoredModel<PartnerBanks, PartnerBank>("res.partner.bank") {
+object PartnerBanks : Model<PartnerBanks>("res.partner.bank") {
     val accType = string("acc_type") {
         help = "Bank account type, inferred from account number"
     }
@@ -27,13 +27,13 @@ object PartnerBanks : StoredModel<PartnerBanks, PartnerBank>("res.partner.bank")
         unique("unique_number", "Account Number must be unique", sanitizedAccNumber, company)
     }
 
-    val computeSanitizedAccNumber = sanitizedAccNumber.onGet {
-        sanitize_account_number(it.accNumber!!)
-    }
-
-    val computeAccType = accType.onGet {
-        "bank"
-    }
+//    val computeSanitizedAccNumber = sanitizedAccNumber.onGet {
+//        sanitize_account_number(it.accNumber!!)
+//    }
+//
+//    val computeAccType = accType.onGet {
+//        "bank"
+//    }
 
 
 }

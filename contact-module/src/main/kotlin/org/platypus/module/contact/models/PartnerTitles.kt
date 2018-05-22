@@ -1,8 +1,8 @@
 package org.platypus.module.contact.models
 
-import org.platypus.module.contact.entities.PartnerTitle
+import org.platypus.model.Model
 
-object PartnerTitles : StoredModel<PartnerTitles, PartnerTitle>("partner.title") {
+object PartnerTitles : Model<PartnerTitles>("partner.title") {
     init {
         name extends {
             l10n = true

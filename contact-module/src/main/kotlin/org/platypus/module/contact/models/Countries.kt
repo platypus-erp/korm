@@ -1,8 +1,10 @@
 package org.platypus.module.contact.models
 
+import org.platypus.model.Model
+import org.platypus.model.field.constraints.maxSize
 import org.platypus.module.contact.entities.Country
 
-object Countries : StoredModel<Countries, Country>("res.country") {
+object Countries : Model<Countries>("res.country") {
     val code = string("code") {
         label = "Country Code"
         help = "The ISO2 country code in two chars. \nYou can use this field for quick search."

@@ -3,14 +3,15 @@ package org.platypus.module.contact.entities
 import org.platypus.PlatypusEnvironment
 import org.platypus.bag.Bag
 import org.platypus.data.DataRef
-import org.platypus.entity.impl.StoredEntity
+import org.platypus.entity.Record
 import org.platypus.module.contact.models.CurrencyRateModel
+import org.platypus.repository.RecordRepository
+import org.platypus.repository.RecordRepositoryImpl
 
-class CurrencyRate(id: Int, env: PlatypusEnvironment) : StoredEntity<CurrencyRate, CurrencyRateModel>(id, env, CurrencyRateModel, { it.currencyRateRepo })
-
-typealias  CurrencyRateRepository = StoredRepository<CurrencyRate, CurrencyRateModel>
-typealias  CurrencyRateBag = Bag<CurrencyRate, CurrencyRateModel>
-typealias  CurrencyRateData = DataRef<CurrencyRate, CurrencyRateModel>
+typealias CurrencyRate = Record<CurrencyRateModel>
+typealias CurrencyRateRepository = RecordRepository<CurrencyRateModel>
+typealias CurrencyRateBag = Bag<CurrencyRateModel>
+typealias CurrencyRateData = DataRef<CurrencyRateModel>
 
 val PlatypusEnvironment.currencyRateRepo: CurrencyRateRepository
-    get() = CurrencyRateRepository(this, CurrencyRateModel, { id, env -> CurrencyRate(id, env) })
+    get() = RecordRepositoryImpl(this, CurrencyRateModel)

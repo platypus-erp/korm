@@ -1,8 +1,10 @@
 package org.platypus.module.contact.models
 
-import org.platypus.module.contact.entities.CountryState
+import org.platypus.model.Model
+import org.platypus.orm.sql.and
+import org.platypus.orm.sql.or
 
-object CountriesState : StoredModel<CountriesState, CountryState>("res.country.state") {
+object CountriesState : Model<CountriesState>("res.country.state") {
 
     init {
         modelLabel = "Country state"

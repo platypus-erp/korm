@@ -1,10 +1,13 @@
 package org.platypus.module.contact.models
 
+import org.platypus.model.Model
 import org.platypus.model.NameSearchParam
 import org.platypus.model.functions.asResult
 import org.platypus.module.contact.entities.Bank
+import org.platypus.module.contact.entities.bic
+import org.platypus.orm.sql.or
 
-object Banks : StoredModel<Banks, Bank>("res.bank") {
+object Banks : Model<Banks>("res.bank") {
     init {
         name extends {
             required = true

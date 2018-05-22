@@ -1,11 +1,11 @@
 package org.platypus.module.contact.models
 
-import org.platypus.model.type.RecursiveStoredModel
-import org.platypus.module.contact.entities.PartnerCategory
+import org.platypus.model.Model
 
-object PartnersCategories : RecursiveStoredModel<PartnersCategories, PartnerCategory>("res.partner") {
+object PartnersCategories : Model<PartnersCategories>("res.partner") {
     val color = integer("color")
     val partners = many2many("partners", { partner_to_partner_rel })
+    val parent = many2one("parent", PartnersCategories)
     init {
         archived.enable()
     }

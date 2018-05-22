@@ -3,7 +3,7 @@ package org.platypus.module.base.models
 import org.platypus.model.Model
 import org.platypus.model.functions.PublicApiReturn
 import org.platypus.model.functions.asResult
-import org.platypus.module.base.entities.Group
+import org.platypus.security.Group
 import org.platypus.module.base.entities.User
 import org.platypus.module.base.entities.groups
 import org.platypus.module.base.entities.hasGroup

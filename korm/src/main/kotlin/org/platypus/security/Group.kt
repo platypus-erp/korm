@@ -1,4 +1,4 @@
-package org.platypus.module.base.entities
+package org.platypus.security
 
 import org.platypus.PlatypusEnvironment
 import org.platypus.bag.Bag

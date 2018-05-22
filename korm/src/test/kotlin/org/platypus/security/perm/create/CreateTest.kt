@@ -11,8 +11,8 @@ import org.platypus.module.ModuleBuilder
 import org.platypus.module.ModuleDataType
 import org.platypus.module.UpdateDataType
 import org.platypus.module.base.BaseModule
-import org.platypus.module.base.entities.GroupData
-import org.platypus.module.base.entities.groupsRepo
+import org.platypus.security.GroupData
+import org.platypus.security.groupsRepo
 import org.platypus.module.base.entities.users
 import org.platypus.module.data
 import org.platypus.newTest

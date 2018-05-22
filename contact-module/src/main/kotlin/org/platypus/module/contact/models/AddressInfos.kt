@@ -1,8 +1,8 @@
 package org.platypus.module.contact.models
 
-import org.platypus.module.contact.entities.AddressInfo
+import org.platypus.model.Model
 
-object AddressInfos : StoredModel<AddressInfos, AddressInfo>("adresse.infos") {
+object AddressInfos : Model<AddressInfos>("adresse.infos") {
 
     val street = string("street")
     val street2 = string("street2")

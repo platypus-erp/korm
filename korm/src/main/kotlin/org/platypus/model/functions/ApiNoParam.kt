@@ -4,12 +4,12 @@ import io.ktor.http.HttpMethod
 import org.platypus.Environmentable
 import org.platypus.PlatypusEnvironment
 import org.platypus.bag.Bag
-import org.platypus.exceptions.PlatypusForbiddenAction
+import org.platypus.exceptions.PlatypusForbiddenActionGroup
 import org.platypus.model.IModel
-import org.platypus.module.base.entities.GroupData
 import org.platypus.module.base.entities.groups
-import org.platypus.module.base.entities.groupsRepo
 import org.platypus.module.base.models.Groups
+import org.platypus.security.GroupData
+import org.platypus.security.groupsRepo
 import java.util.*
 import kotlin.collections.HashSet
 
@@ -85,7 +85,7 @@ abstract class ApiNoParamStacker<
     private fun PlatypusEnvironment.checkAccessRight() {
         if (!canBeCalled(this)) {
             println(methodGroups)
-            throw PlatypusForbiddenAction(methodName)
+            throw PlatypusForbiddenActionGroup(methodName)
         }
     }
 
