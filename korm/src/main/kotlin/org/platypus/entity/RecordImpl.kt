@@ -229,6 +229,11 @@ class RecordImpl<M : Model<M>>(
         return warmCache()[o.model of o.id, this].second
     }
 
+    override operator fun ArchivedModelField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Boolean {
+        fetchIfNeeded(this)
+        return warmCache()[o.model of o.id, this].second
+    }
+
 
     override operator fun BooleanField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Boolean {
         fetchIfNeeded(this)
@@ -255,7 +260,7 @@ class RecordImpl<M : Model<M>>(
     }
 
     override operator fun <TM : Model<TM>> Many2ManyField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Bag<TM> {
-        return getMany2ManyBag(o.model of o.id, this, o.env, { warmCache() })
+        return getMany2ManyBag(o.model of o.id, this, this@RecordImpl.env, { warmCache() })
     }
 
     override operator fun CreateUID<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): User {
@@ -267,7 +272,7 @@ class RecordImpl<M : Model<M>>(
     }
 
     override operator fun <TM : Model<TM>> One2ManyField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Bag<TM> {
-        return getOne2ManyBag(o.model of o.id, this, o.env, { warmCache() })
+        return getOne2ManyBag(o.model of o.id, this, this@RecordImpl.env, { warmCache() })
     }
 
     override operator fun <TM : Model<TM>> Many2OneField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Record<TM>? {
@@ -277,13 +282,13 @@ class RecordImpl<M : Model<M>>(
             if (env.internal.cache.isNotInDB(modelID)) {
                 null
             } else {
-                repository(o.env).browse(o.id)
+                repository(this@RecordImpl.env).browse(o.id)
                 val newRes = warmCache()[o.model of o.id, this].second
                         ?: throw IllegalStateException("Can't find the value of the field ${this.completeName}")
-                RecordRepositoryImpl(o.env, this.target).browse(newRes.id)
+                RecordRepositoryImpl(this@RecordImpl.env, this.target).browse(newRes.id)
             }
         } else {
-            RecordRepositoryImpl(o.env, this.target).browse(res.id)
+            RecordRepositoryImpl(this@RecordImpl.env, this.target).browse(res.id)
         }
     }
 
@@ -297,10 +302,10 @@ class RecordImpl<M : Model<M>>(
                 repository(env).browse(o.id)
                 val newRes = warmCache()[o.model of o.id, this].second
                         ?: throw IllegalStateException("Can't find the value of the field ${this.completeName}")
-                RecordRepositoryImpl(o.env, this.target).browse(newRes.id)
+                RecordRepositoryImpl(this@RecordImpl.env, this.target).browse(newRes.id)
             }
         } else {
-            RecordRepositoryImpl(o.env, this.target).browse(res.id)
+            RecordRepositoryImpl(this@RecordImpl.env, this.target).browse(res.id)
         }
     }
 
@@ -310,7 +315,7 @@ class RecordImpl<M : Model<M>>(
         return if (res == null) {
             null
         } else {
-            RecordRepositoryImpl(o.env, this.targetField().model).browse(res.id)
+            RecordRepositoryImpl(this@RecordImpl.env, this.targetField().model).browse(res.id)
         }
     }
 
@@ -368,9 +373,7 @@ class RecordImpl<M : Model<M>>(
         o.performUpdate(this, value)
     }
 
-    override operator fun ArchivedModelField<M>.getValue(o: MutableRecordDelegate<M>, desc: KProperty<*>): Boolean {
-        return warmCache()[o.model of o.id, this].second
-    }
+
 
     override operator fun <TM : Model<TM>> Many2OneField<M, TM>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: Record<TM>?) {
         o.performUpdate(this, value)
@@ -464,6 +467,13 @@ val <TM : Model<TM>> Iterable<Record<TM>>.model: TM
         this.model as TM
     } else {
         this.first().model
+    }
+
+val <TM : Model<TM>> Iterable<Record<TM>>.env: PlatypusEnvironment
+    get() = if (this is Bag<*>) {
+        this.env
+    } else {
+        this.first().env
     }
 
 val <TM : Model<TM>> Iterable<Record<TM>>.ids: List<Int>

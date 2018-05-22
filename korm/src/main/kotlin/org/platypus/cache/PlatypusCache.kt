@@ -229,9 +229,7 @@ class PlatypusCache : AutoCloseable {
     }
 
 
-    operator fun get(modelId: ModelID): Map<IModelField<*, *>, Any?> {
-        return getData(modelId)
-    }
+    operator fun get(modelId: ModelID): Map<IModelField<*, *>, Any?> = modelId.getData()
 
     operator fun get(modelRef: Pair<Model<*>, String>): ModelID? {
         return data[modelRef.first]
@@ -240,8 +238,11 @@ class PlatypusCache : AutoCloseable {
                 ?.firstNotNullResult { modelRef.first of it }
     }
 
-    private fun getData(modelId: ModelID): Map<IModelField<*, *>, Any?> =
-            data.getOrPut(modelId.model, { HashMap() }).getOrPut(modelId.id, { HashMap() })
+    operator fun get(model:Model<*>, ref:String): Map<IModelField<*, *>, Any?> {
+        return get(model to ref)?.getData() ?: emptyMap()
+    }
+
+    private fun ModelID.getData(): Map<IModelField<*, *>, Any?> = data.getOrPut(model, { HashMap() }).getOrPut(id, { HashMap() })
 
     private infix fun ModelID.valueOf(prop: IModelField<*, *>): Any? =
             data.getOrPut(model, { HashMap() }).getOrPut(id, { HashMap() })[prop]
@@ -302,7 +303,7 @@ class PlatypusCache : AutoCloseable {
 
     fun createFakeRecordIfNeeded(model: IModel<*>, id: Int?): ModelID {
         val modelId = if (id == null) model of --counter else model of id
-        getData(modelId)
+        modelId.getData()
         return modelId
     }
 
@@ -531,15 +532,15 @@ class PlatypusCache : AutoCloseable {
     }
 
     operator fun get(modelId: ModelID, prop: Many2OneField<*, *>): Pair<CacheState, ModelID?> {
-        return (modelId stateOf prop) to (getData(modelId)[prop] as ModelID?)?.filterDeleted()
+        return (modelId stateOf prop) to (modelId.getData()[prop] as ModelID?)?.filterDeleted()
     }
 
     operator fun get(modelId: ModelID, prop: CreateUID<*>): Pair<CacheState, ModelID?> {
-        return (modelId stateOf prop) to (getData(modelId)[prop] as ModelID?)?.filterDeleted()
+        return (modelId stateOf prop) to (modelId.getData()[prop] as ModelID?)?.filterDeleted()
     }
 
     operator fun get(modelId: ModelID, prop: WriteUID<*>): Pair<CacheState, ModelID?> {
-        return (modelId stateOf prop) to (getData(modelId)[prop] as ModelID?)?.filterDeleted()
+        return (modelId stateOf prop) to (modelId.getData()[prop] as ModelID?)?.filterDeleted()
     }
 
     operator fun set(modelId: ModelID, prop: CreateUID<*>, value: ModelID) {
@@ -620,7 +621,7 @@ class PlatypusCache : AutoCloseable {
     }
 
     operator fun get(modelId: ModelID, prop: One2OneField<*, *>): Pair<CacheState, ModelID?> {
-        return (modelId stateOf prop) to (getData(modelId)[prop] as ModelID?)
+        return (modelId stateOf prop) to (modelId.getData()[prop] as ModelID?)
     }
 
     operator fun set(modelId: ModelID, prop: One2OneField<*, *>, value: ModelID?) {
@@ -766,13 +767,13 @@ class PlatypusCache : AutoCloseable {
     }
 
     private fun updateValueMany2Many(modelId: ModelID, prop: Many2ManyField<*, *>, targetModelID: ModelID) {
-        val currentids = (getData(modelId)[prop] as ModelIDS?) ?: targetModelID.model of emptyList()
+        val currentids = (modelId.getData()[prop] as ModelIDS?) ?: targetModelID.model of emptyList()
         updateValue(modelId, prop, currentids.model of currentids.ids + targetModelID.id)
         modelId updateState prop
 
         val reverseTargetProp = prop.targetField
         if (reverseTargetProp != null) {
-            val targetIds = (getData(targetModelID)[reverseTargetProp] as ModelIDS?) ?: modelId.model of emptyList()
+            val targetIds = (targetModelID.getData()[reverseTargetProp] as ModelIDS?) ?: modelId.model of emptyList()
             updateValue(targetModelID, reverseTargetProp, targetIds.model of targetIds.ids + modelId.id)
             targetModelID updateState reverseTargetProp
         }
@@ -809,7 +810,7 @@ class PlatypusCache : AutoCloseable {
         scheduledDelete.add(modelIdToDelete)
         scheduledInsert.remove(modelIdToDelete)
 
-        val currentids = getData(modelId)[prop] as ModelIDS
+        val currentids = modelId.getData()[prop] as ModelIDS
         updateValue(modelId, prop, currentids.model of currentids.ids - targetModelID.id)
         modelId updateState prop
 
@@ -817,7 +818,7 @@ class PlatypusCache : AutoCloseable {
         if (reverseTargetProp != null) {
             val targetState = targetModelID stateOf reverseTargetProp
             if (targetState != NONE) {
-                val targetIds = getData(targetModelID)[reverseTargetProp] as ModelIDS
+                val targetIds = targetModelID.getData()[reverseTargetProp] as ModelIDS
                 updateValue(targetModelID, reverseTargetProp, targetIds.model of targetIds.ids - modelId.id)
                 targetModelID updateState reverseTargetProp
             }
@@ -844,7 +845,7 @@ class PlatypusCache : AutoCloseable {
 
     fun add(modelId: ModelID, prop: One2ManyField<*, *>, targetModelID: ModelID): ModelIDS {
         val idsState = modelId stateOf prop
-        val currentids = (getData(modelId)[prop] ?: targetModelID.model of emptyList()) as ModelIDS
+        val currentids = (modelId.getData()[prop] ?: targetModelID.model of emptyList()) as ModelIDS
         val result = currentids.model of currentids.ids + targetModelID.id
         updateValue(modelId, prop, result)
         updateValue(targetModelID, prop.targetField(), modelId)
@@ -862,7 +863,7 @@ class PlatypusCache : AutoCloseable {
 
     fun remove(modelId: ModelID, prop: One2ManyField<*, *>, targetModelID: ModelID): ModelIDS? {
         val idsState = modelId stateOf prop
-        val currentids = (getData(modelId)[prop] ?: targetModelID.model of emptyList()) as ModelIDS
+        val currentids = (modelId.getData()[prop] ?: targetModelID.model of emptyList()) as ModelIDS
         val result = currentids.model of currentids.ids - targetModelID.id
         updateValue(modelId, prop, result)
         updateValue(targetModelID, prop.targetField(), null)

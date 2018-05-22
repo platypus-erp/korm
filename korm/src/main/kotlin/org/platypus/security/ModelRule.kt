@@ -9,7 +9,7 @@ data class ModelRule<M : Model<M>>(
         val read: Boolean,
         val write: Boolean,
         val delete: Boolean,
-        val groups: Set<Group>,
+        val groups: Set<GroupData>,
         val rule: (M) -> Expression<Boolean>
 )
 
@@ -33,7 +33,7 @@ class ModelRuleBuilder<M : Model<M>>(val uniqueId: String) {
     var name: String = ""
     var write: Boolean = false
     var delete: Boolean = false
-    var groups: Set<Group> = emptySet()
+    var groups: Set<GroupData> = emptySet()
     var rule: ((M) -> Expression<Boolean>)? = null
 
     internal fun build(): ModelRule<M> = ModelRule(
@@ -55,7 +55,7 @@ data class ModelGroup<M : Model<M>>(
         val read: Boolean,
         val write: Boolean,
         val delete: Boolean,
-        val groups: Set<Group>
+        val groups: Set<GroupData>
 )
 
 class ModelGroupBuilder<M : Model<M>>(val model: M, val uniqueId: String) {
@@ -64,5 +64,5 @@ class ModelGroupBuilder<M : Model<M>>(val model: M, val uniqueId: String) {
     var read: Boolean = false
     var write: Boolean = false
     var delete: Boolean = false
-    var groups: Set<Group> = emptySet()
+    var groups: Set<GroupData> = emptySet()
 }

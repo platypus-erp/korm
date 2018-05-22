@@ -5,7 +5,7 @@ import org.platypus.module.base.i18n.i18n_base
 import org.platypus.module.base.i18n.i18n_en
 import org.platypus.module.base.i18n.i18n_fr
 import org.platypus.module.base.models.DashBoardModel
-import org.platypus.module.base.models.Groups
+import org.platypus.module.base.models.GroupsData
 import org.platypus.module.base.models.Languages
 import org.platypus.module.base.models.Users
 import org.platypus.module.base.ui.actGroup
@@ -39,7 +39,7 @@ object BaseModule : ModuleBuilder("base", {
                 add(TreeViews.basicUserTree)
             }
         }
-        add(Groups) {
+        add(GroupsData) {
             actions {
                 add(MenuAction.actGroup)
             }

@@ -4,7 +4,7 @@ import org.platypus.model.Model
 
 object CountriesGroup : Model<CountriesGroup>("res.country.group") {
     init {
-        modelLabel = "Country Group"
+        modelLabel = "Country GroupData"
         name extends {
             required = true
         }

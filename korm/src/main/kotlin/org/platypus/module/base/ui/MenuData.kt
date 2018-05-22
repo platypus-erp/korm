@@ -1,6 +1,6 @@
 package org.platypus.module.base.ui
 
-import org.platypus.module.base.models.Groups
+import org.platypus.module.base.models.GroupsData
 import org.platypus.module.base.models.Users
 import org.platypus.ui.action.MenuAction
 import org.platypus.ui.action.MenuAction.getValue
@@ -33,12 +33,12 @@ val AppMenus.configStruct by newMenu {
     parent = AppMenus.configMenu
 }
 
-val MenuAction.actGroup by Groups.newMenuAction {
-    name = "Groups"
+val MenuAction.actGroup by GroupsData.newMenuAction {
+    name = "GroupsData"
 }
 
 val AppMenus.configGroupMenu by newMenu {
-    name = "Groups"
+    name = "GroupsData"
     parent = AppMenus.resAuthMenu
     action = MenuAction.actGroup
 }

@@ -1,9 +1,9 @@
 package org.platypus.entity
 
-import org.platypus.Environmentable
 import org.platypus.Identifiable
 import org.platypus.bag.Bag
 import org.platypus.model.Model
+import org.platypus.model.field.impl.ArchivedModelField
 import org.platypus.model.field.impl.BinaryField
 import org.platypus.model.field.impl.BooleanField
 import org.platypus.model.field.impl.CreateDateModelField
@@ -32,8 +32,9 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import kotlin.reflect.KProperty
 
-interface RecordDelegate<M : Model<M>> : Identifiable, Environmentable {
+interface RecordDelegate<M : Model<M>> : Identifiable {
     val model: M
+
     operator fun TimeField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): LocalTime?
     operator fun NameModelField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): String?
     operator fun ExternalRefModelField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): String?
@@ -55,4 +56,5 @@ interface RecordDelegate<M : Model<M>> : Identifiable, Environmentable {
     operator fun <TM : Model<TM>> RevOne2OneField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Record<TM>?
     operator fun CreateDateModelField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): LocalDateTime
     operator fun WriteDateModelField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): LocalDateTime?
+    operator fun ArchivedModelField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Boolean
 }

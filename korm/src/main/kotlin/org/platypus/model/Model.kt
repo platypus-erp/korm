@@ -6,6 +6,7 @@ import org.platypus.bag.Bag
 import org.platypus.cache.modelID
 import org.platypus.context.ContextKeyNonNull
 import org.platypus.entity.FieldsWrite
+import org.platypus.entity.ImutableRecord
 import org.platypus.entity.PlatypusSelection
 import org.platypus.entity.PlatypusSelectionCompanion
 import org.platypus.entity.Record
@@ -52,18 +53,17 @@ import org.platypus.model.functions.one.ApiOneNoParamExtends
 import org.platypus.model.functions.one.ApiOneNoParamStacker
 import org.platypus.model.functions.one.ApiOneParamExtends
 import org.platypus.model.functions.one.ApiOneParamStacker
-import org.platypus.module.base.models.Groups
 import org.platypus.orm.CheckConstraint
 import org.platypus.orm.UniqueConstraint
 import org.platypus.orm.sql.and
 import org.platypus.orm.sql.dml.statements.DeleteStatement
 import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.expression.TypedExpression
+import org.platypus.orm.sql.expression.eq
 import org.platypus.orm.sql.query.SmartQueryBuilder
 import org.platypus.orm.sql.select
 import org.platypus.repository.RecordRepository
 import org.platypus.repository.newTmpWithId
-import org.platypus.security.GroupData
 import org.platypus.utils.to_sneak_case
 import java.util.*
 
@@ -202,7 +202,7 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
     }
 
     val nameGet = api.public("nameGet",
-            fun(self: Record<M>): PublicApiReturn<String> {
+            fun(self: ImutableRecord<M>): PublicApiReturn<String> {
                 return (self.name ?: "").asResult()
             }
     )
@@ -452,31 +452,31 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
         this.addExtend(function)
     }
 
-    protected fun <R> ApiMultiNoParamStacker<M, R>.addGroups(groups: GroupData.() -> Bag<Groups>) {
-        thisModel.addGroupsAccess(groups)
-    }
-
-    protected fun <R> ApiOneNoParamStacker<M, R>.addGroups(groups: GroupData.() -> Bag<Groups>) {
-        thisModel.addGroupsAccess(groups)
-    }
-
-    protected fun <R> ApiEmptyNoParamStacker<M, R>.addGroups(groups: GroupData.() -> Bag<Groups>) {
-        thisModel.addGroupsAccess(groups)
-    }
-
-
-    protected fun <P, R> ApiOneParamStacker<M, P, R>.addGroups(groups: GroupData.() -> Bag<Groups>) {
-        thisModel.addGroupsAccess(groups)
-    }
-
-    protected fun <P, R> ApiMultiParamStacker<M, P, R>.addGroups(groups: GroupData.() -> Bag<Groups>) {
-        thisModel.addGroupsAccess(groups)
-    }
-
-    protected fun <P, R> ApiEmptyParamStacker<M, P, R>.addGroups(groups: GroupData.() -> Bag<Groups>) {
-
-        thisModel.addGroupsAccess(groups)
-    }
+//    protected fun <R> ApiMultiNoParamStacker<M, R>.addGroups(groups: GroupData.() -> Bag<GroupsData>) {
+//        thisModel.addGroupsAccess(groups)
+//    }
+//
+//    protected fun <R> ApiOneNoParamStacker<M, R>.addGroups(groups: GroupData.() -> Bag<GroupsData>) {
+//        thisModel.addGroupsAccess(groups)
+//    }
+//
+//    protected fun <R> ApiEmptyNoParamStacker<M, R>.addGroups(groups: GroupData.() -> Bag<GroupsData>) {
+//        thisModel.addGroupsAccess(groups)
+//    }
+//
+//
+//    protected fun <P, R> ApiOneParamStacker<M, P, R>.addGroups(groups: GroupData.() -> Bag<GroupsData>) {
+//        thisModel.addGroupsAccess(groups)
+//    }
+//
+//    protected fun <P, R> ApiMultiParamStacker<M, P, R>.addGroups(groups: GroupData.() -> Bag<GroupsData>) {
+//        thisModel.addGroupsAccess(groups)
+//    }
+//
+//    protected fun <P, R> ApiEmptyParamStacker<M, P, R>.addGroups(groups: GroupData.() -> Bag<GroupsData>) {
+//
+//        thisModel.addGroupsAccess(groups)
+//    }
 
 
 }

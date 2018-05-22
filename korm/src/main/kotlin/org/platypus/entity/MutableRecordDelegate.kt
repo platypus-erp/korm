@@ -37,7 +37,7 @@ interface MutableRecordDelegate<M : Model<M>> : RecordDelegate<M> {
     operator fun DecimalField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: BigDecimal?)
     operator fun BinaryField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: ByteArray?)
     operator fun ArchivedModelField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: Boolean?)
-    operator fun ArchivedModelField<M>.getValue(o: MutableRecordDelegate<M>, desc: KProperty<*>): Boolean
+
     operator fun <TM : Model<TM>> Many2OneField<M, TM>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: Record<TM>?)
     operator fun <TM : Model<TM>> One2OneField<M, TM>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: Record<TM>?)
     operator fun <TM : Model<TM>> RevOne2OneField<M, TM>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: Record<TM>?)

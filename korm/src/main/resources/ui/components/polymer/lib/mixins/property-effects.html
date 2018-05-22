@@ -834,10 +834,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   const ARGUMENT_LIST = '(?:' + '\\(\\s*' +
                                 '(?:' + ARGUMENTS + '?' + ')' +
                               '\\)\\s*' + ')';
-  const BINDING = '(' + IDENT + '\\s*' + ARGUMENT_LIST + '?' + ')'; // Group 3
+  const BINDING = '(' + IDENT + '\\s*' + ARGUMENT_LIST + '?' + ')'; // GroupData 3
   const OPEN_BRACKET = '(\\[\\[|{{)' + '\\s*';
   const CLOSE_BRACKET = '(?:]]|}})';
-  const NEGATE = '(?:(!)\\s*)?'; // Group 2
+  const NEGATE = '(?:(!)\\s*)?'; // GroupData 2
   const EXPRESSION = OPEN_BRACKET + NEGATE + BINDING + CLOSE_BRACKET;
   const bindingRegex = new RegExp(EXPRESSION, "g");
 

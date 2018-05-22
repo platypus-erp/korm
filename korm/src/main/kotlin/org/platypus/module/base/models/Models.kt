@@ -1,12 +1,12 @@
 package org.platypus.module.base.models
 
-import org.platypus.security.Group
+import org.platypus.security.GroupData
 
 data class UserLoginSuccess(val success: Boolean, val error: String? = null)
 data class UserDisconnectReturn(val success: Boolean, val error: String? = null)
 
 data class HasGroupsParam(
-        val groups: Collection<Group>,
+        val groups: Collection<GroupData>,
         val all: Boolean = true
 )
 //

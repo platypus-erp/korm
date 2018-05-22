@@ -5,6 +5,10 @@ import org.platypus.cache.of
 import org.platypus.entity.Record
 import org.platypus.model.Model
 import org.platypus.repository.RecordRepository
+import org.platypus.security.PlatypusGroup
+import org.platypus.security.PlatypusGroupBuilderData
+import org.platypus.security.PlatypusUser
+import org.platypus.security.PlatypusUserBuilderData
 
 
 enum class ModuleDataType {
@@ -33,12 +37,12 @@ class ModuleData(val env: PlatypusEnvironment,
                  private val noUpdate: UpdateDataType,
                  private val version: String) {
 
-    fun <M : Model<M>> RecordRepository<M>.newData(ref: String, init: Record<M>.() -> Unit): Record<M> {
-        val e = this.byRefOrNull(ref)
+    fun <M : Model<M>> newData(repo:RecordRepository<M>, ref: String, init: Record<M>.() -> Unit): Record<M> {
+        val e = repo.byRefOrNull(ref)
         val versionData = version.replace(".", "").toInt()
         if (e == null) {
             env.logger.info("$ref -> Create ")
-            val r = this.new(true, init)
+            val r = repo.new(true, init)
             env.internal.cache[r.model of r.id, r.model.externalRef] = ref
             return r
         } else {
@@ -62,4 +66,15 @@ class ModuleData(val env: PlatypusEnvironment,
     }
 
 
+
+    fun PlatypusGroup.addData(init : PlatypusGroupBuilderData.() -> Unit){
+
+    }
+
+    fun PlatypusUser.addData(init : PlatypusUserBuilderData.() -> Unit){
+
+    }
+
+
 }
+

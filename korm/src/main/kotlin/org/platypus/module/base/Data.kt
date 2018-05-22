@@ -1,34 +1,46 @@
 package org.platypus.module.base
 
+import org.platypus.module.ModuleData
 import org.platypus.module.ModuleDataType
 import org.platypus.module.UpdateDataType
-import org.platypus.module.data
-import org.platypus.module.base.entities.*
+import org.platypus.module.base.entities.Language
+import org.platypus.module.base.entities.UserData
+import org.platypus.module.base.entities.code
+import org.platypus.module.base.entities.direction
+import org.platypus.module.base.entities.isoCode
+import org.platypus.module.base.entities.languageRepo
+import org.platypus.module.base.entities.translatable
+import org.platypus.module.base.entities.users
 import org.platypus.module.base.models.LanguageDirection
-import org.platypus.security.GroupData
-import org.platypus.security.groupsRepo
+import org.platypus.module.data
+import org.platypus.security.GroupBuilder
+import org.platypus.security.PlatypusGroup
+import org.platypus.security.PlatypusUser
+import org.platypus.security.UserBuilder
+import org.platypus.security.groups
+import org.platypus.security.name
 import java.util.*
 
-
-val GroupData.adminGroup
-    get() = env.groupsRepo["group_root"]
 
 val UserData.root
     get() = env.users["platypus_root"]
 
+object AdminGroup : PlatypusGroup by GroupBuilder("adminGroup")
+object AdminUser : PlatypusUser by UserBuilder("adminUser")
 
 val dataBaseModule = data(ModuleDataType.REAL, UpdateDataType.NEVER) {
-    val adminGroup = env.groupsRepo.newData(env.conf.adminUserRef +"_group") {
-        name = "Admin group"
+    AdminGroup.addData {
+        name = "Admin Group"
     }
-    val administrator = env.users.newData(env.conf.adminUserRef) {
-        groups.add(adminGroup)
+    AdminUser.addData {
+        name = "Admin User"
+        groups += AdminGroup
     }
 }
 
 val languageData = data(ModuleDataType.REAL, UpdateDataType.NEVER) {
     for (l in Locale.getAvailableLocales().filter { it.country.isNotBlank() }) {
-        env.languageRepo.newData(l.toString()) {
+        newLanguage(l.toString()) {
             name = l.displayName
             isoCode = l.toLanguageTag()
             code = l.toString()
@@ -38,4 +50,9 @@ val languageData = data(ModuleDataType.REAL, UpdateDataType.NEVER) {
 //            timeFormat = (SimpleDateFormat.getDateInstance(SimpleDateFormat.HOUR_OF_DAY0_FIELD) as SimpleDateFormat).toLocalizedPattern()
         }
     }
+}
+
+
+fun ModuleData.newLanguage(ref: String, init: Language.() -> Unit): Language {
+    return newData(this.env.languageRepo, ref, init)
 }

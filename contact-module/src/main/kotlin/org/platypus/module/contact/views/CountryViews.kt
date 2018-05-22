@@ -44,14 +44,14 @@ val MenuAction.action_country by Countries.newMenuAction {
 }
 
 val TreeViews.view_country_group_tree by CountriesGroup.newTree {
-    title = "Country Group"
+    title = "Country GroupData"
     field(it.name)
 }
 
 val ModelFormViews.view_country_group_form by CountriesGroup.newForm {
-    title = "Country Group"
+    title = "Country GroupData"
     div(cssClass = "oe_title") {
-        it.name.label("Group name", cssClass = "oe_edit_only")
+        it.name.label("GroupData name", cssClass = "oe_edit_only")
         h1 {
             field(it.name)
         }

@@ -3,15 +3,10 @@ package org.platypus.model.functions
 import io.ktor.http.HttpMethod
 import org.platypus.Environmentable
 import org.platypus.PlatypusEnvironment
-import org.platypus.bag.Bag
 import org.platypus.exceptions.PlatypusForbiddenActionGroup
 import org.platypus.model.IModel
 import org.platypus.module.base.entities.groups
-import org.platypus.module.base.models.Groups
-import org.platypus.security.GroupData
-import org.platypus.security.groupsRepo
 import java.util.*
-import kotlin.collections.HashSet
 
 interface ApiNoParam<in RT : Environmentable, M : IModel<M>, out R> {
     fun call(r: RT): R
@@ -57,7 +52,7 @@ abstract class ApiNoParamStacker<
 
     private val stack by lazy { createStackSuperFun(stackFunction) }
     private var methodGroups: Set<Int> = emptySet()
-    private val groupsStack = HashSet<GroupData.() -> Bag<Groups>>()
+//    private val groupsStack = HashSet<GroupData.() -> Bag<GroupsData>>()
 
 
     override fun call(r: RT): R {
@@ -69,16 +64,16 @@ abstract class ApiNoParamStacker<
         if (env.sudoUser.externalRef == env.conf.adminUserRef) {
             return true
         }
-        if (methodGroups.isEmpty() && groupsStack.isEmpty()) {
-            return true
-        }
-        if (methodGroups.isEmpty() && groupsStack.isNotEmpty()) {
-            val tmpMethodGroups = HashSet<Int>()
-            for (s in groupsStack) {
-                tmpMethodGroups.addAll(s.invoke(env.groupsRepo.datas).ids)
-            }
-            methodGroups = HashSet(tmpMethodGroups)
-        }
+//        if (methodGroups.isEmpty() && groupsStack.isEmpty()) {
+//            return true
+//        }
+//        if (methodGroups.isEmpty() && groupsStack.isNotEmpty()) {
+//            val tmpMethodGroups = HashSet<Int>()
+//            for (s in groupsStack) {
+//                tmpMethodGroups.addAll(s.invoke(env.groupsRepo.datas).ids)
+//            }
+//            methodGroups = HashSet(tmpMethodGroups)
+//        }
         return env.sudoUser.groups.ids.any { it in methodGroups }
     }
 
@@ -116,8 +111,8 @@ abstract class ApiNoParamStacker<
         stackFunction.add(extendFunction)
     }
 
-    fun M.addGroupsAccess(groups: GroupData.() -> Bag<Groups>) {
-        println("AddGroup ${this@ApiNoParamStacker}")
-        groupsStack.add(groups)
-    }
+//    fun M.addGroupsAccess(groups: GroupData.() -> Bag<GroupsData>) {
+//        println("AddGroup ${this@ApiNoParamStacker}")
+//        groupsStack.add(groups)
+//    }
 }

@@ -31,7 +31,7 @@ class ModuleModelOrganiser(models: Set<ModelGenerate>) {
 }
 //object UsersGroupRel : Many2ManyModel() {
 //    val user = dataRef("user", Users)
-//    val group = dataRef("group", Groups)
+//    val group = dataRef("group", GroupsData)
 //
 //}
 

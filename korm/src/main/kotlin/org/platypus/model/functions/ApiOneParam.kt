@@ -8,7 +8,7 @@ import org.platypus.model.IModel
 import org.platypus.security.GroupData
 import org.platypus.module.base.entities.groups
 import org.platypus.security.groupsRepo
-import org.platypus.module.base.models.Groups
+import org.platypus.module.base.models.GroupsData
 import java.util.*
 
 interface ApiOneParam<RT : Environmentable,
@@ -66,7 +66,7 @@ abstract class ApiParamStacker<
 
     private val stack by lazy { createStackSuperFun(stackFunction) }
     private var methodGroups: Set<Int> = emptySet()
-    private val groupsStack = HashSet<GroupData.() -> Bag<Groups>>()
+    private val groupsStack = HashSet<GroupData.() -> Bag<GroupsData>>()
 
     override fun call(r: RT, param: P): R {
         r.env.checkAccessRight()
@@ -125,7 +125,7 @@ abstract class ApiParamStacker<
         stackFunction.add(extendFunction)
     }
 
-    fun M.addGroupsAccess(groups: GroupData.() -> Bag<Groups>) {
+    fun M.addGroupsAccess(groups: GroupData.() -> Bag<GroupsData>) {
         groupsStack.add(groups)
     }
 }

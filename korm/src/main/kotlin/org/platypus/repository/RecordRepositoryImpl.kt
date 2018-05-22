@@ -18,6 +18,8 @@ import org.platypus.orm.sql.SizedCollection
 import org.platypus.orm.sql.SizedIterable
 import org.platypus.orm.sql.dml.FieldSet
 import org.platypus.orm.sql.expression.Expression
+import org.platypus.orm.sql.expression.eq
+import org.platypus.orm.sql.expression.inList
 import org.platypus.orm.sql.query.Query
 import org.platypus.orm.sql.query.ResultRow
 import org.platypus.orm.sql.query.SmartQueryBuilder
@@ -126,7 +128,7 @@ class RecordRepositoryImpl<M : Model<M>>(override val env: PlatypusEnvironment, 
         }.first()
     }
 
-    override fun search(query: SmartQueryBuilder<M>.(M) -> Unit) = model.otherSearch.call(this, query).result
+    override fun search(query: SmartQueryBuilder<M>.(M) -> Unit) = model.search.call(this, query).result
 
 
     private fun wrapRowsIds(query: Query): List<Int> {
