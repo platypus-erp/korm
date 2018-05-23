@@ -2,13 +2,10 @@ package org.platypus.model.functions
 
 import org.platypus.Environmentable
 import org.platypus.PlatypusEnvironment
-import org.platypus.bag.Bag
-import org.platypus.exceptions.PlatypusForbiddenAction
+import org.platypus.exceptions.PlatypusForbiddenActionGroup
 import org.platypus.model.IModel
-import org.platypus.security.GroupData
-import org.platypus.module.base.entities.groups
-import org.platypus.security.groupsRepo
-import org.platypus.module.base.models.GroupsData
+import org.platypus.module.base.AdminUser
+import org.platypus.security.PlatypusGroup
 import java.util.*
 
 interface ApiOneParam<RT : Environmentable,
@@ -65,8 +62,7 @@ abstract class ApiParamStacker<
         internal set
 
     private val stack by lazy { createStackSuperFun(stackFunction) }
-    private var methodGroups: Set<Int> = emptySet()
-    private val groupsStack = HashSet<GroupData.() -> Bag<GroupsData>>()
+    private var methodGroups: Set<PlatypusGroup> = emptySet()
 
     override fun call(r: RT, param: P): R {
         r.env.checkAccessRight()
@@ -78,27 +74,13 @@ abstract class ApiParamStacker<
     }
 
     fun canBeCalled(env: PlatypusEnvironment): Boolean {
-        if (env.sudoUser.externalRef == env.conf.adminUserRef){
-            return true
-        }
-        if (methodGroups.isEmpty() && groupsStack.isEmpty()){
-            return true
-        }
-        if (methodGroups.isEmpty() && groupsStack.isNotEmpty()) {
-            val tmpMethodGroups = HashSet<Int>()
-            for (s in groupsStack) {
-                tmpMethodGroups.addAll(s.invoke(env.groupsRepo.datas).ids)
-            }
-            methodGroups = HashSet(tmpMethodGroups)
-        }
-        return env.envUser.groups.ids.any { it in methodGroups }
+        return env.sudoUser == AdminUser || methodGroups.isEmpty() || env.sudoUser.groups.containsAll(methodGroups)
     }
 
     private fun PlatypusEnvironment.checkAccessRight(){
-        println("$methodName $groupsStack $methodGroups")
-        if (!canBeCalled(this)){
+        if (!canBeCalled(this)) {
             println(methodGroups)
-            throw PlatypusForbiddenAction(methodName)
+            throw PlatypusForbiddenActionGroup(methodName)
         }
     }
 
@@ -125,7 +107,18 @@ abstract class ApiParamStacker<
         stackFunction.add(extendFunction)
     }
 
-    fun M.addGroupsAccess(groups: GroupData.() -> Bag<GroupsData>) {
-        groupsStack.add(groups)
+    internal fun addGroupsAccess(vararg groups: PlatypusGroup) {
+        println("addGroupsAccess ${this}")
+        methodGroups += groups
+    }
+
+    internal fun removeGroupsAccess(vararg groups: PlatypusGroup) {
+        println("removeGroupsAccess ${this}")
+        methodGroups -= groups
+    }
+
+    internal fun replaceGroupsAccess(vararg groups: PlatypusGroup) {
+        println("replaceGroupsAccess ${this}")
+        methodGroups = groups.toSet()
     }
 }

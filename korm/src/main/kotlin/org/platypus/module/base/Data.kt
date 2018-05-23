@@ -13,20 +13,12 @@ import org.platypus.module.base.entities.translatable
 import org.platypus.module.base.entities.users
 import org.platypus.module.base.models.LanguageDirection
 import org.platypus.module.data
-import org.platypus.security.GroupBuilder
-import org.platypus.security.PlatypusGroup
-import org.platypus.security.PlatypusUser
-import org.platypus.security.UserBuilder
+import org.platypus.security.AdminGroup
+import org.platypus.security.AdminUser
 import org.platypus.security.groups
 import org.platypus.security.name
 import java.util.*
 
-
-val UserData.root
-    get() = env.users["platypus_root"]
-
-object AdminGroup : PlatypusGroup by GroupBuilder("adminGroup")
-object AdminUser : PlatypusUser by UserBuilder("adminUser")
 
 val dataBaseModule = data(ModuleDataType.REAL, UpdateDataType.NEVER) {
     AdminGroup.addData {

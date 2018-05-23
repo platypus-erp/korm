@@ -5,7 +5,8 @@ import org.platypus.Environmentable
 import org.platypus.PlatypusEnvironment
 import org.platypus.exceptions.PlatypusForbiddenActionGroup
 import org.platypus.model.IModel
-import org.platypus.module.base.entities.groups
+import org.platypus.module.base.AdminUser
+import org.platypus.security.PlatypusGroup
 import java.util.*
 
 interface ApiNoParam<in RT : Environmentable, M : IModel<M>, out R> {
@@ -51,8 +52,7 @@ abstract class ApiNoParamStacker<
         internal set
 
     private val stack by lazy { createStackSuperFun(stackFunction) }
-    private var methodGroups: Set<Int> = emptySet()
-//    private val groupsStack = HashSet<GroupData.() -> Bag<GroupsData>>()
+    private var methodGroups: Set<PlatypusGroup> = emptySet()
 
 
     override fun call(r: RT): R {
@@ -61,20 +61,7 @@ abstract class ApiNoParamStacker<
     }
 
     fun canBeCalled(env: PlatypusEnvironment): Boolean {
-        if (env.sudoUser.externalRef == env.conf.adminUserRef) {
-            return true
-        }
-//        if (methodGroups.isEmpty() && groupsStack.isEmpty()) {
-//            return true
-//        }
-//        if (methodGroups.isEmpty() && groupsStack.isNotEmpty()) {
-//            val tmpMethodGroups = HashSet<Int>()
-//            for (s in groupsStack) {
-//                tmpMethodGroups.addAll(s.invoke(env.groupsRepo.datas).ids)
-//            }
-//            methodGroups = HashSet(tmpMethodGroups)
-//        }
-        return env.sudoUser.groups.ids.any { it in methodGroups }
+        return env.sudoUser == AdminUser || methodGroups.isEmpty() || env.sudoUser.groups.containsAll(methodGroups)
     }
 
     private fun PlatypusEnvironment.checkAccessRight() {
@@ -111,8 +98,18 @@ abstract class ApiNoParamStacker<
         stackFunction.add(extendFunction)
     }
 
-//    fun M.addGroupsAccess(groups: GroupData.() -> Bag<GroupsData>) {
-//        println("AddGroup ${this@ApiNoParamStacker}")
-//        groupsStack.add(groups)
-//    }
+    internal fun addGroupsAccess(vararg groups: PlatypusGroup) {
+        println("addGroupsAccess ${this}")
+        methodGroups += groups
+    }
+
+    internal fun removeGroupsAccess(vararg groups: PlatypusGroup) {
+        println("removeGroupsAccess ${this}")
+        methodGroups -= groups
+    }
+
+    internal fun replaceGroupsAccess(vararg groups: PlatypusGroup) {
+        println("replaceGroupsAccess ${this}")
+        methodGroups = groups.toSet()
+    }
 }

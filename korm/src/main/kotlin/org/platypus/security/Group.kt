@@ -2,24 +2,13 @@ package org.platypus.security
 
 import org.platypus.Environmentable
 import org.platypus.PlatypusEnvironment
-import org.platypus.bag.Bag
 import org.platypus.bag.toBag
-import org.platypus.data.DataRef
-import org.platypus.entity.Record
-import org.platypus.module.base.models.GroupsData
-import org.platypus.repository.RecordRepository
-import org.platypus.repository.RecordRepositoryImpl
+import org.platypus.module.base.entities.GroupData
+import org.platypus.module.base.entities.GroupDataBag
+import org.platypus.module.base.entities.groupDataRepo
+import org.platypus.module.base.entities.user
 
-typealias GroupData = Record<GroupsData>
-typealias GroupDataRepository = RecordRepository<GroupsData>
-typealias GroupDataBag = Bag<GroupsData>
-typealias GroupDataData = DataRef<GroupsData>
-
-val PlatypusEnvironment.groupDataRepo: GroupDataRepository
-    get() = RecordRepositoryImpl(this, GroupsData)
-
-var GroupData.user by GroupsData.users
-
+val AdminGroup = PlatypusGroup("adminGroup")
 
 class PlatypusGroup(val externalRef: String) {
     fun getData(env: PlatypusEnvironment): GroupData = env.groupDataRepo[externalRef]
@@ -29,10 +18,7 @@ class PlatypusGroup(val externalRef: String) {
 }
 
 
-
 fun GroupDataBag.toSetPlatypusGroup(): Set<PlatypusGroup> = this.map { PlatypusGroup(it.externalRef!!) }.toSet()
-
-
 
 
 class PlatypusGroupBuilderData(override val env: PlatypusEnvironment, val group: PlatypusGroup) : Environmentable {
@@ -47,7 +33,6 @@ var PlatypusGroupBuilderData.users: Set<PlatypusUser>
         group.internalUsers += value
         current.user = value.map { it.getData(env) }.toBag()
     }
-
 
 
 var PlatypusGroupBuilderData.name: String?

@@ -9,9 +9,14 @@ import org.platypus.module.base.entities.groups
 import org.platypus.module.base.entities.users
 
 
-fun UserBag.toSetPlatypusUser(): Set<PlatypusUser> = this.map { PlatypusUser(it.externalRef!!) }.toSet()
+val AdminUser = PlatypusUser("adminUser")
+class NoExternalRefToCreatePlatypusUser : IllegalStateException()
+class NoExternalRefToCreatePlatypusGroup : IllegalStateException()
 
-class PlatypusUser(val externalRef: String){
+fun UserBag.toSetPlatypusUser(): Set<PlatypusUser> = this.map { it.toPlatypusUser() }.toSet()
+fun User.toPlatypusUser(): PlatypusUser = PlatypusUser(this.externalRef ?: throw NoExternalRefToCreatePlatypusUser())
+
+class PlatypusUser(val externalRef: String) {
     val groups
         get() = internalGroups
     internal var internalGroups: Set<PlatypusGroup> = emptySet()

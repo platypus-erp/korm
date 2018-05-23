@@ -17,20 +17,21 @@ import org.platypus.model.field.api.ModelFieldType.PK
 import org.platypus.model.field.api.ModelFieldType.REV_ONE_TO_ONE
 import org.platypus.model.field.api.isRelationalField
 import org.platypus.module.base.entities.Language
-import org.platypus.module.base.entities.User
 import org.platypus.module.base.entities.users
 import org.platypus.module.base.models.Users
 import org.platypus.orm.PersistenceDialect
 import org.platypus.orm.sql.dml.statements.InsertStatement
 import org.platypus.orm.sql.dml.statements.UpdateStatement
 import org.platypus.orm.sql.dml.storeFields
+import org.platypus.orm.sql.expression.eq
 import org.platypus.orm.sql.query.buildSelect
-import org.platypus.orm.sql.select
 import org.platypus.orm.transaction.TransactionApi
 import org.platypus.orm.transaction.TransactionExecutor
 import org.platypus.orm.transaction.TransactionMode
 import org.platypus.repository.RecordRepositoryImpl
 import org.platypus.repository.newTmpWithId
+import org.platypus.security.AdminUser
+import org.platypus.security.PlatypusUser
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.sql.SQLException
@@ -40,25 +41,22 @@ import java.time.ZoneId
 
 
 class BaseEnvironment(
-        override val envUser: User,
-        override val sudoUser: User,
+        override val envUser: PlatypusUser,
+        override val sudoUser: PlatypusUser,
         override val conf: PlatypusConf,
         override val context: PlatypusContext,
         override val internal: PlatypusEnvironmentInternal
 ) : PlatypusEnvironment {
 
     internal companion object {
-        fun create(user: User?, conf: PlatypusConf, context: PlatypusContext, newTransaction: TransactionApi): BaseEnvironment {
+        fun create(user: PlatypusUser?, conf: PlatypusConf, context: PlatypusContext, newTransaction: TransactionApi): BaseEnvironment {
             val fakeEnv = FirstStartEnv(conf, newTransaction)
-
-            val userUsed = user
-                    ?: fakeEnv.users.bagOf(Users.select(fakeEnv) { Users.externalRef eq conf.adminUserRef }).firstOrNull()
-                    ?: fakeEnv.envUser
+            val userUsed = user ?: fakeEnv.envUser
             return BaseEnvironment(userUsed, userUsed, conf, context, fakeEnv.internal)
         }
     }
 
-    override fun connect(user: User): PlatypusEnvironment {
+    override fun connect(user: PlatypusUser): PlatypusEnvironment {
         return BaseEnvironment(user, user, conf, context, internal)
     }
 
@@ -67,7 +65,7 @@ class BaseEnvironment(
         get() = ZoneId.systemDefault()
     override val debug: Boolean = conf.debug
 
-    override val logger: Logger = LoggerFactory.getLogger("${envUser.id} as ${sudoUser.id}, ${lang?.name}")
+    override val logger: Logger = LoggerFactory.getLogger("${envUser.externalRef} as ${sudoUser.externalRef}, ${lang?.name}")
     private val cache
         get() = internal.cache
 
@@ -75,7 +73,7 @@ class BaseEnvironment(
         return BaseEnvironment(envUser, sudoUser, conf, context.copy(vals), internal)
     }
 
-    override fun sudo(user: User): PlatypusEnvironment {
+    override fun sudo(user: PlatypusUser): PlatypusEnvironment {
         return BaseEnvironment(envUser, user, conf, context.copy(), internal)
     }
 
@@ -193,7 +191,7 @@ internal class BaseInternalEnvironment(trApi: TransactionApi, private val initia
 
 fun initUser(conf: PlatypusConf, newTransaction: TransactionApi) {
     val fake = FirstStartEnv(conf, newTransaction)
-    val env = BaseEnvironment(fake.adminUser, fake.adminUser, conf, newContext(), fake.internal)
+    val env = BaseEnvironment(fake.envUser, fake.sudoUser, conf, newContext(), fake.internal)
     val q = env.buildSelect(Users) {
         where {
             it.externalRef eq conf.adminUserRef
@@ -226,10 +224,10 @@ private class FirstStartEnv(override val conf: PlatypusConf, newTransaction: Tra
     override val logger: Logger = LoggerFactory.getLogger("FirstStartEnv")
     override val internal: PlatypusEnvironmentInternal = BaseInternalEnvironment(newTransaction)
     override val context: PlatypusContext = PlatypusContext()
-    override val envUser: User
-        get() = adminUser
-    override val sudoUser: User
-        get() = adminUser
+    override val envUser: PlatypusUser
+        get() = AdminUser
+    override val sudoUser: PlatypusUser
+        get() = AdminUser
 
     val adminUser = RecordRepositoryImpl(this, Users).newTmpWithId(false, 1, false) {}
 
@@ -246,11 +244,11 @@ private class FirstStartEnv(override val conf: PlatypusConf, newTransaction: Tra
         throw UnsupportedOperationException()
     }
 
-    override fun sudo(user: User): PlatypusEnvironment {
+    override fun sudo(user: PlatypusUser): PlatypusEnvironment {
         throw UnsupportedOperationException()
     }
 
-    override fun connect(user: User): PlatypusEnvironment {
+    override fun connect(user: PlatypusUser): PlatypusEnvironment {
         throw UnsupportedOperationException()
     }
 

@@ -40,6 +40,7 @@ import org.platypus.module.base.entities.User
 import org.platypus.module.base.entities.users
 import org.platypus.repository.RecordRepository
 import org.platypus.repository.RecordRepositoryImpl
+import org.platypus.security.PlatypusUser
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -157,7 +158,7 @@ class RecordImpl<M : Model<M>>(
      * The data of the entity are still the same
      * @see PlatypusEnvironment.sudo
      */
-    override fun sudo(user: User): Record<M> = repository(env.sudo(user)).browse(this._id)
+    override fun sudo(user: PlatypusUser): Record<M> = repository(env.sudo(user)).browse(this._id)
 
     /**
      * Return a new Entity with the same [id]
@@ -268,7 +269,7 @@ class RecordImpl<M : Model<M>>(
     }
 
     override operator fun WriteUID<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): User {
-        return env.users.browse(warmCache()[modelID, this].second?.id ?: env.envUser.id)
+        return env.users.browse(warmCache()[modelID, this].second?.id ?: env.envUser.getData(env).id)
     }
 
     override operator fun <TM : Model<TM>> One2ManyField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Bag<TM> {

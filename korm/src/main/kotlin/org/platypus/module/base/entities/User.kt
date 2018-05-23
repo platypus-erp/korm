@@ -9,7 +9,6 @@ import org.platypus.module.base.models.UserLoginSuccess
 import org.platypus.module.base.models.Users
 import org.platypus.repository.RecordRepository
 import org.platypus.repository.RecordRepositoryImpl
-import org.platypus.security.GroupData
 
 typealias UserRepository = RecordRepository<Users>
 typealias UserData = DataRef<Users>
