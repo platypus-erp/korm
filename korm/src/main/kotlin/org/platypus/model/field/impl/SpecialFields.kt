@@ -39,7 +39,7 @@ class PKModelField<M : IModel<M>>(override val model: M) :
         FieldExpression<Int>,
         Expression<Int> {
 
-    override fun compareTo(other: IModelField<*,*>): Int = comparatorField.compare(this, other)
+    override fun compareTo(other: IModelField<*, *>): Int = comparatorField.compare(this, other)
 
     override val fieldName: String
         get() = "id"
@@ -146,7 +146,7 @@ class WriteUID<M : Model<M>>(model: M)
 
     override val store: Boolean = true
 
-    override val type: SqlFieldType = Many2OneFieldType(false)
+    override val type: SqlFieldType by lazy { Many2OneFieldType(true, Users) }
 
     override val target: Users
         get() = Users
@@ -165,7 +165,7 @@ class CreateUID<M : Model<M>>(model: M)
 
     override val target: Users
         get() = Users
-    override val type: SqlFieldType = Many2OneFieldType(true)
+    override val type: SqlFieldType by lazy { Many2OneFieldType(true, Users) }
 
     override fun <PARAM_TYPE, RETURN> accept(visitor: FieldVisitor<PARAM_TYPE, RETURN>, p: PARAM_TYPE): RETURN = visitor.visit(this, p)
     override fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN = visitor.visit(this, param)

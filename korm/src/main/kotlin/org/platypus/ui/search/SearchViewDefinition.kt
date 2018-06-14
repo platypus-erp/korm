@@ -1,7 +1,7 @@
 package org.platypus.ui.search
 
 import com.beust.klaxon.JsonObject
-import org.platypus.SearchTreeParam
+import org.platypus.web.SearchTreeParam
 import org.platypus.model.Model
 import org.platypus.model.field.api.ModelField
 import org.platypus.orm.sql.expression.Expression

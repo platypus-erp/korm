@@ -45,15 +45,15 @@ interface RecordDelegate<M : Model<M>> : Identifiable {
     operator fun BooleanField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Boolean
     operator fun DecimalField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): BigDecimal?
     operator fun IntField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Int?
-    operator fun <D : PlatypusSelection<M>> SelectionField<M, D>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): D?
+    operator fun <D : Selection<D>> SelectionField<M, D>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): SelectionValue<D>?
     operator fun BinaryField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): ByteArray?
     operator fun CreateUID<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): User
     operator fun WriteUID<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): User
     operator fun <TM : Model<TM>> One2ManyField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Bag<TM>
     operator fun <TM : Model<TM>> Many2ManyField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Bag<TM>
-    operator fun <TM : Model<TM>> Many2OneField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Record<TM>?
-    operator fun <TM : Model<TM>> One2OneField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Record<TM>?
-    operator fun <TM : Model<TM>> RevOne2OneField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Record<TM>?
+    operator fun <TM : Model<TM>> Many2OneField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Record<TM>
+    operator fun <TM : Model<TM>> One2OneField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Record<TM>
+    operator fun <TM : Model<TM>> RevOne2OneField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Record<TM>
     operator fun CreateDateModelField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): LocalDateTime
     operator fun WriteDateModelField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): LocalDateTime?
     operator fun ArchivedModelField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Boolean

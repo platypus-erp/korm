@@ -61,13 +61,14 @@ object RefereeFinder : FieldVisitor<Unit, IModel<*>?> {
 
     override fun visit(field: BinaryField<*>, p: Unit) = null
 
-    override fun visit(field: One2ManyField<*, *>, p: Unit) = null
+    override fun visit(field: One2ManyField<*, *>, p: Unit) = field.targetField().model
 
     override fun visit(field: Many2OneField<*, *>, p: Unit) = field.target
 
     override fun visit(field: Many2OneFieldLink<*, *>, p: Unit)= field.target
 
     override fun visit(field: Many2ManyField<*, *>, p: Unit) = field.target(ModelMany2Many)
+
     override fun visit(field: CreateUID<*>, p: Unit) = Users
 
     override fun visit(field: WriteUID<*>, p: Unit) = Users

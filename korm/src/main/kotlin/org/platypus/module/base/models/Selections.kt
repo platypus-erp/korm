@@ -1,15 +1,10 @@
 package org.platypus.module.base.models
 
-import org.platypus.entity.PlatypusSelection
-import org.platypus.entity.PlatypusSelectionCompanion
+import org.platypus.entity.Selection
+import org.platypus.module.base.models.LanguageDirection.getValue
 
-class LanguageDirection(value: String, label: String) : PlatypusSelection<Languages>(value, label) {
-    companion object : PlatypusSelectionCompanion<Languages, LanguageDirection>(LanguageDirection::class, { v, l -> LanguageDirection(v, l) }) {
-        val ltr by "Left-to-Right"
-        val rtl by "Right-to-Left"
 
-        init {
-            _default = ltr
-        }
-    }
-}
+object LanguageDirection : Selection<LanguageDirection>()
+
+val LanguageDirection.ltr by "Left-to-Right"
+val LanguageDirection.rtl by "Right-to-Left"

@@ -3,7 +3,6 @@ package org.platypus.orm.sql.query
 
 import org.platypus.PlatypusEnvironment
 import org.platypus.model.field.api.ModelField
-import org.platypus.orm.PersistenceDialect
 import org.platypus.orm.sql.QueryBuilder
 import org.platypus.orm.sql.SizedIterable
 import org.platypus.orm.sql.alias
@@ -13,72 +12,9 @@ import org.platypus.orm.sql.dml.Statement
 import org.platypus.orm.sql.dml.StatementType
 import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.expression.ExpressionAlias
-import org.platypus.orm.sql.expression.TypedExpression
-import org.platypus.orm.sql.logging.exposedLogger
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.util.*
-
-class ResultRow(val dialect: PersistenceDialect, size: Int, private val fieldIndex: Map<Expression<*>, Int>) {
-    val data = arrayOfNulls<Any?>(size)
-
-    /**
-     * Function might returns null. Use @tryGet if you don't sure of nullability (e.g. in left-join cases)
-     */
-    @Suppress("UNCHECKED_CAST")
-    operator fun <T> get(c: Expression<T>): T {
-        val d = getRaw(c)
-        return when {
-            d == null && c is ModelField<*, *> && c.required -> {
-                exposedLogger.warn("Column ${dialect.identity(c)} is marked as not null, " +
-                        "has default db value, but returns null. Possible have to re-read it from DB.")
-                null
-            }
-            d == null -> null
-            d == NotInitializedValue -> error("${c.accept(dialect.expressionVisitor, QueryBuilder(false))} is not initialized yet")
-            c is ExpressionAlias<T> && c.delegate is TypedExpression<T> -> c.delegate.type.valueFromDB(d)
-            c is TypedExpression<T> -> c.type.valueFromDB(d)
-            else -> d
-        } as T
-    }
-
-
-    operator fun <T> set(c: Expression<T>, value: T) {
-        val index = fieldIndex[c]
-                ?: error("${c.accept(dialect.expressionVisitor, QueryBuilder(false))} is not in record fieldSet")
-        data[index] = value
-    }
-
-    fun <T> hasValue(c: Expression<T>): Boolean = fieldIndex[c]?.let { data[it] != NotInitializedValue } ?: false
-
-    fun <T> tryGet(c: Expression<T>): T? = if (hasValue(c)) get(c) else null
-
-    @Suppress("UNCHECKED_CAST")
-    private fun <T> getRaw(c: Expression<T>): T? {
-        return data[fieldIndex[c]
-                ?: error("${c.accept(dialect.expressionVisitor, QueryBuilder(false))} is not in record fieldSet")] as T?
-    }
-
-    val expr: Set<Expression<*>>
-        get() = fieldIndex.keys
-
-    override fun toString(): String =
-            fieldIndex.entries.joinToString { "${it.key.accept(dialect.expressionVisitor, QueryBuilder(false))}=${data[it.value]}" }
-
-    internal object NotInitializedValue
-
-    companion object {
-        fun create(dialect: PersistenceDialect, rs: ResultSet, fields: Set<Expression<*>>, fieldsIndex: Map<Expression<*>, Int>): ResultRow {
-            val size = fieldsIndex.size
-            val answer = ResultRow(dialect, size, fieldsIndex)
-
-            fields.forEachIndexed { i, f ->
-                answer.data[i] = (f as? ModelField<*, *>)?.type?.readObject(rs, i + 1) ?: rs.getObject(i + 1)
-            }
-            return answer
-        }
-    }
-}
 
 enum class ORDERBY_TYPE {
     ASC, DESC
@@ -126,7 +62,7 @@ open class Query(private val env: PlatypusEnvironment, set: FieldSet, where: Exp
      * @param body new WHERE condition builder, previous value used as a receiver
      * @sample org.chmuche.korm.sql.tests.shared.DMLTests.testAdjustQueryWhere
      */
-    fun adjustWhere(body: Expression<Boolean>?.() -> Expression<Boolean>): Query = apply { where = where.body() }
+    fun adjustWhere(body: (Expression<Boolean>?) -> Expression<Boolean>?): Query = apply { where = body(where) }
 
     fun hasCustomForUpdateState() = forUpdate != null
     fun isForUpdate() = (forUpdate

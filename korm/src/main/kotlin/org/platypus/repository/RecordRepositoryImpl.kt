@@ -13,7 +13,7 @@ import org.platypus.data.DataRef
 import org.platypus.entity.Record
 import org.platypus.entity.RecordImpl
 import org.platypus.model.Model
-import org.platypus.module.base.entities.User
+import org.platypus.model.field.impl.RealModelField
 import org.platypus.orm.sql.SizedCollection
 import org.platypus.orm.sql.SizedIterable
 import org.platypus.orm.sql.dml.FieldSet
@@ -23,15 +23,25 @@ import org.platypus.orm.sql.expression.inList
 import org.platypus.orm.sql.query.Query
 import org.platypus.orm.sql.query.ResultRow
 import org.platypus.orm.sql.query.SmartQueryBuilder
+import org.platypus.security.PlatypusUser
 import org.platypus.utils.EntityNotFoundById
-import org.platypus.utils.EntityNotFoundByRef
 
 class RecordRepositoryImpl<M : Model<M>>(override val env: PlatypusEnvironment, override val model: M) : RecordRepository<M> {
 
     override val datas: DataRef<M>
         get() = DataRef(env)
 
-    override fun browse(id: Int): Record<M> = (model of id).testCache() ?: model.getById.call(this, id).result
+
+    override fun browse(id: Int): Record<M> {
+        val modelId= (model of id)
+        if (id == 0) {
+            return RecordImpl.empty(this.model, this.env)
+        } else if (modelId.exist()){
+            return model.getById.call(this, id).result
+        }
+        throw EntityNotFoundById(id, this.model.modelName)
+    }
+
 
     override fun browse(ids: Collection<Int>): Bag<M> {
         val needLoad = ids.filter { (model of it).needSearch() }
@@ -48,9 +58,12 @@ class RecordRepositoryImpl<M : Model<M>>(override val env: PlatypusEnvironment, 
     }
 
     override fun byRef(ref: String): Record<M> {
-        return byRefOrNull(ref) ?: throw EntityNotFoundByRef(ref, model.modelName)
+        return byRefOrNull(ref) ?: RecordImpl.empty(this.model, this.env)
     }
 
+    /**
+     * @see byRef
+     */
     override fun get(ref: String): Record<M> = byRef(ref)
 
     override fun byRefOrNull(ref: String): Record<M>? {
@@ -68,9 +81,36 @@ class RecordRepositoryImpl<M : Model<M>>(override val env: PlatypusEnvironment, 
         return fetchOrNull(id) ?: throw EntityNotFoundById(id, model.modelName)
     }
 
+    override fun fetch(where: M.() -> Expression<Boolean>): Bag<M> = search {
+        model.storeFields
+                .filter { it is RealModelField<M, *> && it.searchable }
+                .map { it as RealModelField<M, *> }
+                .forEach { addField(it) }
+        where { model.where() }
+    }
+
+    override fun fetchFirst(where: M.() -> Expression<Boolean>): Record<M> {
+        return fetch(where).first()
+    }
+
+    override fun fetchOrNull(where: M.() -> Expression<Boolean>): Record<M>? {
+        return fetch(where).firstOrNull()
+    }
+
     override fun fetchOrNull(id: Int): Record<M>? = search {
+        model.storeFields
+                .filter { it is RealModelField<M, *> && it.searchable }
+                .map { it as RealModelField<M, *> }
+                .forEach { addField(it) }
         where { model.id eq id }
     }.firstOrNull()
+
+
+    override fun execute(query: SmartQueryBuilder<M>): Bag<M> = this.model.execute.call(this, query)
+
+    override fun executeFirst(query: SmartQueryBuilder<M>): Record<M> = this.model.execute.call(this, query.apply {
+        limit(1)
+    }).firstOrNull() ?: RecordImpl.empty(this.model, this.env)
 
     override fun bagOf(ids: Collection<Int>): Bag<M> {
         loadInCache(model of ids.toList())
@@ -91,7 +131,7 @@ class RecordRepositoryImpl<M : Model<M>>(override val env: PlatypusEnvironment, 
     }
 
     private fun loadInCache(modelID: ModelIDS) {
-        val idsPartition = modelID.ids.partition { (modelID.model of it).testCache() == null }
+        val idsPartition = modelID.ids.partition { (modelID.model of it).testCache() }
         if (idsPartition.first.isNotEmpty()) {
             search {
                 where { model.id inList idsPartition.first.map { it } }
@@ -99,10 +139,29 @@ class RecordRepositoryImpl<M : Model<M>>(override val env: PlatypusEnvironment, 
         }
     }
 
-    private fun ModelID.testCache(): Record<M>? = if (this in env.internal.cache) RecordImpl(this.id, env, this@RecordRepositoryImpl.model) else null
+    private fun ModelID.testCache(): Boolean = this in env.internal.cache
+
+    private fun ModelID.exist(): Boolean {
+        if (id < 0){
+            return testCache()
+        }
+        if (id > 0){
+            return search {
+                where {
+                    it.id eq id
+                }
+            }.isNotEmpty()
+        }
+        return false
+    }
 
     override fun find(where: M.() -> Expression<Boolean>): Bag<M> {
-        TODO("not implemented")
+        return search {
+            limit(1)
+            where {
+                model.where()
+            }
+        }
     }
 
     override fun new(useDefault: Boolean, init: Record<M>.() -> Unit): Record<M> = create(newTmpWithId(useDefault, null, true, init))
@@ -111,31 +170,22 @@ class RecordRepositoryImpl<M : Model<M>>(override val env: PlatypusEnvironment, 
 
     override fun newTmp(useDefault: Boolean, init: Record<M>.() -> Unit) = newTmpWithId(useDefault, null, true, init)
 
-
-    override fun findFirstOrNull(op: M.() -> Expression<Boolean>): Record<M>? {
-        return search {
-            limit(limit = 1)
-            where { model.op() }
-        }.firstOrNull()
+    private fun PlatypusEnvironment.empty(): Record<M> {
+        return RecordImpl(null, 0, this, model)
     }
 
     override fun findFirst(op: M.() -> Expression<Boolean>): Record<M> {
-        return search {
-            limit(1)
-            where {
-                model.op()
-            }
-        }.first()
+        return find(op).firstOrNull() ?: this.env.empty()
     }
 
-    override fun search(query: SmartQueryBuilder<M>.(M) -> Unit) = model.search.call(this, query).result
+    override fun search(query: SmartQueryBuilder<M>.(M) -> Unit) = model.search.call(this, query)
 
 
     private fun wrapRowsIds(query: Query): List<Int> {
         val ids = ArrayList<Int>()
         for (row in query) {
             env.internal.cache.store(row)
-            ids.add(row[model.id])
+            ids.add(row.get(model.id))
         }
         return ids
     }
@@ -149,8 +199,8 @@ class RecordRepositoryImpl<M : Model<M>>(override val env: PlatypusEnvironment, 
     }
 
     private fun wrapRow(row: ResultRow, fs: FieldSet): Record<M> {
-        env.internal.cache.store(model of row[model.id], fs.fieldsExpression, row)
-        return RecordImpl(row[model.id], env, model)
+        env.internal.cache.store(model of row.get(model.id), fs.fieldsExpression, row)
+        return RecordImpl(row.get(model.id), env, model)
     }
 
     override fun delete(id: Int) {
@@ -166,7 +216,7 @@ class RecordRepositoryImpl<M : Model<M>>(override val env: PlatypusEnvironment, 
         return RecordRepositoryImpl(env.withContext(*vals), model)
     }
 
-    override fun sudo(user: User): RecordRepository<M> {
+    override fun sudo(user: PlatypusUser): RecordRepository<M> {
         return RecordRepositoryImpl(env.sudo(user), model)
     }
 

@@ -37,12 +37,12 @@ class ModuleData(val env: PlatypusEnvironment,
                  private val noUpdate: UpdateDataType,
                  private val version: String) {
 
-    fun <M : Model<M>> newData(repo:RecordRepository<M>, ref: String, init: Record<M>.() -> Unit): Record<M> {
-        val e = repo.byRefOrNull(ref)
+    fun <M : Model<M>> RecordRepository<M>.newData(ref: String, init: Record<M>.() -> Unit): Record<M> {
+        val e = this.byRefOrNull(ref)
         val versionData = version.replace(".", "").toInt()
         if (e == null) {
             env.logger.info("$ref -> Create ")
-            val r = repo.new(true, init)
+            val r = this.new(true, init)
             env.internal.cache[r.model of r.id, r.model.externalRef] = ref
             return r
         } else {

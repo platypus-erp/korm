@@ -4,8 +4,8 @@ import org.platypus.Environmentable
 import org.platypus.PlatypusEnvironment
 import org.platypus.exceptions.PlatypusForbiddenActionGroup
 import org.platypus.model.IModel
-import org.platypus.module.base.AdminUser
 import org.platypus.security.PlatypusGroup
+import org.platypus.security.ROOT_USER
 import java.util.*
 
 interface ApiOneParam<RT : Environmentable,
@@ -74,7 +74,7 @@ abstract class ApiParamStacker<
     }
 
     fun canBeCalled(env: PlatypusEnvironment): Boolean {
-        return env.sudoUser == AdminUser || methodGroups.isEmpty() || env.sudoUser.groups.containsAll(methodGroups)
+        return env.sudoUser == ROOT_USER || methodGroups.isEmpty() || env.sudoUser.groups.containsAll(methodGroups)
     }
 
     private fun PlatypusEnvironment.checkAccessRight(){

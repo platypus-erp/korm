@@ -10,7 +10,7 @@ import org.platypus.orm.sql.dml.StatementType
 import org.platypus.orm.sql.expression.Expression
 import java.sql.PreparedStatement
 
-class DeleteStatement(env: PlatypusEnvironment, val model: IModel<*>, val where: Expression<Boolean>? = null, val isIgnore: Boolean = false) : Statement<Int>(env.internal.cr, StatementType.DELETE, listOf(model)) {
+class DeleteStatement (env: PlatypusEnvironment, val model: IModel<*>, val where: Expression<Boolean>? = null, val isIgnore: Boolean = false) : Statement<Int>(env.internal.cr, StatementType.DELETE, listOf(model)) {
 
     override fun PreparedStatement.executeInternal(): Int {
         return executeUpdate()

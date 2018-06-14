@@ -1,0 +1,22 @@
+= Platypus
+
+Platypus est un server conçut sur un principe modulaire
+
+Si vous voulez créer un Module tiers suivé ce tuto
+// Tuto création module tiers
+
+Si vous voulez monter un Server Platypus suivez ce tuto
+//Tuto creation final app
+
+Si vous voulez vous la docuementation de l'api
+//Api doc
+
+Si vous voulez une explication plus fonctionnel de l'api
+//Api doc fonctionnel
+
+
+
+
+
+
+

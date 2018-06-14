@@ -32,7 +32,7 @@ internal fun <M : Model<M>> RecordRepository<M>.newTmpWithId(
     prototype.init()
     if (forceMagicField) {
         env.internal.cache.forceSet(prototype.modelID, model.createDate, LocalDateTime.now())
-        env.internal.cache.forceSet(prototype.modelID, model.createUid, env.envUser.id)
+        env.internal.cache.forceSet(prototype.modelID, model.createUid, env.envUser.getData(env).id)
     }
     return prototype
 }
@@ -41,6 +41,6 @@ internal fun <M : Model<M>> RecordRepository<M>.newTmpWithId(
  * Create a fake record inside the cache and a fake id if needed
  * if the [id] is not null et not fake the the cache is not altered
  */
-private fun <M : Model<M>> RecordRepository<M>.createFakeRecord(model:M, id: Int? = null): ModelID {
+private fun <M : Model<M>> RecordRepository<M>.createFakeRecord(model: M, id: Int? = null): ModelID {
     return env.internal.cache.createFakeRecordIfNeeded(model, id)
 }

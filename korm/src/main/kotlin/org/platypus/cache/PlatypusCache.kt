@@ -5,8 +5,8 @@ import org.platypus.cache.CacheState.FETCHED
 import org.platypus.cache.CacheState.NONE
 import org.platypus.cache.CacheState.PARTIALLY
 import org.platypus.cache.CacheState.UPDATED
-import org.platypus.entity.PlatypusSelection
 import org.platypus.entity.Record
+import org.platypus.entity.SelectionValue
 import org.platypus.model.IModel
 import org.platypus.model.LinkModel
 import org.platypus.model.Model
@@ -16,7 +16,6 @@ import org.platypus.model.field.api.FieldVisitor
 import org.platypus.model.field.api.IModelField
 import org.platypus.model.field.api.ModelField
 import org.platypus.model.field.api.ModelFieldType
-import org.platypus.model.field.api.ReferencedField
 import org.platypus.model.field.api.isRelationalField
 import org.platypus.model.field.impl.ArchivedModelField
 import org.platypus.model.field.impl.BinaryField
@@ -119,7 +118,7 @@ private interface CacheVisitorSetter : FieldVisitor<Pair<ModelID, Any?>, Unit> {
     }
 
     override fun visit(field: One2ManyField<*, *>, p: Pair<ModelID, Any?>) {
-        warmCache()[p.first, field] = p.second as Pair<CacheState, ModelIDS?>
+        warmCache()[p.first, field] = warmCache().state(p.first, field).update() to (p.second as ModelIDS?)
     }
 
     override fun visit(field: Many2OneField<*, *>, p: Pair<ModelID, Any?>) {
@@ -135,7 +134,7 @@ private interface CacheVisitorSetter : FieldVisitor<Pair<ModelID, Any?>, Unit> {
     }
 
     override fun visit(field: Many2ManyField<*, *>, p: Pair<ModelID, Any?>) {
-        warmCache()[p.first, field] = p.second as Pair<CacheState, ModelIDS?>
+        warmCache()[p.first, field] = warmCache().state(p.first, field).update() to (p.second as ModelIDS?)
     }
 
     override fun visit(field: PKModelField<*>, p: Pair<ModelID, Any?>) {
@@ -143,7 +142,7 @@ private interface CacheVisitorSetter : FieldVisitor<Pair<ModelID, Any?>, Unit> {
     }
 
     override fun visit(field: SelectionField<*, *>, p: Pair<ModelID, Any?>) {
-        warmCache()[p.first, field] = p.second as PlatypusSelection<*>?
+        warmCache()[p.first, field] = p.second as SelectionValue<*>?
     }
 
     override fun visit(field: NameModelField<*>, p: Pair<ModelID, Any?>) {
@@ -185,7 +184,6 @@ class PlatypusCache : AutoCloseable {
     private val dataState: MutableMap<IModel<*>, MutableMap<Int, MutableMap<IModelField<*, *>, CacheState>>> = HashMap()
     private val scheduledUpdate: MutableMap<IModel<*>, MutableMap<Int, MutableSet<IModelField<*, *>>>> = HashMap()
     private val scheduledInsert: MutableMap<ModelID, ModelID?> = HashMap()
-    private val scheduledDelete: MutableList<ModelID> = ArrayList()
     var counter: Int = 0
 
     val toInsert: Set<ModelID>
@@ -194,14 +192,24 @@ class PlatypusCache : AutoCloseable {
     val toUpdate: Map<IModel<*>, Map<Int, Set<IModelField<*, *>>>>
         get() = scheduledUpdate
 
-    val toDelete: List<ModelID>
-        get() = scheduledDelete
-
     fun reset() {
         println("Clear reset cache")
         scheduledUpdate.clear()
-        scheduledDelete.clear()
         for (a in dataState) {
+            for (b in a.value) {
+                for (c in b.value) {
+                    c.setValue(FETCHED)
+                }
+            }
+        }
+    }
+
+    fun reset(model:Model<*>) {
+        println("Clear reset cache")
+        val toSave = scheduledUpdate.filter { it != model }
+        scheduledUpdate.clear()
+        scheduledUpdate.putAll(toSave)
+        for (a in dataState.filter { it.key == model }) {
             for (b in a.value) {
                 for (c in b.value) {
                     c.setValue(FETCHED)
@@ -285,15 +293,7 @@ class PlatypusCache : AutoCloseable {
             FETCHED, UPDATED -> modelId.setState(f, forceState ?: UPDATED)
             NONE, PARTIALLY -> modelId.setState(f, forceState ?: PARTIALLY)
         }
-        val valueConverted = value?.let {
-            when (f.type.typeEnum) {
-                ModelFieldType.MANY_TO_ONE, ModelFieldType.ONE_TO_ONE -> {
-                    (f as ReferencedField<*, *>).target of (value as Int)
-                }
-                else -> value
-            }
-        }
-        data.getOrPut(modelId.model, { HashMap() }).getOrPut(modelId.id, { HashMap() })[f] = valueConverted
+        data.getOrPut(modelId.model, { HashMap() }).getOrPut(modelId.id, { HashMap() })[f] = value
     }
 
     operator fun contains(id: ModelID): Boolean {
@@ -318,16 +318,16 @@ class PlatypusCache : AutoCloseable {
             throw IllegalStateException("You can't create a record not currently in the persitence layer")
         }
 
-        val mapFields = fieldsToStore.map { it as ModelField<*, *> }.groupBy { it.model }
+        val mapFields = fieldsToStore.map { it as IModelField<*, *> }.groupBy { it.model }
         for ((mo, fields) in mapFields) {
             val idF = fields.first { it == mo.id }
             val id = row.tryGet(mo.id)
             for (field in fields) {
-                val value: Any? = row[field]
+                val value: Any? = row.tryGetAny(field)
                 forceSet(modelId, field, value, FETCHED)
                 val refere = field.accept(RefereeFinder, Unit)
                 if (refere != null && value != null) {
-                    forceSet(refere.of(value as Int), refere.id, value)
+                    forceSet(value as ModelID, refere.id, value)
                 }
             }
         }
@@ -344,12 +344,12 @@ class PlatypusCache : AutoCloseable {
                 forceSet(mo of id, mo.id, id, PARTIALLY)
             }
             for (field in fields) {
-                val value: Any? = row[field]
+                val value: Any? = row.getAny(field)
                 if (field != mo.id) {
                     forceSet(mo of id, field, value, FETCHED)
                     val refere = field.accept(RefereeFinder, Unit)
                     if (refere != null && value != null) {
-                        forceSet(refere.of(value as Int), refere.id, value)
+                        forceSet(value as ModelID, refere.id, value)
                     }
                 }
             }
@@ -432,7 +432,7 @@ class PlatypusCache : AutoCloseable {
         return (modelId stateOf prop) to ((modelId valueOf prop) as String?)
     }
 
-    operator fun set(modelId: ModelID, prop: SelectionField<*, *>, value: PlatypusSelection<*>?) {
+    operator fun set(modelId: ModelID, prop: SelectionField<*, *>, value: SelectionValue<*>?) {
         updateValue(modelId, prop, value?.value)
     }
 
@@ -508,20 +508,12 @@ class PlatypusCache : AutoCloseable {
         return (modelId stateOf prop) to ((modelId valueOf prop) as Boolean? ?: false)
     }
 
-    private fun ModelID.filterDeleted(): ModelID? {
-        return if (this in scheduledDelete) return null else this
-    }
-
-    private fun ModelIDS.filterDeleted(): ModelIDS? {
-        return this.model of this.ids.filter { (this.model of it) !in this@PlatypusCache.scheduledDelete }
-    }
-
     operator fun get(modelId: ModelID, prop: One2ManyField<*, *>): Pair<CacheState, ModelIDS?> {
         val state = modelId stateOf prop
         return state to (when (state) {
             FETCHED, PARTIALLY -> data[modelId.model]?.get(modelId.id)?.get(prop) as ModelIDS
             NONE, UPDATED -> null
-        })?.filterDeleted()
+        })
     }
 
     operator fun set(modelId: ModelID, prop: One2ManyField<*, *>, value: Pair<CacheState, ModelIDS?>) {
@@ -532,15 +524,15 @@ class PlatypusCache : AutoCloseable {
     }
 
     operator fun get(modelId: ModelID, prop: Many2OneField<*, *>): Pair<CacheState, ModelID?> {
-        return (modelId stateOf prop) to (modelId.getData()[prop] as ModelID?)?.filterDeleted()
+        return (modelId stateOf prop) to (modelId.getData()[prop] as ModelID?)
     }
 
     operator fun get(modelId: ModelID, prop: CreateUID<*>): Pair<CacheState, ModelID?> {
-        return (modelId stateOf prop) to (modelId.getData()[prop] as ModelID?)?.filterDeleted()
+        return (modelId stateOf prop) to (modelId.getData()[prop] as ModelID?)
     }
 
     operator fun get(modelId: ModelID, prop: WriteUID<*>): Pair<CacheState, ModelID?> {
-        return (modelId stateOf prop) to (modelId.getData()[prop] as ModelID?)?.filterDeleted()
+        return (modelId stateOf prop) to (modelId.getData()[prop] as ModelID?)
     }
 
     operator fun set(modelId: ModelID, prop: CreateUID<*>, value: ModelID) {
@@ -572,7 +564,6 @@ class PlatypusCache : AutoCloseable {
     }
 
     private fun ModelID.deleteInCache() {
-        scheduledDelete.add(this)
         for (ref in ReferenceModel[this.model]) {
             when (ref.onDelete) {
                 ReferenceOption.RESTRICT -> {
@@ -804,10 +795,6 @@ class PlatypusCache : AutoCloseable {
         if (modelIdToDelete == null) {
             throw IllegalStateException("Trying to remove a link between $modelId and $targetModelID, but I can't find it")
         }
-        if (modelIdToDelete in scheduledDelete) {
-            throw IllegalStateException("Trying to remove a link between $modelId and $targetModelID, but this link is already deleted")
-        }
-        scheduledDelete.add(modelIdToDelete)
         scheduledInsert.remove(modelIdToDelete)
 
         val currentids = modelId.getData()[prop] as ModelIDS
@@ -879,8 +866,10 @@ class PlatypusCache : AutoCloseable {
         return result
     }
 
-    fun updateValue(modelId: ModelID, prop: IModelField<*, *>, value: Any?) {
-        println("updateValue $modelId, ${prop.completeName}, $value")
+    private fun updateValue(modelId: ModelID, prop: IModelField<*, *>, value: Any?) {
+        if (value == (modelId valueOf  prop)){
+            return
+        }
         if (modelId.model != prop.model) {
             throw IllegalStateException("You can't set a value for a field that don't belong to the correct models" +
                     "${modelId.model} != ${prop.model} for value $value")
@@ -901,19 +890,26 @@ class PlatypusCache : AutoCloseable {
         }
     }
 
-    fun markAsUpdate(modelId: ModelID, prop: IModelField<*, *>) {
+    private fun markAsUpdate(modelId: ModelID, prop: IModelField<*, *>) {
         if (prop.store) {
             scheduledUpdate.getOrPut(modelId.model, { HashMap() }).getOrPut(modelId.id, { HashSet() }).add(prop)
         }
     }
 
     fun addnewId(toinsert: ModelID, newId: Int) {
-        println("addnewId $toinsert, $newId")
         scheduledInsert[toinsert] = toinsert.model of newId
     }
 
     fun state(modelID: ModelID, prop: IModelField<*, *>): CacheState {
         return modelID stateOf prop
+    }
+
+    fun isNONE_STATE(modelID: ModelID, prop: IModelField<*, *>): Boolean {
+        return (modelID stateOf prop) == NONE
+    }
+
+    fun isNONE_STATE(modelID: ModelID): Boolean {
+        return (modelID stateOf modelID.model.id) == NONE
     }
 
     fun state(modelID: ModelID): CacheState {

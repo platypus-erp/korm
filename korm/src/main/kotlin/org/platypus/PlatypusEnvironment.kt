@@ -2,34 +2,30 @@ package org.platypus
 
 import org.platypus.cache.PlatypusCache
 import org.platypus.config.PlatypusConf
-import org.platypus.context.ContextKey
 import org.platypus.context.PlatypusContext
+import org.platypus.model.Model
 import org.platypus.module.base.entities.Language
 import org.platypus.orm.PersistenceDialect
 import org.platypus.orm.transaction.TransactionExecutor
 import org.platypus.security.PlatypusUser
-import org.platypus.ui.action.MenuAction
-import org.platypus.ui.menu.AppMenus
 import org.slf4j.Logger
 import java.time.ZoneId
 
-interface PlatypusEnvironment : ReadOnlyPlatypusEnvironment, SudoAble<PlatypusEnvironment> {
+interface PlatypusEnvironment : ReadOnlyPlatypusEnvironment, SudoAble<PlatypusEnvironment>, ContextAble<PlatypusEnvironment> {
 
     /**
      * Store all the altered and new data to the DataBase
      */
     fun flush()
+    /**
+     * Store all the altered and new data to the DataBase for this model
+     */
+    fun flush(model:Model<*>)
 
     /**
      * After the call you can't call [flush]
      */
     override fun close()
-
-
-    /**
-     * Return a new Environment with the context equal to current [context] + [vals]
-     */
-    fun withContext(vararg vals: ContextKey.Value<*>): PlatypusEnvironment
 
     /**
      * Return a new Environement with [envUser] = [user]
@@ -39,14 +35,9 @@ interface PlatypusEnvironment : ReadOnlyPlatypusEnvironment, SudoAble<PlatypusEn
      * [timezone] = [user].zoneId
      */
     fun connect(user:PlatypusUser):PlatypusEnvironment
+
     val internal: PlatypusEnvironmentInternal
 
-}
-
-interface PlatypusUIEnvironment {
-
-    val menus: AppMenus
-    val action: MenuAction
 }
 
 interface PlatypusEnvironmentInternal:AutoCloseable {

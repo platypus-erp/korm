@@ -1,15 +1,15 @@
 package org.platypus
 
-import org.platypus.cache.CacheState
 import org.platypus.cache.ModelID
 import org.platypus.cache.PlatypusCache
-import org.platypus.cache.modelID
 import org.platypus.cache.of
 import org.platypus.config.PlatypusConf
 import org.platypus.config.PlatypusConf.Companion.mode
 import org.platypus.context.ContextKey
 import org.platypus.context.PlatypusContext
-import org.platypus.context.newContext
+import org.platypus.model.IModel
+import org.platypus.model.Model
+import org.platypus.model.field.api.IModelField
 import org.platypus.model.field.api.ModelFieldType.MANY_TO_MANY
 import org.platypus.model.field.api.ModelFieldType.MANY_TO_ONE
 import org.platypus.model.field.api.ModelFieldType.ONE_TO_ONE
@@ -17,25 +17,18 @@ import org.platypus.model.field.api.ModelFieldType.PK
 import org.platypus.model.field.api.ModelFieldType.REV_ONE_TO_ONE
 import org.platypus.model.field.api.isRelationalField
 import org.platypus.module.base.entities.Language
-import org.platypus.module.base.entities.users
 import org.platypus.module.base.models.Users
 import org.platypus.orm.PersistenceDialect
 import org.platypus.orm.sql.dml.statements.InsertStatement
 import org.platypus.orm.sql.dml.statements.UpdateStatement
 import org.platypus.orm.sql.dml.storeFields
 import org.platypus.orm.sql.expression.eq
-import org.platypus.orm.sql.query.buildSelect
 import org.platypus.orm.transaction.TransactionApi
 import org.platypus.orm.transaction.TransactionExecutor
-import org.platypus.orm.transaction.TransactionMode
-import org.platypus.repository.RecordRepositoryImpl
-import org.platypus.repository.newTmpWithId
-import org.platypus.security.AdminUser
 import org.platypus.security.PlatypusUser
+import org.platypus.security.ROOT_USER
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.sql.SQLException
-import java.time.LocalDateTime
 import java.time.ZoneId
 
 
@@ -50,9 +43,8 @@ class BaseEnvironment(
 
     internal companion object {
         fun create(user: PlatypusUser?, conf: PlatypusConf, context: PlatypusContext, newTransaction: TransactionApi): BaseEnvironment {
-            val fakeEnv = FirstStartEnv(conf, newTransaction)
-            val userUsed = user ?: fakeEnv.envUser
-            return BaseEnvironment(userUsed, userUsed, conf, context, fakeEnv.internal)
+            val userUsed = user ?: ROOT_USER
+            return BaseEnvironment(userUsed, userUsed, conf, context, BaseInternalEnvironment(newTransaction, PlatypusCache()))
         }
     }
 
@@ -82,43 +74,49 @@ class BaseEnvironment(
         flushCache()
     }
 
+    override fun flush(model: Model<*>) {
+        for (toinsert in cache.toInsert.filter { it.model == model }) {
+            flushInsert(toinsert)
+        }
+        for (toUpdate in cache.toUpdate.filter { it.key == model }.values) {
+            flushUpdate(toUpdate, model)
+        }
+
+    }
+
     private fun flushCache() {
         for (toinsert in cache.toInsert) {
-            createInsert(toinsert)
+            flushInsert(toinsert)
         }
         for ((model, toUpdate) in cache.toUpdate) {
-            for ((id, fieldsToUpdate) in toUpdate) {
-                model.storeFields
-                val realId = cache.realID(model of id)
-                val updateStatement = UpdateStatement(this, model, model.id eq realId.id)
-                for (fieldToUpdate in fieldsToUpdate) {
-                    val value = if (fieldToUpdate.type.typeEnum.isRelationalField()) {
-                        val cacheValue = cache.getValue(model, id, fieldToUpdate).second as ModelID?
-                        if (cacheValue != null) {
-                            cache.realID(cacheValue)
-                        } else {
-                            null
-                        }
-                    } else {
-                        cache.getValue(model, id, fieldToUpdate).second
-                    }
-                    updateStatement.forceSet(fieldToUpdate, value)
-                }
-                updateStatement.execute()
-            }
+            flushUpdate(toUpdate, model)
         }
-//        cache.toDelete.groupBy({ it.models }, { it.id }).forEach {
-//            val op = if (it.value.size > 1) {
-//                it.key.id inList it.value
-//            } else {
-//                it.key.id eq it.value[0]
-//            }
-//            DeleteStatement(this, it.key, op).execute()
-//        }
         cache.reset()
     }
 
-    private fun createInsert(toinsert: ModelID) {
+    private fun flushUpdate(toUpdate: Map<Int, Set<IModelField<*, *>>>, model: IModel<*>) {
+        for ((id, fieldsToUpdate) in toUpdate) {
+            model.storeFields
+            val realId = cache.realID(model of id)
+            val updateStatement = UpdateStatement(this, model, model.id eq realId.id)
+            for (fieldToUpdate in fieldsToUpdate) {
+                val value = if (fieldToUpdate.type.typeEnum.isRelationalField()) {
+                    val cacheValue = cache.getValue(model, id, fieldToUpdate).second as ModelID?
+                    if (cacheValue != null) {
+                        cache.realID(cacheValue)
+                    } else {
+                        null
+                    }
+                } else {
+                    cache.getValue(model, id, fieldToUpdate).second
+                }
+                updateStatement.forceSet(fieldToUpdate, value)
+            }
+            updateStatement.execute()
+        }
+    }
+
+    private fun flushInsert(toinsert: ModelID) {
         if (cache.isInDB(toinsert)) {
             return
         }
@@ -130,7 +128,7 @@ class BaseEnvironment(
                     if (v != null) {
                         if (cache.isNotInDB(v as ModelID)) {
                             if (!cache.isToUpdate(toinsert, k)) {
-                                createInsert(v)
+                                flushInsert(v)
                                 insertStmt.forceSet(k, cache.realID(v).id)
                             }
                         } else {
@@ -160,12 +158,11 @@ class BaseEnvironment(
         }
         insertStmt.execute()
         val newId = insertStmt[toinsert.model.id]
-        println("ID=$newId")
         cache.addnewId(toinsert, newId)
     }
 
     override fun close() {
-        println("Close Env $mode")
+        println("Close Env in mode $mode")
         flush()
         internal.cr.close()
     }
@@ -186,87 +183,5 @@ internal class BaseInternalEnvironment(trApi: TransactionApi, private val initia
         cr.closeExecutedStatements()
         cr.close()
         cache.close()
-    }
-}
-
-fun initUser(conf: PlatypusConf, newTransaction: TransactionApi) {
-    val fake = FirstStartEnv(conf, newTransaction)
-    val env = BaseEnvironment(fake.envUser, fake.sudoUser, conf, newContext(), fake.internal)
-    val q = env.buildSelect(Users) {
-        where {
-            it.externalRef eq conf.adminUserRef
-        }
-        limit(1)
-    }
-    if (q.firstOrNull() == null) {
-        val id = (env.internal.cr.native("SELECT nextval('${Users.tableName}_${Users.id.fieldName}_seq')") {
-            it.next()
-            it.getInt(1)
-        })
-        val insertStmt = InsertStatement<Int>(env, Users, false)
-        insertStmt.forceSet(Users.id, id)
-        insertStmt.forceSet(Users.externalRef, conf.adminUserRef)
-        insertStmt.forceSet(Users.createUid, id)
-        insertStmt.forceSet(Users.createDate, LocalDateTime.now())
-        insertStmt.forceSet(Users.name, "Root")
-        insertStmt.execute()
-
-        env.close()
-    }
-}
-
-private class FirstStartEnv(override val conf: PlatypusConf, newTransaction: TransactionApi) : PlatypusEnvironment {
-
-
-    override val lang: Language? = null
-    override val timezone: ZoneId = ZoneId.systemDefault()
-    override val debug: Boolean = false
-    override val logger: Logger = LoggerFactory.getLogger("FirstStartEnv")
-    override val internal: PlatypusEnvironmentInternal = BaseInternalEnvironment(newTransaction)
-    override val context: PlatypusContext = PlatypusContext()
-    override val envUser: PlatypusUser
-        get() = AdminUser
-    override val sudoUser: PlatypusUser
-        get() = AdminUser
-
-    val adminUser = RecordRepositoryImpl(this, Users).newTmpWithId(false, 1, false) {}
-
-    init {
-        internal.cache.forceSet(adminUser.modelID, Users.id, 1, CacheState.FETCHED)
-        internal.cache.forceSet(adminUser.modelID, Users.externalRef, conf.adminUserRef, CacheState.FETCHED)
-        internal.cache.forceSet(adminUser.modelID, Users.name, "Root", CacheState.FETCHED)
-        internal.cache.forceSet(adminUser.modelID, Users.createUid, adminUser.modelID.id, CacheState.FETCHED)
-        internal.cache.forceSet(adminUser.modelID, Users.createDate, LocalDateTime.now(), CacheState.FETCHED)
-        this.users.newTmpWithId(true, 1, false) {}
-    }
-
-    override fun withContext(vararg vals: ContextKey.Value<*>): PlatypusEnvironment {
-        throw UnsupportedOperationException()
-    }
-
-    override fun sudo(user: PlatypusUser): PlatypusEnvironment {
-        throw UnsupportedOperationException()
-    }
-
-    override fun connect(user: PlatypusUser): PlatypusEnvironment {
-        throw UnsupportedOperationException()
-    }
-
-    override fun flush() {
-        throw UnsupportedOperationException("You can't flush a Fake Environment")
-    }
-
-    override fun close() {
-        println("Close Env")
-        flush()
-        try {
-            if (PlatypusConf.mode == TransactionMode.NORMAL) {
-                internal.cr.commit()
-            } else {
-                internal.cr.rollback()
-            }
-        } catch (e: SQLException) {
-            internal.cr.rollback()
-        }
     }
 }

@@ -1,5 +1,6 @@
 package org.platypus.orm.sql.expression
 
+import org.platypus.model.IModel
 import org.platypus.model.Model
 import org.platypus.model.field.api.ReferencedField
 import org.platypus.model.field.api.type.SqlFieldType
@@ -53,7 +54,7 @@ operator fun <S : T, T> Expression<T>.times(other: Expression<S>): Expression<T>
 operator fun <S : T, T> Expression<T>.div(other: Expression<S>): Expression<T> = DivideOp(this, other)
 
 
-infix fun <M : Model<M>, TM : Model<TM>> ReferencedField<M, TM>.eq(t: Int?): Expression<Boolean> {
+infix fun <M : IModel<M>, TM : Model<TM>> ReferencedField<M, TM>.eq(t: Int?): Expression<Boolean> {
     if (t == null) {
         return isNull()
     }

@@ -10,6 +10,7 @@ import org.platypus.model.field.impl.Many2ManyField
 import org.platypus.model.field.impl.Many2OneFieldLink
 import org.platypus.model.field.impl.PKModelField
 import org.platypus.orm.ReferenceOption
+import org.platypus.orm.sql.expression.eq
 import org.platypus.orm.sql.select
 import kotlin.reflect.KProperty
 
@@ -44,6 +45,10 @@ class LinkModel<M1 : Model<M1>, M2 : Model<M2>>(
 
     override fun targetTables(): List<IModel<*>> = listOf(this, m1M2O.model, m2M2O.model)
 
+    override fun describe(env: PlatypusEnvironment): String {
+        return env.internal.dialect.identity(this)
+    }
+
 
     internal val m1M2O by lazy { Many2OneFieldLink("${m1().tableName}_id", this, m1(), ReferenceOption.CASCADE, null) }
     internal val m2M2O by lazy { Many2OneFieldLink("${m2().tableName}_id", this, m2(), ReferenceOption.CASCADE, null) }
@@ -56,8 +61,8 @@ class LinkModel<M1 : Model<M1>, M2 : Model<M2>>(
     fun findIds(env: PlatypusEnvironment, prop: Many2ManyField<M2, M1>, modelID: ModelID): ModelIDS {
         return if (env.internal.cache.isInDB(modelID)) {
             val id = env.internal.cache.realID(modelID)
-            val q = this.slice(m1M2O).select(env) { m2M2O eq RecordImpl(id.id, env, m2M2O.target) }
-            m1M2O.target of q.map { it[m1M2O].id }
+            val q = this.slice(m1M2O).select(env) { m2M2O eq id.id }
+            m1M2O.target of q.map { it.get(m1M2O)!!.id }
         } else {
             m1M2O.target of emptyList()
         }
@@ -69,12 +74,29 @@ class LinkModel<M1 : Model<M1>, M2 : Model<M2>>(
             val query = this.slice(this.id, this.m1M2O, this.m2M2O).select(env) { m1M2O eq RecordImpl(id.id, env, m1M2O.target) }
             val ids = ArrayList<Int>()
             for (row in query) {
-                env.internal.cache.store(this of row[this.id], query.fieldSet.fieldsExpression, row)
-                ids.add(row[m2M2O].id)
+                env.internal.cache.store(this of row.get(this.id), query.fieldSet.fieldsExpression, row)
+                ids.add(row.get(m2M2O)!!.id)
             }
             m2M2O.target of ids
         } else {
             m2M2O.model of emptyList()
         }
+    }
+
+
+
+    override fun hashCode(): Int {
+        return modelName.hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as LinkModel<*, *>
+
+        if (modelName != other.modelName) return false
+
+        return true
     }
 }

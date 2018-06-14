@@ -11,9 +11,11 @@ import org.platypus.cache.PlatypusCache
 import org.platypus.cache.isNotEmpty
 import org.platypus.cache.of
 import org.platypus.model.Model
-import org.platypus.model.field.impl.Many2ManyField
 import org.platypus.model.ModelMany2Many
+import org.platypus.model.field.impl.Many2ManyField
 import org.platypus.orm.sql.dml.statements.DeleteStatement
+import org.platypus.orm.sql.expression.eq
+import org.platypus.orm.sql.expression.inList
 
 fun <M : Model<M>, TM : Model<TM>>
         getMany2ManyBag(modelID: ModelID,

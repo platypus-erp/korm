@@ -1,7 +1,7 @@
 package org.platypus.i18n
 
-import org.platypus.entity.PlatypusSelection
-import org.platypus.entity.PlatypusSelectionCompanion
+import org.platypus.entity.Selection
+import org.platypus.entity.SelectionValue
 import org.platypus.model.Model
 import org.platypus.model.field.api.IModelField
 import java.util.*
@@ -31,9 +31,8 @@ class PlatypusI18N(val locale: Locale) {
         field.putAll(tmp.values())
     }
 
-    fun <M : Model<M>, KS : PlatypusSelection<M>>
-            selection(selectioknHolder: PlatypusSelectionCompanion<M, KS>, def: I18nSelectionValue<M, KS>.() -> Unit) {
-        val tmp = I18nSelectionValue<M, KS>()
+    fun <KS : Selection<KS>> selection(selectioknHolder: KS, def: I18nSelectionValue<KS>.() -> Unit) {
+        val tmp = I18nSelectionValue<KS>()
         tmp.def()
         selection.putAll(tmp.values())
     }
@@ -105,9 +104,9 @@ class I18nFieldValues<M : Model<M>> : I18nValues {
     }
 }
 
-class I18nSelectionValue<M : Model<M>, in KS : PlatypusSelection<M>> : I18nValues {
+class I18nSelectionValue<KS : Selection<KS>> : I18nValues {
     private val properties = HashMap<String, String>()
-    fun add(value: KS) {
+    fun add(value: SelectionValue<KS>) {
         properties[value.value] = value.value
         properties["${value.value}_label"] = value.label
     }

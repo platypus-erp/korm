@@ -5,6 +5,7 @@ import org.platypus.ReadOnlyPlatypusEnvironment
 import org.platypus.UIWidget
 import org.platypus.model.Model
 import org.platypus.model.field.api.ModelField
+import org.platypus.model.field.impl.RealModelField
 import org.platypus.ui.SearchableView
 import org.platypus.ui.ToViewApi
 import org.platypus.ui.UIComponent
@@ -42,9 +43,10 @@ object TreeViews : ViewType {
         println("get view ${model.modelName}")
         return map.values.firstOrNull { it.viewType == ViewApiType.PRIMARY && it.model == model } as ToViewApi<M>?
                 ?: TreeViewDefinition("default-${model.tableName}-$name", model, {
-                    for (f in it.storeFields) {
-                        field(f)
-                    }
+                    it.storeFields
+                            .filter { it is RealModelField<M, *> }
+                            .map { it as RealModelField<M, *> }
+                            .forEach { field(it) }
                 })
     }
 }

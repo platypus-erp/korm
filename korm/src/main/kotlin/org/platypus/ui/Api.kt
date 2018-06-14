@@ -2,7 +2,7 @@ package org.platypus.ui
 
 import kotlinx.html.TagConsumer
 import org.platypus.ReadOnlyPlatypusEnvironment
-import org.platypus.SearchTreeParam
+import org.platypus.web.SearchTreeParam
 import org.platypus.model.Model
 import org.platypus.orm.sql.query.SmartQueryBuilder
 

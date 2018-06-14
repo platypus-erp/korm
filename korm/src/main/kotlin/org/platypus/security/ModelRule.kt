@@ -48,21 +48,28 @@ class ModelRuleBuilder<M : Model<M>>(val uniqueId: String) {
 }
 
 data class ModelGroup<M : Model<M>>(
-        val model: M,
         val name: String,
         val uniqueId: String,
-        val create: Boolean,
         val read: Boolean,
         val write: Boolean,
         val delete: Boolean,
         val groups: Set<PlatypusGroup>
 )
 
-class ModelGroupBuilder<M : Model<M>>(val model: M, val uniqueId: String) {
+class ModelGroupBuilder<M : Model<M>>(val uniqueId: String) {
     var name: String = ""
     var create: Boolean = false
     var read: Boolean = false
     var write: Boolean = false
     var delete: Boolean = false
     var groups: Set<PlatypusGroup> = emptySet()
+
+    internal fun build(): ModelGroup<M> = ModelGroup(
+            uniqueId = uniqueId,
+            name = name,
+            read = read,
+            write = write,
+            delete = delete,
+            groups = groups
+    )
 }

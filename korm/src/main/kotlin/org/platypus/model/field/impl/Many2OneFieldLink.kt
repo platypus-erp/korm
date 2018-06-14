@@ -34,7 +34,7 @@ class Many2OneFieldLink<M : IModel<M>, TM : Model<TM>>(
 
     override val onDelete = defaultOnDelete
 
-    override val type: SqlFieldType = Many2OneFieldType(true)
+    override val type: SqlFieldType = Many2OneFieldType(true, target)
 
     override fun <PARAM_TYPE, RETURN> accept(visitor: FieldVisitor<PARAM_TYPE, RETURN>, p: PARAM_TYPE): RETURN = visitor.visit(this, p)
     override fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN = visitor.visit(this, param)

@@ -23,25 +23,25 @@ class SchemaCreator(val internal: PlatypusEnvironmentInternal) {
     private fun findDependsModel(models: Set<IModel<*>>): Set<IModel<*>> {
         val set = HashSet<IModel<*>>(models)
         for (model in models) {
-            set.addAll(dddd(model, set))
+            set.addAll(recursiveFindDependsModel(model, set))
         }
         return set
     }
 
-    private fun dddd(m: IModel<*>, n: HashSet<IModel<*>>): Set<IModel<*>> {
+    private fun recursiveFindDependsModel(m: IModel<*>, n: HashSet<IModel<*>>): Set<IModel<*>> {
         for (f in m.fields) {
             val ref = f.accept(RefereeFinder, Unit)
             if (ref != null && ref !in n) {
                 n.add(ref)
-                n.addAll(dddd(ref, n))
+                n.addAll(recursiveFindDependsModel(ref, n))
             }
         }
         return n
     }
 
-    fun createStatements(tables: Collection<IModel<*>>): Set<TableDDL> {
+    fun createStatements(tables: Set<IModel<*>>): Set<TableDDL> {
         val statements = HashSet<TableDDL>()
-        val allModels = findDependsModel(tables.toSet())
+        val allModels = findDependsModel(tables)
 
         if (allModels.isEmpty())
             return statements
@@ -56,9 +56,9 @@ class SchemaCreator(val internal: PlatypusEnvironmentInternal) {
         return statements
     }
 
-    fun dropStatement(tables: Collection<IModel<*>>): Set<TableDDL> {
+    fun dropStatement(tables: Set<IModel<*>>): Set<TableDDL> {
         val statements = HashSet<TableDDL>()
-        val allModels = findDependsModel(tables.toSet())
+        val allModels = findDependsModel(tables)
         if (allModels.isEmpty())
             return statements
 
@@ -76,7 +76,7 @@ class SchemaCreator(val internal: PlatypusEnvironmentInternal) {
             .toSet()
 
 
-    fun drop(tables: List<IModel<*>>) {
+    fun drop(tables: Set<IModel<*>>) {
         val statements = dropStatement(tables)
 
         //        for (indice in createIndiceStatement(tables)) {
@@ -93,7 +93,7 @@ class SchemaCreator(val internal: PlatypusEnvironmentInternal) {
 
     }
 
-    fun create(tables: List<IModel<*>>) {
+    fun create(tables: Set<IModel<*>>) {
         val statements = createStatements(tables)
         for (statement in statements) {
             internal.cr.native(statement.struc)

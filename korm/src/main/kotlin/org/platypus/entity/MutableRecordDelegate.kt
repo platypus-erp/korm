@@ -28,14 +28,17 @@ interface MutableRecordDelegate<M : Model<M>> : RecordDelegate<M> {
     operator fun NameModelField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: String?)
     operator fun IntField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: Int?)
     operator fun StringField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: String?)
-    operator fun <D : PlatypusSelection<M>> SelectionField<M, D>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: D?)
+    operator fun <D : Selection<D>> SelectionField<M, D>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: SelectionValue<D>?)
     operator fun TextField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: String?)
     operator fun DateField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: LocalDate?)
     operator fun DateTimeField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: LocalDateTime?)
     operator fun TimeField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: LocalTime?)
     operator fun BooleanField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: Boolean?)
+
     operator fun DecimalField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: BigDecimal?)
+
     operator fun BinaryField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: ByteArray?)
+
     operator fun ArchivedModelField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: Boolean?)
 
     operator fun <TM : Model<TM>> Many2OneField<M, TM>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: Record<TM>?)

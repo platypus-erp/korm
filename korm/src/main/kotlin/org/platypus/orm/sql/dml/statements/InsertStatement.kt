@@ -59,7 +59,6 @@ open class InsertStatement<Key : Any>(
         val sql = if (values.isEmpty()) {
             ""
         } else values.joinToString(prefix = "VALUES (", postfix = ")") { (col, value) ->
-            println("insert $col $value")
             builder.registerArgument(cr, col, value)
         }
         return dialect.insert(table, values.map { it.first }, sql, cr)

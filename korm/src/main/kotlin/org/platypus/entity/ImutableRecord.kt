@@ -27,6 +27,8 @@ interface ImutableRecord<M: Model<M>> : Identifiable, RecordDelegate<M> {
     val externalRef: String?
     val archived: Boolean
 
+    val empty: Boolean
+
     /**
      * Detach the current entity of the [env] cache
      * put the [internalState] to [EntityState.DETACH]
@@ -103,7 +105,7 @@ interface ImutableRecord<M: Model<M>> : Identifiable, RecordDelegate<M> {
     /**
      * Execute a fetch if the current field is not in the [PlatypusCache] retreive by [warmCache]
      *
-     * If the field is in cache the nothing appen,
+     * If the field is in cache the nothing append,
      * overrise fetch the current field and all the other field withch is not in cache for the current [Record] only
      */
     fun fetchIfNeeded(field: ModelField<M, *>): Record<M>

@@ -4,6 +4,7 @@ import org.platypus.orm.sql.expression.Case
 import org.platypus.orm.sql.expression.Coalesce
 import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.expression.TypedExpression
+import org.platypus.orm.sql.expression.wrap
 import org.platypus.orm.sql.predicate.ILikeOp
 import org.platypus.orm.sql.predicate.LikeOp
 import org.platypus.orm.sql.predicate.NotLikeOp

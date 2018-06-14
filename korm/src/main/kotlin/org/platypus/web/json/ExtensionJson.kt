@@ -18,7 +18,7 @@ fun Query.toJson(): JsonArray<JsonObject> {
 fun ResultRow.asMapNamed(): Map<String, Any?> {
     val data = HashMap<String, Any?>(this.data.size)
     for (rec in this.expr) {
-        data[rec.accept(CanonicalNameExpression, null)] = this[rec]
+        data[rec.accept(CanonicalNameExpression, null)] = this.getExpr(rec)
     }
     return data
 }
@@ -26,7 +26,7 @@ fun ResultRow.asMapNamed(): Map<String, Any?> {
 fun ResultRow.asMap(): Map<Expression<*>, Any?> {
     val data = HashMap<Expression<*>, Any?>(this.data.size)
     for (rec in this.expr) {
-        data[rec] = this[rec]
+        data[rec] = this.getExpr(rec)
     }
     return data
 }

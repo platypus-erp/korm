@@ -3,6 +3,7 @@ package org.platypus.module.base.models
 import org.platypus.model.Model
 import org.platypus.model.functions.PublicApiReturn
 import org.platypus.model.functions.asResult
+import org.platypus.module.base.entities.GroupData
 import org.platypus.module.base.entities.User
 import org.platypus.module.base.entities.groups
 import org.platypus.module.base.entities.hasGroup
@@ -10,7 +11,6 @@ import org.platypus.module.base.entities.hashPassword
 import org.platypus.module.base.entities.password
 import org.platypus.module.base.entities.users
 import org.platypus.orm.sql.expression.eq
-import org.platypus.security.GroupData
 import java.util.*
 
 object Users : Model<Users>("base.users") {

@@ -16,6 +16,11 @@ val platypus = Platypus.create {
     loadModule = BaseModule
 }
 
+
+/**
+ * This is th entry point to start a platypus server
+ * This class will load automaticaly the [PlatypusErpService]
+ */
 fun main(args: Array<String>) {
     platypus.start()
 }

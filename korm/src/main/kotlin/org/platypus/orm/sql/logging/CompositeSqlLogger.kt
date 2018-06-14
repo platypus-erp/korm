@@ -2,7 +2,6 @@ package org.platypus.orm.sql.logging
 
 import org.platypus.PlatypusEnvironment
 import org.platypus.orm.sql.dml.StatementContext
-import org.platypus.orm.sql.dml.StatementGroup
 import org.platypus.orm.sql.dml.statements.StatementInterceptor
 import java.sql.PreparedStatement
 import java.util.*
@@ -28,8 +27,7 @@ class CompositeSqlLogger : SqlLogger, StatementInterceptor {
 
     override fun afterExecution(contexts: List<StatementContext>, executedStatement: PreparedStatement) {
         contexts.forEach {
-            if (it.statement.type.group == StatementGroup.DML)
-                log(it.expandArgs())
+            log(it.expandArgs())
         }
     }
 

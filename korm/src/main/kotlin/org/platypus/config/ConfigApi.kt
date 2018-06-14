@@ -24,8 +24,7 @@ class PlatypusConf(
         val loadModule: ModuleBuilder,
         val loadData: Boolean,
         val debug: Boolean,
-        val mode: ServerMode,
-        val adminUserRef: String
+        val mode: ServerMode
 ) {
     companion object {
         private val webConfBuilder = PlatypusWebConfBuilder()
@@ -38,7 +37,7 @@ class PlatypusConf(
         var debug: Boolean = false
         var loadData: Boolean = false
         var startServerWeb: Boolean = true
-        var adminUserRef: String = "platypus_root"
+
 
         fun web(conf: PlatypusWebConfBuilder.() -> Unit) {
             webConfBuilder.conf()
@@ -69,8 +68,7 @@ class PlatypusConf(
                     locales = locales,
                     loadData = loadData,
                     debug = debug,
-                    mode = mode,
-                    adminUserRef = adminUserRef
+                    mode = mode
             )
         }
     }
@@ -100,4 +98,5 @@ class PlatypusDataBaseConf {
     var passwordDb: String = "platypus"
     var insolationLevel: Int = Connection.TRANSACTION_SERIALIZABLE
     var statementInterceptor: Set<StatementInterceptor> = emptySet()
+    var noUpdateSchema :Boolean = false
 }

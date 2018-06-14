@@ -27,8 +27,9 @@ import org.platypus.ui.menu.AppMenus
 import org.platypus.ui.tree.TreeViews
 
 object BaseModule : ModuleBuilder("base", {
+    dependsOf()
     models {
-        add(Users) {
+        Users config {
             route {
                 "login" pathOf Users.login
             }
@@ -39,17 +40,17 @@ object BaseModule : ModuleBuilder("base", {
                 add(TreeViews.basicUserTree)
             }
         }
-        add(GroupsData) {
+        GroupsData config {
             actions {
                 add(MenuAction.actGroup)
             }
         }
-        add(DashBoardModel) {
+        DashBoardModel config {
             actions {
                 add(MenuAction.default)
             }
         }
-        add(Languages) {
+        Languages config {
             views {
                 add(TreeViews.res_lang_tree)
             }

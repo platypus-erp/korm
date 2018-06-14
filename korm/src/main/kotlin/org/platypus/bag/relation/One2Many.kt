@@ -11,6 +11,7 @@ import org.platypus.cache.PlatypusCache
 import org.platypus.cache.of
 import org.platypus.model.Model
 import org.platypus.model.field.impl.One2ManyField
+import org.platypus.orm.sql.expression.eq
 import org.platypus.repository.RecordRepositoryImpl
 
 

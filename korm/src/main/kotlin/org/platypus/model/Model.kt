@@ -1,15 +1,13 @@
 package org.platypus.model
 
 import org.platypus.PlatypusEnvironment
-import org.platypus.PlatypusHandleAsField
 import org.platypus.bag.Bag
 import org.platypus.cache.modelID
 import org.platypus.context.ContextKeyNonNull
 import org.platypus.entity.FieldsWrite
 import org.platypus.entity.ImutableRecord
-import org.platypus.entity.PlatypusSelection
-import org.platypus.entity.PlatypusSelectionCompanion
 import org.platypus.entity.Record
+import org.platypus.entity.Selection
 import org.platypus.model.field.api.IModelField
 import org.platypus.model.field.api.ModelField
 import org.platypus.model.field.api.OnChangeType
@@ -99,8 +97,8 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
     override val fieldsExpression: Set<Expression<*>>
         get() = internalFields.filter { it.store }.toSet()
 
-    internal val storeFields: Set<RealModelField<M, *>>
-        get() = internalFields.filter { it.store }.map { it as RealModelField<M, *> }.toSet()
+    internal val storeFields: Set<IModelField<M, *>>
+        get() = internalFields.filter { it.store }.toSet()
 
     private val mixin = HashMap<MixinModel<M>, MixinType>()
 
@@ -207,7 +205,6 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
             }
     )
 
-    @PlatypusHandleAsField
     val nameExpr = api.private("nameExpr",
             fun(self: RecordRepository<M>): Set<ModelField<M, *>> {
                 return setOf(self.model.name)
@@ -286,7 +283,7 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
             }
     )
 
-    val searchRead = api.public("search",
+    val searchRead = api.public("searchRead",
             fun(empty: RecordRepository<M>, param: SearchQueryParam<M>): PublicApiReturn<Bag<M>> {
                 val query = if (param.fields.isNotEmpty()) {
                     val fieldToLoad: MutableSet<Expression<*>> = param.fields.filter { it.store }.toMutableSet()
@@ -305,11 +302,18 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
             }
     )
 
-    val search = api.public("otherSearch",
-            fun(empty: RecordRepository<M>, query: SmartQueryBuilder<M>.(M) -> Unit): PublicApiReturn<Bag<M>> {
+    val search = api.private("search",
+            fun(empty: RecordRepository<M>, query: SmartQueryBuilder<M>.(M) -> Unit): Bag<M> {
                 val q = SmartQueryBuilder(empty.model)
                 q.query(empty.model)
-                return empty.bagOf(q.buildQuery(empty.env)).asResult()
+                return execute.call(empty, q)
+            }
+    )
+
+    val execute = api.private("execute",
+            fun(empty: RecordRepository<M>, query: SmartQueryBuilder<M>): Bag<M> {
+                empty.env.flush(empty.model)
+                return empty.bagOf(query.buildQuery(empty.env))
             }
     )
 
@@ -355,7 +359,7 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
         return Many2ManyField.Builder(thisModel, name, { target(ModelMany2Many).reverse }).registerField(info)
     }
 
-    fun <D : PlatypusSelection<M>> selection(name: String, selection: PlatypusSelectionCompanion<M, D>, info: SelectionField.Builder<M, D>.() -> Unit = {}): SelectionField<M, D> =
+    fun <D : Selection<D>> selection(name: String, selection: D, info: SelectionField.Builder<M, D>.() -> Unit = {}): SelectionField<M, D> =
             SelectionField.Builder(thisModel, name, selection).registerField(info)
 
     fun <MT : Model<MT>, KT, F : ModelField<MT, KT>>
@@ -406,7 +410,7 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
      * @param targetField A lambda with the targeted [Many2OneField]
      * @param info The builder to fieldSet additional info
      */
-    fun <TM : Model<TM>> revOne2many(name: String, targetField: () -> One2OneField<TM, M>, info: RevOne2OneField.Builder<M, TM>.() -> Unit = {}): RevOne2OneField<M, TM> =
+    fun <TM : Model<TM>> revOne2one(name: String, targetField: () -> One2OneField<TM, M>, info: RevOne2OneField.Builder<M, TM>.() -> Unit = {}): RevOne2OneField<M, TM> =
             RevOne2OneField.Builder(thisModel, name, targetField).registerField(info)
 
 

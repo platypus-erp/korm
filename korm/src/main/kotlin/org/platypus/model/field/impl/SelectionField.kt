@@ -1,7 +1,7 @@
 package org.platypus.model.field.impl
 
-import org.platypus.entity.PlatypusSelection
-import org.platypus.entity.PlatypusSelectionCompanion
+import org.platypus.entity.Selection
+import org.platypus.entity.SelectionValue
 import org.platypus.model.Model
 import org.platypus.model.field.api.FieldSlotsImpl
 import org.platypus.model.field.api.FieldVisitor
@@ -13,9 +13,9 @@ import org.platypus.model.field.api.type.SqlFieldType
 import org.platypus.orm.OrmConstraint
 import org.platypus.orm.sql.expression.ExpressionVisitor
 
-class SelectionField<M : Model<M>, D : PlatypusSelection<M>>(
-        name: String, model: M, val selection: PlatypusSelectionCompanion<M, D>, slots: FieldSlotsImpl<D>
-) : SimpleField<M, D>(model, name, slots) {
+class SelectionField<M : Model<M>, D : Selection<D>>(
+        name: String, model: M, val selection: D, slots: FieldSlotsImpl<SelectionValue<D>>
+) : SimpleField<M, SelectionValue<D>>(model, name, slots) {
 
     override val type: SqlFieldType
         get() = SelectionFieldType(required)
@@ -29,12 +29,12 @@ class SelectionField<M : Model<M>, D : PlatypusSelection<M>>(
         this@SelectionField.slots.merge(f)
     }
 
-    class Builder<M : Model<M>, D : PlatypusSelection<M>>
-    private constructor(val model: M, val fieldName: String, val selection: PlatypusSelectionCompanion<M, D>, private val slots: MutableFieldSlotsImpl<D>)
-        : ModelField.Builder<M, SelectionField<M, D>>, MutableFieldSlots<D> by slots {
-        constructor(model: M, fieldName: String, selection: PlatypusSelectionCompanion<M, D>) : this(model, fieldName, selection, MutableFieldSlotsImpl())
+    class Builder<M : Model<M>, D : Selection<D>>
+    private constructor(val model: M, val fieldName: String, val selection: D, private val slots: MutableFieldSlotsImpl<SelectionValue<D>>)
+        : ModelField.Builder<M, SelectionField<M, D>>, MutableFieldSlots<SelectionValue<D>> by slots {
+        constructor(model: M, fieldName: String, selection: D) : this(model, fieldName, selection, MutableFieldSlotsImpl())
 
-        fun add(constraint: OrmConstraint<D>) {
+        fun add(constraint: OrmConstraint<SelectionValue<D>>) {
             slots.constraint.add(constraint)
         }
 

@@ -24,7 +24,7 @@ class Many2OneField<
 (
         name: String,
         model: M,
-        private val privateTarget: TM,
+        override val target: TM,
         slots: FieldSlotsImpl<Record<TM>>,
         defaultOnDelete: ReferenceOption?,
         defaultDomain: (TM.() -> Expression<Boolean>)?
@@ -34,14 +34,12 @@ class Many2OneField<
         ReferenceModel.referencedBy(target, this)
     }
 
-    override val target: TM
-        get() = privateTarget
     val targetOneToMany: One2ManyField<TM, M>? by lazy {
         target.fields.firstOrNull { it.accept(OneToManyTarget, this) } as One2ManyField<TM, M>?
     }
 
     override val type: SqlFieldType
-        get() = Many2OneFieldType(required)
+        get() = Many2OneFieldType(required, target)
 
 
     fun asExpr(): TypedExpression<Int> = IntField(this.fieldName, this.model, FieldSlotsImpl())

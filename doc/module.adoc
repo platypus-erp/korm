@@ -1,0 +1,11 @@
+Comment créer un Module
+
+
+Tout d'abord vous devez créer un module gradle dans votre IDE
+Puis en fonction du nom créer un fichier Module.kt
+
+Ce fichier va contenir les direrent élément créer par votre module
+
+
+
+

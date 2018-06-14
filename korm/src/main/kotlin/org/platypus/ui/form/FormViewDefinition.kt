@@ -1,6 +1,6 @@
 package org.platypus.ui.form
 
-import org.platypus.SearchTreeParam
+import org.platypus.web.SearchTreeParam
 import org.platypus.model.Model
 import org.platypus.orm.sql.query.SmartQueryBuilder
 import org.platypus.ui.ToViewApi

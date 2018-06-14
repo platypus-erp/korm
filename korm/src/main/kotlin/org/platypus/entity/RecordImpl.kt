@@ -38,6 +38,8 @@ import org.platypus.model.field.impl.WriteDateModelField
 import org.platypus.model.field.impl.WriteUID
 import org.platypus.module.base.entities.User
 import org.platypus.module.base.entities.users
+import org.platypus.orm.sql.expression.eq
+import org.platypus.orm.sql.query.SmartQueryBuilder
 import org.platypus.repository.RecordRepository
 import org.platypus.repository.RecordRepositoryImpl
 import org.platypus.security.PlatypusUser
@@ -47,22 +49,69 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import kotlin.reflect.KProperty
 
-class RecordImpl<M : Model<M>>(
-        internal val _id: Int,
+internal class RecordImpl<M : Model<M>> internal constructor(
+        private val loader: SmartQueryBuilder<M>?,
+        private var _id: Int,
         override val env: PlatypusEnvironment,
         override val model: M) : Record<M> {
 
+    constructor(_id: Int, env: PlatypusEnvironment, model: M) : this(null, _id, env, model)
+    constructor(loader: SmartQueryBuilder<M>, env: PlatypusEnvironment, model: M) : this(loader, 0, env, model)
 
+    companion object {
+        fun <M : Model<M>> empty(model: M, env: PlatypusEnvironment) = RecordImpl(null, 0, env, model)
+    }
 
+    /**
+     * Is set to true if the entity is fetched in the cache
+     */
+    private var fetched = false
+
+    private var _empty = false
+    /**
+     * Is set to true if the Record can't be mapped to en entry in the cache or in persistence layer
+     */
+    override val empty: Boolean
+        get() = _empty
     override val id: Int
         get() {
-            val modId = model of _id
-            return if (env.internal.cache.isInDB(modId)) {
-                env.internal.cache.realID(modId).id
+            if (!fetched) {
+                fetchIfNeeded()
+            }
+            return _id
+        }
+
+    private fun <TM : Model<TM>> PlatypusEnvironment.empty(model: TM): Record<TM> {
+        return RecordImpl(null, 0, this, model)
+    }
+
+    private fun fetchIfNeeded(): Boolean {
+        if (empty) {
+            return false
+        }
+        var request = false
+        if (!fetched) {
+            if (loader != null) {
+                _id = repository().execute(loader).firstOrNull()?.id ?: 0
+                fetched = true
+                request = true
             } else {
-                _id
+                TODO("Throw a real exception")
+            }
+        } else {
+            if (warmCache().isInDB(modelID) && cacheState == CacheState.FETCHED) {
+                repository().fetch(warmCache().realID(modelID).id)
+                request = true
+                fetched = true
             }
         }
+        return request
+
+    }
+
+    override val api: PrivateApi<M> by lazy {
+        PrivateApi(this@RecordImpl)
+    }
 
     private fun repository(e: PlatypusEnvironment = env): RecordRepository<M> = RecordRepositoryImpl(e, model)
 
@@ -127,7 +176,7 @@ class RecordImpl<M : Model<M>>(
         TODO("not implemented")
     }
 
-    fun fetchForce(force: Boolean): Record<M> {
+    private fun fetchForce(force: Boolean): Record<M> {
         return if (!force) {
             repository().browse(id)
         } else {
@@ -136,7 +185,7 @@ class RecordImpl<M : Model<M>>(
     }
 
     override fun isStore(): Boolean {
-        return env.internal.cache.isInDB(this.model of this._id)
+        return env.internal.cache.isInDB(this.model of this.id)
     }
 
     /**
@@ -158,7 +207,7 @@ class RecordImpl<M : Model<M>>(
      * The data of the entity are still the same
      * @see PlatypusEnvironment.sudo
      */
-    override fun sudo(user: PlatypusUser): Record<M> = repository(env.sudo(user)).browse(this._id)
+    override fun sudo(user: PlatypusUser): Record<M> = repository(env.sudo(user)).browse(this.id)
 
     /**
      * Return a new Entity with the same [id]
@@ -183,7 +232,12 @@ class RecordImpl<M : Model<M>>(
      */
     override fun toMutableBag(): MutableBag<M> = ArrayBag(env, model, listOf(id))
 
-    override fun fetchIfNeeded(field: ModelField<M, *>): Record<M> = this
+    override fun fetchIfNeeded(field: ModelField<M, *>): Record<M> {
+        if (fetchIfNeeded() && warmCache().isNONE_STATE(modelID, field) && !warmCache().isNONE_STATE(modelID)) {
+            TODO("What to do is this case ?")
+        }
+        return this
+    }
 
     override operator fun TimeField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): LocalTime? {
         fetchIfNeeded(this)
@@ -251,12 +305,13 @@ class RecordImpl<M : Model<M>>(
         return warmCache()[o.model of o.id, this].second
     }
 
-    override operator fun <D : PlatypusSelection<M>> SelectionField<M, D>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): D? {
+    override operator fun <D : Selection<D>> SelectionField<M, D>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): SelectionValue<D>? {
         fetchIfNeeded(this)
         return this.selection.getUnsafe(warmCache()[o.model of o.id, this].second)
     }
 
     override operator fun BinaryField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): ByteArray? {
+        fetchIfNeeded(this)
         return warmCache()[o.model of o.id, this].second
     }
 
@@ -265,10 +320,12 @@ class RecordImpl<M : Model<M>>(
     }
 
     override operator fun CreateUID<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): User {
+        fetchIfNeeded(this)
         return env.users.browse(warmCache()[modelID, this].second!!.id)
     }
 
     override operator fun WriteUID<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): User {
+        fetchIfNeeded(this)
         return env.users.browse(warmCache()[modelID, this].second?.id ?: env.envUser.getData(env).id)
     }
 
@@ -276,45 +333,71 @@ class RecordImpl<M : Model<M>>(
         return getOne2ManyBag(o.model of o.id, this, this@RecordImpl.env, { warmCache() })
     }
 
-    override operator fun <TM : Model<TM>> Many2OneField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Record<TM>? {
+    override operator fun <TM : Model<TM>> Many2OneField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Record<TM> {
+        if (empty) {
+            return env.empty(this.target)
+        }
+        fetchIfNeeded(this)
         val modelID = o.model of o.id
-        val res = warmCache()[modelID, this].second
+        val (state, res) = warmCache()[modelID, this]
         return if (res == null) {
-            if (env.internal.cache.isNotInDB(modelID)) {
-                null
+            if (state == CacheState.NONE) {
+                if (env.internal.cache.isNotInDB(modelID)) {
+                    this@RecordImpl.env.empty(this.target)
+                } else {
+                    fetchForce(true)
+                    getValue(o, desc)
+                }
             } else {
-                repository(this@RecordImpl.env).browse(o.id)
-                val newRes = warmCache()[o.model of o.id, this].second
-                        ?: throw IllegalStateException("Can't find the value of the field ${this.completeName}")
-                RecordRepositoryImpl(this@RecordImpl.env, this.target).browse(newRes.id)
+                this@RecordImpl.env.empty(this.target)
             }
         } else {
             RecordRepositoryImpl(this@RecordImpl.env, this.target).browse(res.id)
         }
     }
 
-    override operator fun <TM : Model<TM>> One2OneField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Record<TM>? {
+    override operator fun <TM : Model<TM>> One2OneField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Record<TM> {
+        if (empty) {
+            return env.empty(this.target)
+        }
+        fetchIfNeeded(this)
         val modelID = o.model of o.id
-        val res = warmCache()[modelID, this].second
+        val (state, res) = warmCache()[modelID, this]
         return if (res == null) {
-            if (env.internal.cache.isNotInDB(modelID)) {
-                null
+            if (state == CacheState.NONE) {
+                if (env.internal.cache.isNotInDB(modelID)) {
+                    this@RecordImpl.env.empty(this.target)
+                } else {
+                    fetchForce(true)
+                    getValue(o, desc)
+                }
             } else {
-                repository(env).browse(o.id)
-                val newRes = warmCache()[o.model of o.id, this].second
-                        ?: throw IllegalStateException("Can't find the value of the field ${this.completeName}")
-                RecordRepositoryImpl(this@RecordImpl.env, this.target).browse(newRes.id)
+                this@RecordImpl.env.empty(this.target)
             }
         } else {
             RecordRepositoryImpl(this@RecordImpl.env, this.target).browse(res.id)
         }
     }
 
-    override operator fun <TM : Model<TM>> RevOne2OneField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Record<TM>? {
-        val modelID = o.model of o.id
-        val res = warmCache()[modelID, this].second
+    override operator fun <TM : Model<TM>> RevOne2OneField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Record<TM> {
+        if (empty) {
+            return env.empty(this.targetField().model)
+        }
+        val (state, res) = warmCache()[modelID, this]
         return if (res == null) {
-            null
+            if (state == CacheState.NONE) {
+                if (env.internal.cache.isNotInDB(modelID)) {
+                    this@RecordImpl.env.empty(this.targetField().model)
+                } else {
+                    val rec = RecordRepositoryImpl(this@RecordImpl.env, this.targetField().model).findFirst {
+                        this@getValue.targetField() eq o.id
+                    }
+                    warmCache().put(this, modelID, rec)
+                    rec
+                }
+            } else {
+                this@RecordImpl.env.empty(this.targetField().model)
+            }
         } else {
             RecordRepositoryImpl(this@RecordImpl.env, this.targetField().model).browse(res.id)
         }
@@ -332,7 +415,7 @@ class RecordImpl<M : Model<M>>(
         o.performUpdate(this, value)
     }
 
-    override operator fun <D : PlatypusSelection<M>> SelectionField<M, D>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: D?) {
+    override operator fun <D : Selection<D>> SelectionField<M, D>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: SelectionValue<D>?) {
         o.performUpdate(this, value)
     }
 
@@ -375,7 +458,6 @@ class RecordImpl<M : Model<M>>(
     }
 
 
-
     override operator fun <TM : Model<TM>> Many2OneField<M, TM>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: Record<TM>?) {
         o.performUpdate(this, value)
     }
@@ -394,6 +476,7 @@ class RecordImpl<M : Model<M>>(
 
 
     override operator fun <TM : Model<TM>> Many2ManyField<M, TM>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: Iterable<Record<TM>>) {
+        getValue(o, desc).ids
         o.performUpdate(this, this.asBag(value))
     }
 
@@ -423,17 +506,16 @@ class RecordImpl<M : Model<M>>(
         checkAccessWrite(field)
         field.validateAndThrow(value)
         if (warmCache().isNotInDB(this.modelID)) {
-            println("Direct Set in cache $field, $value")
+            env.logger.debug("Direct Set in cache $field, $value")
             warmCache().put(field, this.modelID, value)
         } else {
-            println("Call Update Set in cache $field, $value")
+            env.logger.debug("Call Update Set in cache $field, $value")
             update(FieldsWrite<M>(mapOf(field to value)))
         }
     }
 
-    val <M : Model<M>> MutableRecordDelegate<M>.modelID:ModelID
-            get() = model of id
-
+    val <M : Model<M>> MutableRecordDelegate<M>.modelID: ModelID
+        get() = model of id
 
 
     override fun equals(other: Any?): Boolean {
@@ -449,9 +531,7 @@ class RecordImpl<M : Model<M>>(
     }
 
     override fun hashCode(): Int {
-        var result = _id
-        result = 31 * result + model.hashCode()
-        return result
+        return 31 * id + model.hashCode()
     }
 
     override fun toString(): String {

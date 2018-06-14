@@ -1,6 +1,7 @@
 package org.platypus.security
 
 import org.platypus.Environmentable
+import org.platypus.PLATYPUS_ROOT_USER_REF
 import org.platypus.PlatypusEnvironment
 import org.platypus.bag.toBag
 import org.platypus.module.base.entities.User
@@ -9,7 +10,7 @@ import org.platypus.module.base.entities.groups
 import org.platypus.module.base.entities.users
 
 
-val AdminUser = PlatypusUser("adminUser")
+val ROOT_USER = PlatypusUser(PLATYPUS_ROOT_USER_REF)
 class NoExternalRefToCreatePlatypusUser : IllegalStateException()
 class NoExternalRefToCreatePlatypusGroup : IllegalStateException()
 

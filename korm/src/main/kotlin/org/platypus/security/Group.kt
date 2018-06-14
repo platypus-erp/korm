@@ -1,6 +1,7 @@
 package org.platypus.security
 
 import org.platypus.Environmentable
+import org.platypus.PLATYPUS_ROOT_GROUP_REF
 import org.platypus.PlatypusEnvironment
 import org.platypus.bag.toBag
 import org.platypus.module.base.entities.GroupData
@@ -8,7 +9,7 @@ import org.platypus.module.base.entities.GroupDataBag
 import org.platypus.module.base.entities.groupDataRepo
 import org.platypus.module.base.entities.user
 
-val AdminGroup = PlatypusGroup("adminGroup")
+val ROOT_GROUP = PlatypusGroup(PLATYPUS_ROOT_GROUP_REF)
 
 class PlatypusGroup(val externalRef: String) {
     fun getData(env: PlatypusEnvironment): GroupData = env.groupDataRepo[externalRef]
