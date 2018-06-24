@@ -21,6 +21,7 @@ val blogModuleI18n = baseTranslate(Locale.US) {
 
 object BaseBlogModule : ModuleBuilder("base_blogModule", {
     models {
+        +BlogModel
         +BlogPostModel
         +PostTagModel
         +ProfileModel

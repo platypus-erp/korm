@@ -40,6 +40,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlinx:kotlinx-html-jvm:0.6.9"
+    compile group: 'org.apache.commons', name: 'commons-csv', version: '1.5'
     compile project(":korm-api")
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "io.ktor:ktor-server-core:$ktor_version"

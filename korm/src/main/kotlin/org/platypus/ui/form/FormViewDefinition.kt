@@ -1,11 +1,12 @@
 package org.platypus.ui.form
 
-import org.platypus.web.SearchTreeParam
+import org.platypus.PlatypusEnvironment
 import org.platypus.model.Model
-import org.platypus.orm.sql.query.SmartQueryBuilder
+import org.platypus.orm.sql.query.SearchQuery
 import org.platypus.ui.ToViewApi
 import org.platypus.ui.ViewApi
 import org.platypus.ui.ViewType
+import org.platypus.web.SearchTreeParam
 import kotlin.reflect.KProperty
 
 object ModelFormViews : ViewType {
@@ -35,7 +36,7 @@ class FormViewDefinition<M : Model<M>>(
         TODO("not implemented")
     }
 
-    override fun querySearch(param: SearchTreeParam): SmartQueryBuilder<M> {
+    override fun querySearch(env: PlatypusEnvironment, param: SearchTreeParam): SearchQuery<M> {
         TODO("not implemented")
     }
 }

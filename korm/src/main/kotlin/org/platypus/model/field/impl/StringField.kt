@@ -9,12 +9,11 @@ import org.platypus.model.field.api.MutableFieldSlotsImpl
 import org.platypus.model.field.api.type.SqlFieldType
 import org.platypus.model.field.api.type.StringSqlFieldType
 import org.platypus.orm.OrmConstraint
-import org.platypus.orm.sql.StringPredicateOperator
 import org.platypus.orm.sql.expression.ExpressionVisitor
 
 class StringField<M : Model<M>>(
         name: String, model: M, slots: FieldSlotsImpl<String>, defaultLength: Int? = null, defaultL10n: Boolean? = null
-) : SimpleField<M, String>(model, name, slots), StringPredicateOperator<String> {
+) : SimpleField<M, String>(model, name, slots) {
     var length: Int = defaultLength ?: 50
         private set
     var l10n: Boolean = defaultL10n ?: false

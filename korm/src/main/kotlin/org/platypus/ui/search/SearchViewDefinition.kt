@@ -1,7 +1,7 @@
 package org.platypus.ui.search
 
 import com.beust.klaxon.JsonObject
-import org.platypus.web.SearchTreeParam
+import org.platypus.PlatypusEnvironment
 import org.platypus.model.Model
 import org.platypus.model.field.api.ModelField
 import org.platypus.orm.sql.expression.Expression
@@ -10,12 +10,14 @@ import org.platypus.orm.sql.literal
 import org.platypus.orm.sql.predicate.AndOp
 import org.platypus.orm.sql.predicate.OrOp
 import org.platypus.orm.sql.query.ORDERBY_TYPE
-import org.platypus.orm.sql.query.SmartQueryBuilder
+import org.platypus.orm.sql.query.SearchQuery
+import org.platypus.orm.sql.query.SearchQueryImpl
 import org.platypus.ui.ToViewApi
 import org.platypus.ui.ViewApi
 import org.platypus.utils.prefix
 import org.platypus.utils.suffix
 import org.platypus.utils.toJson
+import org.platypus.web.SearchTreeParam
 
 class SearchViewDefinition<M : Model<M>>(
         override val uniqueName: String,
@@ -32,8 +34,8 @@ class SearchViewDefinition<M : Model<M>>(
         return SearchViewGenerator(uniqueName, model, builder)
     }
 
-    override fun querySearch(param: SearchTreeParam): SmartQueryBuilder<M> {
-        val query = SmartQueryBuilder(model)
+    override fun querySearch(env: PlatypusEnvironment, param: SearchTreeParam): SearchQuery<M> {
+        val query = SearchQueryImpl(model, env)
         val predicate = param.filter.toJson().jsonFilterToPredicate()
         if (predicate != null) {
             query.where { predicate }

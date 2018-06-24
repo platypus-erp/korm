@@ -12,11 +12,17 @@ object BlogModel : Model<BlogModel>("blog.blog") {
 
     val user = many2one("user", UserMokModel){
         onDelete = ReferenceOption.RESTRICT
+//        defaultValueFun  = {
+//            it.envUser.getData(it)
+//        }
     }
 
     init {
         name extends {
             label = "Title"
+            defaultValueFun = {
+                "Blog of "+ it.envUser.getData(it).displayName
+            }
         }
     }
 

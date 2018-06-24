@@ -74,7 +74,7 @@ class LinkModel<M1 : Model<M1>, M2 : Model<M2>>(
             val query = this.slice(this.id, this.m1M2O, this.m2M2O).select(env) { m1M2O eq RecordImpl(id.id, env, m1M2O.target) }
             val ids = ArrayList<Int>()
             for (row in query) {
-                env.internal.cache.store(this of row.get(this.id), query.fieldSet.fieldsExpression, row)
+                env.internal.cache.store(this of row.get(this.id), setOf(this.id, this.m1M2O, this.m2M2O), row)
                 ids.add(row.get(m2M2O)!!.id)
             }
             m2M2O.target of ids

@@ -12,7 +12,7 @@ import org.platypus.module.base.entities.user
 val ROOT_GROUP = PlatypusGroup(PLATYPUS_ROOT_GROUP_REF)
 
 class PlatypusGroup(val externalRef: String) {
-    fun getData(env: PlatypusEnvironment): GroupData = env.groupDataRepo[externalRef]
+    fun getData(env: PlatypusEnvironment): GroupData = env.groupDataRepo.byRef(externalRef, true)
     val users
         get() = internalUsers
     internal var internalUsers: Set<PlatypusUser> = emptySet()

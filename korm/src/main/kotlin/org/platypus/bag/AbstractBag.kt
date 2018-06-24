@@ -2,23 +2,21 @@ package org.platypus.bag
 
 import org.platypus.PlatypusEnvironment
 import org.platypus.cache.ModelID
-import org.platypus.cache.of
 import org.platypus.entity.Record
-import org.platypus.entity.RecordImpl
 import org.platypus.model.Model
+import org.platypus.model.field.api.ModelField
+import org.platypus.model.field.api.MultiReferencedField
+import org.platypus.model.field.api.ReferencedField
+import org.platypus.model.field.api.SimpleModelField
+import org.platypus.model.field.impl.RealModelField
+import org.platypus.orm.sql.query.ORDERBY_TYPE
 import org.platypus.repository.RecordRepositoryImpl
 import java.util.*
-import java.util.function.Consumer
 
 abstract class AbstractBag<M : Model<M>>(
         override val env: PlatypusEnvironment,
         override val model: M
-) : MutableBag<M> {
-
-
-    override fun toMutableBag(): MutableBag<M> {
-        return this
-    }
+) : Bag<M> {
 
     protected open val _ids = ArrayList<Int>()
     override val ids: Collection<Int>
@@ -27,6 +25,21 @@ abstract class AbstractBag<M : Model<M>>(
     abstract fun addId(modelId: ModelID): Boolean
     abstract fun removeId(modelId: ModelID): Boolean
 
+    override fun orderBy(column: ModelField<M, Any>, orderBy: ORDERBY_TYPE): Bag<M> {
+        TODO("not implemented")
+    }
+
+    override fun orderBy(vararg columns: Pair<ModelField<M, Any>, ORDERBY_TYPE>): Bag<M> {
+        TODO("not implemented")
+    }
+
+    override fun orderBy(columns: List<Pair<ModelField<M, Any>, ORDERBY_TYPE>>): Bag<M> {
+        TODO("not implemented")
+    }
+
+    override fun addField(f: RealModelField<M, *>): Bag<M> {
+        TODO("not implemented")
+    }
 
     override val size
         get() = _ids.size
@@ -39,9 +52,9 @@ abstract class AbstractBag<M : Model<M>>(
 
     override fun isEmpty(): Boolean = _ids.isEmpty()
 
-    override fun clear() {
-        _ids.forEach { removeId(model of it) }
-    }
+//    override fun clear() {
+//        _ids.forEach { removeId(model of it) }
+//    }
 
     override fun filter(predicate: (Record<M>) -> Boolean): Bag<M> {
         val filtredIds = ArrayList<Int>(this.ids.size)
@@ -53,27 +66,27 @@ abstract class AbstractBag<M : Model<M>>(
         return createFiltredBag(filtredIds)
     }
 
-    override fun removeIf(predicate: (Record<M>) -> Boolean) {
-        for (rec in this) {
-            if (predicate(rec)) {
-                remove(rec)
-            }
-        }
-    }
+//    override fun removeIf(predicate: (Record<M>) -> Boolean) {
+//        for (rec in this) {
+//            if (predicate(rec)) {
+//                remove(rec)
+//            }
+//        }
+//    }
 
     protected abstract fun createFiltredBag(filtredIds: Collection<Int>): Bag<M>
 
-    override fun iterator(): MutableIterator<Record<M>> = BagIterator(ids.toMutableList())
+    override fun iterator(): MutableIterator<Record<M>> = IteratorInMemory(env, model, ids.toMutableList())
 
-    override fun add(element: Record<M>): Boolean = addId(element.model of element.id)
-
-    override fun addAll(elements: Collection<Record<M>>): Boolean = elements.all { add(it) }
-
-    override fun remove(element: Record<M>): Boolean = removeId(element.model of element.id)
-
-    override fun removeAll(elements: Collection<Record<M>>): Boolean = elements.all { remove(it) }
-
-    override fun retainAll(elements: Collection<Record<M>>): Boolean = _ids.retainAll(elements.map { it.id })
+//    override fun add(element: Record<M>): Boolean = addId(element.model of element.id)
+//
+//    override fun addAll(elements: Collection<Record<M>>): Boolean = elements.all { add(it) }
+//
+//    override fun remove(element: Record<M>): Boolean = removeId(element.model of element.id)
+//
+//    override fun removeAll(elements: Collection<Record<M>>): Boolean = elements.all { remove(it) }
+//
+//    override fun retainAll(elements: Collection<Record<M>>): Boolean = _ids.retainAll(elements.map { it.id })
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -94,53 +107,55 @@ abstract class AbstractBag<M : Model<M>>(
     }
 
     override fun plus(other: Record<M>): Bag<M> {
-        add(other)
-        return clone()
+        return createFiltredBag(ids + other.id)
     }
 
     override fun minus(other: Record<M>): Bag<M> {
-        remove(other)
-        return clone()
+        return createFiltredBag(ids - other.id)
     }
 
     override fun plus(other: Bag<M>): Bag<M> {
-        addAll(other)
-        return clone()
+        return createFiltredBag(ids + other.ids)
     }
 
     override fun minus(other: Bag<M>): Bag<M> {
-        removeAll(other)
-        return clone()
+        return createFiltredBag(ids - other.ids)
     }
     protected val repository
         get() = RecordRepositoryImpl(env, model)
 
-    private inner class BagIterator(ids: MutableCollection<Int>) : MutableIterator<Record<M>> {
-        private val iterator = ids.iterator()
-        private var currentId = -1
+    override val loaded: Boolean
+        get() = TODO("not implemented")
 
-        init {
-            repository.browse(ids)
-        }
+    override fun limit(limit: Int, offset: Int): Bag<M> {
+        TODO("not implemented")
+    }
 
-        operator override fun next(): Record<M> {
-            currentId = iterator.next()
-            return RecordImpl(currentId, env, model)
-        }
+    override fun or() {
+        TODO("not implemented")
+    }
 
-        override fun hasNext(): Boolean {
-            return iterator.hasNext()
-        }
+    override fun and() {
+        TODO("not implemented")
+    }
 
-        override fun remove() {
-            removeId(model of currentId)
-            iterator.remove()
-        }
+    override fun deleteIf(filter: (Record<M>) -> Boolean): Bag<M> {
+        TODO("not implemented")
+    }
 
-        override fun forEachRemaining(action: Consumer<in Record<M>>) {
-            Objects.requireNonNull<Consumer<in Record<M>>>(action)
-            while (hasNext())
-                action.accept(next())
-        }
+    override fun delete(): Int {
+        TODO("not implemented")
+    }
+
+    override fun <T : Any> mapped(field: SimpleModelField<M, T>): List<T> {
+        TODO("not implemented")
+    }
+
+    override fun <MT : Model<MT>> mapped(field: ReferencedField<M, MT>): Bag<MT> {
+        TODO("not implemented")
+    }
+
+    override fun <MT : Model<MT>> mapped(field: MultiReferencedField<M, MT>): Bag<MT> {
+        TODO("not implemented")
     }
 }

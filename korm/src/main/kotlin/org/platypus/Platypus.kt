@@ -30,6 +30,11 @@ class Platypus private constructor(val conf: PlatypusConf) : EnvironementFactory
     private val memoryCache = PlatypusCache()
     private lateinit var server: ApplicationEngine
     private val locales: Array<Locale> = conf.locales
+    val trMode = if (conf.mode != ServerMode.TEST){
+        TransactionMode.NORMAL
+    } else {
+        TransactionMode.ROLLBACK
+    }
 
     init {
         if (conf.autoStart) {
@@ -62,7 +67,7 @@ class Platypus private constructor(val conf: PlatypusConf) : EnvironementFactory
 
     private fun createOrUpdateDatabase() {
         LOGGER.info("Creating or updating Table")
-        BaseInternalEnvironment(db.newTransaction(TransactionMode.NORMAL)).use {
+        BaseInternalEnvironment(db.newTransaction(TransactionMode.MANUAL)).use {
             val schema = SchemaCreator.create(it)
             schema.create(ErpModule.models)
             it.cr.commit()
@@ -121,7 +126,7 @@ class Platypus private constructor(val conf: PlatypusConf) : EnvironementFactory
                 loadData(module.depends())
                 LOGGER.info("Load Data of $module")
                 for (datas in module.datas()) {
-                    datas.loadData(this)
+                    datas.loadData(module,this)
                 }
             }
             loadedModuleData.add(module)
@@ -131,13 +136,14 @@ class Platypus private constructor(val conf: PlatypusConf) : EnvironementFactory
 
     private fun loadBase() {
         newEnv().use{
-            dataBaseModule.loadData(it)
+            dataBaseModule.loadData(BaseModule.module.getModule(), it)
             it.internal.cache.toInsert
         }
     }
 
     override fun newEnv(user: PlatypusUser?, ctx: PlatypusContext?): PlatypusEnvironment {
-        return BaseEnvironment.create(user, conf, ctx ?: PlatypusContext(), db.newTransaction(TransactionMode.NORMAL))
+        println("New env")
+        return BaseEnvironment.create(user, conf, ctx ?: PlatypusContext(), db.newTransaction(trMode))
     }
 
     override fun newReadOnlyEnv(user: PlatypusUser?, ctx: PlatypusContext?): ReadOnlyPlatypusEnvironment {

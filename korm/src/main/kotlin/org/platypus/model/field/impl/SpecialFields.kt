@@ -18,7 +18,6 @@ import org.platypus.model.field.api.type.StringSqlFieldType
 import org.platypus.module.base.models.Users
 import org.platypus.orm.OrmConstraint
 import org.platypus.orm.ReferenceOption
-import org.platypus.orm.sql.StringPredicateOperator
 import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.expression.ExpressionVisitor
 import org.platypus.orm.sql.expression.FieldExpression
@@ -39,6 +38,10 @@ class PKModelField<M : IModel<M>>(override val model: M) :
         FieldExpression<Int>,
         Expression<Int> {
 
+    override fun compare(o1: Int?, o2: Int?): Int {
+        TODO("not implemented")
+    }
+
     override fun compareTo(other: IModelField<*, *>): Int = comparatorField.compare(this, other)
 
     override val fieldName: String
@@ -55,7 +58,7 @@ private val needCommonField = setOf(ModelType.CLASSIC_MODEL, ModelType.RECURSIVE
 
 class NameModelField<M : Model<M>
         >(model: M)
-    : RealModelField<M, String>(model, "name", FieldSlotsImpl("name")), StringPredicateOperator<String> {
+    : RealModelField<M, String>(model, "name", FieldSlotsImpl("name")) {
 
     override val store: Boolean
         get() {

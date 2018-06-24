@@ -4,8 +4,6 @@ import org.amshove.kluent.shouldBeNull
 import org.platypus.module.ModuleBuilder
 import org.platypus.module.ModuleDataType
 import org.platypus.module.UpdateDataType
-import org.platypus.module.base.entities.UserData
-import org.platypus.module.base.entities.users
 import org.platypus.module.blog.BaseBlogModule
 import org.platypus.module.data
 import org.platypus.orm.sql.ddl.schema.SchemaCreator
@@ -33,6 +31,7 @@ fun dropDb(module: ModuleBuilder) {
 }
 
 fun Platypus.Companion.newTestBlog(action: EnvHolder.() -> Unit) = Platypus.Companion.newTest(BaseBlogModule).withNewEnv(action)
+fun Platypus.Companion.newTestBlogEnv() = Platypus.Companion.newTest(BaseBlogModule).newEnv()
 
 fun Platypus.Companion.newTest(module: ModuleBuilder): Platypus {
     return create {
@@ -80,9 +79,6 @@ class EnvHolder(val env: PlatypusEnvironment) {
         env.internal.cr.stat.map[StatementType.TRUNCATE].shouldBeNull()
     }
 }
-
-val UserData.simpleUser
-    get() = env.users["simple_user"]
 
 val simpleUser = PlatypusUser("simple_user")
 

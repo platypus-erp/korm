@@ -1,10 +1,11 @@
 package org.platypus.ui
 
 import kotlinx.html.TagConsumer
+import org.platypus.PlatypusEnvironment
 import org.platypus.ReadOnlyPlatypusEnvironment
-import org.platypus.web.SearchTreeParam
 import org.platypus.model.Model
-import org.platypus.orm.sql.query.SmartQueryBuilder
+import org.platypus.orm.sql.query.SearchQuery
+import org.platypus.web.SearchTreeParam
 
 
 @DslMarker
@@ -60,7 +61,7 @@ interface ToViewApi<M : Model<M>> {
     val viewType: ViewApiType
         get() = ViewApiType.PRIMARY
     val model: M
-    fun querySearch(param: SearchTreeParam): SmartQueryBuilder<M>
+    fun querySearch(env: PlatypusEnvironment, param: SearchTreeParam): SearchQuery<M>
 }
 
 enum class ViewApiType {

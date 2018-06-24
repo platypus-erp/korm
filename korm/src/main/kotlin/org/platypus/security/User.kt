@@ -21,7 +21,7 @@ class PlatypusUser(val externalRef: String) {
     val groups
         get() = internalGroups
     internal var internalGroups: Set<PlatypusGroup> = emptySet()
-    fun getData(env: PlatypusEnvironment): User = env.users[externalRef]
+    fun getData(env: PlatypusEnvironment): User = env.users.byRef(externalRef, true)
 }
 
 class PlatypusUserBuilderData(override val env: PlatypusEnvironment, val user: PlatypusUser) : Environmentable {

@@ -2,11 +2,15 @@ package org.platypus.model
 
 import org.platypus.PlatypusEnvironment
 import org.platypus.bag.Bag
+import org.platypus.bag.BagInMemory
 import org.platypus.cache.modelID
+import org.platypus.cache.of
 import org.platypus.context.ContextKeyNonNull
+import org.platypus.context.setMagicField
 import org.platypus.entity.FieldsWrite
 import org.platypus.entity.ImutableRecord
 import org.platypus.entity.Record
+import org.platypus.entity.RecordImpl
 import org.platypus.entity.Selection
 import org.platypus.model.field.api.IModelField
 import org.platypus.model.field.api.ModelField
@@ -51,6 +55,7 @@ import org.platypus.model.functions.one.ApiOneNoParamExtends
 import org.platypus.model.functions.one.ApiOneNoParamStacker
 import org.platypus.model.functions.one.ApiOneParamExtends
 import org.platypus.model.functions.one.ApiOneParamStacker
+import org.platypus.module.base.models.Users
 import org.platypus.orm.CheckConstraint
 import org.platypus.orm.UniqueConstraint
 import org.platypus.orm.sql.and
@@ -58,11 +63,14 @@ import org.platypus.orm.sql.dml.statements.DeleteStatement
 import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.expression.TypedExpression
 import org.platypus.orm.sql.expression.eq
-import org.platypus.orm.sql.query.SmartQueryBuilder
+import org.platypus.orm.sql.query.ORDERBY_TYPE
+import org.platypus.orm.sql.query.SearchQuery
+import org.platypus.orm.sql.query.SearchQueryImpl
 import org.platypus.orm.sql.select
 import org.platypus.repository.RecordRepository
-import org.platypus.repository.newTmpWithId
+import org.platypus.repository.RecordRepositoryImpl
 import org.platypus.utils.to_sneak_case
+import java.time.LocalDateTime
 import java.util.*
 
 
@@ -79,6 +87,8 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
 //            throw UnValidModelName(modelName)
 //        }
     }
+
+    open fun newRepo(env: PlatypusEnvironment): RecordRepository<M> = RecordRepositoryImpl(env, thisModel)
 
 
     protected val thisModel: M
@@ -187,6 +197,9 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
 
     private val sqlCheck = HashMap<String, CheckConstraint<M>>()
     private val sqlUnique = HashMap<String, UniqueConstraint<M>>()
+    private val _orderByColumns: MutableList<Pair<Expression<*>, ORDERBY_TYPE>> = mutableListOf()
+    val orderBy: List<Pair<Expression<*>, ORDERBY_TYPE>>
+        get() = _orderByColumns
 
     val metadata: ModelMetaDataImpl<M> = ModelMetaDataImpl()
 
@@ -197,6 +210,18 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
 
     protected fun unique(name: String, errorMsg: String? = null, vararg fields: RealModelField<M, *>) {
         sqlUnique[name] = UniqueConstraint(name, errorMsg, fields.toSet())
+    }
+
+    fun orderBy(column: ModelField<*, *>, orderBy: ORDERBY_TYPE = ORDERBY_TYPE.ASC) {
+        orderBy(listOf(column to orderBy))
+    }
+
+    fun orderBy(vararg columns: Pair<ModelField<*, *>, ORDERBY_TYPE>) {
+        orderBy(columns.toList())
+    }
+
+    fun orderBy(columns: List<Pair<ModelField<*, *>, ORDERBY_TYPE>>) {
+        _orderByColumns.addAll(columns)
     }
 
     val nameGet = api.public("nameGet",
@@ -213,7 +238,35 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
 
     val getById = api.public("getById",
             fun(repo: RecordRepository<M>, id: Int): PublicApiReturn<Record<M>> {
-                return repo.fetch(id).asResult()
+                return RecordImpl(id, repo.env, repo.model).asResult()
+            }
+    )
+
+    val getByIds = api.public("getByIds",
+            fun(repo: RecordRepository<M>, ids: List<Int>): PublicApiReturn<Bag<M>> {
+                return BagInMemory(ids, repo.env, repo.model).asResult()
+            }
+    )
+
+    val newTemporary = api.private("newTemporary",
+            fun(repo: RecordRepository<M>): Record<M> {
+                val rec = RecordImpl(repo.env.internal.cache.createFakeRecordIfNeeded(repo.model, null).id, repo.env, repo.model)
+                if (repo.env.context[setMagicField]) {
+                    repo.env.internal.cache.forceSet(rec.modelID, repo.model.createDate, LocalDateTime.now())
+                    repo.env.internal.cache.forceSet(rec.modelID, repo.model.createUid, Users of repo.env.envUser.getData(repo.env).id)
+                }
+                return rec
+            }
+    )
+
+    val newTemporaryWithDefault = api.private("defaulGet",
+            fun(repo: RecordRepository<M>): Record<M> {
+                val rec = newTemporary.call(repo)
+                for (field in repo.model.fields) {
+                    repo.env.internal.cache.put(field, rec.modelID, field.defaultValueFun(repo.env))
+                }
+                //TODO Manage default Value in Context
+                return rec
             }
     )
 
@@ -234,8 +287,10 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
     val delete = api.public("delete",
             fun(self: Record<M>): PublicApiReturn<Int> {
                 val where = self.model.metadata.deleteRule(self.env.sudoUser, self.model.id eq id)
-                DeleteStatement(self.env, self.model, where)
-                self.warmCache().remove(self.modelID)
+                val nb = DeleteStatement(self.env, self.model, where).execute()
+                if (nb != null) {
+                    self.warmCache().remove(self.modelID)
+                }
                 return 0.asResult()
             }
     )
@@ -303,25 +358,17 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
     )
 
     val search = api.private("search",
-            fun(empty: RecordRepository<M>, query: SmartQueryBuilder<M>.(M) -> Unit): Bag<M> {
-                val q = SmartQueryBuilder(empty.model)
-                q.query(empty.model)
-                return execute.call(empty, q)
+            fun(empty: RecordRepository<M>, query: SearchQuery<M>.(M) -> Unit): Bag<M> {
+                return empty.bagOf(SearchQueryImpl(empty.model, empty.env).apply { query(empty.model) })
             }
     )
 
-    val execute = api.private("execute",
-            fun(empty: RecordRepository<M>, query: SmartQueryBuilder<M>): Bag<M> {
-                empty.env.flush(empty.model)
-                return empty.bagOf(query.buildQuery(empty.env))
-            }
-    )
-
-    val defaulGet = api.private("defaulGet",
-            fun(empty: RecordRepository<M>): Record<M> {
-                return empty.newTmpWithId(false, null) { }
-            }
-    )
+//    val execute = api.private("execute",
+//            fun(empty: RecordRepository<M>, query: SearchQuery<M>): Bag<M> {
+//                empty.env.flush(empty.model)
+//                return empty.bagOf(query.buildQuery(empty.env))
+//            }
+//    )
 
 
     fun string(name: String, info: StringField.Builder<M>.() -> Unit = {}): StringField<M> =

@@ -6,7 +6,7 @@ import org.platypus.model.field.impl.RealModelField
 import org.platypus.model.field.impl.ReferenceField
 import org.platypus.model.field.impl.SimpleField
 import org.platypus.orm.sql.expression.Expression
-import org.platypus.orm.sql.query.SmartQueryBuilder
+import org.platypus.orm.sql.query.SearchQueryImpl
 import org.platypus.ui.UIElement
 import org.platypus.ui.UIElementAttribute
 import org.platypus.ui.action.MenuAction
@@ -85,7 +85,7 @@ internal class TreeViewBuilderImpl<M : Model<M>>(override val model: M) : TreeVi
     private val _fields: MutableList<TreeWidgetUI> = ArrayList()
     override var enableTree: Boolean = false
     override var colors: String? = null
-    val querySearch: SmartQueryBuilder<M> = SmartQueryBuilder(model)
+    lateinit var querySearch: SearchQueryImpl<M>
     var searchView: SearchViewDefinition<M>? = null
 
     override val widgets: List<TreeWidgetUI>
@@ -100,7 +100,7 @@ internal class TreeViewBuilderImpl<M : Model<M>>(override val model: M) : TreeVi
         val joinedField = field.target.fieldGet()
         _fields.add(TreeWidgetUI(joinedField, label, invisible, true))
         querySearch.joinField(field)
-        querySearch.addField(joinedField)
+//        querySearch.addField(joinedField)
     }
 
     override fun button(field: RealModelField<*, Any>, id: String?, label: String?, icon: String?, widget: String?, groups: Set<String>, invisible: Boolean, cssClass: String?, options: String?) {

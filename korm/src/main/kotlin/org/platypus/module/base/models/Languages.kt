@@ -1,6 +1,7 @@
 package org.platypus.module.base.models
 
 import org.platypus.model.Model
+import org.platypus.orm.sql.query.ORDERBY_TYPE
 
 object Languages : Model<Languages>("res.language") {
     init {
@@ -59,6 +60,7 @@ object Languages : Model<Languages>("res.language") {
     init {
         unique("name_uniq", "The name of the language must be unique !", name)
         unique("code_uniq", "The code of the language must be unique !", code)
+        orderBy(installed to ORDERBY_TYPE.ASC, isoCode to ORDERBY_TYPE.ASC)
 
     }
 

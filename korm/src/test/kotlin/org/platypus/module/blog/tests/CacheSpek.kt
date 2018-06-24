@@ -17,7 +17,6 @@ import org.platypus.module.blog.age
 import org.platypus.module.blog.blogRepo
 import org.platypus.module.blog.blogs
 import org.platypus.module.blog.comments
-import org.platypus.module.blog.dataBlogJane
 import org.platypus.module.blog.email
 import org.platypus.module.blog.isStaff
 import org.platypus.module.blog.nums
@@ -30,7 +29,6 @@ import org.platypus.module.blog.tags
 import org.platypus.module.blog.user
 import org.platypus.module.blog.userMokRepo
 import org.platypus.newTestBlog
-import org.platypus.orm.sql.dml.StatementType
 
 object CacheReadSpek : Spek({
     describe("Creating user Jane with related Profile and Posts and Tags then query it") {
@@ -38,29 +36,29 @@ object CacheReadSpek : Spek({
             Platypus.newTestBlog {
                 assertNoDMLRunned()
                 on("Creating Jane User") {
-                    val userJane = env.userMokRepo["user_jane"]
+                    val userJane = env.userMokRepo.byRef("user_jane")
                     it("The cache should containt all the value") {
-                        userJane.profile `should equal` env.profileRepo["jane_profile"]
-                        env.blogRepo["blog1"].user `should equal` userJane
-                        env.blogRepo["blog2"].user `should equal` userJane
+                        userJane.profile `should equal` env.profileRepo.byRef("jane_profile")
+                        env.blogRepo.byRef("blog1").user `should equal` userJane
+                        env.blogRepo.byRef("blog2").user `should equal` userJane
                     }
                     it("The cache manage many2Many") {
-                        env.blogRepo["blog1"].tags.size `should equal` 2
-                        env.blogRepo["blog2"].tags.size `should equal` 2
+                        env.blogRepo.byRef("blog1").tags.size `should equal` 2
+                        env.blogRepo.byRef("blog2").tags.size `should equal` 2
                     }
                     it("The cache keep the order of insert") {
-                        env.blogRepo["blog1"].tags.first() `should equal` env.tagRepo["tag1"]
-                        env.blogRepo["blog1"].tags.last() `should equal` env.tagRepo["tag2"]
-                        env.blogRepo["blog2"].tags.first() `should equal` env.tagRepo["tag2"]
-                        env.blogRepo["blog2"].tags.last() `should equal` env.tagRepo["tag3"]
+                        env.blogRepo.byRef("blog1").tags.first() `should equal` env.tagRepo.byRef("tag1")
+                        env.blogRepo.byRef("blog1").tags.last() `should equal` env.tagRepo.byRef("tag2")
+                        env.blogRepo.byRef("blog2").tags.first() `should equal` env.tagRepo.byRef("tag2")
+                        env.blogRepo.byRef("blog2").tags.last() `should equal` env.tagRepo.byRef("tag3")
                     }
                     it("No Sql action is trigered until flush") {
                         assertNoDMLWriteRunned()
                         assertNoDDLRuned()
                         env.flush()
-                        env.internal.cr.stat.map[StatementType.INSERT] `should equal` 11
-                        env.internal.cr.stat.map[StatementType.DELETE].shouldBeNull()
-                        env.internal.cr.stat.map[StatementType.UPDATE] `should equal` 3
+                        env.internal.cr.stat.nbInsert `should equal` 11
+                        env.internal.cr.stat.nbDelete.shouldBeNull()
+                        env.internal.cr.stat.nbUpdate `should equal` 3
                         assertNoDDLRuned()
                     }
                     it("You can travers object") {
@@ -109,10 +107,10 @@ object CacheCreateUpdateSpek : Spek({
                     john.age.shouldBeNull()
                 }
                 it("No CRUD statement is executed") {
-                    env.internal.cr.stat.map[StatementType.SELECT].shouldBeNull()
-                    env.internal.cr.stat.map[StatementType.INSERT].shouldBeNull()
-                    env.internal.cr.stat.map[StatementType.DELETE].shouldBeNull()
-                    env.internal.cr.stat.map[StatementType.UPDATE].shouldBeNull()
+                    env.internal.cr.stat.nbSelect shouldEqualTo 0
+                    env.internal.cr.stat.nbInsert shouldEqualTo 0
+                    env.internal.cr.stat.nbDelete shouldEqualTo 0
+                    env.internal.cr.stat.nbUpdate shouldEqualTo 0
                 }
             }
         }
@@ -140,7 +138,7 @@ object CacheCreateUpdateSpek : Spek({
                     john2.blogs.shouldBeEmpty()
                 }
                 it("The blog should change automaticaly of user") {
-                    john2.blogs.add(newBlog)
+                    john2.blogs += newBlog
                     john2.blogs.size shouldEqualTo 1
                     newBlog.user shouldEqual john2
                     john1.blogs.shouldBeEmpty()
@@ -190,7 +188,6 @@ object CacheDeleteSpek : Spek({
             Platypus.newTestBlog {
                 assertNoDMLRunned()
                 on("Creatin Jane User") {
-                    dataBlogJane.loadData(env)
                 }
             }
         }

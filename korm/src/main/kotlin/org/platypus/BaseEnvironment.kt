@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory
 import java.time.ZoneId
 
 
-
 class BaseEnvironment(
         override val envUser: PlatypusUser,
         override val sudoUser: PlatypusUser,
@@ -48,6 +47,12 @@ class BaseEnvironment(
         }
     }
 
+    init {
+        envUser.getData(this).fetch()
+        sudoUser.getData(this).fetch()
+        internal.cr.stat.reset()
+    }
+
     override fun connect(user: PlatypusUser): PlatypusEnvironment {
         return BaseEnvironment(user, user, conf, context, internal)
     }
@@ -60,6 +65,11 @@ class BaseEnvironment(
     override val logger: Logger = LoggerFactory.getLogger("${envUser.externalRef} as ${sudoUser.externalRef}, ${lang?.name}")
     private val cache
         get() = internal.cache
+
+    fun models(name:String):Model<*>{
+        TODO()
+    }
+
 
     override fun withContext(vararg vals: ContextKey.Value<*>): PlatypusEnvironment {
         return BaseEnvironment(envUser, sudoUser, conf, context.copy(vals), internal)

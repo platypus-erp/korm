@@ -28,6 +28,10 @@ class Many2OneFieldLink<M : IModel<M>, TM : Model<TM>>(
         FieldSlots<Record<TM>> by FieldSlotsImpl("ID", readonly = true, copy = false, store = true, required = true),
         FieldExpression<Record<TM>>, ReferencedField<M,  TM> {
 
+    override fun compare(o1: Record<TM>?, o2: Record<TM>?): Int {
+        TODO("not implemented")
+    }
+
     override fun compareTo(other: IModelField<*, *>): Int = comparatorField.compare(this, other)
 
     override val fieldName: String = name

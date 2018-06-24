@@ -3,11 +3,13 @@ package org.platypus
 import org.platypus.module.base.BaseModule
 
 val platypus = Platypus.create {
+    mode = ServerMode.TEST
     db {
-        dbName = "platypus-base"
+        dbName = "platypus_test"
     }
     web {
         httpPort = 8080
+        autoStart = false
     }
     ui {
         pathPlatypus = "/home/chmuche/workspace/kotlin/korm/platypus"

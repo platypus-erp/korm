@@ -3,7 +3,6 @@ package org.platypus.bag.relation
 import org.platypus.PlatypusEnvironment
 import org.platypus.bag.AbstractBag
 import org.platypus.bag.Bag
-import org.platypus.bag.MutableBag
 import org.platypus.cache.CacheState
 import org.platypus.cache.ModelID
 import org.platypus.cache.ModelIDS
@@ -74,7 +73,7 @@ private class One2ManyBagCache<
         return when (res.first) {
             CacheState.NONE, CacheState.PARTIALLY -> {
                 if (env.internal.cache.isInDB(modelID)) {
-                    val ids = RecordRepositoryImpl(env, model). find { prop.targetField().asExpr() eq modelID.id }.ids.toList()
+                    val ids = RecordRepositoryImpl(env, model). where { prop.targetField().asExpr() eq modelID.id }.ids.toList()
                     cacheProvider()[modelID, prop] = CacheState.FETCHED to (prop.model of ids)
                     prop.model of ids
                 } else {
@@ -84,10 +83,6 @@ private class One2ManyBagCache<
             CacheState.FETCHED, CacheState.UPDATED -> res.second
         }
 
-    }
-
-    override fun toMutableBag(): MutableBag<TM> {
-        return One2ManyBagCache(modelID, prop,env, cacheProvider)
     }
 
     override fun createFiltredBag(filtredIds: Collection<Int>): Bag<TM> {
@@ -104,10 +99,6 @@ private class One2ManyBagCacheFiltred<
  cacheProvider: () -> PlatypusCache = { env.internal.cache },
  ids: Collection<Int>
 ) : One2ManyBag<M, TM>(modelID, prop,env, cacheProvider) {
-
-    override fun toMutableBag(): MutableBag<TM> {
-        return One2ManyBagCacheFiltred(modelID, prop,env, cacheProvider, filtredIds)
-    }
 
     private val filtredIds: MutableList<Int> = ids.toMutableList()
 

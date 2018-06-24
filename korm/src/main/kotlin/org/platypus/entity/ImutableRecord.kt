@@ -2,11 +2,14 @@ package org.platypus.entity
 
 import org.platypus.Identifiable
 import org.platypus.bag.Bag
-import org.platypus.bag.MutableBag
 import org.platypus.cache.PlatypusCache
 import org.platypus.model.Model
 import org.platypus.model.field.api.ModelField
+import org.platypus.model.field.api.MultiReferencedField
+import org.platypus.model.field.api.ReferencedField
+import org.platypus.model.field.api.SimpleModelField
 import org.platypus.module.base.entities.User
+import org.platypus.orm.sql.query.SearchQuery
 import java.time.LocalDateTime
 
 interface ImutableRecord<M: Model<M>> : Identifiable, RecordDelegate<M> {
@@ -28,6 +31,15 @@ interface ImutableRecord<M: Model<M>> : Identifiable, RecordDelegate<M> {
     val archived: Boolean
 
     val empty: Boolean
+    val loaded:Boolean
+
+    val query:SearchQuery<M>?
+
+    operator fun <T : Any> get(field: SimpleModelField<M, T>): T?
+
+    operator fun <MT : Model<MT>> get(field: ReferencedField<M, MT>): Record<MT>
+
+    operator fun <MT : Model<MT>> get(field: MultiReferencedField<M, MT>): Bag<MT>
 
     /**
      * Detach the current entity of the [env] cache
@@ -62,13 +74,6 @@ interface ImutableRecord<M: Model<M>> : Identifiable, RecordDelegate<M> {
      * Return the cache instance used by this Record
      */
     fun warmCache(): PlatypusCache
-
-    /**
-     * Return a bag with only the current StoredEntity in it
-     * The implementation should guarantee that code is correct [this.toBag().first() === this]
-     */
-    abstract fun toMutableBag(): MutableBag<M>
-
 
     /**
      * An handly method to add the current Record to a [bag] with an other record of the same [Model]

@@ -1,7 +1,7 @@
 package org.platypus.cache
 
 import org.platypus.model.field.api.IModelField
-import org.platypus.model.field.api.MutliReferencedField
+import org.platypus.model.field.api.MultiReferencedField
 import org.platypus.model.field.api.ReferencedField
 import org.platypus.model.field.api.SimpleModelField
 
@@ -18,7 +18,7 @@ class CacheData private constructor() {
         return (stateMap[field] ?: CacheState.NONE) to dataMap[field] as ModelID?
     }
 
-    operator fun get(field: MutliReferencedField<*, *>): Pair<CacheState, ModelIDS?> {
+    operator fun get(field: MultiReferencedField<*, *>): Pair<CacheState, ModelIDS?> {
         return (stateMap[field] ?: CacheState.NONE) to dataMap[field] as ModelIDS?
     }
 
@@ -32,7 +32,7 @@ class CacheData private constructor() {
         dataMap[field] = value.second
     }
 
-    operator fun set(field: MutliReferencedField<*, *>, value: Pair<CacheState, ModelIDS?>) {
+    operator fun set(field: MultiReferencedField<*, *>, value: Pair<CacheState, ModelIDS?>) {
         stateMap[field] = value.first
         dataMap[field] = value.second
     }

@@ -1,11 +1,12 @@
 package org.platypus.ui.tree
 
-import org.platypus.web.SearchTreeParam
+import org.platypus.PlatypusEnvironment
 import org.platypus.model.Model
-import org.platypus.orm.sql.query.SmartQueryBuilder
+import org.platypus.orm.sql.query.SearchQuery
 import org.platypus.ui.ToViewApi
 import org.platypus.ui.ViewApi
 import org.platypus.ui.search.SearchViews
+import org.platypus.web.SearchTreeParam
 
 
 class TreeViewDefinition<M : Model<M>>(
@@ -24,10 +25,10 @@ class TreeViewDefinition<M : Model<M>>(
         return TreeViewGenerator(uniqueName, model, builder)
     }
 
-    override fun querySearch(param: SearchTreeParam): SmartQueryBuilder<M> {
+    override fun querySearch(env: PlatypusEnvironment, param: SearchTreeParam): SearchQuery<M> {
         val q = builder.querySearch
         val searchView = builder.searchView ?: SearchViews.getDefaultView(model)
-        return q.merge(searchView.querySearch(param))
+        return q
     }
 }
 

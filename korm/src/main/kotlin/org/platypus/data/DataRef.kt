@@ -18,8 +18,8 @@ class PlatypusRefData<M : Model<M>>(
 
     operator fun invoke(env: PlatypusEnvironment): Record<M> {
         if (element == null) {
-            element = RecordRepositoryImpl(env, this.model).byRefOrNull(ref)
-            if (element == null) {
+            element = RecordRepositoryImpl(env, this.model).byRef(ref)
+            if (element?.empty == false) {
                 element = loader(env)
             }
         }

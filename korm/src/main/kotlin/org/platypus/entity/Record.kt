@@ -18,6 +18,8 @@ interface Record<M : Model<M>> : SudoAble<Record<M>>, ImutableRecord<M>, Context
      * put the [internalState] to [EntityState.DELETED]
      */
     fun delete()
+
+    operator fun set(fieldName:String, value:Any?)
 }
 
 class PrivateApi<M : Model<M>>(val rec:Record<M>)

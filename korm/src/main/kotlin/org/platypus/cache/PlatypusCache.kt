@@ -16,6 +16,9 @@ import org.platypus.model.field.api.FieldVisitor
 import org.platypus.model.field.api.IModelField
 import org.platypus.model.field.api.ModelField
 import org.platypus.model.field.api.ModelFieldType
+import org.platypus.model.field.api.MultiReferencedField
+import org.platypus.model.field.api.ReferencedField
+import org.platypus.model.field.api.SimpleModelField
 import org.platypus.model.field.api.isRelationalField
 import org.platypus.model.field.impl.ArchivedModelField
 import org.platypus.model.field.impl.BinaryField
@@ -46,7 +49,6 @@ import org.platypus.orm.ReferenceOption
 import org.platypus.orm.exceptions.OnDeleteRestrictError
 import org.platypus.orm.sql.dml.RefereeFinder
 import org.platypus.orm.sql.dml.storeFields
-import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.query.ResultRow
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -54,18 +56,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 
 
-data class ModelID(val model: IModel<*>, val id: Int)
-data class ModelIDS(val model: IModel<*>, val ids: List<Int>)
 
-fun ModelIDS.isNotEmpty(): Boolean = ids.isNotEmpty()
-fun ModelIDS.isEmpty(): Boolean = ids.isEmpty()
-fun ModelIDS.toListID(): List<ModelID> = this.ids.map { this.model of it }
-
-infix fun IModel<*>.of(id: Int): ModelID = ModelID(this, id)
-fun ModelID.toModelIDS(): ModelIDS = model of listOf(id)
-
-infix fun IModel<*>.of(ids: List<Int>): ModelIDS = ModelIDS(this, ids)
-val Record<*>.modelID: ModelID get() = ModelID(this.model, this.id)
 
 data class ToUpdate(val modelId: ModelID, val props: MutableSet<IModelField<*, *>>)
 
@@ -192,6 +183,16 @@ class PlatypusCache : AutoCloseable {
     val toUpdate: Map<IModel<*>, Map<Int, Set<IModelField<*, *>>>>
         get() = scheduledUpdate
 
+    /**
+     * Clear the cache without asking any question,
+     * all changed will be lost if no flosh is called before
+     */
+    fun hardClear(){
+        data.clear()
+        dataState.clear()
+        scheduledUpdate.clear()
+        scheduledInsert.clear()
+    }
     fun reset() {
         println("Clear reset cache")
         scheduledUpdate.clear()
@@ -204,7 +205,7 @@ class PlatypusCache : AutoCloseable {
         }
     }
 
-    fun reset(model:Model<*>) {
+    fun reset(model: Model<*>) {
         println("Clear reset cache")
         val toSave = scheduledUpdate.filter { it != model }
         scheduledUpdate.clear()
@@ -224,12 +225,24 @@ class PlatypusCache : AutoCloseable {
         }
     }
 
-    fun put(field: ModelField<*, *>, modelId: ModelID, value: Any?) {
+    fun put(field: IModelField<*, *>, modelId: ModelID, value: Any?) {
         field.accept(visitorSetter, modelId to field.toCacheValue(value))
     }
 
     override fun close() {
         reset()
+    }
+
+    operator fun <T : Any> get(modelId: ModelID, field: SimpleModelField<*, T>): Pair<CacheState, T?> {
+        return (modelId stateOf field) to ((modelId valueOf field) as T?)
+    }
+
+    operator fun get(modelId: ModelID, field: ReferencedField<*, *>): Pair<CacheState, ModelID?> {
+        return (modelId stateOf field) to (modelId valueOf field) as ModelID?
+    }
+
+    operator fun get(modelId: ModelID, field: MultiReferencedField<*, *>): Pair<CacheState, ModelIDS?> {
+        return (modelId stateOf field) to (modelId valueOf field) as ModelIDS?
     }
 
     internal fun replaceData(modelId: ModelID, values: Map<IModelField<*, *>, Any?>) {
@@ -246,7 +259,7 @@ class PlatypusCache : AutoCloseable {
                 ?.firstNotNullResult { modelRef.first of it }
     }
 
-    operator fun get(model:Model<*>, ref:String): Map<IModelField<*, *>, Any?> {
+    operator fun get(model: Model<*>, ref: String): Map<IModelField<*, *>, Any?> {
         return get(model to ref)?.getData() ?: emptyMap()
     }
 
@@ -313,15 +326,17 @@ class PlatypusCache : AutoCloseable {
      * The [fields] should containt only [ModelField] as expression
      * The [modelId] must be in the database
      */
-    fun store(modelId: ModelID, fieldsToStore: Set<Expression<*>>, row: ResultRow) {
+    fun store(modelId: ModelID, fieldsToStore: Set<IModelField<*, *>>, row: ResultRow) {
         if (isNotInDB(modelId)) {
             throw IllegalStateException("You can't create a record not currently in the persitence layer")
         }
-
-        val mapFields = fieldsToStore.map { it as IModelField<*, *> }.groupBy { it.model }
+        val mapFields = fieldsToStore.groupBy { it.model }
         for ((mo, fields) in mapFields) {
             val idF = fields.first { it == mo.id }
-            val id = row.tryGet(mo.id)
+            if (fields.size == 1 && fields.first() == mo.id){
+                val id = row.tryGet(mo.id)
+                forceSet(modelId, mo.id, id, NONE)
+            }
             for (field in fields) {
                 val value: Any? = row.tryGetAny(field)
                 forceSet(modelId, field, value, FETCHED)
@@ -867,7 +882,7 @@ class PlatypusCache : AutoCloseable {
     }
 
     private fun updateValue(modelId: ModelID, prop: IModelField<*, *>, value: Any?) {
-        if (value == (modelId valueOf  prop)){
+        if (value == (modelId valueOf prop)) {
             return
         }
         if (modelId.model != prop.model) {

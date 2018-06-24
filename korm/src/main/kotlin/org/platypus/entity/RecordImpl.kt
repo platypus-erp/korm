@@ -3,7 +3,7 @@ package org.platypus.entity
 import org.platypus.PlatypusEnvironment
 import org.platypus.bag.ArrayBag
 import org.platypus.bag.Bag
-import org.platypus.bag.MutableBag
+import org.platypus.bag.BagInMemory
 import org.platypus.bag.relation.getMany2ManyBag
 import org.platypus.bag.relation.getOne2ManyBag
 import org.platypus.cache.CacheState
@@ -13,6 +13,9 @@ import org.platypus.cache.of
 import org.platypus.context.ContextKey
 import org.platypus.model.Model
 import org.platypus.model.field.api.ModelField
+import org.platypus.model.field.api.MultiReferencedField
+import org.platypus.model.field.api.ReferencedField
+import org.platypus.model.field.api.SimpleModelField
 import org.platypus.model.field.impl.ArchivedModelField
 import org.platypus.model.field.impl.BinaryField
 import org.platypus.model.field.impl.BooleanField
@@ -39,7 +42,7 @@ import org.platypus.model.field.impl.WriteUID
 import org.platypus.module.base.entities.User
 import org.platypus.module.base.entities.users
 import org.platypus.orm.sql.expression.eq
-import org.platypus.orm.sql.query.SmartQueryBuilder
+import org.platypus.orm.sql.query.SearchQuery
 import org.platypus.repository.RecordRepository
 import org.platypus.repository.RecordRepositoryImpl
 import org.platypus.security.PlatypusUser
@@ -49,25 +52,26 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import kotlin.reflect.KProperty
 
-internal class RecordImpl<M : Model<M>> internal constructor(
-        private val loader: SmartQueryBuilder<M>?,
+internal class RecordImpl<M : Model<M>> private constructor(
+        private val loader: SearchQuery<M>?,
         private var _id: Int,
         override val env: PlatypusEnvironment,
-        override val model: M) : Record<M> {
+        override val model: M,
+        private var fetched:Boolean,
+        private var _empty :Boolean= false) : Record<M> {
 
-    constructor(_id: Int, env: PlatypusEnvironment, model: M) : this(null, _id, env, model)
-    constructor(loader: SmartQueryBuilder<M>, env: PlatypusEnvironment, model: M) : this(loader, 0, env, model)
+    constructor(_id: Int, env: PlatypusEnvironment, model: M) : this(null, _id, env, model, false, false)
+    constructor(loader: SearchQuery<M>, env: PlatypusEnvironment, model: M) : this(loader, 0, env, model, false, true)
 
     companion object {
-        fun <M : Model<M>> empty(model: M, env: PlatypusEnvironment) = RecordImpl(null, 0, env, model)
+        fun <M : Model<M>> empty(env: PlatypusEnvironment, model: M):Record<M> = RecordImpl(null, 0, env, model, true, true)
+        fun <M : Model<M>> temporary(id:Int, env: PlatypusEnvironment, model: M):Record<M> = RecordImpl(null, 0, env, model, true, true)
+        fun <M : Model<M>> fromId(id: Int, env: PlatypusEnvironment, model: M):Record<M> = RecordImpl(null, 0, env, model, true, true)
     }
 
-    /**
-     * Is set to true if the entity is fetched in the cache
-     */
-    private var fetched = false
+    override val loaded: Boolean
+        get() = fetched
 
-    private var _empty = false
     /**
      * Is set to true if the Record can't be mapped to en entry in the cache or in persistence layer
      */
@@ -80,40 +84,6 @@ internal class RecordImpl<M : Model<M>> internal constructor(
             }
             return _id
         }
-
-    private fun <TM : Model<TM>> PlatypusEnvironment.empty(model: TM): Record<TM> {
-        return RecordImpl(null, 0, this, model)
-    }
-
-    private fun fetchIfNeeded(): Boolean {
-        if (empty) {
-            return false
-        }
-        var request = false
-        if (!fetched) {
-            if (loader != null) {
-                _id = repository().execute(loader).firstOrNull()?.id ?: 0
-                fetched = true
-                request = true
-            } else {
-                TODO("Throw a real exception")
-            }
-        } else {
-            if (warmCache().isInDB(modelID) && cacheState == CacheState.FETCHED) {
-                repository().fetch(warmCache().realID(modelID).id)
-                request = true
-                fetched = true
-            }
-        }
-        return request
-
-    }
-
-    override val api: PrivateApi<M> by lazy {
-        PrivateApi(this@RecordImpl)
-    }
-
-    private fun repository(e: PlatypusEnvironment = env): RecordRepository<M> = RecordRepositoryImpl(e, model)
 
     override val displayName: String
         get() = model.nameGet.call(this).result
@@ -141,6 +111,96 @@ internal class RecordImpl<M : Model<M>> internal constructor(
     private val cacheState: CacheState
         get() = warmCache().state(modelID)
 
+    override val query: SearchQuery<M>?
+        get() = loader
+
+    /**
+     * Return the Validate strategy used
+     */
+    override var validateMode: EntityValidateMode = EntityValidateMode.AUTO
+        private set
+
+    /**
+     * Return the current state of the entity
+     */
+    override var internalState: EntityState = EntityState.MANAGED
+        private set
+
+    var readWriteMode: ReadWriteMode = ReadWriteMode.RW
+
+
+    operator fun get(field: ModelField<M, Any>): Any? {
+        return warmCache()[modelID][field]
+    }
+
+    override fun <T : Any> get(field: SimpleModelField<M, T>): T? {
+        return warmCache()[modelID, field].second
+    }
+
+    override fun <MT : Model<MT>> get(field: ReferencedField<M, MT>): Record<MT> {
+        val modelId = warmCache()[modelID, field].second
+        return if (modelId != null){
+            RecordImpl(modelId.id, env, field.target)
+        } else {
+            RecordImpl.empty(env, field.target)
+        }
+    }
+
+    override fun <MT : Model<MT>> get(field: MultiReferencedField<M, MT>): Bag<MT> {
+        TODO("not implemented")
+    }
+
+    override fun set(fieldName: String, value: Any?) {
+        val field = model.fields.filter { it.fieldName == fieldName }.first()
+        val valueConvert = if (value != null){
+            field.type.valueFromDB(value)
+        } else {
+            null
+        }
+        env.internal.cache.put(field, modelID, valueConvert)
+    }
+
+
+
+    private fun <TM : Model<TM>> PlatypusEnvironment.empty(model: TM): Record<TM> {
+        return RecordImpl(null, 0, this, model, true)
+    }
+
+    private fun fetchIfNeeded(): Boolean {
+        if (!empty) {
+            return false
+        }
+//        if (warmCache().isNotInDB(modelID)) {
+//            return false
+//        }
+        var request = false
+        if (env.internal.cache.isNONE_STATE(modelID)) {
+            if (loader != null) {
+                _id = repository().bagOf(loader).firstOrNull()?.id ?: 0
+                fetched = true
+                request = true
+            } else {
+                TODO("Throw a real exception")
+            }
+        } else {
+            if (warmCache().isInDB(modelID) && cacheState == CacheState.FETCHED) {
+                repository().byId(warmCache().realID(modelID).id)
+                request = true
+                fetched = true
+            }
+        }
+        return request
+
+    }
+
+    override val api: PrivateApi<M> by lazy {
+        PrivateApi(this@RecordImpl)
+    }
+
+    private fun repository(e: PlatypusEnvironment = env): RecordRepository<M> = RecordRepositoryImpl(e, model)
+
+
+
     /**
      * Attach the current entity to the [env] cache
      * put the [internalState] to [EntityState.MANAGED]
@@ -161,7 +221,8 @@ internal class RecordImpl<M : Model<M>> internal constructor(
     }
 
     override fun fetch(): Record<M> {
-        return fetchForce(false)
+        fetchIfNeeded()
+        return this
     }
 
     override fun delete() {
@@ -178,9 +239,9 @@ internal class RecordImpl<M : Model<M>> internal constructor(
 
     private fun fetchForce(force: Boolean): Record<M> {
         return if (!force) {
-            repository().browse(id)
+            repository().byId(id)
         } else {
-            repository().fetch(id)
+            repository().byId(id)
         }
     }
 
@@ -188,26 +249,14 @@ internal class RecordImpl<M : Model<M>> internal constructor(
         return env.internal.cache.isInDB(this.model of this.id)
     }
 
-    /**
-     * Return the Validate strategy used
-     */
-    override var validateMode: EntityValidateMode = EntityValidateMode.AUTO
-        private set
 
-    /**
-     * Return the current state of the entity
-     */
-    override var internalState: EntityState = EntityState.MANAGED
-        private set
-
-    var readWriteMode: ReadWriteMode = ReadWriteMode.RW
 
     /**
      * Return a new Entity with the [sudoUser] = [user] and the same [id]
      * The data of the entity are still the same
      * @see PlatypusEnvironment.sudo
      */
-    override fun sudo(user: PlatypusUser): Record<M> = repository(env.sudo(user)).browse(this.id)
+    override fun sudo(user: PlatypusUser): Record<M> = repository(env.sudo(user)).byId(this.id)
 
     /**
      * Return a new Entity with the same [id]
@@ -215,7 +264,7 @@ internal class RecordImpl<M : Model<M>> internal constructor(
      * The data of the entity are still the same
      * @see PlatypusEnvironment.withContext
      */
-    override fun withContext(vararg vals: ContextKey.Value<*>): Record<M> = repository(env.withContext(*vals)).browse(this.id)
+    override fun withContext(vararg vals: ContextKey.Value<*>): Record<M> = repository(env.withContext(*vals)).byId(this.id)
 
     /**
      * Return an [PlatypusCache] to create all the min.
@@ -225,12 +274,7 @@ internal class RecordImpl<M : Model<M>> internal constructor(
     /**
      * Return a read only bag with only the current StoredEntity in it
      */
-    override fun toBag(): Bag<M> = toMutableBag()
-
-    /**
-     * Return a bag with only the current StoredEntity in it
-     */
-    override fun toMutableBag(): MutableBag<M> = ArrayBag(env, model, listOf(id))
+    override fun toBag(): Bag<M> = BagInMemory(setOf(id), env, model)
 
     override fun fetchIfNeeded(field: ModelField<M, *>): Record<M> {
         if (fetchIfNeeded() && warmCache().isNONE_STATE(modelID, field) && !warmCache().isNONE_STATE(modelID)) {
@@ -321,12 +365,12 @@ internal class RecordImpl<M : Model<M>> internal constructor(
 
     override operator fun CreateUID<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): User {
         fetchIfNeeded(this)
-        return env.users.browse(warmCache()[modelID, this].second!!.id)
+        return env.users.byId(warmCache()[modelID, this].second!!.id)
     }
 
     override operator fun WriteUID<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): User {
         fetchIfNeeded(this)
-        return env.users.browse(warmCache()[modelID, this].second?.id ?: env.envUser.getData(env).id)
+        return env.users.byId(warmCache()[modelID, this].second?.id ?: env.envUser.getData(env).id)
     }
 
     override operator fun <TM : Model<TM>> One2ManyField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Bag<TM> {
@@ -352,7 +396,7 @@ internal class RecordImpl<M : Model<M>> internal constructor(
                 this@RecordImpl.env.empty(this.target)
             }
         } else {
-            RecordRepositoryImpl(this@RecordImpl.env, this.target).browse(res.id)
+            RecordRepositoryImpl(this@RecordImpl.env, this.target).byId(res.id)
         }
     }
 
@@ -375,7 +419,7 @@ internal class RecordImpl<M : Model<M>> internal constructor(
                 this@RecordImpl.env.empty(this.target)
             }
         } else {
-            RecordRepositoryImpl(this@RecordImpl.env, this.target).browse(res.id)
+            RecordRepositoryImpl(this@RecordImpl.env, this.target).byId(res.id)
         }
     }
 
@@ -389,7 +433,7 @@ internal class RecordImpl<M : Model<M>> internal constructor(
                 if (env.internal.cache.isNotInDB(modelID)) {
                     this@RecordImpl.env.empty(this.targetField().model)
                 } else {
-                    val rec = RecordRepositoryImpl(this@RecordImpl.env, this.targetField().model).findFirst {
+                    val rec = RecordRepositoryImpl(this@RecordImpl.env, this.targetField().model).whereFirst {
                         this@getValue.targetField() eq o.id
                     }
                     warmCache().put(this, modelID, rec)
@@ -399,7 +443,7 @@ internal class RecordImpl<M : Model<M>> internal constructor(
                 this@RecordImpl.env.empty(this.targetField().model)
             }
         } else {
-            RecordRepositoryImpl(this@RecordImpl.env, this.targetField().model).browse(res.id)
+            RecordRepositoryImpl(this@RecordImpl.env, this.targetField().model).byId(res.id)
         }
     }
 

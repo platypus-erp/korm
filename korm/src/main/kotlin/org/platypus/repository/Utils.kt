@@ -2,9 +2,10 @@ package org.platypus.repository
 
 import org.platypus.cache.ModelID
 import org.platypus.cache.modelID
+import org.platypus.cache.of
 import org.platypus.entity.Record
-import org.platypus.entity.RecordImpl
 import org.platypus.model.Model
+import org.platypus.module.base.models.Users
 import java.time.LocalDateTime
 
 /**
@@ -20,19 +21,18 @@ import java.time.LocalDateTime
  */
 internal fun <M : Model<M>> RecordRepository<M>.newTmpWithId(
         useDefault: Boolean,
-        id: Int?,
         forceMagicField: Boolean = true,
         init: Record<M>.() -> Unit
 ): Record<M> {
     val prototype: Record<M> = if (useDefault) {
-        model.defaulGet.call(this)
+        model.newTemporaryWithDefault.call(this)
     } else {
-        RecordImpl(createFakeRecord(model, id).id, env, model)
+        model.newTemporary.call(this)
     }
     prototype.init()
     if (forceMagicField) {
         env.internal.cache.forceSet(prototype.modelID, model.createDate, LocalDateTime.now())
-        env.internal.cache.forceSet(prototype.modelID, model.createUid, env.envUser.getData(env).id)
+        env.internal.cache.forceSet(prototype.modelID, model.createUid, Users of env.envUser.getData(env).id)
     }
     return prototype
 }

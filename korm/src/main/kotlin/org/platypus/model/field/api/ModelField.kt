@@ -22,6 +22,10 @@ abstract class ModelField<M : Model<M>, KOTLIN_TYPE : Any>(
         FieldExpression<KOTLIN_TYPE>,
         FieldSlots<KOTLIN_TYPE> by slots{
 
+    override fun compare(o1: KOTLIN_TYPE, o2: KOTLIN_TYPE): Int {
+        TODO("not implemented")
+    }
+
     override val fieldName: String = nameField.to_sneak_case().toLowerCase()
 
     private var onGet: ComputeGetStacker<M, KOTLIN_TYPE>? = null

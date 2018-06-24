@@ -20,12 +20,8 @@ val tagsData = data(ModuleDataType.DEMO) {
     }
 }
 
-data class DataTest(val userJane: UserMok, val janeProfile: Profile,
-                    val post1: BlogPost, val post2: BlogPost,
-                    val tag1: PostTag, val tag2: PostTag, val tag3: PostTag)
-
 val dataBlogJane = data(ModuleDataType.DEMO) {
-    tagsData.loadData(env)
+    dependsOfData(tagsData)
     val userJane = env.userMokRepo.newData("user_jane") {
         name = "Jane Smith"
         email = "jane.smith@example.com"
@@ -40,7 +36,7 @@ val dataBlogJane = data(ModuleDataType.DEMO) {
         }
         blogs = env.blogRepo.newData("blog1") {
             name = "My First Blog"
-            tags.addAll(env.tagRepo.newData("tag1") {
+            tags = (env.tagRepo.newData("tag1") {
                 name = "Tag 1"
             } + env.tagRepo.newData("tag2") {
                 name = "Tag 2"
@@ -65,7 +61,7 @@ val dataBlogJane = data(ModuleDataType.DEMO) {
             }
         } + env.blogRepo.newData("blog2") {
             name = "My Second Blog"
-            tags = env.tagRepo["tag2"] + env.tagRepo.newData("tag3") {
+            tags = env.tagRepo.byRef("tag2") + env.tagRepo.newData("tag3") {
                 name = "Tag 3"
             }
             posts = env.blogPostRepo.newData("janeBlog2Post1") {

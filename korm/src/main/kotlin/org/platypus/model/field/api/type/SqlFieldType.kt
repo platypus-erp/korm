@@ -15,7 +15,7 @@ interface SqlFieldType {
 
     fun valueToString(value: Any?): String = when (value) {
         null -> {
-            if (required) error("NULL in required column $typeEnum")
+//            if (required) error("NULL in required column $typeEnum")
             "NULL"
         }
         DefaultValueMarker -> "DEFAULT"

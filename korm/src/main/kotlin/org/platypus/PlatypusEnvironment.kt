@@ -22,6 +22,7 @@ interface PlatypusEnvironment : ReadOnlyPlatypusEnvironment, SudoAble<PlatypusEn
      */
     fun flush(model:Model<*>)
 
+
     /**
      * After the call you can't call [flush]
      */

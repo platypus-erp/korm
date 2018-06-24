@@ -4,7 +4,7 @@ import org.platypus.model.IModel
 import org.platypus.orm.sql.expression.TypedExpression
 
 interface IModelField<M : IModel<M>, T : Any> : Comparable<IModelField<*, *>>, FieldSlots<T>, TypedExpression<T>,
-        ValidatableValue<T>,
+        ValidatableValue<T>,Comparator<T>,
         ValidatableValueThrow<T> {
     val model: M
     val fieldName: String

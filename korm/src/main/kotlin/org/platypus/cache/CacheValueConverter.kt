@@ -2,7 +2,7 @@ package org.platypus.cache
 
 import org.platypus.entity.Record
 import org.platypus.model.field.api.FieldVisitor
-import org.platypus.model.field.api.ModelField
+import org.platypus.model.field.api.IModelField
 import org.platypus.model.field.impl.ArchivedModelField
 import org.platypus.model.field.impl.BinaryField
 import org.platypus.model.field.impl.BooleanField
@@ -30,7 +30,7 @@ import org.platypus.model.field.impl.WriteDateModelField
 import org.platypus.model.field.impl.WriteUID
 import java.util.stream.Collectors.toList
 
-internal fun ModelField<*,*>.toCacheValue(value:Any?):Any? = accept(CacheValueConverter, value)
+internal fun IModelField<*, *>.toCacheValue(value:Any?):Any? = accept(CacheValueConverter, value)
 
 private object CacheValueConverter : FieldVisitor<Any?, Any?> {
     override fun visit(field: StringField<*>, p: Any?): Any? = p

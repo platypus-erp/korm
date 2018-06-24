@@ -35,4 +35,21 @@ annotation class IShouldImprovedThis(val why:String="I can do better")
 annotation class ICurrentlyWorkingOnThis(val why:String="")
 
 
+/**
+ * Indicate this element always execute a load in the persitence layer
+ * The load can be cached after the execution.
+ */
+annotation class ExecuteAutoLoad
+
+/**
+ * Indicate this mutate the current object
+ */
+annotation class MutateSelf
+
+/**
+ * Indicated this class does not execute a load after it's own creation
+ */
+annotation class LazyLoaded
+
+
 

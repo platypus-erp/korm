@@ -7,6 +7,7 @@ import org.platypus.model.functions.ApiNoParam
 import org.platypus.model.functions.ApiNoParamExtends
 import org.platypus.model.functions.ApiNoParamOriginal
 import org.platypus.model.functions.ApiNoParamStacker
+import org.platypus.model.functions.multi.ApiMultiNoParamStacker
 
 class ApiOneNoParamExtends<M : Model<M>, R>
 (
@@ -26,7 +27,9 @@ class ApiOneNoParamStacker<M : Model<M>, R>
 ) : ApiNoParamStacker<Record<M>, M, R, ApiOneNoParamOriginal<M, R>, ApiOneNoParamExtends<M, R>>
 (originalFunction, visibilityType) {
 
-
+    val onMulti:ApiMultiNoParamStacker<M, Map<Record<M>, R>> = ApiMultiNoParamStacker {
+        it.associate { it to call(it) }
+    }
 
 
     override fun createApiNoParamOriginal(function: (Record<M>) -> R) =

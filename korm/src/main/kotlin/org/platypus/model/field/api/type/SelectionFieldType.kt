@@ -1,8 +1,9 @@
 package org.platypus.model.field.api.type
 
+import org.platypus.entity.Selection
 import org.platypus.model.field.api.ModelFieldType
 
-class SelectionFieldType(override val required: Boolean = false) : SqlFieldType {
+class SelectionFieldType(override val required: Boolean = false, private val selection: Selection<*>) : SqlFieldType {
     override val typeEnum = ModelFieldType.SELECTION
     val charactersToEscape = mapOf(
             '\'' to "\'\'",
@@ -19,9 +20,13 @@ class SelectionFieldType(override val required: Boolean = false) : SqlFieldType 
     }
 
     override fun valueFromDB(value: Any): Any {
-        if (value is java.sql.Clob) {
+        val tmpValue:String?= if (value is java.sql.Clob) {
             return value.characterStream.readText()
+        } else {
+            value as String?
         }
-        return value
+        return selection.getUnsafe(tmpValue)!!
     }
+
+
 }

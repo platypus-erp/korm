@@ -3,7 +3,6 @@ package org.platypus.bag.relation
 import org.platypus.PlatypusEnvironment
 import org.platypus.bag.AbstractBag
 import org.platypus.bag.Bag
-import org.platypus.bag.MutableBag
 import org.platypus.cache.CacheState
 import org.platypus.cache.ModelID
 import org.platypus.cache.ModelIDS
@@ -58,9 +57,9 @@ private abstract class Many2ManyBag<M : Model<M>, TM : Model<TM>>(
         return true
     }
 
-    override fun clear() {
-        super.clear()
-    }
+//    override fun clear() {
+//        super.clear()
+//    }
 
     override val _ids: ArrayList<Int>
         get() = ArrayList(values()?.ids ?: emptyList())
@@ -100,10 +99,6 @@ private class Many2ManyBagCache<M : Model<M>,TM : Model<TM>>
         }
     }
 
-    override fun toMutableBag(): MutableBag<TM> {
-        return Many2ManyBagCache(modelID, prop, env, cacheProvider)
-    }
-
     override fun createFiltredBag(filtredIds: Collection<Int>): Bag<TM> {
         return Many2ManyBagCacheFiltred(modelID, prop, env, cacheProvider, filtredIds)
     }
@@ -118,10 +113,6 @@ private class Many2ManyBagCacheFiltred<
  cacheProvider: () -> PlatypusCache = { env.internal.cache },
  ids: Collection<Int>
 ) : Many2ManyBag<M, TM>(modelID, prop, env, cacheProvider) {
-
-    override fun toMutableBag(): MutableBag<TM> {
-        return Many2ManyBagCacheFiltred(modelID, prop, env, cacheProvider, filtredIds)
-    }
 
     private val filtredIds: MutableList<Int> = ids.toMutableList()
 

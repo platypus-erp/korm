@@ -6,8 +6,11 @@ import org.platypus.module.base.i18n.i18n_en
 import org.platypus.module.base.i18n.i18n_fr
 import org.platypus.module.base.models.DashBoardModel
 import org.platypus.module.base.models.GroupsData
+import org.platypus.module.base.models.LanguageDirection
 import org.platypus.module.base.models.Languages
 import org.platypus.module.base.models.Users
+import org.platypus.module.base.models.ltr
+import org.platypus.module.base.models.rtl
 import org.platypus.module.base.ui.actGroup
 import org.platypus.module.base.ui.actUser
 import org.platypus.module.base.ui.configGroupMenu
@@ -61,7 +64,7 @@ object BaseModule : ModuleBuilder("base", {
     }
     datas {
         add(dataBaseModule)
-//        add(languageData)
+        add(dataResLanguage)
     }
     i18n {
         add(i18n_base)
@@ -78,5 +81,7 @@ object BaseModule : ModuleBuilder("base", {
         add(AppMenus.configUserMenu)
         add(AppMenus.menu_res_lang_act_window)
     }
+    LanguageDirection.rtl
+    LanguageDirection.ltr
 })
 

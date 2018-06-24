@@ -11,35 +11,32 @@ import org.platypus.orm.sql.predicate.NotLikeOp
 import org.platypus.orm.sql.predicate.NotRegexpOp
 import org.platypus.orm.sql.predicate.RegexpOp
 
+infix fun TypedExpression<String>.like(pattern: String): Expression<Boolean> = LikeOp(this, wrap(pattern))
 
-interface StringPredicateOperator<T : CharSequence> : TypedExpression<T> {
+infix fun TypedExpression<String>.startWith(pattern: String): Expression<Boolean> = LikeOp(this, wrap(pattern))
 
-    infix fun like(pattern: T): Expression<Boolean> = LikeOp(this, wrap(pattern))
+infix fun TypedExpression<String>.iStartWith(pattern: String): Expression<Boolean> = LikeOp(this, wrap(pattern))
 
-    infix fun startWith(pattern: T): Expression<Boolean> = LikeOp(this, wrap(pattern))
+infix fun TypedExpression<String>.notStartWith(pattern: String): Expression<Boolean> = LikeOp(this, wrap(pattern))
 
-    infix fun iStartWith(pattern: T): Expression<Boolean> = LikeOp(this, wrap(pattern))
+infix fun TypedExpression<String>.notIStartWith(pattern: String): Expression<Boolean> = LikeOp(this, wrap(pattern))
 
-    infix fun notStartWith(pattern: T): Expression<Boolean> = LikeOp(this, wrap(pattern))
+infix fun TypedExpression<String>.endWith(pattern: String): Expression<Boolean> = LikeOp(this, wrap(pattern))
 
-    infix fun notIStartWith(pattern: T): Expression<Boolean> = LikeOp(this, wrap(pattern))
+infix fun TypedExpression<String>.iEndWith(pattern: String): Expression<Boolean> = LikeOp(this, wrap(pattern))
 
-    infix fun endWith(pattern: T): Expression<Boolean> = LikeOp(this, wrap(pattern))
+infix fun TypedExpression<String>.notEndWith(pattern: String): Expression<Boolean> = LikeOp(this, wrap(pattern))
 
-    infix fun iEndWith(pattern: T): Expression<Boolean> = LikeOp(this, wrap(pattern))
+infix fun TypedExpression<String>.notIEndWith(pattern: String): Expression<Boolean> = LikeOp(this, wrap(pattern))
 
-    infix fun notEndWith(pattern: T): Expression<Boolean> = LikeOp(this, wrap(pattern))
+infix fun TypedExpression<String>.ilike(pattern: String): Expression<Boolean> = ILikeOp(this, wrap(pattern))
 
-    infix fun notIEndWith(pattern: T): Expression<Boolean> = LikeOp(this, wrap(pattern))
+infix fun TypedExpression<String>.notLike(pattern: String): Expression<Boolean> = NotLikeOp(this, wrap(pattern))
+infix fun TypedExpression<String>.notILike(pattern: String): Expression<Boolean> = NotLikeOp(this, wrap(pattern))
 
-    infix fun ilike(pattern: T): Expression<Boolean> = ILikeOp(this, wrap(pattern))
+infix fun TypedExpression<String>.regexp(pattern: String): Expression<Boolean> = RegexpOp(this, wrap(pattern))
 
-    infix fun notLike(pattern: T): Expression<Boolean> = NotLikeOp(this, wrap(pattern))
-    infix fun notILike(pattern: T): Expression<Boolean> = NotLikeOp(this, wrap(pattern))
-
-    infix fun regexp(pattern: T): Expression<Boolean> = RegexpOp(this, wrap(pattern))
-
-    infix fun notRegexp(pattern: T): Expression<Boolean> = NotRegexpOp(this, wrap(pattern))
+infix fun TypedExpression<String>.notRegexp(pattern: String): Expression<Boolean> = NotRegexpOp(this, wrap(pattern))
 
 //    fun <T : String?> Expression<T>.match(pattern: String, mode: FunctionProvider.MatchMode?): Expression<Boolean> {
 //        return with(currentDialect.functionProvider) {
@@ -47,8 +44,7 @@ interface StringPredicateOperator<T : CharSequence> : TypedExpression<T> {
 //        }
 //    }
 
-    //infix fun match(pattern: String): Expression<Boolean> = match(pattern, null)
-}
+//infix fun match(pattern: String): Expression<Boolean> = match(pattern, null)
 
 
 fun <T : Any> coalesce(expr: Expression<T?>, alternate: Expression<T>): Expression<T> = Coalesce(expr, alternate)
