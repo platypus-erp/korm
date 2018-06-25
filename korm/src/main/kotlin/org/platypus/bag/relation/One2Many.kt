@@ -8,6 +8,7 @@ import org.platypus.cache.ModelID
 import org.platypus.cache.ModelIDS
 import org.platypus.cache.PlatypusCache
 import org.platypus.cache.of
+import org.platypus.entity.Record
 import org.platypus.model.Model
 import org.platypus.model.field.impl.One2ManyField
 import org.platypus.orm.sql.expression.eq
@@ -55,6 +56,30 @@ private abstract class One2ManyBag<
     }
 
     override fun createFiltredBag(filtredIds: Collection<Int>): Bag<TM> {
+        TODO("not implemented")
+    }
+
+    override fun get(index: Int): Record<TM> {
+        TODO("not implemented")
+    }
+
+    override fun indexOf(element: Record<TM>): Int {
+        TODO("not implemented")
+    }
+
+    override fun lastIndexOf(element: Record<TM>): Int {
+        TODO("not implemented")
+    }
+
+    override fun listIterator(): ListIterator<Record<TM>> {
+        TODO("not implemented")
+    }
+
+    override fun listIterator(index: Int): ListIterator<Record<TM>> {
+        TODO("not implemented")
+    }
+
+    override fun subList(fromIndex: Int, toIndex: Int): List<Record<TM>> {
         TODO("not implemented")
     }
 }

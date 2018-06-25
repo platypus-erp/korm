@@ -27,7 +27,7 @@ class BagSearchQuery<M : Model<M>> private constructor(
     constructor(loader: SearchQuery<M>, env: PlatypusEnvironment, model: M) : this(loader, emptyList(), env, model)
     constructor(_ids: List<Int>, env: PlatypusEnvironment, model: M) : this(null, _ids, env, model)
 
-    override val ids: Collection<Int>
+    override val ids: List<Int>
         get() {
             loadQuery()
             return _ids
@@ -41,39 +41,19 @@ class BagSearchQuery<M : Model<M>> private constructor(
         }
     }
 
-    private fun inMemory(ids:Collection<Int>):Bag<M> = BagInMemory(ids, env, model)
+    private fun inMemory(ids:List<Int>):Bag<M> = BagInMemory(ids, env, model)
 
-//    override fun orderBy(column: ModelField<M, Any>, orderBy: ORDERBY_TYPE) {
-//        orderBy(column to orderBy)
-//    }
-//
-//    override fun orderBy(vararg columns: Pair<ModelField<M, Any>, ORDERBY_TYPE>) {
-//        orderBy(columns.toList())
-//    }
-//
-//    override fun orderBy(columns: List<Pair<ModelField<M, Any>, ORDERBY_TYPE>>) {
-//        if (loaded) {
-//            TODO("Create a generic comparator")
-////            val comp = RecordComparator(columns)
-////            _ids = ids.toStreamRecord()
-////                    .sorted(comp)
-////                    .toIds()
-//        } else {
-//            query?.orderBy(columns)
-//        }
-//    }
+    override fun get(index: Int): Record<M> = RecordImpl(ids.toList()[index], env, model)
 
-//    override fun limit(limit: Int, offset: Int) {
-//        if (loaded) {
-//            _ids = _ids.toList().subList(limit * offset, limit * (offset + 1))
-//        } else {
-//            query?.limit(limit, offset)
-//        }
-//    }
-//
-//    override fun addField(f: RealModelField<M, *>) {
-//        query?.addField(f)
-//    }
+    override fun indexOf(element: Record<M>): Int = ids.indexOf(element.id)
+
+    override fun lastIndexOf(element: Record<M>): Int = ids.lastIndexOf(element.id)
+
+    override fun listIterator(): ListIterator<Record<M>> = ListIteratorInMemory(env, model, ids)
+
+    override fun listIterator(index: Int): ListIterator<Record<M>> = ListIteratorInMemory(env, model, ids, index)
+
+    override fun subList(fromIndex: Int, toIndex: Int): Bag<M> = BagInMemory(ids.subList(fromIndex, toIndex), env, model)
 
     override fun plus(other: Record<M>): Bag<M> {
         return BagSearchQuery(ids + other.id, env, model)
@@ -124,51 +104,7 @@ class BagSearchQuery<M : Model<M>> private constructor(
 
     override fun isEmpty(): Boolean = ids.isEmpty()
 
-//    override fun add(element: Record<M>): Boolean {
-//        val tmpIds = ids.toMutableList()
-//        val res = tmpIds.add(element.id)
-//        _ids = tmpIds
-//        return res
-//    }
-//
-//    override fun addAll(elements: Collection<Record<M>>): Boolean {
-//        val tmpIds = ids.toMutableList()
-//        val res = tmpIds.addAll(elements.map { it.id })
-//        _ids = tmpIds
-//        return res
-//    }
-//
-//    override fun clear() {
-//        _ids = emptyList()
-//        loaded = false
-//    }
-
     override fun iterator(): MutableIterator<Record<M>> = IteratorInMemory(env, model, ids.toMutableList())
-
-//    override fun remove(element: Record<M>): Boolean {
-//        val tmpIds = ids.toMutableList()
-//        val res = tmpIds.remove(element.id)
-//        _ids = tmpIds
-//        return res
-//    }
-//
-//    override fun removeAll(elements: Collection<Record<M>>): Boolean {
-//        val tmpIds = ids.toMutableList()
-//        val res = tmpIds.removeAll(elements.map { it.id })
-//        _ids = tmpIds
-//        return res
-//    }
-//
-//    override fun retainAll(elements: Collection<Record<M>>): Boolean {
-//        val tmpIds = ids.toMutableList()
-//        val res = tmpIds.retainAll(elements.map { it.id })
-//        _ids = tmpIds
-//        return res
-//    }
-
-//    override fun deleteIf(filter: (Record<M>) -> Boolean): Int {
-//        return filter { filter(it) }.delete()
-//    }
 
     override fun delete(): Int {
         env.internal.cache.remove(model of ids.toList())
@@ -187,10 +123,6 @@ class BagSearchQuery<M : Model<M>> private constructor(
     private fun Stream<Record<M>>.toIds(): List<Int> = map(Record<M>::id).collect(Collectors.toList())
 
     private fun Collection<Int>.toStreamRecord(): Stream<Record<M>> = stream().map { RecordImpl(it, env, model) }
-
-//    override fun removeIf(predicate: (Record<M>) -> Boolean) {
-//        _ids -= ids.toStreamRecord().filter(predicate).toIds()
-//    }
 
     override fun orderBy(column: ModelField<M, Any>, orderBy: ORDERBY_TYPE): Bag<M> {
         TODO("not implemented")

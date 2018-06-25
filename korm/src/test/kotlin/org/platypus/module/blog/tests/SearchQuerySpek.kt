@@ -1,9 +1,11 @@
 package org.platypus.module.blog.tests
 
 import org.amshove.kluent.shouldBe
+import org.amshove.kluent.shouldBeNull
 import org.amshove.kluent.shouldContainNone
 import org.amshove.kluent.shouldEqualTo
 import org.amshove.kluent.shouldNotBeEmpty
+import org.amshove.kluent.shouldNotBeNull
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
@@ -20,28 +22,31 @@ import org.platypus.module.base.entities.languageRepo
 import org.platypus.module.base.models.Languages
 import org.platypus.module.blog.BaseBlogModule
 import org.platypus.module.blog.BlogModel
+import org.platypus.module.blog.UserMokModel
 import org.platypus.module.blog.blogRepo
 import org.platypus.newTest
+import org.platypus.orm.sql.QueryBuilder
 import org.platypus.orm.sql.ilike
 import org.platypus.orm.sql.or
 import org.platypus.orm.sql.query.ORDERBY_TYPE
 import org.platypus.orm.sql.query.SearchQueryImpl
+import org.platypus.orm.sql.query.SearchQuerySelectPartImpl
 
 fun test() {
     val platy = Platypus.newTest(BaseBlogModule)
     platy.newEnv().use { env ->
         env.blogRepo.search {
             adjustSelect {
-                +it.user.get { email }
-                +it.user.get { resume }.get { leisure }
-                +it.user.get { resume }.get { education }
-                +it.user.get { resume }.get { experience }
+                +it.co_creator.get { email }
+                +it.co_creator.get { resume }.get { leisure }
+                +it.co_creator.get { resume }.get { education }
+                +it.co_creator.get { resume }.get { experience }
             }
 
             where {
                 (it.name ilike "dkf")
-                        .or(it.user.get { email } ilike "dfk")
-                        .or(it.user.get { resume }.get { experience } ilike "fkdj")
+                        .or(it.co_creator.get { email } ilike "dfk")
+                        .or(it.co_creator.get { resume }.get { experience } ilike "fkdj")
             }
         }
 
@@ -111,6 +116,7 @@ object SelectSpek : Spek({
                     it("Should contains the ids and only one query is executed, only the name is fetched") {
                         val search = SearchQueryImpl(BlogModel, env).adjustSelect {
                             +it.name
+                            +it.co_creator.get{ nums }
                         }
                         val ids = search.execute()
                         ids.shouldNotBeEmpty()
@@ -118,11 +124,25 @@ object SelectSpek : Spek({
                         nbQ() shouldEqualTo nbQuery + 1
                         for (id in ids) {
                             env.internal.cache.state(BlogModel of id) shouldBe CacheState.PARTIALLY
-                            for (f in BlogModel.storeFields) {
-                                if (f != BlogModel.name) {
+                            for (f in BlogModel.storeFields.filter { it != BlogModel.id }) {
+                                if (f != BlogModel.name || f != BlogModel.co_creator) {
                                     env.internal.cache.state(BlogModel of id, f) shouldBe CacheState.NONE
                                 } else {
                                     env.internal.cache.state(BlogModel of id, f) shouldBe CacheState.FETCHED
+                                }
+                            }
+                            val userCache = env.internal.cache[BlogModel of id, BlogModel.co_creator]
+                            userCache.first shouldBe CacheState.FETCHED
+                            userCache.second.shouldNotBeNull()
+                            env.internal.cache.state(userCache.second!!, UserMokModel.id) shouldBe CacheState.PARTIALLY
+                            val userNulCache = env.internal.cache[userCache.second!!, UserMokModel.nums]
+                            for (f in UserMokModel.storeFields.filter { it != UserMokModel.id }) {
+                                if (f != UserMokModel.nums) {
+                                    env.internal.cache.state(BlogModel of id, f) shouldBe CacheState.NONE
+                                    userNulCache.second.shouldBeNull()
+                                } else {
+                                    env.internal.cache.state(BlogModel of id, f) shouldBe CacheState.FETCHED
+                                    userNulCache.second.shouldNotBeNull()
                                 }
                             }
                         }
@@ -284,5 +304,22 @@ object WhereSpek : Spek({
         }
     }
 })
+
+
+fun main(args: Array<String>) {
+    val platy = Platypus.newTest(BaseBlogModule)
+    val query = platy.newEnv().use { env ->
+        val sel = SearchQuerySelectPartImpl(BlogModel)
+        sel.apply {
+            +BlogModel.name
+            +BlogModel.co_creator.get { nums }
+            +BlogModel.co_creator.get { resume }.get { education }
+            +BlogModel.maintainer.get { nums }
+            +BlogModel.maintainer.get { resume }.get { experience }
+        }
+        sel.prepareSQL(env.internal.dialect, QueryBuilder(false))
+    }
+    println(query)
+}
 
 

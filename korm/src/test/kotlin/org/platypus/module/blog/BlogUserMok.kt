@@ -46,7 +46,7 @@ object UserMokModel : Model<UserMokModel>("test.user") {
     val age = integer("age") {
         store = true
     }
-    val blogs = one2many("posts", { BlogModel.user })
+    val blogs = one2many("posts", { BlogModel.co_creator })
 
 
     //    val Pmoney = profile.related().money

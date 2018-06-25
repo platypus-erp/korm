@@ -6,10 +6,9 @@ import org.platypus.model.IModel
 import org.platypus.model.Model
 import org.platypus.model.field.api.IModelField
 import org.platypus.orm.sql.dml.ColumnSet
-import org.platypus.orm.sql.dml.Join
-import org.platypus.orm.sql.dml.JoinType
 import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.expression.ExpressionAlias
+import org.platypus.orm.sql.query.Join
 import org.platypus.orm.sql.query.Query
 
 
@@ -34,17 +33,17 @@ class QueryAlias(val query: Query, val alias: String) : ColumnSet {
     operator fun <T : Any?> get(original: Expression<T>): Expression<T> = (query.fieldSet.fieldsExpression.find { it == original } as? ExpressionAlias<T>)?.aliasOnlyExpression()
             ?: error("IModelField not found in original models fieldsExpression")
 
-    override fun join(otherTable: ColumnSet, joinType: JoinType,
+    override fun join(otherTable: ColumnSet, joinType: Join.JoinType,
                       onColumn: Expression<*>?,
                       otherColumn: Expression<*>?,
                       additionalConstraint: (() -> Expression<Boolean>)?): Join =
             Join(this, otherTable, joinType, onColumn, otherColumn, additionalConstraint)
 
-    override infix fun innerJoin(otherTable: ColumnSet): Join = Join(this, otherTable, JoinType.INNER)
+    override infix fun innerJoin(otherTable: ColumnSet): Join = Join(this, otherTable, Join.JoinType.INNER)
 
-    override infix fun leftJoin(otherTable: ColumnSet): Join = Join(this, otherTable, JoinType.LEFT)
+    override infix fun leftJoin(otherTable: ColumnSet): Join = Join(this, otherTable, Join.JoinType.LEFT)
 
-    override infix fun crossJoin(otherTable: ColumnSet): Join = Join(this, otherTable, JoinType.CROSS)
+    override infix fun crossJoin(otherTable: ColumnSet): Join = Join(this, otherTable, Join.JoinType.CROSS)
 }
 
 fun <T : Model<T>> T.alias(alias: String) = Alias(this, alias)

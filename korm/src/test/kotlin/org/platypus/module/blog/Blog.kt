@@ -10,8 +10,16 @@ import org.platypus.repository.RecordRepositoryImpl
 
 object BlogModel : Model<BlogModel>("blog.blog") {
 
-    val user = many2one("user", UserMokModel){
+    val co_creator = many2one("co_creator", UserMokModel){
         onDelete = ReferenceOption.RESTRICT
+        required = true
+//        defaultValueFun  = {
+//            it.envUser.getData(it)
+//        }
+    }
+    val maintainer = many2one("maintainer", UserMokModel){
+        onDelete = ReferenceOption.RESTRICT
+        required = false
 //        defaultValueFun  = {
 //            it.envUser.getData(it)
 //        }
@@ -38,5 +46,5 @@ typealias BlogRepo = RecordRepository<BlogModel>
 typealias Blog = Record<BlogModel>
 
 var Blog.tags by BlogModel.tags
-var Blog.user by BlogModel.user
+var Blog.user by BlogModel.co_creator
 var Blog.posts by BlogModel.posts

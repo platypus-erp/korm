@@ -582,7 +582,7 @@ object CreatingBagSpek : Spek({
                     it("From search function") {
                         val bag = env.blogRepo.search {
                             where {
-                                it.user eq 3
+                                it.co_creator eq 3
                             }
                         }
                         env.internal.cr.stat.nbSelect shouldEqualTo 0
@@ -590,7 +590,7 @@ object CreatingBagSpek : Spek({
                     }
                     it("From where function") {
                         val bag = env.blogRepo.where {
-                            it.user eq 3
+                            it.co_creator eq 3
 
                         }
                         env.internal.cr.stat.nbSelect shouldEqualTo 0
@@ -619,7 +619,7 @@ object CreatingRecordSpek : Spek({
                     it("From searchFirst function") {
                         val bag = env.blogRepo.searchFirst {
                             where {
-                                it.user eq 3
+                                it.co_creator eq 3
                             }
                         }
                         env.internal.cr.stat.nbSelect shouldEqualTo 0
@@ -627,7 +627,7 @@ object CreatingRecordSpek : Spek({
                     }
                     it("From whereFirst function") {
                         val bag = env.blogRepo.whereFirst {
-                            it.user eq 3
+                            it.co_creator eq 3
 
                         }
                         env.internal.cr.stat.nbSelect shouldEqualTo 0

@@ -9,6 +9,7 @@ import org.platypus.cache.ModelIDS
 import org.platypus.cache.PlatypusCache
 import org.platypus.cache.isNotEmpty
 import org.platypus.cache.of
+import org.platypus.entity.Record
 import org.platypus.model.Model
 import org.platypus.model.ModelMany2Many
 import org.platypus.model.field.impl.Many2ManyField
@@ -68,6 +69,34 @@ private abstract class Many2ManyBag<M : Model<M>, TM : Model<TM>>(
 
     override fun delete(): Int {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun createFiltredBag(filtredIds: Collection<Int>): Bag<TM> {
+        TODO("not implemented")
+    }
+
+    override fun get(index: Int): Record<TM> {
+        TODO("not implemented")
+    }
+
+    override fun indexOf(element: Record<TM>): Int {
+        TODO("not implemented")
+    }
+
+    override fun lastIndexOf(element: Record<TM>): Int {
+        TODO("not implemented")
+    }
+
+    override fun listIterator(): ListIterator<Record<TM>> {
+        TODO("not implemented")
+    }
+
+    override fun listIterator(index: Int): ListIterator<Record<TM>> {
+        TODO("not implemented")
+    }
+
+    override fun subList(fromIndex: Int, toIndex: Int): List<Record<TM>> {
+        TODO("not implemented")
     }
 }
 

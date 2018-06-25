@@ -274,7 +274,7 @@ internal class RecordImpl<M : Model<M>> private constructor(
     /**
      * Return a read only bag with only the current StoredEntity in it
      */
-    override fun toBag(): Bag<M> = BagInMemory(setOf(id), env, model)
+    override fun toBag(): Bag<M> = BagInMemory(listOf(id), env, model)
 
     override fun fetchIfNeeded(field: ModelField<M, *>): Record<M> {
         if (fetchIfNeeded() && warmCache().isNONE_STATE(modelID, field) && !warmCache().isNONE_STATE(modelID)) {

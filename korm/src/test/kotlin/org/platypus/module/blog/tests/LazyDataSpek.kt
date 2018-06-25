@@ -11,7 +11,7 @@ import org.platypus.newTestBlog
 import org.platypus.security.ROOT_USER
 
 object LazyDataSpek : Spek({
-    describe("Creating user Jane with related Profile and Posts and Tags then query it") {
+    describe("Creating co_creator Jane with related Profile and Posts and Tags then query it") {
         given("An environement") {
             Platypus.newTestBlog {
                 assertNoDMLRunned()

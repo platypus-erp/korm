@@ -31,7 +31,7 @@ import org.platypus.module.blog.userMokRepo
 import org.platypus.newTestBlog
 
 object CacheReadSpek : Spek({
-    describe("Creating user Jane with related Profile and Posts and Tags then query it") {
+    describe("Creating co_creator Jane with related Profile and Posts and Tags then query it") {
         given("An environement") {
             Platypus.newTestBlog {
                 assertNoDMLRunned()
@@ -89,7 +89,7 @@ object CacheReadSpek : Spek({
 
 object CacheCreateUpdateSpek : Spek({
     given("An environement without data") {
-        on("Creating a new user") {
+        on("Creating a new co_creator") {
             Platypus.newTestBlog {
                 val john = env.userMokRepo.new {
                     name = "John Smith"
@@ -114,7 +114,7 @@ object CacheCreateUpdateSpek : Spek({
                 }
             }
         }
-        on("Creating a new blog And changing the user for Many 2 One relation") {
+        on("Creating a new blog And changing the co_creator for Many 2 One relation") {
             Platypus.newTestBlog {
                 val john1 = env.userMokRepo.new {
                     name = "John Smith 1"
@@ -137,7 +137,7 @@ object CacheCreateUpdateSpek : Spek({
                     newBlog.user shouldEqual john1
                     john2.blogs.shouldBeEmpty()
                 }
-                it("The blog should change automaticaly of user") {
+                it("The blog should change automaticaly of co_creator") {
                     john2.blogs += newBlog
                     john2.blogs.size shouldEqualTo 1
                     newBlog.user shouldEqual john2
@@ -147,7 +147,7 @@ object CacheCreateUpdateSpek : Spek({
             }
         }
 
-        on("Creating a new blog And changing the user for One 2 One relation") {
+        on("Creating a new blog And changing the co_creator for One 2 One relation") {
             Platypus.newTestBlog {
                 val john1 = env.userMokRepo.new {
                     name = "John Smith 1"
@@ -170,7 +170,7 @@ object CacheCreateUpdateSpek : Spek({
                     profileJohn.user shouldEqual john1
                     john2.profile.shouldBeNull()
                 }
-                it("The profile should change automaticaly of user") {
+                it("The profile should change automaticaly of co_creator") {
                     john2.profile = profileJohn
                     john2.profile shouldEqual profileJohn
                     profileJohn.user shouldEqual john2

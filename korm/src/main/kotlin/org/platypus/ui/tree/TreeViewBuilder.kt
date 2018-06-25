@@ -93,7 +93,7 @@ internal class TreeViewBuilderImpl<M : Model<M>>(override val model: M) : TreeVi
 
     override fun field(field: RealModelField<M, *>, invisible: Boolean, readonly: Boolean, groups: Set<String>, placeHolder: String?, id: String?, label: String?, cssClass: String?, widget: String?, options: String?) {
         _fields.add(TreeWidgetUI(field, label, invisible, true))
-        querySearch.addField(field)
+//        querySearch.addField(field)
     }
 
     override fun <TM : Model<TM>, T : Any> field(field: ReferenceField<M, TM>, invisible: Boolean, readonly: Boolean, groups: Set<String>, placeHolder: String?, id: String?, label: String?, cssClass: String?, widget: String?, options: String?, fieldGet: TM.() -> RealModelField<TM, T>) {
