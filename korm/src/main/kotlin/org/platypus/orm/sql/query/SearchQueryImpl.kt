@@ -38,7 +38,7 @@ internal class SearchQueryImpl<M : Model<M>>(
         return q
     }
 
-    override fun adjustSelect(slice: FieldUnaryPlus.(M) -> Unit): SearchQuery<M> {
+    override fun adjustSelect(slice: SearchQuerySelectPart<M>.(M) -> Unit): SearchQuery<M> {
         TODO("not implemented")
     }
 
@@ -107,13 +107,13 @@ internal class SearchQueryImpl<M : Model<M>>(
 //        expr.add(field)
     }
 
-    override fun or(predicate: FieldGetter.(M) -> Expression<Boolean>): SearchQueryImpl<M> {
+    override fun or(predicate: FieldGetter<M>.(M) -> Expression<Boolean>): SearchQueryImpl<M> {
         return SearchQueryImpl(
                 model,
                 env,
                 expr,
                 if (this.predicate != null) {
-                    this.predicate!!.or(FieldUniryPlusImpl().predicate(model))
+                    this.predicate!!.or(FieldUniryPlusImpl<M>().predicate(model))
                 } else {
                     this.predicate
                 },
@@ -124,13 +124,13 @@ internal class SearchQueryImpl<M : Model<M>>(
         )
     }
 
-    override fun and(predicate: FieldGetter.(M) -> Expression<Boolean>): SearchQueryImpl<M> {
+    override fun and(predicate: FieldGetter<M>.(M) -> Expression<Boolean>): SearchQueryImpl<M> {
         return SearchQueryImpl(
                 model,
                 env,
                 expr,
                 if (this.predicate != null) {
-                    this.predicate!!.and(FieldUniryPlusImpl().predicate(model))
+                    this.predicate!!.and(FieldUniryPlusImpl<M>().predicate(model))
                 } else {
                     this.predicate
                 },
@@ -141,12 +141,12 @@ internal class SearchQueryImpl<M : Model<M>>(
         )
     }
 
-    override fun where(predicate: FieldGetter.(M) -> Expression<Boolean>): SearchQueryImpl<M> {
+    override fun where(predicate: FieldGetter<M>.(M) -> Expression<Boolean>): SearchQueryImpl<M> {
         return SearchQueryImpl(
                 model,
                 env,
                 expr,
-                FieldUniryPlusImpl().predicate(model),
+                FieldUniryPlusImpl<M>().predicate(model),
                 joins,
                 offset,
                 limit,

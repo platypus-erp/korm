@@ -30,6 +30,7 @@ import org.platypus.orm.sql.ilike
 import org.platypus.orm.sql.or
 import org.platypus.orm.sql.query.ORDERBY_TYPE
 import org.platypus.orm.sql.query.SearchQueryImpl
+import org.platypus.orm.sql.query.SearchQuerySelectPart
 import org.platypus.orm.sql.query.SearchQuerySelectPartImpl
 
 fun test() {
@@ -37,16 +38,16 @@ fun test() {
     platy.newEnv().use { env ->
         env.blogRepo.search {
             adjustSelect {
-                +it.co_creator.get { email }
-                +it.co_creator.get { resume }.get { leisure }
-                +it.co_creator.get { resume }.get { education }
-                +it.co_creator.get { resume }.get { experience }
+                it.co_creator.select { email }
+                it.co_creator.join { resume }.select { leisure }
+                it.co_creator.join { resume }.select { education }
+                it.co_creator.join { resume }.select { experience }
             }
 
             where {
                 (it.name ilike "dkf")
-                        .or(it.co_creator.get { email } ilike "dfk")
-                        .or(it.co_creator.get { resume }.get { experience } ilike "fkdj")
+                        .or(it.co_creator.select { email } ilike "dfk")
+                        .or(it.co_creator.join { resume }.select { experience } ilike "fkdj")
             }
         }
 
@@ -89,7 +90,7 @@ object SelectSpek : Spek({
                     val nbQuery = env.internal.cr.stat.nbSelect
                     it("Should contains the ids and only one query is executed, only the name is fetched") {
                         val search = SearchQueryImpl(BlogModel, env).adjustSelect {
-                            +it.name
+                            it.name.select()
                         }
                         val ids = search.execute()
                         ids.shouldNotBeEmpty()
@@ -115,8 +116,8 @@ object SelectSpek : Spek({
                     val nbQuery = env.internal.cr.stat.nbSelect
                     it("Should contains the ids and only one query is executed, only the name is fetched") {
                         val search = SearchQueryImpl(BlogModel, env).adjustSelect {
-                            +it.name
-                            +it.co_creator.get{ nums }
+                            it.name
+                            it.co_creator.select { nums }
                         }
                         val ids = search.execute()
                         ids.shouldNotBeEmpty()
@@ -156,8 +157,8 @@ object SelectSpek : Spek({
                     val nbQuery = env.internal.cr.stat.nbSelect
                     it("Should contains the ids and only one query is executed, only the name is fetched") {
                         val search = SearchQueryImpl(BlogModel, env).adjustSelect {
-                            +it.name
-                            +it.posts
+                            it.name.select()
+                            it.posts.select()
                         }
                         val ids = search.execute()
                         ids.shouldNotBeEmpty()
@@ -184,8 +185,8 @@ object SelectSpek : Spek({
                     val nbQuery = env.internal.cr.stat.nbSelect
                     it("Should contains the ids and only one query is executed, only the name is fetched") {
                         val search = SearchQueryImpl(BlogModel, env).adjustSelect {
-                            +it.name
-                            +it.posts
+                            it.name.select()
+                            it.posts.select()
                         }
                         val ids = search.execute()
                         ids.shouldNotBeEmpty()
@@ -309,14 +310,17 @@ object WhereSpek : Spek({
 fun main(args: Array<String>) {
     val platy = Platypus.newTest(BaseBlogModule)
     val query = platy.newEnv().use { env ->
-        val sel = SearchQuerySelectPartImpl(BlogModel)
-        sel.apply {
-            +BlogModel.name
-            +BlogModel.co_creator.get { nums }
-            +BlogModel.co_creator.get { resume }.get { education }
-            +BlogModel.maintainer.get { nums }
-            +BlogModel.maintainer.get { resume }.get { experience }
+        val selector: SearchQuerySelectPart<BlogModel>.(BlogModel) -> Unit = {
+            it.name.select()
+            it.co_creator.select()
+            it.co_creator join { lastPost } join { blog } select { maintainer }
+            val join4 = it.co_creator join { lastPost } join { blog }
+            join4 select { posts }
+            join4 select { tags }
         }
+
+        val sel = SearchQuerySelectPartImpl(BlogModel)
+        sel.selector(BlogModel)
         sel.prepareSQL(env.internal.dialect, QueryBuilder(false))
     }
     println(query)

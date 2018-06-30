@@ -23,10 +23,10 @@ object ProfileModel : Model<ProfileModel>("test.profile") {
     val age = integer("age")
     val gender = selection("gender", ProfileGender)
     val money = decimal("money")
-    val user = one2one("co_creator", UserMokModel){
+    val user = one2one("co_creator", UserMokModel) {
         required = true
     }
-    val bestPost = one2one("bestPost", BlogPostModel)
+    val bestPost = revOne2one("bestPost", { BlogPostModel.bestPostProfile })
 
 //    val displayAdresse = api.private("displayAdresse",
 //            fun(self: Profile): String? {

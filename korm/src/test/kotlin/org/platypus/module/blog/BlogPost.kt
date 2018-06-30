@@ -23,7 +23,7 @@ object BlogPostModel : Model<BlogPostModel>("test.post") {
     }
     val content = text("content")
     val tags = many2many("tags", { ModelMany2Many.postTagRel })
-    val bestPostProfile = revOne2one("bestPostProfile", { ProfileModel.bestPost })
+    val bestPostProfile = one2one("bestPostProfile", ProfileModel)
     val abstract = text("abstract")
     val attachment = binary("attachment")
     val lastRead = date("lastRead")

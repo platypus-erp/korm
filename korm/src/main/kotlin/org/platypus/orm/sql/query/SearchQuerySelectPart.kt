@@ -1,184 +1,104 @@
 package org.platypus.orm.sql.query
 
-import kotlinx.coroutines.experimental.NonCancellable.children
-import org.platypus.model.IModel
 import org.platypus.model.Model
-import org.platypus.model.field.api.IModelField
 import org.platypus.model.field.impl.Many2OneField
 import org.platypus.model.field.impl.RealModelField
 import org.platypus.orm.PersistenceDialect
 import org.platypus.orm.sql.QueryBuilder
-import org.platypus.utils.enter
-import org.platypus.utils.space
-import org.platypus.utils.token
 
-interface SearchQuerySelectPart : FieldGetter, StatementPart {
-    operator fun <MM : Model<MM>> RealModelField<MM, *>.unaryPlus()
+interface SearchQuerySelectPart<M : Model<M>> : FieldGetter<M>, StatementPart {
 }
 
 class SearchQuerySelectPartImpl<M : Model<M>>(
         private val model: M,
         private val count: Boolean = false,
         private val distinct: Boolean = false
-) : SearchQuerySelectPart {
+) : SearchQuerySelectPart<M> {
 
-    private val joins = HashSet<JoinPart>()
-    private val projection = ProjectionSelectPart(AliasModel(model, "from_" + model.modelName))
-    private var lastJoinPart: JoinPart? = null
-    private val pathStack = HashMap<String, PathStack>()
-
-    init {
-        pathStack[model.modelName] = PathStack(null,
-                ProjectionSelectPart(AliasModel(model, "from_" + model.modelName)),
-                null)
-    }
-
-    private var currentPath = model.modelName
+    val fromSelect :MutableSet<RealModelField<*,*>> = HashSet()
+    val selectJoin = HashMap<JoinStatementPart, MutableSet<RealModelField<*,*>>>()
+    val joins = LinkedHashSet<JoinStatementPart>()
 
 
     override fun prepareSQL(dialect: PersistenceDialect, builder: QueryBuilder): String = buildString {
-        token("SELECT")
-        enter()
-        if (count) {
-            token("COUNT(*)")
-            enter()
-        } else {
-            if (distinct) {
-                token("DISTINCT")
-                enter()
-            }
-            pathStack.values.
-            joins.joinTo(this, separator = ",\n") {
-                it.projection.prepareSQL(dialect, builder)
-            }
-            append(",\n")
-            append(projection.prepareSQL(dialect, builder))
-        }
-        enter()
-        token("FROM")
-        append(projection.alias.prepareSQL(dialect, builder))
-        append(dialect.identity(model))
-        enter()
-        for (fieldToJoin in joins) {
-            append(fieldToJoin.prepareSQL(dialect, builder))
-        }
     }
 
-    override fun <MM : Model<MM>, TM : Model<TM>, F : IModelField<TM, T>, T : Any> Many2OneField<MM, TM>.get(getter: TM.() -> F): F {
-        val newPath = currentPath + "#" + this.fieldName
-        val stack = pathStack[newPath]
-        if (stack == null) {
-            pathStack[newPath] = PathStack(this,
-                    ProjectionSelectPart(AliasModel(model, newPath)).apply {
-                        select.add(this@get)
-                    },
-                    pathStack[currentPath]!!
-            )
-        }
-        currentPath = newPath
-        return this.target.getter()
+    override fun <M1 : Model<M1>, M2 : Model<M2>> Many2OneField<M, M1>.join(field: M1.() -> Many2OneField<M1, M2>): Join3<M, M1, M2> {
+        return Join3(Join2(this), this.target.field())
     }
 
-    override fun <MM : Model<MM>> RealModelField<MM, *>.unaryPlus() {
-        val stack = pathStack[currentPath]
-        if (stack != null) {
-            stack.projection.select.add(this)
-        } else {
-            throw IllegalStateException("No path Stack")
-        }
-        currentPath = this@SearchQuerySelectPartImpl.model.modelName
-    }
-}
-
-private class PathStack(
-        val field: Many2OneField<*, *>?,
-        val projection: ProjectionSelectPart,
-        val previous: PathStack?
-): StatementPart{
-    override fun prepareSQL(dialect: PersistenceDialect, builder: QueryBuilder): String = buildString {
-        var prev = previous
-        while (prev != null){
-            prev.toSql(dialect, builder)
-            prev = prev.previous
-        }
-
-        for (fieldToJoin in previous) {
-            append(fieldToJoin.toSql(dialect, builder))
-        }
-        append(toSql(dialect, builder))
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>> Join3<M, M1, M2>.join(field: M2.() -> Many2OneField<M2, M3>): Join4<M, M1, M2, M3> {
+        return Join4(this, this.field.target.field())
     }
 
-    private fun toSql(dialect: PersistenceDialect, builder: QueryBuilder): String = buildString {
-        space(2)
-        if (field!!.required) {
-            token("INNER")
-        } else {
-            token("LEFT")
-        }
-        token("JOIN")
-        append(dialect.identity(field.target))
-        token(" AS")
-        token(projection.alias.alias)
-        token("ON")
-        append(field.accept(dialect.expressionVisitor, builder))
-        append(" = ")
-        append(field.target.id.accept(dialect.expressionVisitor, builder))
-        enter()
-    }
-}
-
-private class JoinPart(
-        val field: Many2OneField<*, *>, private val num: Int
-) : StatementPart {
-    val children = HashSet<JoinPart>()
-    val projection = ProjectionSelectPart(
-            alias = AliasModel(field.target, this.field.target.tableName + "_" + this.field.fieldName))
-
-    val alias: String
-        get() = this.field.target.tableName + "_" + this.field.fieldName
-
-    override fun prepareSQL(dialect: PersistenceDialect, builder: QueryBuilder): String = buildString {
-        append(toSSql(dialect, builder))
-        for (fieldToJoin in children) {
-            append(fieldToJoin.toSSql(dialect, builder))
-        }
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>> Join4<M, M1, M2, M3>.join(field: M3.() -> Many2OneField<M3, M4>): Join5<M, M1, M2, M3, M4> {
+        return Join5(this, this.field.target.field()).also { joins.add(it) }
     }
 
-    private fun toSSql(dialect: PersistenceDialect, builder: QueryBuilder): String = buildString {
-        space(2)
-        if (field.required) {
-            token("INNER")
-        } else {
-            token("LEFT")
-        }
-        token("JOIN")
-        append(dialect.identity(field.target))
-        token(" AS")
-        token(alias)
-        token("ON")
-        append(field.accept(dialect.expressionVisitor, builder))
-        append(" = ")
-        append(field.target.id.accept(dialect.expressionVisitor, builder))
-        enter()
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>> Join5<M, M1, M2, M3, M4>.join(field: M4.() -> Many2OneField<M4, M5>): Join6<M, M1, M2, M3, M4, M5> {
+        return Join6(this, this.field.target.field())
     }
-}
 
-private class ProjectionSelectPart(
-        val alias: AliasModel
-) : StatementPart {
-
-    val select = HashSet<RealModelField<*, *>>()
-
-    override fun prepareSQL(dialect: PersistenceDialect, builder: QueryBuilder): String = buildString {
-        select.joinTo(this, separator = ",\n") {
-            space(2)
-            alias.alias + "." + dialect.identity(it)
-        }
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>> Join6<M, M1, M2, M3, M4, M5>.join(field: M5.() -> Many2OneField<M5, M6>): Join7<M, M1, M2, M3, M4, M5, M6> {
+        return Join7(this, this.field.target.field())
     }
-}
 
-private class AliasModel(private val model: IModel<*>, val alias: String) : StatementPart {
-    override fun prepareSQL(dialect: PersistenceDialect, builder: QueryBuilder): String {
-        return dialect.identity(model) + " AS " + alias
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>> Join7<M, M1, M2, M3, M4, M5, M6>.join(field: M6.() -> Many2OneField<M6, M7>): Join8<M, M1, M2, M3, M4, M5, M6, M7> {
+        return Join8(this, this.field.target.field())
+    }
+
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, M8 : Model<M8>> Join8<M, M1, M2, M3, M4, M5, M6, M7>.join(field: M7.() -> Many2OneField<M7, M8>): Join9<M, M1, M2, M3, M4, M5, M6, M7, M8> {
+        return Join9(this, this.field.target.field())
+    }
+
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, M8 : Model<M8>, M9 : Model<M9>> Join9<M, M1, M2, M3, M4, M5, M6, M7, M8>.join(field: M8.() -> Many2OneField<M8, M9>): Join10<M, M1, M2, M3, M4, M5, M6, M7, M8, M9> {
+        return Join10(this, this.field.target.field())
+    }
+
+    override fun <T : Any> RealModelField<M, T>.select() {
+        fromSelect.add(this)
+    }
+
+    override fun <M1 : Model<M1>, T : Any> Many2OneField<M, M1>.select(field: M1.() -> RealModelField<M1, T>):RealModelField<M1, T> {
+        return Join2(this).mergeSelect(this.target.field())
+    }
+
+    private fun <M1 : Model<M1>, T : Any> JoinStatementPart.mergeSelect(field: RealModelField<M1, T>): RealModelField<M1, T> {
+        val selectPart = selectJoin[this] ?: mutableSetOf()
+        selectPart.add(field)
+        selectJoin[this] = selectPart
+        return field
+    }
+
+    override fun <M1 : Model<M1>, M2 : Model<M2>, T : Any> Join3<M, M1, M2>.select(field: M2.() -> RealModelField<M2, T>):RealModelField<M2, T> {
+        return this.mergeSelect(this.field.target.field())
+    }
+
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, T : Any> Join4<M, M1, M2, M3>.select(field: M3.() -> RealModelField<M3, T>):RealModelField<M3, T> {
+        return this.mergeSelect(this.field.target.field())
+    }
+
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, T : Any> Join5<M, M1, M2, M3, M4>.select(field: M4.() -> RealModelField<M4, T>):RealModelField<M4, T> {
+        return this.mergeSelect(this.field.target.field())
+    }
+
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, T : Any> Join6<M, M1, M2, M3, M4, M5>.select(field: M5.() -> RealModelField<M5, T>):RealModelField<M5, T> {
+        return this.mergeSelect(this.field.target.field())
+    }
+
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, T : Any> Join7<M, M1, M2, M3, M4, M5, M6>.select(field: M6.() -> RealModelField<M6, T>):RealModelField<M6, T> {
+        return this.mergeSelect(this.field.target.field())
+    }
+
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, T : Any> Join8<M, M1, M2, M3, M4, M5, M6, M7>.select(field: M7.() -> RealModelField<M7, T>):RealModelField<M7, T> {
+        return this.mergeSelect(this.field.target.field())
+    }
+
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, M8 : Model<M8>, T : Any> Join9<M, M1, M2, M3, M4, M5, M6, M7, M8>.select(field: M8.() -> RealModelField<M8, T>):RealModelField<M8, T> {
+        return this.mergeSelect(this.field.target.field())
+    }
+
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, M8 : Model<M8>, M9 : Model<M9>, T : Any> Join10<M, M1, M2, M3, M4, M5, M6, M7, M8, M9>.select(field: M9.() -> RealModelField<M9, T>):RealModelField<M9, T> {
+        return this.mergeSelect(this.field.target.field())
     }
 }
