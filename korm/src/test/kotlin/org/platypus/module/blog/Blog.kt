@@ -17,6 +17,8 @@ object BlogModel : Model<BlogModel>("blog.blog") {
 //            it.envUser.getData(it)
 //        }
     }
+    val parent = many2one("parent", BlogModel)
+
     val maintainer = many2one("maintainer", UserMokModel){
         onDelete = ReferenceOption.RESTRICT
         required = false

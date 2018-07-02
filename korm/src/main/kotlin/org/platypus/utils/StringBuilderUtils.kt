@@ -5,8 +5,10 @@ import java.io.StringReader
 
 private fun String.reader(): StringReader = StringReader(this)
 
-fun StringBuilder.space(nb:Int=1) = append(" " * nb)
+fun StringBuilder.space(nb: Int = 1) = append(" " * nb)
 fun StringBuilder.token(token: String) = append(token).space()
+fun StringBuilder.appendValues(values: Collection<String>) = values.forEach { append(it) }
+fun StringBuilder.append(vararg values: String) = values.forEach { append(it) }
 fun StringBuilder.comma() = append(", ")
 fun StringBuilder.enter() = append("\n")
 fun StringBuilder.appendIf(predicate: Boolean, value: String) = if (predicate) append(value) else this

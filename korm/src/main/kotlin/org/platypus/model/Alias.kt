@@ -1,5 +1,6 @@
 package org.platypus.model
 
+import org.platypus.PlatypusEnvironment
 import org.platypus.model.field.api.IModelField
 import org.platypus.model.field.impl.FieldAlias
 
@@ -12,6 +13,10 @@ class Alias<M : IModel<M>>(val delegate: M, val alias: String) : IModel<M> by de
 
     override val modelName: String
         get() = alias
+
+    override fun describe(env: PlatypusEnvironment): String {
+        return tableNameWithAlias
+    }
 
     override fun targetTables(): List<IModel<*>> {
         return listOf(delegate)
@@ -31,6 +36,10 @@ class Alias<M : IModel<M>>(val delegate: M, val alias: String) : IModel<M> by de
     override fun equals(other: Any?): Boolean {
         if (other !is Alias<*>) return false
         return this.tableNameWithAlias == other.tableNameWithAlias
+    }
+
+    override fun toString(): String {
+        return tableNameWithAlias
     }
 
     override fun hashCode(): Int = tableNameWithAlias.hashCode()

@@ -15,6 +15,7 @@ import org.jetbrains.spek.api.dsl.xon
 import org.platypus.Platypus
 import org.platypus.cache.CacheState
 import org.platypus.cache.of
+import org.platypus.model.Alias
 import org.platypus.module.base.entities.dateFormat
 import org.platypus.module.base.entities.installed
 import org.platypus.module.base.entities.isoCode
@@ -28,8 +29,11 @@ import org.platypus.newTest
 import org.platypus.orm.sql.QueryBuilder
 import org.platypus.orm.sql.ilike
 import org.platypus.orm.sql.or
+import org.platypus.orm.sql.query.Join
 import org.platypus.orm.sql.query.ORDERBY_TYPE
+import org.platypus.orm.sql.query.Query
 import org.platypus.orm.sql.query.SearchQueryImpl
+import org.platypus.orm.sql.query.SearchQueryImplV2
 import org.platypus.orm.sql.query.SearchQuerySelectPart
 import org.platypus.orm.sql.query.SearchQuerySelectPartImpl
 
@@ -311,19 +315,38 @@ fun main(args: Array<String>) {
     val platy = Platypus.newTest(BaseBlogModule)
     val query = platy.newEnv().use { env ->
         val selector: SearchQuerySelectPart<BlogModel>.(BlogModel) -> Unit = {
-            it.name.select()
-            it.co_creator.select()
-            it.co_creator join { lastPost } join { blog } select { maintainer }
-            val join4 = it.co_creator join { lastPost } join { blog }
-            join4 select { posts }
-            join4 select { tags }
+            it.maintainer.select()
+            val j = it.parent join { parent }
+            j join { parent } select { maintainer }
+            j join { co_creator } select { email }
         }
 
         val sel = SearchQuerySelectPartImpl(BlogModel)
         sel.selector(BlogModel)
-        sel.prepareSQL(env.internal.dialect, QueryBuilder(false))
+        val query = SearchQueryImplV2(env, BlogModel, sel)
+        query.prepareSQL(QueryBuilder(false))
     }
-    println(query)
+//    println(query)
+
+
+    val query2 = platy.newEnv().use { env ->
+        val fromTable = Alias(BlogModel, "from_table")
+        val parent = Alias(BlogModel, "parent")
+        val parentParent = Alias(BlogModel, "parent_parent")
+        val parentParentParent = Alias(BlogModel, "parent_parent_parent")
+        Query(env, fromTable
+                .join(parent, Join.JoinType.LEFT, fromTable[BlogModel.parent], parent.id)
+                .join(parentParent, Join.JoinType.LEFT, parent[BlogModel.parent], parentParent.id)
+                .join(parentParentParent, Join.JoinType.LEFT, parentParent[BlogModel.parent], parentParentParent.id)
+                .slice(fromTable[BlogModel.id], fromTable[BlogModel.parent],
+                        parent[BlogModel.id], parent[BlogModel.parent],
+                        parentParent[BlogModel.id], parentParent[BlogModel.parent],
+                        parentParentParent[BlogModel.id], parentParentParent[BlogModel.parent])
+                , null)
+    }
+    println(query2.prepareSQL(QueryBuilder(false)))
+
+
 }
 
 

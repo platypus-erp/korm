@@ -1,9 +1,12 @@
 package org.platypus.orm.sql.expression
 
+import org.platypus.entity.Record
 import org.platypus.model.IModel
 import org.platypus.model.Model
+import org.platypus.model.field.api.IModelField
 import org.platypus.model.field.api.ReferencedField
 import org.platypus.model.field.api.type.SqlFieldType
+import org.platypus.model.field.impl.PKModelField
 import org.platypus.orm.sql.literal
 import org.platypus.orm.sql.or
 import org.platypus.orm.sql.predicate.BetweenOp
@@ -31,6 +34,9 @@ interface TypedExpression<T> : Expression<T> {
 }
 
 infix fun <S : T, T> Expression<T>.eq(other: Expression<S>): Expression<Boolean> = EqOp(this, other)
+
+infix fun <M:Model<M>, T : Model<T>> IModelField<M, Record<T>>.eq(other: Expression<Int>): Expression<Boolean> = EqOp(this, other)
+
 infix fun <S : T, T> Expression<T>.eqOrNull(other: Expression<S>): Expression<Boolean> = EqOp(this, other) or this.isNull()
 
 fun <S : T, T> Expression<T>.isNull(): Expression<Boolean> = IsNullOp(this)
@@ -55,6 +61,14 @@ operator fun <S : T, T> Expression<T>.div(other: Expression<S>): Expression<T> =
 
 
 infix fun <M : IModel<M>, TM : Model<TM>> ReferencedField<M, TM>.eq(t: Int?): Expression<Boolean> {
+    if (t == null) {
+        return isNull()
+    }
+    return EqOp(this, QueryParameter(this.type, t))
+}
+
+
+infix fun <M : IModel<M>, TM : Model<TM>> ReferencedField<M, TM>.eq(t: PKModelField<TM>?): Expression<Boolean> {
     if (t == null) {
         return isNull()
     }

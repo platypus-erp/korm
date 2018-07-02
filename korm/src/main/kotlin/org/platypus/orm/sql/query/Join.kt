@@ -63,12 +63,12 @@ class Join(val table: ColumnSet) : ColumnSet {
         }
     }
 
-//    override fun join(otherTable: ColumnSet, joinType: JoinType, onColumn: Expression<*>?, otherColumn: Expression<*>?, additionalConstraint: (() -> Expression<Boolean>)?): Join {
-//        val cond = if (onColumn != null && otherColumn != null) {
-//            listOf(JoinCondition(onColumn, otherColumn))
-//        } else emptyList()
-//        return join(otherTable, joinType, cond, additionalConstraint)
-//    }
+    override fun join(otherTable: ColumnSet, joinType: JoinType, onColumn: Expression<*>?, otherColumn: Expression<*>?, additionalConstraint: (() -> Expression<Boolean>)?): Join {
+        val cond = if (onColumn != null && otherColumn != null) {
+            listOf(JoinCondition(onColumn, otherColumn))
+        } else emptyList()
+        return join(otherTable, joinType, cond, additionalConstraint)
+    }
 
     private fun join(otherTable: ColumnSet, joinType: JoinType, cond: List<JoinCondition>, additionalConstraint: (() -> Expression<Boolean>)?): Join =
             Join(table).also {

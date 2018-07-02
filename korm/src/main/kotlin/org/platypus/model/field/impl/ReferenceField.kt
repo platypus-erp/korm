@@ -20,7 +20,7 @@ abstract class ReferenceField<
  slots: FieldSlotsImpl<Record<TM>>,
  defaultOnDelete: ReferenceOption?,
  defaultDomain: (TM.() -> Expression<Boolean>)?
-) : RealModelField<M, Record<TM>>(model, name.suffix("_id"), slots), ReferencedField<M, TM> {
+) : RealModelField<M, Record<TM>>(model, name, slots), ReferencedField<M, TM> {
 
     var domain: (TM.() -> Expression<Boolean>)? = defaultDomain
         protected set

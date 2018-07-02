@@ -45,39 +45,39 @@ class FieldUniryPlusImpl<M:Model<M>> : FieldUnaryPlus<M> {
         TODO("not implemented")
     }
 
-    override fun <M1 : Model<M1>, T : Any> Many2OneField<M, M1>.select(field: M1.() -> RealModelField<M1, T>) {
+    override fun <M1 : Model<M1>, T : Any> Many2OneField<M, M1>.select(field: M1.() -> RealModelField<M1, T>): RealModelField<M1, T> {
         TODO("not implemented")
     }
 
-    override fun <M1 : Model<M1>, M2 : Model<M2>, T : Any> Join3<M, M1, M2>.select(field: M2.() -> RealModelField<M2, T>) {
+    override fun <M1 : Model<M1>, M2 : Model<M2>, T : Any> Join3<M, M1, M2>.select(field: M2.() -> RealModelField<M2, T>): RealModelField<M2, T> {
         TODO("not implemented")
     }
 
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, T : Any> Join4<M, M1, M2, M3>.select(field: M3.() -> RealModelField<M3, T>) {
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, T : Any> Join4<M, M1, M2, M3>.select(field: M3.() -> RealModelField<M3, T>): RealModelField<M3, T> {
         TODO("not implemented")
     }
 
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, T : Any> Join5<M, M1, M2, M3, M4>.select(field: M4.() -> RealModelField<M4, T>) {
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, T : Any> Join5<M, M1, M2, M3, M4>.select(field: M4.() -> RealModelField<M4, T>): RealModelField<M4, T> {
         TODO("not implemented")
     }
 
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, T : Any> Join6<M, M1, M2, M3, M4, M5>.select(field: M5.() -> RealModelField<M5, T>) {
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, T : Any> Join6<M, M1, M2, M3, M4, M5>.select(field: M5.() -> RealModelField<M5, T>): RealModelField<M5, T> {
         TODO("not implemented")
     }
 
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, T : Any> Join7<M, M1, M2, M3, M4, M5, M6>.select(field: M6.() -> RealModelField<M6, T>) {
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, T : Any> Join7<M, M1, M2, M3, M4, M5, M6>.select(field: M6.() -> RealModelField<M6, T>): RealModelField<M6, T> {
         TODO("not implemented")
     }
 
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, T : Any> Join8<M, M1, M2, M3, M4, M5, M6, M7>.select(field: M7.() -> RealModelField<M7, T>) {
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, T : Any> Join8<M, M1, M2, M3, M4, M5, M6, M7>.select(field: M7.() -> RealModelField<M7, T>): RealModelField<M7, T> {
         TODO("not implemented")
     }
 
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, M8 : Model<M8>, T : Any> Join9<M, M1, M2, M3, M4, M5, M6, M7, M8>.select(field: M8.() -> RealModelField<M8, T>) {
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, M8 : Model<M8>, T : Any> Join9<M, M1, M2, M3, M4, M5, M6, M7, M8>.select(field: M8.() -> RealModelField<M8, T>): RealModelField<M8, T> {
         TODO("not implemented")
     }
 
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, M8 : Model<M8>, M9 : Model<M9>, T : Any> Join10<M, M1, M2, M3, M4, M5, M6, M7, M8, M9>.select(field: M9.() -> RealModelField<M9, T>) {
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, M8 : Model<M8>, M9 : Model<M9>, T : Any> Join10<M, M1, M2, M3, M4, M5, M6, M7, M8, M9>.select(field: M9.() -> RealModelField<M9, T>): RealModelField<M9, T> {
         TODO("not implemented")
     }
 

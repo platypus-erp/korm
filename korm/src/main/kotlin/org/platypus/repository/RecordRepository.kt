@@ -89,13 +89,13 @@ interface RecordRepository<M : Model<M>> : Environmentable, SudoAble<RecordRepos
      * Create a bag with the given where expression
      * This expression will be evaluated only if needed
      */
-    fun where(predicate: FieldGetter.(M) -> Expression<Boolean>): Bag<M>
+    fun where(predicate: FieldGetter<M>.(M) -> Expression<Boolean>): Bag<M>
 
     /**
      * Find the first record with the given where expression
      * Automatically a Limit 1 will be added to the query
      */
-    fun whereFirst(predicate: FieldGetter.(M) -> Expression<Boolean>): Record<M>
+    fun whereFirst(predicate: FieldGetter<M>.(M) -> Expression<Boolean>): Record<M>
 
     /**
      * Create a [SearchQueryImpl] initialized with [init]

@@ -79,11 +79,11 @@ class RecordRepositoryImpl<M : Model<M>>(override val env: PlatypusEnvironment, 
         }
     }
 
-    override fun where(predicate: FieldGetter.(M) -> Expression<Boolean>): Bag<M> {
+    override fun where(predicate: FieldGetter<M>.(M) -> Expression<Boolean>): Bag<M> {
         return BagSearchQuery(SearchQueryImpl(model, env).where(predicate), env, model)
     }
 
-    override fun whereFirst(predicate: FieldGetter.(M) -> Expression<Boolean>): Record<M> {
+    override fun whereFirst(predicate: FieldGetter<M>.(M) -> Expression<Boolean>): Record<M> {
         return RecordImpl(SearchQueryImpl(model, env).where(predicate).limit(1), env, model)
     }
 
