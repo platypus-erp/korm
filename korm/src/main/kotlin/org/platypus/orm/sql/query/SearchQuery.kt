@@ -16,5 +16,4 @@ interface SearchQuery<M : Model<M>> {
     fun or(predicate: FieldGetter<M>.(M) -> Expression<Boolean>): SearchQuery<M>
     fun and(predicate: FieldGetter<M>.(M) -> Expression<Boolean>): SearchQuery<M>
     fun execute(): List<Int>
-    fun copy(): SearchQuery<M>
 }

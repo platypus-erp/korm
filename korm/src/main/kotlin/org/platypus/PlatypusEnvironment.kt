@@ -3,10 +3,12 @@ package org.platypus
 import org.platypus.cache.PlatypusCache
 import org.platypus.config.PlatypusConf
 import org.platypus.context.PlatypusContext
+import org.platypus.entity.Record
 import org.platypus.model.Model
 import org.platypus.module.base.entities.Language
 import org.platypus.orm.PersistenceDialect
 import org.platypus.orm.transaction.TransactionExecutor
+import org.platypus.repository.RecordRepository
 import org.platypus.security.PlatypusUser
 import org.slf4j.Logger
 import java.time.ZoneId
@@ -17,10 +19,13 @@ interface PlatypusEnvironment : ReadOnlyPlatypusEnvironment, SudoAble<PlatypusEn
      * Store all the altered and new data to the DataBase
      */
     fun flush()
+
     /**
      * Store all the altered and new data to the DataBase for this model
      */
-    fun flush(model:Model<*>)
+    fun flush(model: Model<*>)
+
+
 
 
     /**
@@ -35,13 +40,13 @@ interface PlatypusEnvironment : ReadOnlyPlatypusEnvironment, SudoAble<PlatypusEn
      * [lang] = [user].language
      * [timezone] = [user].zoneId
      */
-    fun connect(user:PlatypusUser):PlatypusEnvironment
+    fun connect(user: PlatypusUser): PlatypusEnvironment
 
     val internal: PlatypusEnvironmentInternal
 
 }
 
-interface PlatypusEnvironmentInternal:AutoCloseable {
+interface PlatypusEnvironmentInternal : AutoCloseable {
 
     val dbName: String
     val cr: TransactionExecutor
@@ -62,7 +67,7 @@ interface ReadOnlyPlatypusEnvironment : AutoCloseable {
     /**
      * The configuration of the server
      */
-    val conf:PlatypusConf
+    val conf: PlatypusConf
     /**
      * The current context of the environement
      */
@@ -93,4 +98,8 @@ interface ReadOnlyPlatypusEnvironment : AutoCloseable {
      * A generic logger if you wan't to log somethings is the application log
      */
     val logger: Logger
+
+    fun <M : Model<M>> repoOf(model: M): RecordRepository<M>
+
+    fun <M : Model<M>> emptyRecordOf(model: M): Record<M>
 }

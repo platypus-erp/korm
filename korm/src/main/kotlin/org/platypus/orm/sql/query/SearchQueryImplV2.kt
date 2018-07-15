@@ -18,7 +18,7 @@ internal class SearchQueryImplV2<M : Model<M>> constructor(
 
 
     fun prepareSQL(qb: QueryBuilder): String {
-        return selectPart.prepareSQL(dialect, QueryBuilder(true))
+        TODO()
     }
 
     override fun PreparedStatement.executeInternal(): ResultSet? = executeQuery()

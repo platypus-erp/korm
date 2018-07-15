@@ -7,6 +7,8 @@ import org.platypus.config.PlatypusConf
 import org.platypus.config.PlatypusConf.Companion.mode
 import org.platypus.context.ContextKey
 import org.platypus.context.PlatypusContext
+import org.platypus.entity.Record
+import org.platypus.entity.RecordImpl
 import org.platypus.model.IModel
 import org.platypus.model.Model
 import org.platypus.model.field.api.IModelField
@@ -25,6 +27,8 @@ import org.platypus.orm.sql.dml.storeFields
 import org.platypus.orm.sql.expression.eq
 import org.platypus.orm.transaction.TransactionApi
 import org.platypus.orm.transaction.TransactionExecutor
+import org.platypus.repository.RecordRepository
+import org.platypus.repository.RecordRepositoryImpl
 import org.platypus.security.PlatypusUser
 import org.platypus.security.ROOT_USER
 import org.slf4j.Logger
@@ -70,6 +74,13 @@ class BaseEnvironment(
         TODO()
     }
 
+    override fun <M : Model<M>> repoOf(model: M): RecordRepository<M> {
+        return RecordRepositoryImpl(this, model)
+    }
+
+    override fun <M : Model<M>> emptyRecordOf(model: M): Record<M> {
+        return RecordImpl.empty(this, model)
+    }
 
     override fun withContext(vararg vals: ContextKey.Value<*>): PlatypusEnvironment {
         return BaseEnvironment(envUser, sudoUser, conf, context.copy(vals), internal)

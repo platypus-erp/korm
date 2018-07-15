@@ -51,6 +51,7 @@ class ListIteratorInMemory<M : Model<M>>(override val env: PlatypusEnvironment, 
     init {
         val missingIdsInCache = ids.filter { env.internal.cache.state(model.of(it)) != CacheState.FETCHED }
         if (missingIdsInCache.isNotEmpty()) {
+            env.repoOf(model)
             SearchQueryImpl(
                     model,
                     env,

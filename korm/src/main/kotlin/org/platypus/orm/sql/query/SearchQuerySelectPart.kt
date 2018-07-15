@@ -1,232 +1,186 @@
 package org.platypus.orm.sql.query
 
-import org.platypus.PlatypusEnvironment
-import org.platypus.cache.PlatypusCache
+import org.platypus.TypedCloneable
 import org.platypus.model.Alias
+import org.platypus.model.IModel
 import org.platypus.model.Model
 import org.platypus.model.field.api.IModelField
+import org.platypus.model.field.impl.FieldAlias
 import org.platypus.model.field.impl.Many2OneField
-import org.platypus.model.field.impl.PKModelField
 import org.platypus.model.field.impl.RealModelField
-import org.platypus.orm.PersistenceDialect
-import org.platypus.orm.sql.QueryBuilder
 import org.platypus.orm.sql.dml.ColumnSet
-import org.platypus.utils.enter
-import org.platypus.utils.space
-import org.platypus.utils.token
-import java.sql.ResultSet
+import org.platypus.orm.sql.dml.FieldSet
+import org.platypus.orm.sql.expression.Expression
+import org.platypus.utils.groupBySet
 
-interface SearchQuerySelectPart<M : Model<M>> : FieldGetter<M>, StatementPart {
+interface SearchQuerySelectPart<M : Model<M>> : FieldGetter<M>, FieldSet, TypedCloneable<SearchQuerySelectPart<M>>{
+    val sliceByModel: Map<IModel<*>, Set<IModelField<*, *>>>
 }
 
-class SearchQuerySelectPartImpl<M : Model<M>>(
+class SearchQuerySelectPartImpl<M : Model<M>> private constructor(
         private val model: M,
         private val count: Boolean = false,
-        private val distinct: Boolean = false
+        private val distinct: Boolean = false,
+        private val slice: MutableSet<IModelField<*, *>>,
+        private val from: Alias<M>,
+        private var currentColumnSet: ColumnSet = from
 ) : SearchQuerySelectPart<M> {
 
-    val slice: MutableSet<IModelField<*, *>> = HashSet()
-    val selectJoin = HashMap<JoinStatementPart<*>, MutableSet<IModelField<*, *>>>()
-    val joins = LinkedHashSet<JoinStatementPart<*>>()
-    val from = Alias(model, "from_table")
-    var currentColumnSet: ColumnSet = from
+
+    constructor(model: M, count: Boolean = false, distinct: Boolean = false) : this(model, count, distinct, HashSet(), Alias(model, "from_table"))
+
+    fun addToSlice(f: FieldAlias<*, *>) {
+        slice.add(f)
+    }
+
+    override val sliceByModel: Map<IModel<*>, Set<IModelField<*, *>>>
+        get() = slice.groupBySet { it.model }
 
     init {
         slice.add(from[model.id])
     }
 
-    val mapColumnToPutInCache = HashMap<String, IModelField<*, *>>()
-    val mapPKToPutInCache = HashMap<String, PKModelField<*>>()
-
-    override fun prepareSQL(dialect: PersistenceDialect, builder: QueryBuilder): String = buildString {
-        token("SELECT")
-        enter()
-        var selectCounter = 0
-        for ((j, fields) in selectJoin) {
-            for (field in fields) {
-                val colName = "col_$selectCounter"
-                space(2)
-                append(j.alias)
-                append(".")
-                append(dialect.identity(field))
-                space()
-                token("AS")
-                append(colName)
-                token(",")
-                enter()
-                selectCounter++
-                if (builder.prepared) {
-                    mapColumnToPutInCache[colName] = field
-                    if (field is PKModelField) {
-                        mapPKToPutInCache[colName] = field
-                    }
-                }
-            }
-        }
-//        val iterator = fromSelect.iterator()
-//        do {
-//            space(2)
-//            append("from_table")
-//            append(".")
-//            append(dialect.identity(iterator.next()))
-//            space()
-//            token("AS")
-//            append("col_$selectCounter")
-//            if (iterator.hasNext()) {
-//                token(",")
-//                enter()
-//                selectCounter++
-//            }
-//        } while (iterator.hasNext())
-        enter()
-        token("FROM")
-        token(dialect.identity(model))
-        token("AS")
-        token("from_table")
-        enter()
-        LinkedHashSet(selectJoin.keys.flatMap { it.decompose(dialect) }).joinTo(this, separator = "\n")
+    override fun typedClone(): SearchQuerySelectPart<M> {
+        return SearchQuerySelectPartImpl(model, count, distinct, slice, from, currentColumnSet)
     }
 
-    fun putInCache(cache: PlatypusCache, result: ResultSet) {
-//        result.metaData.
-//        while (result.next())
-//            for ()
-    }
-
-    fun toQuery(env: PlatypusEnvironment): Query {
-        for (j in selectJoin.keys) {
-            j.createJoin()
-        }
-    }
-
-
-    override fun <M1 : Model<M1>, M2 : Model<M2>> Many2OneField<M, M1>.join(field: M1.() -> Many2OneField<M1, M2>): Join3<M, M1, M2> {
-        slice.add(from[this])
-        val alias = Alias(this.target, this.fieldName)
-        val j = Join2(this, alias)
-        val f = this.target.field()
-        slice.add(alias[f])
-        slice.add(alias[this.target.id])
-
-
-        val fAlias = Alias(f.target, j.alias.alias + "_" + f.fieldName)
-        return Join3(j, f, fAlias)
-    }
-
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>> Join3<M, M1, M2>.join(field: M2.() -> Many2OneField<M2, M3>): Join4<M, M1, M2, M3> {
-        val f = this.field.target.field()
-        val alias = Alias(f.model, this.alias.alias + "_" + f.fieldName)
-        slice.add(alias[f.model.id])
-        slice.add(this.aliasModel[f])
-        return Join4(this, this.field.target.field(), alias)
-    }
-
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>> Join4<M, M1, M2, M3>.join(field: M3.() -> Many2OneField<M3, M4>): Join5<M, M1, M2, M3, M4> {
-        this.select(field)
-        return Join5(this, this.field.target.field()).also {
-            val selectPart = selectJoin[it] ?: mutableSetOf()
-            selectPart.add(it.field.model.id)
-            selectJoin[it] = selectPart
-        }
-    }
-
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>> Join5<M, M1, M2, M3, M4>.join(field: M4.() -> Many2OneField<M4, M5>): Join6<M, M1, M2, M3, M4, M5> {
-        this.select(field)
-        return Join6(this, this.field.target.field()).also {
-            val selectPart = selectJoin[it] ?: mutableSetOf()
-            selectPart.add(it.field.model.id)
-            selectJoin[it] = selectPart
-        }
-    }
-
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>> Join6<M, M1, M2, M3, M4, M5>.join(field: M5.() -> Many2OneField<M5, M6>): Join7<M, M1, M2, M3, M4, M5, M6> {
-        this.select(field)
-        return Join7(this, this.field.target.field()).also {
-            val selectPart = selectJoin[this] ?: mutableSetOf()
-            selectPart.add(this.field.model.id)
-            selectJoin[this] = selectPart
-
-        }
-    }
-
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>> Join7<M, M1, M2, M3, M4, M5, M6>.join(field: M6.() -> Many2OneField<M6, M7>): Join8<M, M1, M2, M3, M4, M5, M6, M7> {
-        this.select(field)
-        return Join8(this, this.field.target.field()).also {
-            val selectPart = selectJoin[this] ?: mutableSetOf()
-            selectPart.add(this.field.model.id)
-            selectJoin[this] = selectPart
-
-        }
-    }
-
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, M8 : Model<M8>> Join8<M, M1, M2, M3, M4, M5, M6, M7>.join(field: M7.() -> Many2OneField<M7, M8>): Join9<M, M1, M2, M3, M4, M5, M6, M7, M8> {
-        this.select(field)
-        return Join9(this, this.field.target.field()).also {
-            val selectPart = selectJoin[this] ?: mutableSetOf()
-            selectPart.add(this.field.model.id)
-            selectJoin[this] = selectPart
-
-        }
-    }
-
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, M8 : Model<M8>, M9 : Model<M9>> Join9<M, M1, M2, M3, M4, M5, M6, M7, M8>.join(field: M8.() -> Many2OneField<M8, M9>): Join10<M, M1, M2, M3, M4, M5, M6, M7, M8, M9> {
-        this.select(field)
-        return Join10(this, this.field.target.field()).also {
-            val selectPart = selectJoin[this] ?: mutableSetOf()
-            selectPart.add(this.field.model.id)
-            selectJoin[this] = selectPart
-
-        }
-    }
+    override val fieldsExpression: Set<Expression<*>>
+        get() = slice
+    override val source: ColumnSet
+        get() = currentColumnSet
 
     override fun <T : Any> RealModelField<M, T>.select() {
-        slice.add(this)
+        addToSlice(from[this])
     }
 
-    private fun <M1 : Model<M1>, T : Any> JoinStatementPart<M1>.mergeSelect(field: RealModelField<M1, T>): RealModelField<M1, T> {
-        val selectPart = selectJoin[this] ?: mutableSetOf()
-        selectPart.add(field)
-        selectJoin[this] = selectPart
+    override fun <M1 : Model<M1>, T : Any> Many2OneField<M, M1>.select(getter: M1.() -> RealModelField<M1, T>): RealModelField<M1, T> {
+        val join = this.createJoin()
+        addToSlice(from[this])
+        val field = join.field.target.getter()
+        addToSlice(join.alias[field])
+//        TEST IF not already in join
+        currentColumnSet = join.queryJoin(currentColumnSet)
         return field
     }
 
-    override fun <M1 : Model<M1>, T : Any> Many2OneField<M, M1>.select(field: M1.() -> RealModelField<M1, T>): RealModelField<M1, T> {
-        return Join2(this).mergeSelect(this.target.field())
+    override fun <M1 : Model<M1>, M2 : Model<M2>, T : Any> Join3<M, M1, M2>.select(getter: M2.() -> RealModelField<M2, T>) {
+        currentColumnSet = this.queryJoin(currentColumnSet)
+        val field = this.field.target.getter()
+        addToSlice(this.alias[field])
+        addToSlice(this.alias[field.model.id])
     }
 
-    fun <M1 : Model<M1>, T : Any> Join2<M, M1>.select(field: M1.() -> RealModelField<M1, T>): RealModelField<M1, T> {
-        return this.mergeSelect(this.field.target.field())
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, T : Any> Join4<M, M1, M2, M3>.select(getter: M3.() -> RealModelField<M3, T>) {
+        currentColumnSet = this.queryJoin(currentColumnSet)
+        val field = this.field.target.getter()
+        addToSlice(this.alias[field])
+        addToSlice(this.alias[field.model.id])
     }
 
-    override fun <M1 : Model<M1>, M2 : Model<M2>, T : Any> Join3<M, M1, M2>.select(field: M2.() -> RealModelField<M2, T>): RealModelField<M2, T> {
-        return this.mergeSelect(this.field.target.field())
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, T : Any> Join5<M, M1, M2, M3, M4>.select(getter: M4.() -> RealModelField<M4, T>) {
+        currentColumnSet = this.queryJoin(currentColumnSet)
+        val field = this.field.target.getter()
+        addToSlice(this.alias[field])
+        addToSlice(this.alias[field.model.id])
     }
 
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, T : Any> Join4<M, M1, M2, M3>.select(field: M3.() -> RealModelField<M3, T>): RealModelField<M3, T> {
-        return this.mergeSelect(this.field.target.field())
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, T : Any> Join6<M, M1, M2, M3, M4, M5>.select(getter: M5.() -> RealModelField<M5, T>) {
+        currentColumnSet = this.queryJoin(currentColumnSet)
+        val field = this.field.target.getter()
+        addToSlice(this.alias[field])
+        addToSlice(this.alias[field.model.id])
     }
 
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, T : Any> Join5<M, M1, M2, M3, M4>.select(field: M4.() -> RealModelField<M4, T>): RealModelField<M4, T> {
-        return this.mergeSelect(this.field.target.field())
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, T : Any> Join7<M, M1, M2, M3, M4, M5, M6>.select(getter: M6.() -> RealModelField<M6, T>) {
+        currentColumnSet = this.queryJoin(currentColumnSet)
+        val field = this.field.target.getter()
+        addToSlice(this.alias[field])
+        addToSlice(this.alias[field.model.id])
     }
 
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, T : Any> Join6<M, M1, M2, M3, M4, M5>.select(field: M5.() -> RealModelField<M5, T>): RealModelField<M5, T> {
-        return this.mergeSelect(this.field.target.field())
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, T : Any> Join8<M, M1, M2, M3, M4, M5, M6, M7>.select(getter: M7.() -> RealModelField<M7, T>) {
+        currentColumnSet = this.queryJoin(currentColumnSet)
+        val field = this.field.target.getter()
+        addToSlice(this.alias[field])
+        addToSlice(this.alias[field.model.id])
     }
 
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, T : Any> Join7<M, M1, M2, M3, M4, M5, M6>.select(field: M6.() -> RealModelField<M6, T>): RealModelField<M6, T> {
-        return this.mergeSelect(this.field.target.field())
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, M8 : Model<M8>, T : Any> Join9<M, M1, M2, M3, M4, M5, M6, M7, M8>.select(getter: M8.() -> RealModelField<M8, T>) {
+        currentColumnSet = this.queryJoin(currentColumnSet)
+        val field = this.field.target.getter()
+        addToSlice(this.alias[field])
+        addToSlice(this.alias[field.model.id])
     }
 
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, T : Any> Join8<M, M1, M2, M3, M4, M5, M6, M7>.select(field: M7.() -> RealModelField<M7, T>): RealModelField<M7, T> {
-        return this.mergeSelect(this.field.target.field())
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, M8 : Model<M8>, M9 : Model<M9>, T : Any> Join10<M, M1, M2, M3, M4, M5, M6, M7, M8, M9>.select(getter: M9.() -> RealModelField<M9, T>) {
+        currentColumnSet = this.queryJoin(currentColumnSet)
+        val field = this.field.target.getter()
+        addToSlice(this.alias[field])
+        addToSlice(this.alias[field.model.id])
     }
 
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, M8 : Model<M8>, T : Any> Join9<M, M1, M2, M3, M4, M5, M6, M7, M8>.select(field: M8.() -> RealModelField<M8, T>): RealModelField<M8, T> {
-        return this.mergeSelect(this.field.target.field())
+    override fun <M1 : Model<M1>, M2 : Model<M2>> Many2OneField<M, M1>.join(getter: M1.() -> Many2OneField<M1, M2>): Join3<M, M1, M2> {
+        val join = createJoin()
+        addToSlice(from[this])
+        val f = this.target.getter()
+        addToSlice(join.alias[f])
+        addToSlice(join.alias[this.target.id])
+        val fAlias = Alias(f.target, join.alias.alias + "_" + f.fieldName)
+        return Join3(join, f, fAlias)
     }
 
-    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, M8 : Model<M8>, M9 : Model<M9>, T : Any> Join10<M, M1, M2, M3, M4, M5, M6, M7, M8, M9>.select(field: M9.() -> RealModelField<M9, T>): RealModelField<M9, T> {
-        return this.mergeSelect(this.field.target.field())
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>> Join3<M, M1, M2>.join(getter: M2.() -> Many2OneField<M2, M3>): Join4<M, M1, M2, M3> {
+        val f = this.field.target.getter()
+        addToSlice(this.alias[f])
+        addToSlice(this.alias[this.field.target.id])
+        return this.join4(f)
     }
+
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>> Join4<M, M1, M2, M3>.join(getter: M3.() -> Many2OneField<M3, M4>): Join5<M, M1, M2, M3, M4> {
+        val f = this.field.target.getter()
+        addToSlice(this.alias[f])
+        addToSlice(this.alias[this.field.target.id])
+        return this.join5(f)
+    }
+
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>> Join5<M, M1, M2, M3, M4>.join(getter: M4.() -> Many2OneField<M4, M5>): Join6<M, M1, M2, M3, M4, M5> {
+        val f = this.field.target.getter()
+        addToSlice(this.alias[f])
+        addToSlice(this.alias[this.field.target.id])
+        return this.join6(f)
+    }
+
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>> Join6<M, M1, M2, M3, M4, M5>.join(getter: M5.() -> Many2OneField<M5, M6>): Join7<M, M1, M2, M3, M4, M5, M6> {
+        val f = this.field.target.getter()
+        addToSlice(this.alias[f])
+        addToSlice(this.alias[this.field.target.id])
+        return this.join7(f)
+    }
+
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>> Join7<M, M1, M2, M3, M4, M5, M6>.join(getter: M6.() -> Many2OneField<M6, M7>): Join8<M, M1, M2, M3, M4, M5, M6, M7> {
+        val f = this.field.target.getter()
+        addToSlice(this.alias[f])
+        addToSlice(this.alias[this.field.target.id])
+        return this.join8(f)
+    }
+
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, M8 : Model<M8>> Join8<M, M1, M2, M3, M4, M5, M6, M7>.join(getter: M7.() -> Many2OneField<M7, M8>): Join9<M, M1, M2, M3, M4, M5, M6, M7, M8> {
+        val f = this.field.target.getter()
+        addToSlice(this.alias[f])
+        addToSlice(this.alias[this.field.target.id])
+        return this.join9(f)
+    }
+
+    override fun <M1 : Model<M1>, M2 : Model<M2>, M3 : Model<M3>, M4 : Model<M4>, M5 : Model<M5>, M6 : Model<M6>, M7 : Model<M7>, M8 : Model<M8>, M9 : Model<M9>> Join9<M, M1, M2, M3, M4, M5, M6, M7, M8>.join(getter: M8.() -> Many2OneField<M8, M9>): Join10<M, M1, M2, M3, M4, M5, M6, M7, M8, M9> {
+        val f = this.field.target.getter()
+        addToSlice(this.alias[f])
+        addToSlice(this.alias[this.field.target.id])
+        return this.join10(f)
+    }
+
+    private fun <M1 : Model<M1>> Many2OneField<M, M1>.createJoin(): Join2<M, M1> {
+        return Join2(from, this, Alias(this.target, this.fieldName))
+    }
+
+
 }

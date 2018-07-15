@@ -313,19 +313,19 @@ object WhereSpek : Spek({
 
 fun main(args: Array<String>) {
     val platy = Platypus.newTest(BaseBlogModule)
-    val query = platy.newEnv().use { env ->
-        val selector: SearchQuerySelectPart<BlogModel>.(BlogModel) -> Unit = {
-            it.maintainer.select()
-            val j = it.parent join { parent }
-            j join { parent } select { maintainer }
-            j join { co_creator } select { email }
-        }
-
-        val sel = SearchQuerySelectPartImpl(BlogModel)
-        sel.selector(BlogModel)
-        val query = SearchQueryImplV2(env, BlogModel, sel)
-        query.prepareSQL(QueryBuilder(false))
-    }
+//    val query = platy.newEnv().use { env ->
+//        val selector: SearchQuerySelectPart<BlogModel>.(BlogModel) -> Unit = {
+//            it.maintainer.select()
+//            val j = it.parent join { parent }
+//            j join { parent } select { maintainer }
+//            j join { co_creator } select { email }
+//        }
+//
+//        val sel = SearchQuerySelectPartImpl(BlogModel)
+//        sel.selector(BlogModel)
+//        val query = SearchQueryImplV2(env, BlogModel, sel)
+//        query.prepareSQL(QueryBuilder(false))
+//    }
 //    println(query)
 
 
@@ -334,17 +334,40 @@ fun main(args: Array<String>) {
         val parent = Alias(BlogModel, "parent")
         val parentParent = Alias(BlogModel, "parent_parent")
         val parentParentParent = Alias(BlogModel, "parent_parent_parent")
-        Query(env, fromTable
+        val joins = fromTable
                 .join(parent, Join.JoinType.LEFT, fromTable[BlogModel.parent], parent.id)
                 .join(parentParent, Join.JoinType.LEFT, parent[BlogModel.parent], parentParent.id)
                 .join(parentParentParent, Join.JoinType.LEFT, parentParent[BlogModel.parent], parentParentParent.id)
+
+        joins.alreadyInJoin(parentParent)
+
+        joins.joinParts
+        Query(env, joins
                 .slice(fromTable[BlogModel.id], fromTable[BlogModel.parent],
                         parent[BlogModel.id], parent[BlogModel.parent],
                         parentParent[BlogModel.id], parentParent[BlogModel.parent],
                         parentParentParent[BlogModel.id], parentParentParent[BlogModel.parent])
                 , null)
     }
+    println("=======")
     println(query2.prepareSQL(QueryBuilder(false)))
+    println("=======")
+
+    val query = platy.newEnv().use { env ->
+
+
+        val query = env.blogRepo.buildQuery().adjustSelect {
+            it.maintainer.select()
+            it.parent join { parent } select { co_creator }
+            it.parent join { parent } select { maintainer }
+        }.where {
+            it.parent.join { parent }.select { co_creator }
+        }
+        query.execute()
+    }
+    println("=======")
+    println(query)
+    println("=======")
 
 
 }

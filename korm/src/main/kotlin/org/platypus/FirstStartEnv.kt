@@ -6,6 +6,7 @@ import org.platypus.config.PlatypusConf
 import org.platypus.context.ContextKey
 import org.platypus.context.PlatypusContext
 import org.platypus.context.newContext
+import org.platypus.entity.Record
 import org.platypus.model.Model
 import org.platypus.module.base.entities.Language
 import org.platypus.module.base.models.Users
@@ -14,6 +15,7 @@ import org.platypus.orm.sql.expression.eq
 import org.platypus.orm.sql.query.buildSelect
 import org.platypus.orm.transaction.TransactionApi
 import org.platypus.orm.transaction.TransactionMode
+import org.platypus.repository.RecordRepository
 import org.platypus.security.PlatypusUser
 import org.platypus.security.ROOT_USER
 import org.slf4j.Logger
@@ -72,6 +74,14 @@ private class FirstStartEnv(override val conf: PlatypusConf, newTransaction: Tra
         internal.cache.forceSet(modelId, Users.createDate, LocalDateTime.now(), CacheState.FETCHED)
 //        TODO when the domain can be evaluate in cache then call this method
 //        this.users.newTmpWithId(true, 1, false) {}
+    }
+
+    override fun <M : Model<M>> repoOf(model: M): RecordRepository<M> {
+        throw UnsupportedOperationException()
+    }
+
+    override fun <M : Model<M>> emptyRecordOf(model: M): Record<M> {
+        throw UnsupportedOperationException()
     }
 
     override fun withContext(vararg vals: ContextKey.Value<*>): PlatypusEnvironment {

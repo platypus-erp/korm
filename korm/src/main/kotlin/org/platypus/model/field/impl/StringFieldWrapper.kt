@@ -17,4 +17,24 @@ class FieldAlias<M : IModel<M>, T : Any>(
 
     override fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN =
             visitor.visit(this, param)
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as FieldAlias<*, *>
+
+        if (delegate != other.delegate) return false
+        if (newModel != other.newModel) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = delegate.hashCode()
+        result = 31 * result + newModel.hashCode()
+        return result
+    }
+
+
 }

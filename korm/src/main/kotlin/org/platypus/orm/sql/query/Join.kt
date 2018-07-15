@@ -8,9 +8,9 @@ import org.platypus.orm.sql.dml.ColumnSet
 import org.platypus.orm.sql.dml.JoinCondition
 import org.platypus.orm.sql.dml.RefereeExistFinder
 import org.platypus.orm.sql.expression.Expression
-import java.util.*
 
 class Join(val table: ColumnSet) : ColumnSet {
+    internal val joinParts: LinkedHashSet<JoinPart> = LinkedHashSet()
 
     enum class JoinType {
         INNER,
@@ -39,9 +39,31 @@ class Join(val table: ColumnSet) : ColumnSet {
             if (joinType != JoinType.CROSS && conditions.isEmpty() && additionalConstraint == null)
                 error("Missing join condition on $${this.joinPart}")
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as JoinPart
+
+            if (joinType != other.joinType) return false
+            if (joinPart != other.joinPart) return false
+            if (!conditions.containsAll(other.conditions)) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = joinType.hashCode()
+            result = 31 * result + joinPart.hashCode()
+            result = 31 * result + conditions.hashCode()
+            return result
+        }
+
+
     }
 
-    internal val joinParts: ArrayList<JoinPart> = ArrayList()
+
 
     override infix fun innerJoin(otherTable: ColumnSet): Join = join(otherTable, JoinType.INNER)
 
@@ -117,6 +139,7 @@ class Join(val table: ColumnSet) : ColumnSet {
 
     override fun targetTables(): List<IModel<*>> =
             this.table.targetTables() + this.joinParts.flatMap { it.joinPart.targetTables() }
+
 
 }
 

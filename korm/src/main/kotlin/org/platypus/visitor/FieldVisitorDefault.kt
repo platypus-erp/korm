@@ -61,7 +61,7 @@ interface FieldVisitorDefault<PARAM, DEFAULT> : FieldVisitor<PARAM, DEFAULT> {
 
     override fun visit(field: Many2OneFieldLink<*, *>, p: PARAM): DEFAULT = default
 
-    override fun visit(field: FieldAlias<*, *>, p: PARAM): DEFAULT = default
+    override fun visit(field: FieldAlias<*, *>, p: PARAM): DEFAULT = field.delegate.accept(this, p)
 
     override fun visit(field: SelectionField<*, *>, p: PARAM): DEFAULT = default
 

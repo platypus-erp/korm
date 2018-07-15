@@ -3,20 +3,19 @@ package org.platypus.orm.sql.query
 import org.platypus.PlatypusEnvironment
 import org.platypus.cache.of
 import org.platypus.model.Model
-import org.platypus.model.field.api.IModelField
 import org.platypus.model.field.api.ModelField
 import org.platypus.model.field.impl.ReferenceField
 import org.platypus.orm.sql.and
-import org.platypus.orm.sql.dml.ColumnSet
 import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.or
+import org.platypus.orm.sql.visitor.FieldGetVisitor
+import org.platypus.orm.sql.visitor.IdPkVisitor
 
 internal class SearchQueryImpl<M : Model<M>>(
         private val model: M,
         val env: PlatypusEnvironment,
-        private val expr: Set<IModelField<M, *>> = model.storeFields,
+        private val searchPart: SearchQuerySelectPart<M> = SearchQuerySelectPartImpl(model, false, false),
         private val predicate: Expression<Boolean>? = null,
-        private val joins: LinkedHashMap<ReferenceField<*, *>, Join.JoinType> = LinkedHashMap(),
         private val offset: Int = 0,
         private val limit: Int = -1,
         private val _orderByColumns: MutableList<Pair<Expression<*>, ORDERBY_TYPE>> = mutableListOf()
@@ -26,11 +25,7 @@ internal class SearchQueryImpl<M : Model<M>>(
         get() = { m -> predicate }
 
     internal fun buildQuery(env: PlatypusEnvironment): Query {
-        var colSet: ColumnSet = model
-        for ((f, j) in joins) {
-            colSet = colSet.join(f.target, j, f, f.target.id)
-        }
-        val q = Query(env, colSet.slice(expr), predicate)
+        val q = Query(env, searchPart, predicate)
         if (this.limit > 0) {
             q.limit(this.limit, this.offset)
         }
@@ -39,22 +34,39 @@ internal class SearchQueryImpl<M : Model<M>>(
     }
 
     override fun adjustSelect(slice: SearchQuerySelectPart<M>.(M) -> Unit): SearchQuery<M> {
-        TODO("not implemented")
+        return SearchQueryImpl(
+                model,
+                env,
+                searchPart.typedClone().apply {
+                    slice(model)
+                },
+                predicate,
+                offset,
+                limit,
+                _orderByColumns
+        )
     }
 
     override fun execute(): List<Int> {
-        val res = ArrayList<Int>()
+        val res = LinkedHashSet<Int>()
         val query = buildQuery(env)
         for (row in query) {
-            val id = row.get(model.id)
-            res.add(id)
-            env.internal.cache.store(model of id, expr, row)
+            for ((model, fields) in searchPart.sliceByModel) {
+                val fieldPk = fields.first { it.accept(IdPkVisitor, null) }
+                val pk = row.getAny(fieldPk) as Int
+                res.add(pk)
+                val modelID = model of pk
+                for(f in fields){
+                    env.internal.cache.put(f.accept(FieldGetVisitor, null), modelID, row.getAny(f))
+                }
+            }
         }
-        return res
+        return res.toList()
     }
 
-    override fun copy(): SearchQuery<M> {
-        TODO("not implemented")
+
+    fun test() {
+
     }
 
     override fun orderBy(column: ModelField<*, *>, orderBy: ORDERBY_TYPE): SearchQuery<M> = orderBy(column to orderBy)
@@ -66,9 +78,8 @@ internal class SearchQueryImpl<M : Model<M>>(
         return SearchQueryImpl(
                 model,
                 env,
-                expr,
+                searchPart,
                 predicate,
-                joins,
                 offset,
                 limit,
                 _orderByColumns.toMutableList().apply {
@@ -81,9 +92,8 @@ internal class SearchQueryImpl<M : Model<M>>(
         return SearchQueryImpl(
                 model,
                 env,
-                expr,
+                searchPart,
                 predicate,
-                joins,
                 offset,
                 limit,
                 _orderByColumns
@@ -111,13 +121,12 @@ internal class SearchQueryImpl<M : Model<M>>(
         return SearchQueryImpl(
                 model,
                 env,
-                expr,
+                searchPart,
                 if (this.predicate != null) {
                     this.predicate!!.or(FieldUniryPlusImpl<M>().predicate(model))
                 } else {
                     this.predicate
                 },
-                joins,
                 offset,
                 limit,
                 _orderByColumns
@@ -128,13 +137,12 @@ internal class SearchQueryImpl<M : Model<M>>(
         return SearchQueryImpl(
                 model,
                 env,
-                expr,
+                searchPart,
                 if (this.predicate != null) {
                     this.predicate!!.and(FieldUniryPlusImpl<M>().predicate(model))
                 } else {
                     this.predicate
                 },
-                joins,
                 offset,
                 limit,
                 _orderByColumns
@@ -145,38 +153,12 @@ internal class SearchQueryImpl<M : Model<M>>(
         return SearchQueryImpl(
                 model,
                 env,
-                expr,
+                searchPart,
                 FieldUniryPlusImpl<M>().predicate(model),
-                joins,
                 offset,
                 limit,
                 _orderByColumns
         )
     }
-
-
-    fun merge(other: SearchQueryImpl<M>): SearchQueryImpl<M> {
-        return SearchQueryImpl(
-                model,
-                env,
-                expr.toMutableSet().apply {
-                    addAll(other.expr)
-                },
-                when {
-                    predicate != null && other.predicate != null -> predicate!! and other.predicate!!
-                    predicate == null -> other.predicate
-                    else -> predicate
-                },
-                LinkedHashMap(joins).apply {
-                    putAll(other.joins)
-                },
-                other.offset,
-                other.limit,
-                _orderByColumns.toMutableList().apply {
-                    addAll(other._orderByColumns)
-                }
-        )
-    }
-
 
 }

@@ -9,6 +9,11 @@ interface Identifiable {
     val id: Int
 }
 
+interface TypedCloneable<T> : Cloneable {
+    fun typedClone(): T
+    override fun clone(): Any = typedClone() as Any
+}
+
 interface Mergable<M : Mergable<M>> {
 
     /**
@@ -27,8 +32,8 @@ interface Environmentable {
     val env: PlatypusEnvironment
 }
 
-interface ContextAble<out T>{
-    fun withContext(vararg vals: ContextKey.Value<*>):T
+interface ContextAble<out T> {
+    fun withContext(vararg vals: ContextKey.Value<*>): T
 }
 
 interface SudoAble<out T> {
