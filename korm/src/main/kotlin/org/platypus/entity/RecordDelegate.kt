@@ -2,6 +2,7 @@ package org.platypus.entity
 
 import org.platypus.Identifiable
 import org.platypus.bag.Bag
+import org.platypus.model.IModel
 import org.platypus.model.Model
 import org.platypus.model.field.impl.ArchivedModelField
 import org.platypus.model.field.impl.BinaryField
@@ -32,7 +33,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import kotlin.reflect.KProperty
 
-interface RecordDelegate<M : Model<M>> : Identifiable {
+interface RecordDelegate<M : IModel<M>> : Identifiable {
     val model: M
 
     operator fun TimeField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): LocalTime?

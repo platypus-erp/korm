@@ -2,25 +2,25 @@ package org.platypus.model.functions.one
 
 import io.ktor.http.HttpMethod
 import org.platypus.entity.Record
-import org.platypus.model.Model
+import org.platypus.model.IModel
 import org.platypus.model.functions.ApiNoParam
 import org.platypus.model.functions.ApiNoParamExtends
 import org.platypus.model.functions.ApiNoParamOriginal
 import org.platypus.model.functions.ApiNoParamStacker
 import org.platypus.model.functions.multi.ApiMultiNoParamStacker
 
-class ApiOneNoParamExtends<M : Model<M>, R>
+class ApiOneNoParamExtends<M : IModel<M>, R>
 (
         funn: ApiOneNoParamExtends<M, R>.(Record<M>) -> R,
         superStack: ApiNoParam<Record<M>, M, R>
 ) : ApiNoParamExtends<Record<M>, M, R, ApiOneNoParamOriginal<M, R>, ApiOneNoParamExtends<M, R>>(funn, superStack)
 
-class ApiOneNoParamOriginal<M : Model<M>, R>
+class ApiOneNoParamOriginal<M : IModel<M>, R>
 (
         originalFunction: (Record<M>) -> R
 ) : ApiNoParamOriginal<Record<M>, M, R, ApiOneNoParamOriginal<M, R>, ApiOneNoParamExtends<M, R>>(originalFunction)
 
-class ApiOneNoParamStacker<M : Model<M>, R>
+class ApiOneNoParamStacker<M : IModel<M>, R>
 (
         originalFunction: (Record<M>) -> R,
         visibilityType: HttpMethod = HttpMethod.Post

@@ -1,5 +1,6 @@
 package org.platypus.model.field.impl
 
+import org.platypus.model.IModel
 import org.platypus.model.Model
 import org.platypus.model.field.api.FieldSlotsImpl
 import org.platypus.model.field.api.FieldVisitor
@@ -11,7 +12,7 @@ import org.platypus.model.field.api.type.StringSqlFieldType
 import org.platypus.orm.OrmConstraint
 import org.platypus.orm.sql.expression.ExpressionVisitor
 
-class StringField<M : Model<M>>(
+class StringField<M : IModel<M>>(
         name: String, model: M, slots: FieldSlotsImpl<String>, defaultLength: Int? = null, defaultL10n: Boolean? = null
 ) : SimpleField<M, String>(model, name, slots) {
     var length: Int = defaultLength ?: 50
@@ -33,7 +34,7 @@ class StringField<M : Model<M>>(
         this@StringField.slots.merge(f)
     }
 
-    class Builder<M : Model<M>>
+    class Builder<M : IModel<M>>
     private constructor(val model: M, val fieldName: String, private val slots: MutableFieldSlotsImpl<String>)
         : ModelField.Builder<M, StringField<M>>, MutableFieldSlots<String> by slots {
         constructor(model: M, fieldName: String) : this(model, fieldName, MutableFieldSlotsImpl())

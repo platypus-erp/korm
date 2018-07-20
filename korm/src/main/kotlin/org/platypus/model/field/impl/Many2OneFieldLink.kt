@@ -2,7 +2,6 @@ package org.platypus.model.field.impl
 
 import org.platypus.entity.Record
 import org.platypus.model.IModel
-import org.platypus.model.Model
 import org.platypus.model.ReferenceModel
 import org.platypus.model.field.api.FieldSlots
 import org.platypus.model.field.api.FieldSlotsImpl
@@ -18,7 +17,7 @@ import org.platypus.orm.sql.expression.ExpressionVisitor
 import org.platypus.orm.sql.expression.FieldExpression
 
 
-class Many2OneFieldLink<M : IModel<M>, TM : Model<TM>>(
+class Many2OneFieldLink<M : IModel<M>, TM : IModel<TM>>(
         name: String,
         override val model: M,
         override val target: TM,

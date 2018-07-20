@@ -143,6 +143,7 @@ SQ_CLOSE: ']';
 
 KEYWORD_val : 'val';
 KEYWORD_var : 'var';
+KEYWORD_lateinit_var : 'lateinit var';
 KEYWORD_vararg : 'vararg';
 
 KEYWORD_by : 'by';
@@ -219,7 +220,6 @@ BAX: '$';
 SimpleName
     :     LETTER (LETTER | DIGIT)*
     |    '`' ~('`')+? '`'
-    |     KEYWORD_by
     ;
 
 

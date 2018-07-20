@@ -2,7 +2,7 @@ package org.platypus.model.field.impl
 
 import org.platypus.entity.Selection
 import org.platypus.entity.SelectionValue
-import org.platypus.model.Model
+import org.platypus.model.IModel
 import org.platypus.model.field.api.FieldSlotsImpl
 import org.platypus.model.field.api.FieldVisitor
 import org.platypus.model.field.api.ModelField
@@ -13,7 +13,7 @@ import org.platypus.model.field.api.type.SqlFieldType
 import org.platypus.orm.OrmConstraint
 import org.platypus.orm.sql.expression.ExpressionVisitor
 
-class SelectionField<M : Model<M>, D : Selection<D>>(
+class SelectionField<M : IModel<M>, D : Selection<D>>(
         name: String, model: M, val selection: D, slots: FieldSlotsImpl<SelectionValue<D>>
 ) : SimpleField<M, SelectionValue<D>>(model, name, slots) {
 
@@ -29,7 +29,7 @@ class SelectionField<M : Model<M>, D : Selection<D>>(
         this@SelectionField.slots.merge(f)
     }
 
-    class Builder<M : Model<M>, D : Selection<D>>
+    class Builder<M : IModel<M>, D : Selection<D>>
     private constructor(val model: M, val fieldName: String, val selection: D, private val slots: MutableFieldSlotsImpl<SelectionValue<D>>)
         : ModelField.Builder<M, SelectionField<M, D>>, MutableFieldSlots<SelectionValue<D>> by slots {
         constructor(model: M, fieldName: String, selection: D) : this(model, fieldName, selection, MutableFieldSlotsImpl())

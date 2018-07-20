@@ -3,9 +3,9 @@ package org.platypus.entity
 import org.platypus.ContextAble
 import org.platypus.Environmentable
 import org.platypus.SudoAble
-import org.platypus.model.Model
+import org.platypus.model.IModel
 
-interface Record<M : Model<M>> : SudoAble<Record<M>>, ImutableRecord<M>, ContextAble<Record<M>>, MutableRecordDelegate<M>, Environmentable {
+interface Record<M : IModel<M>> : SudoAble<Record<M>>, ImutableRecord<M>, ContextAble<Record<M>>, MutableRecordDelegate<M>, Environmentable {
 
     //    TODO To remove ?
     override var name: String?
@@ -22,4 +22,4 @@ interface Record<M : Model<M>> : SudoAble<Record<M>>, ImutableRecord<M>, Context
     operator fun set(fieldName:String, value:Any?)
 }
 
-class PrivateApi<M : Model<M>>(val rec:Record<M>)
+class PrivateApi<M : IModel<M>>(val rec:Record<M>)

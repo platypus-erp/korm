@@ -8,6 +8,7 @@ import org.platypus.IShouldRefractorThis
 import org.platypus.LazyLoaded
 import org.platypus.MutateSelf
 import org.platypus.entity.Record
+import org.platypus.model.IModel
 import org.platypus.model.Model
 import org.platypus.model.field.api.ModelField
 import org.platypus.model.field.api.MultiReferencedField
@@ -23,7 +24,7 @@ import org.platypus.orm.sql.query.ORDERBY_TYPE
 @INeedToTestThis
 @INeedToDocumentThis
 @LazyLoaded
-interface Bag<M : Model<M>> : List<Record<M>>, Environmentable {
+interface Bag<M : IModel<M>> : List<Record<M>>, Environmentable {
     /**
      * The ids of the element containing by the Bag
      * The ids can be empty if this is an empty Bag or if the [loaded] is false

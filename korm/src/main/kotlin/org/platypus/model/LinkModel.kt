@@ -4,7 +4,6 @@ import org.platypus.PlatypusEnvironment
 import org.platypus.cache.ModelID
 import org.platypus.cache.ModelIDS
 import org.platypus.cache.of
-import org.platypus.entity.RecordImpl
 import org.platypus.model.field.api.IModelField
 import org.platypus.model.field.impl.Many2ManyField
 import org.platypus.model.field.impl.Many2OneFieldLink
@@ -31,7 +30,7 @@ object ModelMany2Many {
     }
 }
 
-class LinkModel<M1 : Model<M1>, M2 : Model<M2>>(
+class LinkModel<M1 : IModel<M1>, M2 : IModel<M2>>(
         override val modelName: String,
         private val m1: () -> M1,
         private val m2: () -> M2,
@@ -71,7 +70,7 @@ class LinkModel<M1 : Model<M1>, M2 : Model<M2>>(
     fun findIds(env: PlatypusEnvironment, prop: Many2ManyField<M1, M2>, modelID: ModelID): ModelIDS {
         return if (env.internal.cache.isInDB(modelID)) {
             val id = env.internal.cache.realID(modelID)
-            val query = this.slice(this.id, this.m1M2O, this.m2M2O).select(env) { m1M2O eq RecordImpl(id.id, env, m1M2O.target) }
+            val query = this.slice(this.id, this.m1M2O, this.m2M2O).select(env) { m1M2O eq id.id }
             val ids = ArrayList<Int>()
             for (row in query) {
                 env.internal.cache.store(this of row.get(this.id), setOf(this.id, this.m1M2O, this.m2M2O), row)

@@ -1,7 +1,7 @@
 package org.platypus.model.field.impl
 
 import org.platypus.bag.Bag
-import org.platypus.model.Model
+import org.platypus.model.IModel
 import org.platypus.model.field.api.FieldSlotsImpl
 import org.platypus.model.field.api.FieldVisitor
 import org.platypus.model.field.api.ModelField
@@ -14,8 +14,8 @@ import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.expression.ExpressionVisitor
 
 class One2ManyField<
-        M : Model<M>,
-        TM : Model<TM>>
+        M : IModel<M>,
+        TM : IModel<TM>>
 (
         name: String,
         model: M,
@@ -37,7 +37,7 @@ class One2ManyField<
         this.slots.merge(f)
     }
 
-    class Builder<M : Model<M>, TM : Model<TM>> private constructor(
+    class Builder<M : IModel<M>, TM : IModel<TM>> private constructor(
             val model: M,
             val fieldName: String,
             val targetField: () -> Many2OneField<TM, M>,

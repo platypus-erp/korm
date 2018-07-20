@@ -3,6 +3,7 @@ package org.platypus.entity
 import org.platypus.Identifiable
 import org.platypus.bag.Bag
 import org.platypus.cache.PlatypusCache
+import org.platypus.model.IModel
 import org.platypus.model.Model
 import org.platypus.model.field.api.ModelField
 import org.platypus.model.field.api.MultiReferencedField
@@ -12,7 +13,7 @@ import org.platypus.module.base.entities.User
 import org.platypus.orm.sql.query.SearchQuery
 import java.time.LocalDateTime
 
-interface ImutableRecord<M: Model<M>> : Identifiable, RecordDelegate<M> {
+interface ImutableRecord<M: IModel<M>> : Identifiable, RecordDelegate<M> {
 
 
     /**

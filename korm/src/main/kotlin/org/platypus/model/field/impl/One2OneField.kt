@@ -1,7 +1,7 @@
 package org.platypus.model.field.impl
 
 import org.platypus.entity.Record
-import org.platypus.model.Model
+import org.platypus.model.IModel
 import org.platypus.model.ReferenceModel
 import org.platypus.model.field.api.FieldSlotsImpl
 import org.platypus.model.field.api.FieldVisitor
@@ -17,8 +17,8 @@ import org.platypus.orm.sql.expression.ExpressionVisitor
 import org.platypus.orm.sql.expression.TypedExpression
 
 class One2OneField<
-        M : Model<M>,
-        TM : Model<TM>
+        M : IModel<M>,
+        TM : IModel<TM>
         >
 (
         name: String,
@@ -57,8 +57,8 @@ class One2OneField<
     override fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN = visitor.visit(this, param)
 
     class Builder<
-            M : Model<M>,
-            TM : Model<TM>>
+            M : IModel<M>,
+            TM : IModel<TM>>
     private constructor(
             val model: M,
             val fieldName: String,

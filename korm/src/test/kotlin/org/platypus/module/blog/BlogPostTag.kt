@@ -1,16 +1,15 @@
 package org.platypus.module.blog
 
-import org.platypus.PlatypusEnvironment
-import org.platypus.bag.Bag
-import org.platypus.entity.Record
 import org.platypus.model.Model
 import org.platypus.model.ModelMany2Many
-import org.platypus.repository.RecordRepository
-import org.platypus.repository.RecordRepositoryImpl
+import org.platypus.module.blog.gen.blog.post.tag.PostTag
+import org.platypus.module.blog.gen.blog.post.tag.description
+import org.platypus.module.blog.gen.blog.post.tag.rate
 import org.platypus.utils.UserError
 
 //TODO make recursive
 object PostTagModel : Model<PostTagModel>("test.post.tag") {
+
     val bestPost = many2one("bestPost", BlogPostModel)
     val posts = many2manyR("posts", { ModelMany2Many.postTagRel })
     val description = string("description")
@@ -35,16 +34,3 @@ object PostTagModel : Model<PostTagModel>("test.post.tag") {
 }
 
 
-val PlatypusEnvironment.tagRepo: PostTagRepo
-    get() = RecordRepositoryImpl(this, PostTagModel)
-typealias PostTagBag = Bag<PostTagModel>
-typealias PostTagRepo = RecordRepository<PostTagModel>
-typealias PostTag = Record<PostTagModel>
-
-
-var PostTag.description by PostTagModel.description
-var PostTag.rate by PostTagModel.rate
-val PostTag.bestPost by PostTagModel.bestPost
-val PostTag.posts by PostTagModel.posts
-
-fun PostTag.checkRate() = PostTagModel.checkRate.call(this)

@@ -14,10 +14,10 @@ import org.platypus.model.Model
 import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.expression.eq
 import org.platypus.orm.sql.expression.inList
-import org.platypus.orm.sql.query.FieldGetter
 import org.platypus.orm.sql.query.Query
 import org.platypus.orm.sql.query.SearchQuery
 import org.platypus.orm.sql.query.SearchQueryImpl
+import org.platypus.orm.sql.query.SearchQueryWherePart
 import org.platypus.security.PlatypusUser
 import org.platypus.utils.EntityNotFoundById
 
@@ -79,11 +79,11 @@ class RecordRepositoryImpl<M : Model<M>>(override val env: PlatypusEnvironment, 
         }
     }
 
-    override fun where(predicate: FieldGetter<M>.(M) -> Expression<Boolean>): Bag<M> {
+    override fun where(predicate: SearchQueryWherePart<M>.(M) -> Expression<Boolean>): Bag<M> {
         return BagSearchQuery(buildQuery().where(predicate), env, model)
     }
 
-    override fun whereFirst(predicate: FieldGetter<M>.(M) -> Expression<Boolean>): Record<M> {
+    override fun whereFirst(predicate: SearchQueryWherePart<M>.(M) -> Expression<Boolean>): Record<M> {
         return RecordImpl(buildQuery().where(predicate).limit(1), env, model)
     }
 

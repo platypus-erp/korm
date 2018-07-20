@@ -8,6 +8,7 @@ parser grammar KotlinParser;
 
 options { tokenVocab=KotlinLexer; }
 
+
 kotlinFile
     :    preamble toplevelObject*;
 
@@ -25,6 +26,7 @@ toplevelObject
     : propertyDeclaration
     | functionDeclaration
     | classDeclaration
+    | interfaceDeclaration
     | objectDeclaration
     | typealiasDeclaration
     ;
@@ -35,6 +37,7 @@ memberDeclaration
   | functionDeclaration
   | propertyDeclaration
   | classDeclaration
+  | interfaceDeclaration
 //  | typeAlias
   | anonymousInitializer
   | secondaryConstructor
@@ -110,25 +113,7 @@ multipleVariableDeclarations
   : '(' variableDeclarationEntry (',' variableDeclarationEntry)* ')'
   ;
 
-propertyDeclaration
-    : modifiers ('val' | 'var')
-        typeParameters? (type '.')?
-        (multipleVariableDeclarations | variableDeclarationEntry)
-        typeConstraints
-        (('by' | '=') expression SEMI*)?
-        ((getter? setter?) | (setter? getter?))
-        SEMI*
-    ;
 
-getter
-  : modifiers 'get'
-  | modifiers 'get' '(' ')' (':' type)? functionBody
-  ;
-
-setter
-  : modifiers 'set'
-  | modifiers 'set' '(' modifiers (SimpleName | parameter) ')' functionBody
-  ;
 
 modifiers
     : modifier*
@@ -146,39 +131,6 @@ modifierKeyword
   | classModifier
   | keyWordModifier
   | 'vararg'
-  ;
-
-hierarchyModifier
-    : 'abstract'
-    | 'open'
-    | 'final'
-    | 'override'
-    ;
-
-classModifier
-  : 'enum'
-  | 'annotation'
-  | 'data'
-  | 'sealed'
-  ;
-
-keyWordModifier
-  : 'operator'
-  | 'inline'
-  | 'infix'
-  ;
-
-accessModifier
-  : 'private'
-  | 'protected'
-  | 'public'
-  | 'internal'
-  | 'const'
-  ;
-
-varianceAnnotation
-  : 'in'
-  | 'out'
   ;
 
 annotations
@@ -287,23 +239,9 @@ delegationSpecifier
   | explicitDelegation
   ;
 
-classDeclaration
-    : modifiers ('class' | 'interface') SimpleName
-    typeParameters?
-    primaryConstructor?
-    (':' annotations? delegationSpecifier (',' delegationSpecifier)*)?
-    typeConstraints
-    (classBody | enumClassBody)
-    SEMI*
-    ;
-
 supertypesSpecifiers
     : ':' delegationSpecifier (',' delegationSpecifier)*
     ;
-
-objectDeclaration
-  : modifiers 'object' SimpleName primaryConstructor? supertypesSpecifiers? classBody SEMI*
-  ;
 
 typealiasDeclaration
   : modifiers 'typealias' SimpleName '=' simpleUserType SEMI*
@@ -322,19 +260,7 @@ members
   ;
 
 
-valueParameters
-  : '(' (functionParameter (',' functionParameter)*)?')'
-  ;
 
-functionDeclaration
-  : modifiers 'fun' typeParameters?
-      (type '.' | annotations)?
-      SimpleName
-      typeParameters? valueParameters (':' type)?
-      typeConstraints
-      functionBody?
-      SEMI*
-  ;
 
 statements
   : SEMI* (statement (SEMI* statement)*)? SEMI*
@@ -470,6 +396,8 @@ identifier
     | IMPORT
     | Declaration_companion
     | Declaration_init
+    | accessModifier
+    | ClassModifier_data
     ;
 
 stringLiteral
@@ -481,6 +409,7 @@ atomicExpression
   : '(' expression ')'
   | literalConstant
   | functionLiteral
+  | lambdaFunction
   | 'this' labelReference?
   | 'super' ('<' type '>')? labelReference?
   | ifExpression
@@ -508,6 +437,7 @@ declaration
   : functionDeclaration
   | propertyDeclaration
   | classDeclaration
+  | interfaceDeclaration
   | objectDeclaration
   ;
 
@@ -609,4 +539,185 @@ whenCondition
 
 lastArgLambda
   : '{' '('? (variableDeclarationEntry (',' variableDeclarationEntry)*)? ')'? '->' statements '}'
+  ;
+
+
+//-------------------------------------------------------Class------------------------------------------------------
+classDeclaration
+    : modifiers 'class' SimpleName
+    typeParameters?
+    primaryConstructor?
+    (':' annotations? delegationSpecifier (',' delegationSpecifier)*)?
+    typeConstraints
+    (classBody | enumClassBody)
+    SEMI*
+    ;
+
+//-------------------------------------------------------Interface------------------------------------------------------
+interfaceDeclaration
+: objectModifier? 'interface' SimpleName typeParameters? (':' annotations? simpleUserType (',' simpleUserType)*)? typeConstraints classBody SEMI*
+;
+
+//-------------------------------------------------------Object---------------------------------------------------------
+objectDeclaration
+: objectModifier? 'object' SimpleName supertypesSpecifiers? classBody SEMI*
+;
+
+//-------------------------------------------------------Function-------------------------------------------------------
+
+functionDeclaration
+: extensionFunctionDeclaration | classicFunctionDeclaration
+;
+
+extensionFunctionDeclaration
+: modifierAnnotation 'fun' typeParameters? type '.' functionName functionParameters returnType? typeConstraints functionBody? SEMI*
+;
+
+classicFunctionDeclaration
+: modifierAnnotation 'fun' typeParameters? functionName functionParameters returnType? typeConstraints functionBody? SEMI*
+;
+
+lambdaFunction
+: 'fun' typeParameters? functionParameters returnType? typeConstraints functionBody? SEMI*
+;
+
+functionParameters
+: '(' (functionParameter (',' functionParameter)*)?')'
+;
+
+modifierAnnotation
+: (functionModifier? annotations?) | (annotations? functionModifier?)
+;
+
+functionName
+: SimpleName | functionModifier | 'init' | 'data'
+;
+
+
+returnType: ':' type ;
+
+//-------------------------------------------------------Property-------------------------------------------------------
+propertyDeclaration
+    : readonlyPropertyDeclaration | mutablePropertyDeclaration | lateinitVarPropertyDeclaration
+    ;
+
+readonlyPropertyDeclaration
+    : propertyModifier? 'val'
+    (extensionPropertyDelegateDeclaration
+    | readonlyExtensionPropertyNoDelegateDeclaration
+    | propertyDelegateDeclaration
+    | readonlyPropertyNoDelegateDeclaration)
+    ;
+
+mutablePropertyDeclaration
+    : functionModifier 'var'
+            (extensionPropertyDelegateDeclaration
+                | mutableExtensionPropertyNoDelegateDeclaration
+                | propertyDelegateDeclaration
+                | mutablePropertyNoDelegateDeclaration)
+        ;
+
+lateinitVarPropertyDeclaration
+    : functionModifier? 'lateinit var' variableDeclarationEntry SEMI*;
+
+extensionPropertyDelegateDeclaration
+    : typeParameters? type '.' propertyDelegateDeclaration
+    ;
+
+readonlyExtensionPropertyNoDelegateDeclaration
+    : typeParameters? type '.' parameterType getter? SEMI*
+    ;
+
+parameterType
+    : (':' type)?
+    ;
+
+mutableExtensionPropertyNoDelegateDeclaration
+    : typeParameters? type '.' variableDeclarationEntry parameterType SEMI*  ((getter setter) | (setter getter)) SEMI*
+    ;
+
+readonlyPropertyNoDelegateDeclaration
+    : (multipleVariableDeclarations | variableDeclarationEntry)  typeConstraints assignExpression getter? SEMI*
+    ;
+
+propertyDelegateDeclaration
+    : variableDeclarationEntry typeConstraints delegateExpression
+    ;
+
+mutablePropertyNoDelegateDeclaration
+    : (multipleVariableDeclarations | variableDeclarationEntry) typeConstraints assignExpression SEMI*  ((getter setter) | (setter getter)) SEMI*
+    ;
+
+delegateExpression
+    : 'by' expression SEMI*
+    ;
+
+assignExpression
+    : '=' expression SEMI*
+    ;
+
+getterSetterDeclaration
+    : ((getter? setter?) | (setter? getter?)) SEMI*
+    ;
+
+getter
+  : modifiers 'get'
+  | modifiers 'get' '(' ')' (':' type)? functionBody
+  ;
+
+setter
+  : modifiers 'set'
+  | modifiers 'set' '(' modifiers (SimpleName | parameter) ')' functionBody
+  ;
+
+//-------------------------------------------------------Modifier-------------------------------------------------------
+functionModifier
+    : 'private'
+    | 'protected'
+    | 'public'
+    | 'internal'
+    ;
+
+propertyModifier
+    : 'private'
+    | 'protected'
+    | 'public'
+    | 'internal'
+    ;
+
+hierarchyModifier
+    : 'abstract'
+    | 'open'
+    | 'final'
+    | 'override'
+    ;
+
+classModifier
+  : 'enum'
+  | 'annotation'
+  | 'data'
+  | 'sealed'
+  ;
+
+keyWordModifier
+  : 'operator'
+  | 'inline'
+  | 'infix'
+  ;
+
+accessModifier
+  : 'private'
+  | 'protected'
+  | 'public'
+  | 'internal'
+  | 'const'
+  ;
+
+objectModifier
+: 'private' | 'public' | 'internal'
+;
+
+varianceAnnotation
+  : 'in'
+  | 'out'
   ;

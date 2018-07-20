@@ -2,7 +2,6 @@ package org.platypus.module.blog.tests
 
 import org.amshove.kluent.`should equal`
 import org.amshove.kluent.shouldBe
-import org.amshove.kluent.shouldBeEmpty
 import org.amshove.kluent.shouldBeLessThan
 import org.amshove.kluent.shouldBeNull
 import org.amshove.kluent.shouldEqual
@@ -13,21 +12,20 @@ import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.platypus.Platypus
-import org.platypus.module.blog.age
-import org.platypus.module.blog.blogRepo
-import org.platypus.module.blog.blogs
-import org.platypus.module.blog.comments
-import org.platypus.module.blog.email
-import org.platypus.module.blog.isStaff
-import org.platypus.module.blog.nums
-import org.platypus.module.blog.password
-import org.platypus.module.blog.posts
-import org.platypus.module.blog.profile
-import org.platypus.module.blog.profileRepo
-import org.platypus.module.blog.tagRepo
-import org.platypus.module.blog.tags
-import org.platypus.module.blog.user
-import org.platypus.module.blog.userMokRepo
+import org.platypus.module.blog.gen.blog.blog.blogRepo
+import org.platypus.module.blog.gen.blog.blog.tags
+import org.platypus.module.blog.gen.blog.blog.user
+import org.platypus.module.blog.gen.blog.post.tag.tagRepo
+import org.platypus.module.blog.gen.blog.profile.profileRepo
+import org.platypus.module.blog.gen.blog.profile.user
+import org.platypus.module.blog.gen.blog.user.age
+import org.platypus.module.blog.gen.blog.user.blogs
+import org.platypus.module.blog.gen.blog.user.email
+import org.platypus.module.blog.gen.blog.user.isStaff
+import org.platypus.module.blog.gen.blog.user.nums
+import org.platypus.module.blog.gen.blog.user.password
+import org.platypus.module.blog.gen.blog.user.profile
+import org.platypus.module.blog.gen.blog.user.userMokRepo
 import org.platypus.newTestBlog
 
 object CacheReadSpek : Spek({
@@ -138,7 +136,7 @@ object CacheCreateUpdateSpek : Spek({
                     john2.blogs.shouldBeEmpty()
                 }
                 it("The blog should change automaticaly of co_creator") {
-                    john2.blogs += newBlog
+                    john2.blogs = john2.blogs + newBlog
                     john2.blogs.size shouldEqualTo 1
                     newBlog.user shouldEqual john2
                     john1.blogs.shouldBeEmpty()

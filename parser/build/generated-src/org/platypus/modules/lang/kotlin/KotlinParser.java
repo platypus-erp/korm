@@ -1,4 +1,4 @@
-// Generated from /home/apasquier/WorkSpace/Kotlin/platypus/parser/src/main/antlr/KotlinParser.g4 by ANTLR 4.2.2
+// Generated from /home/chmuche/workspace/kotlin/korm/parser/src/main/antlr/KotlinParser.g4 by ANTLR 4.2.2
 package org.platypus.modules.lang.kotlin;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -53,7 +53,7 @@ public class KotlinParser extends Parser {
 		"'::'", "'true'", "'false'", "'null'", "'->'", "'/'", "'%'", "'+'", "'-'", 
 		"'in'", "'!in'", "'is'", "'!is'", "'as'", "'as?'", "'+='", "'-='", "'*='", 
 		"'/='", "'%='", "'--'", "'++'", "'!!'", "'!'", "'['", "']'", "'val'", 
-		"'var'", "'vararg'", "'by'", "'dynamic'", "'where'", "'get'", "'fieldSet'",
+		"'var'", "'vararg'", "'by'", "'dynamic'", "'where'", "'get'", "'set'", 
 		"'abstract'", "'open'", "'final'", "'override'", "'operator'", "'infix'", 
 		"'inline'", "'enum'", "'annotation'", "'data'", "'sealed'", "'private'", 
 		"'protected'", "'public'", "'internal'", "'const'", "'out'", "'@'", "'file'", 
@@ -74,68 +74,82 @@ public class KotlinParser extends Parser {
 		RULE_userType = 14, RULE_simpleUserType_typeParam = 15, RULE_simpleUserType = 16, 
 		RULE_variableDeclarationEntry = 17, RULE_functionType_paramOrType = 18, 
 		RULE_extensionFunctionTypeNoReceiver = 19, RULE_functionTypeNoReceiver = 20, 
-		RULE_multipleVariableDeclarations = 21, RULE_propertyDeclaration = 22, 
-		RULE_getter = 23, RULE_setter = 24, RULE_modifiers = 25, RULE_modifier = 26, 
-		RULE_modifierKeyword = 27, RULE_hierarchyModifier = 28, RULE_classModifier = 29, 
-		RULE_keyWordModifier = 30, RULE_accessModifier = 31, RULE_varianceAnnotation = 32, 
-		RULE_annotations = 33, RULE_annotation = 34, RULE_annotationUseSiteTarget = 35, 
-		RULE_valueArgument = 36, RULE_valueArguments = 37, RULE_unescapedAnnotation = 38, 
-		RULE_jump = 39, RULE_labelReference = 40, RULE_labelDefinition = 41, RULE_parameter = 42, 
-		RULE_functionParameter = 43, RULE_funcParameterWithoutDefault = 44, RULE_funcParameterWithDefault = 45, 
-		RULE_constructorParameter = 46, RULE_constructorParameterWithoutDefault = 47, 
-		RULE_constructorParameterWithDefault = 48, RULE_primaryConstructor = 49, 
-		RULE_secondaryConstructor = 50, RULE_constructorDelegationCall = 51, RULE_callSuffix = 52, 
-		RULE_constructorInvocation = 53, RULE_explicitDelegation = 54, RULE_delegationSpecifier = 55, 
-		RULE_classDeclaration = 56, RULE_supertypesSpecifiers = 57, RULE_objectDeclaration = 58, 
-		RULE_typealiasDeclaration = 59, RULE_companionObject = 60, RULE_classBody = 61, 
-		RULE_members = 62, RULE_valueParameters = 63, RULE_functionDeclaration = 64, 
-		RULE_statements = 65, RULE_functionBody = 66, RULE_block = 67, RULE_anonymousInitializer = 68, 
-		RULE_enumClassBody = 69, RULE_enumEntries = 70, RULE_enumEntry = 71, RULE_ifExpression = 72, 
-		RULE_tryExpression = 73, RULE_catchBlock = 74, RULE_finallyBlock = 75, 
-		RULE_loop = 76, RULE_forLoop = 77, RULE_whileLoop = 78, RULE_doWhileLoop = 79, 
-		RULE_expression = 80, RULE_disjunction = 81, RULE_conjunction = 82, RULE_equalityComparison = 83, 
-		RULE_comparison = 84, RULE_namedInfix = 85, RULE_elvisExpression = 86, 
-		RULE_infixFunctionCall = 87, RULE_rangeExpression = 88, RULE_additiveExpression = 89, 
-		RULE_multiplicativeExpression = 90, RULE_typeRHS = 91, RULE_prefixUnaryExpression = 92, 
-		RULE_postfixUnaryExpression = 93, RULE_callableReference = 94, RULE_identifier = 95, 
-		RULE_stringLiteral = 96, RULE_atomicExpression = 97, RULE_literalConstant = 98, 
-		RULE_declaration = 99, RULE_statement = 100, RULE_multiplicativeOperation = 101, 
-		RULE_additiveOperation = 102, RULE_inOperation = 103, RULE_typeOperation = 104, 
-		RULE_isOperation = 105, RULE_comparisonOperation = 106, RULE_equalityOperation = 107, 
-		RULE_assignmentOperator = 108, RULE_prefixUnaryOperation = 109, RULE_postfixUnaryOperation = 110, 
-		RULE_annotatedLambda = 111, RULE_memberAccessOperation = 112, RULE_functionLiteral = 113, 
-		RULE_functionLiteralparameter = 114, RULE_arrayAccess = 115, RULE_objectLiteral = 116, 
-		RULE_when = 117, RULE_whenEntry = 118, RULE_whenCondition = 119, RULE_lastArgLambda = 120;
+		RULE_multipleVariableDeclarations = 21, RULE_modifiers = 22, RULE_modifier = 23, 
+		RULE_modifierKeyword = 24, RULE_annotations = 25, RULE_annotation = 26, 
+		RULE_annotationUseSiteTarget = 27, RULE_valueArgument = 28, RULE_valueArguments = 29, 
+		RULE_unescapedAnnotation = 30, RULE_jump = 31, RULE_labelReference = 32, 
+		RULE_labelDefinition = 33, RULE_parameter = 34, RULE_functionParameter = 35, 
+		RULE_funcParameterWithoutDefault = 36, RULE_funcParameterWithDefault = 37, 
+		RULE_constructorParameter = 38, RULE_constructorParameterWithoutDefault = 39, 
+		RULE_constructorParameterWithDefault = 40, RULE_primaryConstructor = 41, 
+		RULE_secondaryConstructor = 42, RULE_constructorDelegationCall = 43, RULE_callSuffix = 44, 
+		RULE_constructorInvocation = 45, RULE_explicitDelegation = 46, RULE_delegationSpecifier = 47, 
+		RULE_classDeclaration = 48, RULE_interfaceDeclaration = 49, RULE_supertypesSpecifiers = 50, 
+		RULE_objectDeclaration = 51, RULE_typealiasDeclaration = 52, RULE_companionObject = 53, 
+		RULE_classBody = 54, RULE_members = 55, RULE_valueParameters = 56, RULE_functionDeclaration = 57, 
+		RULE_lambdaFunction = 58, RULE_statements = 59, RULE_functionBody = 60, 
+		RULE_block = 61, RULE_anonymousInitializer = 62, RULE_enumClassBody = 63, 
+		RULE_enumEntries = 64, RULE_enumEntry = 65, RULE_ifExpression = 66, RULE_tryExpression = 67, 
+		RULE_catchBlock = 68, RULE_finallyBlock = 69, RULE_loop = 70, RULE_forLoop = 71, 
+		RULE_whileLoop = 72, RULE_doWhileLoop = 73, RULE_expression = 74, RULE_disjunction = 75, 
+		RULE_conjunction = 76, RULE_equalityComparison = 77, RULE_comparison = 78, 
+		RULE_namedInfix = 79, RULE_elvisExpression = 80, RULE_infixFunctionCall = 81, 
+		RULE_rangeExpression = 82, RULE_additiveExpression = 83, RULE_multiplicativeExpression = 84, 
+		RULE_typeRHS = 85, RULE_prefixUnaryExpression = 86, RULE_postfixUnaryExpression = 87, 
+		RULE_callableReference = 88, RULE_identifier = 89, RULE_stringLiteral = 90, 
+		RULE_atomicExpression = 91, RULE_literalConstant = 92, RULE_declaration = 93, 
+		RULE_statement = 94, RULE_multiplicativeOperation = 95, RULE_additiveOperation = 96, 
+		RULE_inOperation = 97, RULE_typeOperation = 98, RULE_isOperation = 99, 
+		RULE_comparisonOperation = 100, RULE_equalityOperation = 101, RULE_assignmentOperator = 102, 
+		RULE_prefixUnaryOperation = 103, RULE_postfixUnaryOperation = 104, RULE_annotatedLambda = 105, 
+		RULE_memberAccessOperation = 106, RULE_functionLiteral = 107, RULE_functionLiteralparameter = 108, 
+		RULE_arrayAccess = 109, RULE_objectLiteral = 110, RULE_when = 111, RULE_whenEntry = 112, 
+		RULE_whenCondition = 113, RULE_lastArgLambda = 114, RULE_propertyDeclaration = 115, 
+		RULE_readonlyPropertyDeclaration = 116, RULE_mutablePropertyDeclaration = 117, 
+		RULE_extensionPropertyDelegateDeclaration = 118, RULE_readonlyExtensionPropertyNoDelegateDeclaration = 119, 
+		RULE_parameterType = 120, RULE_mutableExtensionPropertyNoDelegateDeclaration = 121, 
+		RULE_readonlyPropertyNoDelegateDeclaration = 122, RULE_propertyDelegateDeclaration = 123, 
+		RULE_mutablePropertyNoDelegateDeclaration = 124, RULE_delegateExpression = 125, 
+		RULE_assignExpression = 126, RULE_getterSetterDeclaration = 127, RULE_getter = 128, 
+		RULE_setter = 129, RULE_functionModifier = 130, RULE_propertyModifier = 131, 
+		RULE_hierarchyModifier = 132, RULE_classModifier = 133, RULE_keyWordModifier = 134, 
+		RULE_accessModifier = 135, RULE_varianceAnnotation = 136;
 	public static final String[] ruleNames = {
 		"kotlinFile", "preamble", "packageHeader", "importHeader", "toplevelObject", 
 		"memberDeclaration", "optionalProjection", "typeParameters", "typeParameter", 
 		"typeArguments", "typeConstraints", "typeConstraint", "type", "typeDescriptor", 
 		"userType", "simpleUserType_typeParam", "simpleUserType", "variableDeclarationEntry", 
 		"functionType_paramOrType", "extensionFunctionTypeNoReceiver", "functionTypeNoReceiver", 
-		"multipleVariableDeclarations", "propertyDeclaration", "getter", "setter", 
-		"modifiers", "modifier", "modifierKeyword", "hierarchyModifier", "classModifier", 
-		"keyWordModifier", "accessModifier", "varianceAnnotation", "annotations", 
-		"annotation", "annotationUseSiteTarget", "valueArgument", "valueArguments", 
-		"unescapedAnnotation", "jump", "labelReference", "labelDefinition", "parameter", 
-		"functionParameter", "funcParameterWithoutDefault", "funcParameterWithDefault", 
+		"multipleVariableDeclarations", "modifiers", "modifier", "modifierKeyword", 
+		"annotations", "annotation", "annotationUseSiteTarget", "valueArgument", 
+		"valueArguments", "unescapedAnnotation", "jump", "labelReference", "labelDefinition", 
+		"parameter", "functionParameter", "funcParameterWithoutDefault", "funcParameterWithDefault", 
 		"constructorParameter", "constructorParameterWithoutDefault", "constructorParameterWithDefault", 
 		"primaryConstructor", "secondaryConstructor", "constructorDelegationCall", 
 		"callSuffix", "constructorInvocation", "explicitDelegation", "delegationSpecifier", 
-		"classDeclaration", "supertypesSpecifiers", "objectDeclaration", "typealiasDeclaration", 
-		"companionObject", "classBody", "members", "valueParameters", "functionDeclaration", 
-		"statements", "functionBody", "block", "anonymousInitializer", "enumClassBody", 
-		"enumEntries", "enumEntry", "ifExpression", "tryExpression", "catchBlock", 
-		"finallyBlock", "loop", "forLoop", "whileLoop", "doWhileLoop", "expression", 
-		"disjunction", "conjunction", "equalityComparison", "comparison", "namedInfix", 
-		"elvisExpression", "infixFunctionCall", "rangeExpression", "additiveExpression", 
-		"multiplicativeExpression", "typeRHS", "prefixUnaryExpression", "postfixUnaryExpression", 
-		"callableReference", "identifier", "stringLiteral", "atomicExpression", 
-		"literalConstant", "declaration", "statement", "multiplicativeOperation", 
-		"additiveOperation", "inOperation", "typeOperation", "isOperation", "comparisonOperation", 
+		"classDeclaration", "interfaceDeclaration", "supertypesSpecifiers", "objectDeclaration", 
+		"typealiasDeclaration", "companionObject", "classBody", "members", "valueParameters", 
+		"functionDeclaration", "lambdaFunction", "statements", "functionBody", 
+		"block", "anonymousInitializer", "enumClassBody", "enumEntries", "enumEntry", 
+		"ifExpression", "tryExpression", "catchBlock", "finallyBlock", "loop", 
+		"forLoop", "whileLoop", "doWhileLoop", "expression", "disjunction", "conjunction", 
+		"equalityComparison", "comparison", "namedInfix", "elvisExpression", "infixFunctionCall", 
+		"rangeExpression", "additiveExpression", "multiplicativeExpression", "typeRHS", 
+		"prefixUnaryExpression", "postfixUnaryExpression", "callableReference", 
+		"identifier", "stringLiteral", "atomicExpression", "literalConstant", 
+		"declaration", "statement", "multiplicativeOperation", "additiveOperation", 
+		"inOperation", "typeOperation", "isOperation", "comparisonOperation", 
 		"equalityOperation", "assignmentOperator", "prefixUnaryOperation", "postfixUnaryOperation", 
 		"annotatedLambda", "memberAccessOperation", "functionLiteral", "functionLiteralparameter", 
 		"arrayAccess", "objectLiteral", "when", "whenEntry", "whenCondition", 
-		"lastArgLambda"
+		"lastArgLambda", "propertyDeclaration", "readonlyPropertyDeclaration", 
+		"mutablePropertyDeclaration", "extensionPropertyDelegateDeclaration", 
+		"readonlyExtensionPropertyNoDelegateDeclaration", "parameterType", "mutableExtensionPropertyNoDelegateDeclaration", 
+		"readonlyPropertyNoDelegateDeclaration", "propertyDelegateDeclaration", 
+		"mutablePropertyNoDelegateDeclaration", "delegateExpression", "assignExpression", 
+		"getterSetterDeclaration", "getter", "setter", "functionModifier", "propertyModifier", 
+		"hierarchyModifier", "classModifier", "keyWordModifier", "accessModifier", 
+		"varianceAnnotation"
 	};
 
 	@Override
@@ -193,17 +207,17 @@ public class KotlinParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(242); preamble();
-			setState(246);
+			setState(274); preamble();
+			setState(278);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (((((_la - 44)) & ~0x3f) == 0 && ((1L << (_la - 44)) & ((1L << (OP_IN - 44)) | (1L << (KEYWORD_val - 44)) | (1L << (KEYWORD_var - 44)) | (1L << (KEYWORD_vararg - 44)) | (1L << (HierarchyModifier_abstract - 44)) | (1L << (HierarchyModifier_open - 44)) | (1L << (HierarchyModifier_final - 44)) | (1L << (HierarchyModifier_override - 44)) | (1L << (KeyWordModifier_operator - 44)) | (1L << (KeyWordModifier_infix - 44)) | (1L << (KeyWordModifier_inline - 44)) | (1L << (ClassModifier_enum - 44)) | (1L << (ClassModifier_annotation - 44)) | (1L << (ClassModifier_data - 44)) | (1L << (ClassModifier_sealed - 44)) | (1L << (AccessModifier_private - 44)) | (1L << (AccessModifier_protected - 44)) | (1L << (AccessModifier_public - 44)) | (1L << (AccessModifier_internal - 44)) | (1L << (Modifier_const - 44)) | (1L << (VarianceAnnotation_out - 44)) | (1L << (DOG - 44)) | (1L << (Declaration_class - 44)) | (1L << (Declaration_interface - 44)) | (1L << (Declaration_object - 44)) | (1L << (Declaration_fun - 44)) | (1L << (Declaration_typealias - 44)))) != 0)) {
+			while (((((_la - 44)) & ~0x3f) == 0 && ((1L << (_la - 44)) & ((1L << (OP_IN - 44)) | (1L << (KEYWORD_val - 44)) | (1L << (KEYWORD_vararg - 44)) | (1L << (HierarchyModifier_abstract - 44)) | (1L << (HierarchyModifier_open - 44)) | (1L << (HierarchyModifier_final - 44)) | (1L << (HierarchyModifier_override - 44)) | (1L << (KeyWordModifier_operator - 44)) | (1L << (KeyWordModifier_infix - 44)) | (1L << (KeyWordModifier_inline - 44)) | (1L << (ClassModifier_enum - 44)) | (1L << (ClassModifier_annotation - 44)) | (1L << (ClassModifier_data - 44)) | (1L << (ClassModifier_sealed - 44)) | (1L << (AccessModifier_private - 44)) | (1L << (AccessModifier_protected - 44)) | (1L << (AccessModifier_public - 44)) | (1L << (AccessModifier_internal - 44)) | (1L << (Modifier_const - 44)) | (1L << (VarianceAnnotation_out - 44)) | (1L << (DOG - 44)) | (1L << (Declaration_class - 44)) | (1L << (Declaration_interface - 44)) | (1L << (Declaration_object - 44)) | (1L << (Declaration_fun - 44)) | (1L << (Declaration_typealias - 44)))) != 0)) {
 				{
 				{
-				setState(243); toplevelObject();
+				setState(275); toplevelObject();
 				}
 				}
-				setState(248);
+				setState(280);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -256,24 +270,24 @@ public class KotlinParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(250);
+			setState(282);
 			_la = _input.LA(1);
 			if (_la==PACKAGE) {
 				{
-				setState(249); packageHeader();
+				setState(281); packageHeader();
 				}
 			}
 
-			setState(255);
+			setState(287);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==IMPORT) {
 				{
 				{
-				setState(252); importHeader();
+				setState(284); importHeader();
 				}
 				}
-				setState(257);
+				setState(289);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -327,32 +341,32 @@ public class KotlinParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(258); match(PACKAGE);
-			setState(259); identifier();
-			setState(264);
+			setState(290); match(PACKAGE);
+			setState(291); identifier();
+			setState(296);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==DOT) {
 				{
 				{
-				setState(260); match(DOT);
-				setState(261); identifier();
+				setState(292); match(DOT);
+				setState(293); identifier();
 				}
 				}
-				setState(266);
+				setState(298);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(270);
+			setState(302);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==SEMI) {
 				{
 				{
-				setState(267); match(SEMI);
+				setState(299); match(SEMI);
 				}
 				}
-				setState(272);
+				setState(304);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -408,36 +422,36 @@ public class KotlinParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(273); match(IMPORT);
-			setState(274); identifier();
-			setState(279);
+			setState(305); match(IMPORT);
+			setState(306); identifier();
+			setState(311);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(275); match(DOT);
-					setState(276); identifier();
+					setState(307); match(DOT);
+					setState(308); identifier();
 					}
 					} 
 				}
-				setState(281);
+				setState(313);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			}
-			setState(286);
+			setState(318);
 			switch (_input.LA(1)) {
 			case DOT:
 				{
-				setState(282); match(DOT);
-				setState(283); match(STAR);
+				setState(314); match(DOT);
+				setState(315); match(STAR);
 				}
 				break;
 			case OP_AS:
 				{
-				setState(284); match(OP_AS);
-				setState(285); match(SimpleName);
+				setState(316); match(OP_AS);
+				setState(317); match(SimpleName);
 				}
 				break;
 			case EOF:
@@ -445,7 +459,6 @@ public class KotlinParser extends Parser {
 			case IMPORT:
 			case OP_IN:
 			case KEYWORD_val:
-			case KEYWORD_var:
 			case KEYWORD_vararg:
 			case HierarchyModifier_abstract:
 			case HierarchyModifier_open:
@@ -474,16 +487,16 @@ public class KotlinParser extends Parser {
 			default:
 				throw new NoViableAltException(this);
 			}
-			setState(291);
+			setState(323);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==SEMI) {
 				{
 				{
-				setState(288); match(SEMI);
+				setState(320); match(SEMI);
 				}
 				}
-				setState(293);
+				setState(325);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -513,6 +526,9 @@ public class KotlinParser extends Parser {
 		public ObjectDeclarationContext objectDeclaration() {
 			return getRuleContext(ObjectDeclarationContext.class,0);
 		}
+		public InterfaceDeclarationContext interfaceDeclaration() {
+			return getRuleContext(InterfaceDeclarationContext.class,0);
+		}
 		public TypealiasDeclarationContext typealiasDeclaration() {
 			return getRuleContext(TypealiasDeclarationContext.class,0);
 		}
@@ -539,40 +555,47 @@ public class KotlinParser extends Parser {
 		ToplevelObjectContext _localctx = new ToplevelObjectContext(_ctx, getState());
 		enterRule(_localctx, 8, RULE_toplevelObject);
 		try {
-			setState(299);
+			setState(332);
 			switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(294); propertyDeclaration();
+				setState(326); propertyDeclaration();
 				}
 				break;
 
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(295); functionDeclaration();
+				setState(327); functionDeclaration();
 				}
 				break;
 
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(296); classDeclaration();
+				setState(328); classDeclaration();
 				}
 				break;
 
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(297); objectDeclaration();
+				setState(329); interfaceDeclaration();
 				}
 				break;
 
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(298); typealiasDeclaration();
+				setState(330); objectDeclaration();
+				}
+				break;
+
+			case 6:
+				enterOuterAlt(_localctx, 6);
+				{
+				setState(331); typealiasDeclaration();
 				}
 				break;
 			}
@@ -607,6 +630,9 @@ public class KotlinParser extends Parser {
 		public ClassDeclarationContext classDeclaration() {
 			return getRuleContext(ClassDeclarationContext.class,0);
 		}
+		public InterfaceDeclarationContext interfaceDeclaration() {
+			return getRuleContext(InterfaceDeclarationContext.class,0);
+		}
 		public SecondaryConstructorContext secondaryConstructor() {
 			return getRuleContext(SecondaryConstructorContext.class,0);
 		}
@@ -633,54 +659,61 @@ public class KotlinParser extends Parser {
 		MemberDeclarationContext _localctx = new MemberDeclarationContext(_ctx, getState());
 		enterRule(_localctx, 10, RULE_memberDeclaration);
 		try {
-			setState(308);
+			setState(342);
 			switch ( getInterpreter().adaptivePredict(_input,9,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(301); companionObject();
+				setState(334); companionObject();
 				}
 				break;
 
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(302); objectDeclaration();
+				setState(335); objectDeclaration();
 				}
 				break;
 
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(303); functionDeclaration();
+				setState(336); functionDeclaration();
 				}
 				break;
 
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(304); propertyDeclaration();
+				setState(337); propertyDeclaration();
 				}
 				break;
 
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(305); classDeclaration();
+				setState(338); classDeclaration();
 				}
 				break;
 
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(306); anonymousInitializer();
+				setState(339); interfaceDeclaration();
 				}
 				break;
 
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(307); secondaryConstructor();
+				setState(340); anonymousInitializer();
+				}
+				break;
+
+			case 8:
+				enterOuterAlt(_localctx, 8);
+				{
+				setState(341); secondaryConstructor();
 				}
 				break;
 			}
@@ -726,11 +759,11 @@ public class KotlinParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(311);
+			setState(345);
 			_la = _input.LA(1);
 			if (_la==OP_IN || _la==VarianceAnnotation_out) {
 				{
-				setState(310); varianceAnnotation();
+				setState(344); varianceAnnotation();
 				}
 			}
 
@@ -780,23 +813,23 @@ public class KotlinParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(313); match(LT);
-			setState(314); typeParameter();
-			setState(319);
+			setState(347); match(LT);
+			setState(348); typeParameter();
+			setState(353);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(315); match(COMMA);
-				setState(316); typeParameter();
+				setState(349); match(COMMA);
+				setState(350); typeParameter();
 				}
 				}
-				setState(321);
+				setState(355);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(322); match(GT);
+			setState(356); match(GT);
 			}
 		}
 		catch (RecognitionException re) {
@@ -844,14 +877,14 @@ public class KotlinParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(324); modifiers();
-			setState(325); match(SimpleName);
-			setState(328);
+			setState(358); modifiers();
+			setState(359); match(SimpleName);
+			setState(362);
 			_la = _input.LA(1);
 			if (_la==COLON) {
 				{
-				setState(326); match(COLON);
-				setState(327); userType();
+				setState(360); match(COLON);
+				setState(361); userType();
 				}
 			}
 
@@ -901,32 +934,32 @@ public class KotlinParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(330); match(LT);
+			setState(364); match(LT);
 			{
-			setState(332);
+			setState(366);
 			_la = _input.LA(1);
 			if (_la==PACKAGE || _la==BRACE_OPEN || ((((_la - 65)) & ~0x3f) == 0 && ((1L << (_la - 65)) & ((1L << (KEYWORD_dynamic - 65)) | (1L << (DOG - 65)) | (1L << (SimpleName - 65)))) != 0)) {
 				{
-				setState(331); type();
+				setState(365); type();
 				}
 			}
 
-			setState(338);
+			setState(372);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(334); match(COMMA);
-				setState(335); type();
+				setState(368); match(COMMA);
+				setState(369); type();
 				}
 				}
-				setState(340);
+				setState(374);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
 			}
-			setState(341); match(GT);
+			setState(375); match(GT);
 			}
 		}
 		catch (RecognitionException re) {
@@ -969,33 +1002,35 @@ public class KotlinParser extends Parser {
 	public final TypeConstraintsContext typeConstraints() throws RecognitionException {
 		TypeConstraintsContext _localctx = new TypeConstraintsContext(_ctx, getState());
 		enterRule(_localctx, 20, RULE_typeConstraints);
-		int _la;
 		try {
+			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(352);
-			_la = _input.LA(1);
-			if (_la==KEYWORD_where) {
+			setState(386);
+			switch ( getInterpreter().adaptivePredict(_input,16,_ctx) ) {
+			case 1:
 				{
-				setState(343); match(KEYWORD_where);
-				setState(344); typeConstraint();
-				setState(349);
+				setState(377); match(KEYWORD_where);
+				setState(378); typeConstraint();
+				setState(383);
 				_errHandler.sync(this);
-				_la = _input.LA(1);
-				while (_la==COMMA) {
-					{
-					{
-					setState(345); match(COMMA);
-					setState(346); typeConstraint();
+				_alt = getInterpreter().adaptivePredict(_input,15,_ctx);
+				while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
+					if ( _alt==1 ) {
+						{
+						{
+						setState(379); match(COMMA);
+						setState(380); typeConstraint();
+						}
+						} 
 					}
-					}
-					setState(351);
+					setState(385);
 					_errHandler.sync(this);
-					_la = _input.LA(1);
+					_alt = getInterpreter().adaptivePredict(_input,15,_ctx);
 				}
 				}
+				break;
 			}
-
 			}
 		}
 		catch (RecognitionException re) {
@@ -1043,17 +1078,17 @@ public class KotlinParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(355);
+			setState(389);
 			_la = _input.LA(1);
 			if (_la==DOG) {
 				{
-				setState(354); annotations();
+				setState(388); annotations();
 				}
 			}
 
-			setState(357); match(SimpleName);
-			setState(358); match(COLON);
-			setState(359); type();
+			setState(391); match(SimpleName);
+			setState(392); match(COLON);
+			setState(393); type();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1100,15 +1135,15 @@ public class KotlinParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(362);
+			setState(396);
 			_la = _input.LA(1);
 			if (_la==DOG) {
 				{
-				setState(361); annotations();
+				setState(395); annotations();
 				}
 			}
 
-			setState(364); typeDescriptor();
+			setState(398); typeDescriptor();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1158,27 +1193,27 @@ public class KotlinParser extends Parser {
 		TypeDescriptorContext _localctx = new TypeDescriptorContext(_ctx, getState());
 		enterRule(_localctx, 26, RULE_typeDescriptor);
 		try {
-			setState(393);
+			setState(427);
 			switch ( getInterpreter().adaptivePredict(_input,26,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(366); match(BRACE_OPEN);
-				setState(367); typeDescriptor();
-				setState(368); match(BRACE_CLOSE);
-				setState(370);
+				setState(400); match(BRACE_OPEN);
+				setState(401); typeDescriptor();
+				setState(402); match(BRACE_CLOSE);
+				setState(404);
 				switch ( getInterpreter().adaptivePredict(_input,19,_ctx) ) {
 				case 1:
 					{
-					setState(369); match(Q);
+					setState(403); match(Q);
 					}
 					break;
 				}
-				setState(373);
+				setState(407);
 				switch ( getInterpreter().adaptivePredict(_input,20,_ctx) ) {
 				case 1:
 					{
-					setState(372); extensionFunctionTypeNoReceiver();
+					setState(406); extensionFunctionTypeNoReceiver();
 					}
 					break;
 				}
@@ -1188,12 +1223,12 @@ public class KotlinParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(375); functionTypeNoReceiver();
-				setState(377);
+				setState(409); functionTypeNoReceiver();
+				setState(411);
 				switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
 				case 1:
 					{
-					setState(376); extensionFunctionTypeNoReceiver();
+					setState(410); extensionFunctionTypeNoReceiver();
 					}
 					break;
 				}
@@ -1203,20 +1238,20 @@ public class KotlinParser extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(379); userType();
-				setState(381);
+				setState(413); userType();
+				setState(415);
 				switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
 				case 1:
 					{
-					setState(380); match(Q);
+					setState(414); match(Q);
 					}
 					break;
 				}
-				setState(384);
+				setState(418);
 				switch ( getInterpreter().adaptivePredict(_input,23,_ctx) ) {
 				case 1:
 					{
-					setState(383); extensionFunctionTypeNoReceiver();
+					setState(417); extensionFunctionTypeNoReceiver();
 					}
 					break;
 				}
@@ -1226,20 +1261,20 @@ public class KotlinParser extends Parser {
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(386); match(KEYWORD_dynamic);
-				setState(388);
+				setState(420); match(KEYWORD_dynamic);
+				setState(422);
 				switch ( getInterpreter().adaptivePredict(_input,24,_ctx) ) {
 				case 1:
 					{
-					setState(387); match(Q);
+					setState(421); match(Q);
 					}
 					break;
 				}
-				setState(391);
+				setState(425);
 				switch ( getInterpreter().adaptivePredict(_input,25,_ctx) ) {
 				case 1:
 					{
-					setState(390); extensionFunctionTypeNoReceiver();
+					setState(424); extensionFunctionTypeNoReceiver();
 					}
 					break;
 				}
@@ -1292,29 +1327,29 @@ public class KotlinParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(397);
+			setState(431);
 			_la = _input.LA(1);
 			if (_la==PACKAGE) {
 				{
-				setState(395); match(PACKAGE);
-				setState(396); match(DOT);
+				setState(429); match(PACKAGE);
+				setState(430); match(DOT);
 				}
 			}
 
-			setState(399); simpleUserType();
-			setState(404);
+			setState(433); simpleUserType();
+			setState(438);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,28,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(400); match(DOT);
-					setState(401); simpleUserType();
+					setState(434); match(DOT);
+					setState(435); simpleUserType();
 					}
 					} 
 				}
-				setState(406);
+				setState(440);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,28,_ctx);
 			}
@@ -1363,11 +1398,11 @@ public class KotlinParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(411);
+			setState(445);
 			switch (_input.LA(1)) {
 			case STAR:
 				{
-				setState(407); match(STAR);
+				setState(441); match(STAR);
 				}
 				break;
 			case PACKAGE:
@@ -1379,8 +1414,8 @@ public class KotlinParser extends Parser {
 			case SimpleName:
 				{
 				{
-				setState(408); optionalProjection();
-				setState(409); type();
+				setState(442); optionalProjection();
+				setState(443); type();
 				}
 				}
 				break;
@@ -1434,28 +1469,28 @@ public class KotlinParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(413); match(SimpleName);
-			setState(425);
+			setState(447); match(SimpleName);
+			setState(459);
 			switch ( getInterpreter().adaptivePredict(_input,31,_ctx) ) {
 			case 1:
 				{
-				setState(414); match(LT);
-				setState(415); simpleUserType_typeParam();
-				setState(420);
+				setState(448); match(LT);
+				setState(449); simpleUserType_typeParam();
+				setState(454);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(416); match(COMMA);
-					setState(417); simpleUserType_typeParam();
+					setState(450); match(COMMA);
+					setState(451); simpleUserType_typeParam();
 					}
 					}
-					setState(422);
+					setState(456);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(423); match(GT);
+				setState(457); match(GT);
 				}
 				break;
 			}
@@ -1499,20 +1534,19 @@ public class KotlinParser extends Parser {
 	public final VariableDeclarationEntryContext variableDeclarationEntry() throws RecognitionException {
 		VariableDeclarationEntryContext _localctx = new VariableDeclarationEntryContext(_ctx, getState());
 		enterRule(_localctx, 34, RULE_variableDeclarationEntry);
-		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(427); match(SimpleName);
-			setState(430);
-			_la = _input.LA(1);
-			if (_la==COLON) {
+			setState(461); match(SimpleName);
+			setState(464);
+			switch ( getInterpreter().adaptivePredict(_input,32,_ctx) ) {
+			case 1:
 				{
-				setState(428); match(COLON);
-				setState(429); type();
+				setState(462); match(COLON);
+				setState(463); type();
 				}
+				break;
 			}
-
 			}
 		}
 		catch (RecognitionException re) {
@@ -1559,20 +1593,20 @@ public class KotlinParser extends Parser {
 		FunctionType_paramOrTypeContext _localctx = new FunctionType_paramOrTypeContext(_ctx, getState());
 		enterRule(_localctx, 36, RULE_functionType_paramOrType);
 		try {
-			setState(436);
+			setState(470);
 			switch ( getInterpreter().adaptivePredict(_input,33,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(432); parameter();
+				setState(466); parameter();
 				}
 				break;
 
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(433); modifiers();
-				setState(434); type();
+				setState(467); modifiers();
+				setState(468); type();
 				}
 				break;
 			}
@@ -1617,8 +1651,8 @@ public class KotlinParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(438); match(DOT);
-			setState(439); functionTypeNoReceiver();
+			setState(472); match(DOT);
+			setState(473); functionTypeNoReceiver();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1668,32 +1702,32 @@ public class KotlinParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(441); match(BRACE_OPEN);
-			setState(450);
+			setState(475); match(BRACE_OPEN);
+			setState(484);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PACKAGE) | (1L << BRACE_OPEN) | (1L << OP_IN) | (1L << KEYWORD_vararg))) != 0) || ((((_la - 65)) & ~0x3f) == 0 && ((1L << (_la - 65)) & ((1L << (KEYWORD_dynamic - 65)) | (1L << (HierarchyModifier_abstract - 65)) | (1L << (HierarchyModifier_open - 65)) | (1L << (HierarchyModifier_final - 65)) | (1L << (HierarchyModifier_override - 65)) | (1L << (KeyWordModifier_operator - 65)) | (1L << (KeyWordModifier_infix - 65)) | (1L << (KeyWordModifier_inline - 65)) | (1L << (ClassModifier_enum - 65)) | (1L << (ClassModifier_annotation - 65)) | (1L << (ClassModifier_data - 65)) | (1L << (ClassModifier_sealed - 65)) | (1L << (AccessModifier_private - 65)) | (1L << (AccessModifier_protected - 65)) | (1L << (AccessModifier_public - 65)) | (1L << (AccessModifier_internal - 65)) | (1L << (Modifier_const - 65)) | (1L << (VarianceAnnotation_out - 65)) | (1L << (DOG - 65)) | (1L << (SimpleName - 65)))) != 0)) {
 				{
-				setState(442); functionType_paramOrType();
-				setState(447);
+				setState(476); functionType_paramOrType();
+				setState(481);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(443); match(COMMA);
-					setState(444); functionType_paramOrType();
+					setState(477); match(COMMA);
+					setState(478); functionType_paramOrType();
 					}
 					}
-					setState(449);
+					setState(483);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
 				}
 			}
 
-			setState(452); match(BRACE_CLOSE);
-			setState(453); match(OP_ASTERISK);
-			setState(454); type();
+			setState(486); match(BRACE_CLOSE);
+			setState(487); match(OP_ASTERISK);
+			setState(488); type();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1740,388 +1774,23 @@ public class KotlinParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(456); match(BRACE_OPEN);
-			setState(457); variableDeclarationEntry();
-			setState(462);
+			setState(490); match(BRACE_OPEN);
+			setState(491); variableDeclarationEntry();
+			setState(496);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(458); match(COMMA);
-				setState(459); variableDeclarationEntry();
+				setState(492); match(COMMA);
+				setState(493); variableDeclarationEntry();
 				}
 				}
-				setState(464);
+				setState(498);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(465); match(BRACE_CLOSE);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class PropertyDeclarationContext extends ParserRuleContext {
-		public SetterContext setter() {
-			return getRuleContext(SetterContext.class,0);
-		}
-		public MultipleVariableDeclarationsContext multipleVariableDeclarations() {
-			return getRuleContext(MultipleVariableDeclarationsContext.class,0);
-		}
-		public VariableDeclarationEntryContext variableDeclarationEntry() {
-			return getRuleContext(VariableDeclarationEntryContext.class,0);
-		}
-		public List<TerminalNode> SEMI() { return getTokens(KotlinParser.SEMI); }
-		public TypeParametersContext typeParameters() {
-			return getRuleContext(TypeParametersContext.class,0);
-		}
-		public TerminalNode SEMI(int i) {
-			return getToken(KotlinParser.SEMI, i);
-		}
-		public TypeContext type() {
-			return getRuleContext(TypeContext.class,0);
-		}
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
-		}
-		public GetterContext getter() {
-			return getRuleContext(GetterContext.class,0);
-		}
-		public TypeConstraintsContext typeConstraints() {
-			return getRuleContext(TypeConstraintsContext.class,0);
-		}
-		public ModifiersContext modifiers() {
-			return getRuleContext(ModifiersContext.class,0);
-		}
-		public PropertyDeclarationContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_propertyDeclaration; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterPropertyDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitPropertyDeclaration(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitPropertyDeclaration(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final PropertyDeclarationContext propertyDeclaration() throws RecognitionException {
-		PropertyDeclarationContext _localctx = new PropertyDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 44, RULE_propertyDeclaration);
-		int _la;
-		try {
-			int _alt;
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(467); modifiers();
-			setState(468);
-			_la = _input.LA(1);
-			if ( !(_la==KEYWORD_val || _la==KEYWORD_var) ) {
-			_errHandler.recoverInline(this);
-			}
-			consume();
-			setState(470);
-			_la = _input.LA(1);
-			if (_la==LT) {
-				{
-				setState(469); typeParameters();
-				}
-			}
-
-			setState(475);
-			switch ( getInterpreter().adaptivePredict(_input,38,_ctx) ) {
-			case 1:
-				{
-				setState(472); type();
-				setState(473); match(DOT);
-				}
-				break;
-			}
-			setState(479);
-			switch (_input.LA(1)) {
-			case BRACE_OPEN:
-				{
-				setState(477); multipleVariableDeclarations();
-				}
-				break;
-			case SimpleName:
-				{
-				setState(478); variableDeclarationEntry();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-			setState(481); typeConstraints();
-			setState(490);
-			_la = _input.LA(1);
-			if (_la==EQ || _la==KEYWORD_by) {
-				{
-				setState(482);
-				_la = _input.LA(1);
-				if ( !(_la==EQ || _la==KEYWORD_by) ) {
-				_errHandler.recoverInline(this);
-				}
-				consume();
-				setState(483); expression();
-				setState(487);
-				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,40,_ctx);
-				while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
-					if ( _alt==1 ) {
-						{
-						{
-						setState(484); match(SEMI);
-						}
-						} 
-					}
-					setState(489);
-					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,40,_ctx);
-				}
-				}
-			}
-
-			setState(504);
-			switch ( getInterpreter().adaptivePredict(_input,46,_ctx) ) {
-			case 1:
-				{
-				{
-				setState(493);
-				switch ( getInterpreter().adaptivePredict(_input,42,_ctx) ) {
-				case 1:
-					{
-					setState(492); getter();
-					}
-					break;
-				}
-				setState(496);
-				switch ( getInterpreter().adaptivePredict(_input,43,_ctx) ) {
-				case 1:
-					{
-					setState(495); setter();
-					}
-					break;
-				}
-				}
-				}
-				break;
-
-			case 2:
-				{
-				{
-				setState(499);
-				switch ( getInterpreter().adaptivePredict(_input,44,_ctx) ) {
-				case 1:
-					{
-					setState(498); setter();
-					}
-					break;
-				}
-				setState(502);
-				switch ( getInterpreter().adaptivePredict(_input,45,_ctx) ) {
-				case 1:
-					{
-					setState(501); getter();
-					}
-					break;
-				}
-				}
-				}
-				break;
-			}
-			setState(509);
-			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,47,_ctx);
-			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
-				if ( _alt==1 ) {
-					{
-					{
-					setState(506); match(SEMI);
-					}
-					} 
-				}
-				setState(511);
-				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,47,_ctx);
-			}
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class GetterContext extends ParserRuleContext {
-		public FunctionBodyContext functionBody() {
-			return getRuleContext(FunctionBodyContext.class,0);
-		}
-		public TypeContext type() {
-			return getRuleContext(TypeContext.class,0);
-		}
-		public ModifiersContext modifiers() {
-			return getRuleContext(ModifiersContext.class,0);
-		}
-		public GetterContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_getter; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterGetter(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitGetter(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitGetter(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final GetterContext getter() throws RecognitionException {
-		GetterContext _localctx = new GetterContext(_ctx, getState());
-		enterRule(_localctx, 46, RULE_getter);
-		int _la;
-		try {
-			setState(525);
-			switch ( getInterpreter().adaptivePredict(_input,49,_ctx) ) {
-			case 1:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(512); modifiers();
-				setState(513); match(GET);
-				}
-				break;
-
-			case 2:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(515); modifiers();
-				setState(516); match(GET);
-				setState(517); match(BRACE_OPEN);
-				setState(518); match(BRACE_CLOSE);
-				setState(521);
-				_la = _input.LA(1);
-				if (_la==COLON) {
-					{
-					setState(519); match(COLON);
-					setState(520); type();
-					}
-				}
-
-				setState(523); functionBody();
-				}
-				break;
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class SetterContext extends ParserRuleContext {
-		public ModifiersContext modifiers(int i) {
-			return getRuleContext(ModifiersContext.class,i);
-		}
-		public ParameterContext parameter() {
-			return getRuleContext(ParameterContext.class,0);
-		}
-		public FunctionBodyContext functionBody() {
-			return getRuleContext(FunctionBodyContext.class,0);
-		}
-		public TerminalNode SimpleName() { return getToken(KotlinParser.SimpleName, 0); }
-		public List<ModifiersContext> modifiers() {
-			return getRuleContexts(ModifiersContext.class);
-		}
-		public SetterContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_setter; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterSetter(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitSetter(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitSetter(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final SetterContext setter() throws RecognitionException {
-		SetterContext _localctx = new SetterContext(_ctx, getState());
-		enterRule(_localctx, 48, RULE_setter);
-		try {
-			setState(541);
-			switch ( getInterpreter().adaptivePredict(_input,51,_ctx) ) {
-			case 1:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(527); modifiers();
-				setState(528); match(SET);
-				}
-				break;
-
-			case 2:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(530); modifiers();
-				setState(531); match(SET);
-				setState(532); match(BRACE_OPEN);
-				setState(533); modifiers();
-				setState(536);
-				switch ( getInterpreter().adaptivePredict(_input,50,_ctx) ) {
-				case 1:
-					{
-					setState(534); match(SimpleName);
-					}
-					break;
-
-				case 2:
-					{
-					setState(535); parameter();
-					}
-					break;
-				}
-				setState(538); match(BRACE_CLOSE);
-				setState(539); functionBody();
-				}
-				break;
+			setState(499); match(BRACE_CLOSE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2163,25 +1832,25 @@ public class KotlinParser extends Parser {
 
 	public final ModifiersContext modifiers() throws RecognitionException {
 		ModifiersContext _localctx = new ModifiersContext(_ctx, getState());
-		enterRule(_localctx, 50, RULE_modifiers);
+		enterRule(_localctx, 44, RULE_modifiers);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(546);
+			setState(504);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,52,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,37,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(543); modifier();
+					setState(501); modifier();
 					}
 					} 
 				}
-				setState(548);
+				setState(506);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,52,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,37,_ctx);
 			}
 			}
 		}
@@ -2221,11 +1890,11 @@ public class KotlinParser extends Parser {
 
 	public final ModifierContext modifier() throws RecognitionException {
 		ModifierContext _localctx = new ModifierContext(_ctx, getState());
-		enterRule(_localctx, 52, RULE_modifier);
+		enterRule(_localctx, 46, RULE_modifier);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(549); modifierKeyword();
+			setState(507); modifierKeyword();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2279,9 +1948,9 @@ public class KotlinParser extends Parser {
 
 	public final ModifierKeywordContext modifierKeyword() throws RecognitionException {
 		ModifierKeywordContext _localctx = new ModifierKeywordContext(_ctx, getState());
-		enterRule(_localctx, 54, RULE_modifierKeyword);
+		enterRule(_localctx, 48, RULE_modifierKeyword);
 		try {
-			setState(558);
+			setState(516);
 			switch (_input.LA(1)) {
 			case HierarchyModifier_abstract:
 			case HierarchyModifier_open:
@@ -2289,7 +1958,7 @@ public class KotlinParser extends Parser {
 			case HierarchyModifier_override:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(551); hierarchyModifier();
+				setState(509); hierarchyModifier();
 				}
 				break;
 			case AccessModifier_private:
@@ -2299,20 +1968,20 @@ public class KotlinParser extends Parser {
 			case Modifier_const:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(552); accessModifier();
+				setState(510); accessModifier();
 				}
 				break;
 			case OP_IN:
 			case VarianceAnnotation_out:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(553); varianceAnnotation();
+				setState(511); varianceAnnotation();
 				}
 				break;
 			case DOG:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(554); annotations();
+				setState(512); annotations();
 				}
 				break;
 			case ClassModifier_enum:
@@ -2321,7 +1990,7 @@ public class KotlinParser extends Parser {
 			case ClassModifier_sealed:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(555); classModifier();
+				setState(513); classModifier();
 				}
 				break;
 			case KeyWordModifier_operator:
@@ -2329,247 +1998,17 @@ public class KotlinParser extends Parser {
 			case KeyWordModifier_inline:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(556); keyWordModifier();
+				setState(514); keyWordModifier();
 				}
 				break;
 			case KEYWORD_vararg:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(557); match(KEYWORD_vararg);
+				setState(515); match(KEYWORD_vararg);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class HierarchyModifierContext extends ParserRuleContext {
-		public HierarchyModifierContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_hierarchyModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterHierarchyModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitHierarchyModifier(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitHierarchyModifier(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final HierarchyModifierContext hierarchyModifier() throws RecognitionException {
-		HierarchyModifierContext _localctx = new HierarchyModifierContext(_ctx, getState());
-		enterRule(_localctx, 56, RULE_hierarchyModifier);
-		int _la;
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(560);
-			_la = _input.LA(1);
-			if ( !(((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (HierarchyModifier_abstract - 69)) | (1L << (HierarchyModifier_open - 69)) | (1L << (HierarchyModifier_final - 69)) | (1L << (HierarchyModifier_override - 69)))) != 0)) ) {
-			_errHandler.recoverInline(this);
-			}
-			consume();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class ClassModifierContext extends ParserRuleContext {
-		public ClassModifierContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_classModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterClassModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitClassModifier(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitClassModifier(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final ClassModifierContext classModifier() throws RecognitionException {
-		ClassModifierContext _localctx = new ClassModifierContext(_ctx, getState());
-		enterRule(_localctx, 58, RULE_classModifier);
-		int _la;
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(562);
-			_la = _input.LA(1);
-			if ( !(((((_la - 76)) & ~0x3f) == 0 && ((1L << (_la - 76)) & ((1L << (ClassModifier_enum - 76)) | (1L << (ClassModifier_annotation - 76)) | (1L << (ClassModifier_data - 76)) | (1L << (ClassModifier_sealed - 76)))) != 0)) ) {
-			_errHandler.recoverInline(this);
-			}
-			consume();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class KeyWordModifierContext extends ParserRuleContext {
-		public KeyWordModifierContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_keyWordModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterKeyWordModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitKeyWordModifier(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitKeyWordModifier(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final KeyWordModifierContext keyWordModifier() throws RecognitionException {
-		KeyWordModifierContext _localctx = new KeyWordModifierContext(_ctx, getState());
-		enterRule(_localctx, 60, RULE_keyWordModifier);
-		int _la;
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(564);
-			_la = _input.LA(1);
-			if ( !(((((_la - 73)) & ~0x3f) == 0 && ((1L << (_la - 73)) & ((1L << (KeyWordModifier_operator - 73)) | (1L << (KeyWordModifier_infix - 73)) | (1L << (KeyWordModifier_inline - 73)))) != 0)) ) {
-			_errHandler.recoverInline(this);
-			}
-			consume();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class AccessModifierContext extends ParserRuleContext {
-		public AccessModifierContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_accessModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAccessModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAccessModifier(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitAccessModifier(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final AccessModifierContext accessModifier() throws RecognitionException {
-		AccessModifierContext _localctx = new AccessModifierContext(_ctx, getState());
-		enterRule(_localctx, 62, RULE_accessModifier);
-		int _la;
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(566);
-			_la = _input.LA(1);
-			if ( !(((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (AccessModifier_private - 80)) | (1L << (AccessModifier_protected - 80)) | (1L << (AccessModifier_public - 80)) | (1L << (AccessModifier_internal - 80)) | (1L << (Modifier_const - 80)))) != 0)) ) {
-			_errHandler.recoverInline(this);
-			}
-			consume();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class VarianceAnnotationContext extends ParserRuleContext {
-		public VarianceAnnotationContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_varianceAnnotation; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterVarianceAnnotation(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitVarianceAnnotation(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitVarianceAnnotation(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final VarianceAnnotationContext varianceAnnotation() throws RecognitionException {
-		VarianceAnnotationContext _localctx = new VarianceAnnotationContext(_ctx, getState());
-		enterRule(_localctx, 64, RULE_varianceAnnotation);
-		int _la;
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(568);
-			_la = _input.LA(1);
-			if ( !(_la==OP_IN || _la==VarianceAnnotation_out) ) {
-			_errHandler.recoverInline(this);
-			}
-			consume();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2611,12 +2050,12 @@ public class KotlinParser extends Parser {
 
 	public final AnnotationsContext annotations() throws RecognitionException {
 		AnnotationsContext _localctx = new AnnotationsContext(_ctx, getState());
-		enterRule(_localctx, 66, RULE_annotations);
+		enterRule(_localctx, 50, RULE_annotations);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(571); 
+			setState(519); 
 			_errHandler.sync(this);
 			_alt = 1;
 			do {
@@ -2624,16 +2063,16 @@ public class KotlinParser extends Parser {
 				case 1:
 					{
 					{
-					setState(570); annotation();
+					setState(518); annotation();
 					}
 					}
 					break;
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(573); 
+				setState(521); 
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,54,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,39,_ctx);
 			} while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER );
 			}
 		}
@@ -2676,22 +2115,22 @@ public class KotlinParser extends Parser {
 
 	public final AnnotationContext annotation() throws RecognitionException {
 		AnnotationContext _localctx = new AnnotationContext(_ctx, getState());
-		enterRule(_localctx, 68, RULE_annotation);
+		enterRule(_localctx, 52, RULE_annotation);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(575); match(DOG);
-			setState(579);
+			setState(523); match(DOG);
+			setState(527);
 			_la = _input.LA(1);
 			if (((((_la - 67)) & ~0x3f) == 0 && ((1L << (_la - 67)) & ((1L << (GET - 67)) | (1L << (SET - 67)) | (1L << (AnnotationUseSiteTarget_file - 67)) | (1L << (AnnotationUseSiteTarget_field - 67)) | (1L << (AnnotationUseSiteTarget_property - 67)) | (1L << (AnnotationUseSiteTarget_param - 67)) | (1L << (AnnotationUseSiteTarget_sparam - 67)))) != 0)) {
 				{
-				setState(576); annotationUseSiteTarget();
-				setState(577); match(COLON);
+				setState(524); annotationUseSiteTarget();
+				setState(525); match(COLON);
 				}
 			}
 
-			setState(581); unescapedAnnotation();
+			setState(529); unescapedAnnotation();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2727,12 +2166,12 @@ public class KotlinParser extends Parser {
 
 	public final AnnotationUseSiteTargetContext annotationUseSiteTarget() throws RecognitionException {
 		AnnotationUseSiteTargetContext _localctx = new AnnotationUseSiteTargetContext(_ctx, getState());
-		enterRule(_localctx, 70, RULE_annotationUseSiteTarget);
+		enterRule(_localctx, 54, RULE_annotationUseSiteTarget);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(583);
+			setState(531);
 			_la = _input.LA(1);
 			if ( !(((((_la - 67)) & ~0x3f) == 0 && ((1L << (_la - 67)) & ((1L << (GET - 67)) | (1L << (SET - 67)) | (1L << (AnnotationUseSiteTarget_file - 67)) | (1L << (AnnotationUseSiteTarget_field - 67)) | (1L << (AnnotationUseSiteTarget_property - 67)) | (1L << (AnnotationUseSiteTarget_param - 67)) | (1L << (AnnotationUseSiteTarget_sparam - 67)))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -2779,29 +2218,29 @@ public class KotlinParser extends Parser {
 
 	public final ValueArgumentContext valueArgument() throws RecognitionException {
 		ValueArgumentContext _localctx = new ValueArgumentContext(_ctx, getState());
-		enterRule(_localctx, 72, RULE_valueArgument);
+		enterRule(_localctx, 56, RULE_valueArgument);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(588);
-			switch ( getInterpreter().adaptivePredict(_input,56,_ctx) ) {
+			setState(536);
+			switch ( getInterpreter().adaptivePredict(_input,41,_ctx) ) {
 			case 1:
 				{
-				setState(585); identifier();
-				setState(586); match(EQ);
+				setState(533); identifier();
+				setState(534); match(EQ);
 				}
 				break;
 			}
-			setState(591);
+			setState(539);
 			_la = _input.LA(1);
 			if (_la==STAR) {
 				{
-				setState(590); match(STAR);
+				setState(538); match(STAR);
 				}
 			}
 
-			setState(593); expression();
+			setState(541); expression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2843,35 +2282,35 @@ public class KotlinParser extends Parser {
 
 	public final ValueArgumentsContext valueArguments() throws RecognitionException {
 		ValueArgumentsContext _localctx = new ValueArgumentsContext(_ctx, getState());
-		enterRule(_localctx, 74, RULE_valueArguments);
+		enterRule(_localctx, 58, RULE_valueArguments);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(595); match(BRACE_OPEN);
-			setState(604);
+			setState(543); match(BRACE_OPEN);
+			setState(552);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IntegerLiteral) | (1L << OPEN_BLOCK) | (1L << HexadecimalLiteral) | (1L << CharacterLiteral) | (1L << TRIPLE_QUOTE) | (1L << SINGLE_QUOTE) | (1L << PACKAGE) | (1L << IMPORT) | (1L << STAR) | (1L << BRACE_OPEN) | (1L << REFERENCE) | (1L << TRUE) | (1L << FALSE) | (1L << NULL) | (1L << OP_PLUS) | (1L << OP_MUNUS) | (1L << OP_DECREMENT) | (1L << OP_INCREMENT) | (1L << OP_NOT))) != 0) || ((((_la - 76)) & ~0x3f) == 0 && ((1L << (_la - 76)) & ((1L << (ClassModifier_enum - 76)) | (1L << (DOG - 76)) | (1L << (Jump_throw - 76)) | (1L << (Jump_continue - 76)) | (1L << (Jump_return - 76)) | (1L << (Jump_break - 76)) | (1L << (ConstructorDelegationCall_this - 76)) | (1L << (ConstructorDelegationCall_super - 76)) | (1L << (Declaration_object - 76)) | (1L << (Declaration_companion - 76)) | (1L << (Declaration_init - 76)) | (1L << (CF_if - 76)) | (1L << (CF_when - 76)) | (1L << (CF_while - 76)) | (1L << (CF_for - 76)) | (1L << (CF_do - 76)) | (1L << (CF_try - 76)) | (1L << (BAX - 76)) | (1L << (SimpleName - 76)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IntegerLiteral) | (1L << OPEN_BLOCK) | (1L << HexadecimalLiteral) | (1L << CharacterLiteral) | (1L << TRIPLE_QUOTE) | (1L << SINGLE_QUOTE) | (1L << PACKAGE) | (1L << IMPORT) | (1L << STAR) | (1L << BRACE_OPEN) | (1L << REFERENCE) | (1L << TRUE) | (1L << FALSE) | (1L << NULL) | (1L << OP_PLUS) | (1L << OP_MUNUS) | (1L << OP_DECREMENT) | (1L << OP_INCREMENT) | (1L << OP_NOT))) != 0) || ((((_la - 76)) & ~0x3f) == 0 && ((1L << (_la - 76)) & ((1L << (ClassModifier_enum - 76)) | (1L << (ClassModifier_data - 76)) | (1L << (AccessModifier_private - 76)) | (1L << (AccessModifier_protected - 76)) | (1L << (AccessModifier_public - 76)) | (1L << (AccessModifier_internal - 76)) | (1L << (Modifier_const - 76)) | (1L << (DOG - 76)) | (1L << (Jump_throw - 76)) | (1L << (Jump_continue - 76)) | (1L << (Jump_return - 76)) | (1L << (Jump_break - 76)) | (1L << (ConstructorDelegationCall_this - 76)) | (1L << (ConstructorDelegationCall_super - 76)) | (1L << (Declaration_object - 76)) | (1L << (Declaration_companion - 76)) | (1L << (Declaration_fun - 76)) | (1L << (Declaration_init - 76)) | (1L << (CF_if - 76)) | (1L << (CF_when - 76)) | (1L << (CF_while - 76)) | (1L << (CF_for - 76)) | (1L << (CF_do - 76)) | (1L << (CF_try - 76)) | (1L << (BAX - 76)) | (1L << (SimpleName - 76)))) != 0)) {
 				{
-				setState(596); valueArgument();
-				setState(601);
+				setState(544); valueArgument();
+				setState(549);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(597); match(COMMA);
-					setState(598); valueArgument();
+					setState(545); match(COMMA);
+					setState(546); valueArgument();
 					}
 					}
-					setState(603);
+					setState(551);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
 				}
 			}
 
-			setState(606); match(BRACE_CLOSE);
+			setState(554); match(BRACE_CLOSE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2919,39 +2358,39 @@ public class KotlinParser extends Parser {
 
 	public final UnescapedAnnotationContext unescapedAnnotation() throws RecognitionException {
 		UnescapedAnnotationContext _localctx = new UnescapedAnnotationContext(_ctx, getState());
-		enterRule(_localctx, 76, RULE_unescapedAnnotation);
+		enterRule(_localctx, 60, RULE_unescapedAnnotation);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(608); identifier();
-			setState(613);
+			setState(556); identifier();
+			setState(561);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==DOT) {
 				{
 				{
-				setState(609); match(DOT);
-				setState(610); identifier();
+				setState(557); match(DOT);
+				setState(558); identifier();
 				}
 				}
-				setState(615);
+				setState(563);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(617);
-			_la = _input.LA(1);
-			if (_la==LT) {
-				{
-				setState(616); typeArguments();
-				}
-			}
-
-			setState(620);
-			switch ( getInterpreter().adaptivePredict(_input,62,_ctx) ) {
+			setState(565);
+			switch ( getInterpreter().adaptivePredict(_input,46,_ctx) ) {
 			case 1:
 				{
-				setState(619); valueArguments();
+				setState(564); typeArguments();
+				}
+				break;
+			}
+			setState(568);
+			switch ( getInterpreter().adaptivePredict(_input,47,_ctx) ) {
+			case 1:
+				{
+				setState(567); valueArguments();
 				}
 				break;
 			}
@@ -2996,34 +2435,34 @@ public class KotlinParser extends Parser {
 
 	public final JumpContext jump() throws RecognitionException {
 		JumpContext _localctx = new JumpContext(_ctx, getState());
-		enterRule(_localctx, 78, RULE_jump);
+		enterRule(_localctx, 62, RULE_jump);
 		try {
-			setState(639);
+			setState(587);
 			switch (_input.LA(1)) {
 			case Jump_throw:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(622); match(Jump_throw);
-				setState(623); expression();
+				setState(570); match(Jump_throw);
+				setState(571); expression();
 				}
 				break;
 			case Jump_return:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(624); match(Jump_return);
-				setState(626);
-				switch ( getInterpreter().adaptivePredict(_input,63,_ctx) ) {
+				setState(572); match(Jump_return);
+				setState(574);
+				switch ( getInterpreter().adaptivePredict(_input,48,_ctx) ) {
 				case 1:
 					{
-					setState(625); labelReference();
+					setState(573); labelReference();
 					}
 					break;
 				}
-				setState(629);
-				switch ( getInterpreter().adaptivePredict(_input,64,_ctx) ) {
+				setState(577);
+				switch ( getInterpreter().adaptivePredict(_input,49,_ctx) ) {
 				case 1:
 					{
-					setState(628); expression();
+					setState(576); expression();
 					}
 					break;
 				}
@@ -3032,12 +2471,12 @@ public class KotlinParser extends Parser {
 			case Jump_continue:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(631); match(Jump_continue);
-				setState(633);
-				switch ( getInterpreter().adaptivePredict(_input,65,_ctx) ) {
+				setState(579); match(Jump_continue);
+				setState(581);
+				switch ( getInterpreter().adaptivePredict(_input,50,_ctx) ) {
 				case 1:
 					{
-					setState(632); labelReference();
+					setState(580); labelReference();
 					}
 					break;
 				}
@@ -3046,12 +2485,12 @@ public class KotlinParser extends Parser {
 			case Jump_break:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(635); match(Jump_break);
-				setState(637);
-				switch ( getInterpreter().adaptivePredict(_input,66,_ctx) ) {
+				setState(583); match(Jump_break);
+				setState(585);
+				switch ( getInterpreter().adaptivePredict(_input,51,_ctx) ) {
 				case 1:
 					{
-					setState(636); labelReference();
+					setState(584); labelReference();
 					}
 					break;
 				}
@@ -3097,35 +2536,41 @@ public class KotlinParser extends Parser {
 
 	public final LabelReferenceContext labelReference() throws RecognitionException {
 		LabelReferenceContext _localctx = new LabelReferenceContext(_ctx, getState());
-		enterRule(_localctx, 80, RULE_labelReference);
+		enterRule(_localctx, 64, RULE_labelReference);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(641); match(DOG);
-			setState(646);
+			setState(589); match(DOG);
+			setState(594);
 			switch (_input.LA(1)) {
 			case IMPORT:
 			case ClassModifier_enum:
+			case ClassModifier_data:
+			case AccessModifier_private:
+			case AccessModifier_protected:
+			case AccessModifier_public:
+			case AccessModifier_internal:
+			case Modifier_const:
 			case Declaration_companion:
 			case Declaration_init:
 			case SimpleName:
 				{
-				setState(642); identifier();
+				setState(590); identifier();
 				}
 				break;
 			case CF_for:
 				{
-				setState(643); match(CF_for);
+				setState(591); match(CF_for);
 				}
 				break;
 			case CF_while:
 				{
-				setState(644); match(CF_while);
+				setState(592); match(CF_while);
 				}
 				break;
 			case CF_when:
 				{
-				setState(645); match(CF_when);
+				setState(593); match(CF_when);
 				}
 				break;
 			default:
@@ -3169,12 +2614,12 @@ public class KotlinParser extends Parser {
 
 	public final LabelDefinitionContext labelDefinition() throws RecognitionException {
 		LabelDefinitionContext _localctx = new LabelDefinitionContext(_ctx, getState());
-		enterRule(_localctx, 82, RULE_labelDefinition);
+		enterRule(_localctx, 66, RULE_labelDefinition);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(648); identifier();
-			setState(649); match(DOG);
+			setState(596); identifier();
+			setState(597); match(DOG);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3214,13 +2659,13 @@ public class KotlinParser extends Parser {
 
 	public final ParameterContext parameter() throws RecognitionException {
 		ParameterContext _localctx = new ParameterContext(_ctx, getState());
-		enterRule(_localctx, 84, RULE_parameter);
+		enterRule(_localctx, 68, RULE_parameter);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(651); match(SimpleName);
-			setState(652); match(COLON);
-			setState(653); type();
+			setState(599); match(SimpleName);
+			setState(600); match(COLON);
+			setState(601); type();
 			}
 		}
 		catch (RecognitionException re) {
@@ -3262,21 +2707,21 @@ public class KotlinParser extends Parser {
 
 	public final FunctionParameterContext functionParameter() throws RecognitionException {
 		FunctionParameterContext _localctx = new FunctionParameterContext(_ctx, getState());
-		enterRule(_localctx, 86, RULE_functionParameter);
+		enterRule(_localctx, 70, RULE_functionParameter);
 		try {
-			setState(657);
-			switch ( getInterpreter().adaptivePredict(_input,69,_ctx) ) {
+			setState(605);
+			switch ( getInterpreter().adaptivePredict(_input,54,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(655); funcParameterWithoutDefault();
+				setState(603); funcParameterWithoutDefault();
 				}
 				break;
 
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(656); funcParameterWithDefault();
+				setState(604); funcParameterWithDefault();
 				}
 				break;
 			}
@@ -3320,12 +2765,12 @@ public class KotlinParser extends Parser {
 
 	public final FuncParameterWithoutDefaultContext funcParameterWithoutDefault() throws RecognitionException {
 		FuncParameterWithoutDefaultContext _localctx = new FuncParameterWithoutDefaultContext(_ctx, getState());
-		enterRule(_localctx, 88, RULE_funcParameterWithoutDefault);
+		enterRule(_localctx, 72, RULE_funcParameterWithoutDefault);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(659); modifiers();
-			setState(660); parameter();
+			setState(607); modifiers();
+			setState(608); parameter();
 			}
 		}
 		catch (RecognitionException re) {
@@ -3367,13 +2812,13 @@ public class KotlinParser extends Parser {
 
 	public final FuncParameterWithDefaultContext funcParameterWithDefault() throws RecognitionException {
 		FuncParameterWithDefaultContext _localctx = new FuncParameterWithDefaultContext(_ctx, getState());
-		enterRule(_localctx, 90, RULE_funcParameterWithDefault);
+		enterRule(_localctx, 74, RULE_funcParameterWithDefault);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(662); funcParameterWithoutDefault();
-			setState(663); match(EQ);
-			setState(664); expression();
+			setState(610); funcParameterWithoutDefault();
+			setState(611); match(EQ);
+			setState(612); expression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -3415,21 +2860,21 @@ public class KotlinParser extends Parser {
 
 	public final ConstructorParameterContext constructorParameter() throws RecognitionException {
 		ConstructorParameterContext _localctx = new ConstructorParameterContext(_ctx, getState());
-		enterRule(_localctx, 92, RULE_constructorParameter);
+		enterRule(_localctx, 76, RULE_constructorParameter);
 		try {
-			setState(668);
-			switch ( getInterpreter().adaptivePredict(_input,70,_ctx) ) {
+			setState(616);
+			switch ( getInterpreter().adaptivePredict(_input,55,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(666); constructorParameterWithoutDefault();
+				setState(614); constructorParameterWithoutDefault();
 				}
 				break;
 
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(667); constructorParameterWithDefault();
+				setState(615); constructorParameterWithDefault();
 				}
 				break;
 			}
@@ -3473,17 +2918,17 @@ public class KotlinParser extends Parser {
 
 	public final ConstructorParameterWithoutDefaultContext constructorParameterWithoutDefault() throws RecognitionException {
 		ConstructorParameterWithoutDefaultContext _localctx = new ConstructorParameterWithoutDefaultContext(_ctx, getState());
-		enterRule(_localctx, 94, RULE_constructorParameterWithoutDefault);
+		enterRule(_localctx, 78, RULE_constructorParameterWithoutDefault);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(670); modifiers();
-			setState(672);
+			setState(618); modifiers();
+			setState(620);
 			_la = _input.LA(1);
 			if (_la==KEYWORD_val || _la==KEYWORD_var) {
 				{
-				setState(671);
+				setState(619);
 				_la = _input.LA(1);
 				if ( !(_la==KEYWORD_val || _la==KEYWORD_var) ) {
 				_errHandler.recoverInline(this);
@@ -3492,7 +2937,7 @@ public class KotlinParser extends Parser {
 				}
 			}
 
-			setState(674); parameter();
+			setState(622); parameter();
 			}
 		}
 		catch (RecognitionException re) {
@@ -3534,13 +2979,13 @@ public class KotlinParser extends Parser {
 
 	public final ConstructorParameterWithDefaultContext constructorParameterWithDefault() throws RecognitionException {
 		ConstructorParameterWithDefaultContext _localctx = new ConstructorParameterWithDefaultContext(_ctx, getState());
-		enterRule(_localctx, 96, RULE_constructorParameterWithDefault);
+		enterRule(_localctx, 80, RULE_constructorParameterWithDefault);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(676); constructorParameterWithoutDefault();
-			setState(677); match(EQ);
-			setState(678); expression();
+			setState(624); constructorParameterWithoutDefault();
+			setState(625); match(EQ);
+			setState(626); expression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -3585,52 +3030,52 @@ public class KotlinParser extends Parser {
 
 	public final PrimaryConstructorContext primaryConstructor() throws RecognitionException {
 		PrimaryConstructorContext _localctx = new PrimaryConstructorContext(_ctx, getState());
-		enterRule(_localctx, 98, RULE_primaryConstructor);
+		enterRule(_localctx, 82, RULE_primaryConstructor);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(684);
+			setState(632);
 			_la = _input.LA(1);
 			if (((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (AccessModifier_private - 80)) | (1L << (AccessModifier_protected - 80)) | (1L << (AccessModifier_public - 80)) | (1L << (AccessModifier_internal - 80)) | (1L << (Modifier_const - 80)) | (1L << (KEYWORD_constructor - 80)))) != 0)) {
 				{
-				setState(681);
+				setState(629);
 				_la = _input.LA(1);
 				if (((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (AccessModifier_private - 80)) | (1L << (AccessModifier_protected - 80)) | (1L << (AccessModifier_public - 80)) | (1L << (AccessModifier_internal - 80)) | (1L << (Modifier_const - 80)))) != 0)) {
 					{
-					setState(680); accessModifier();
+					setState(628); accessModifier();
 					}
 				}
 
-				setState(683); match(KEYWORD_constructor);
+				setState(631); match(KEYWORD_constructor);
 				}
 			}
 
 			{
-			setState(686); match(BRACE_OPEN);
-			setState(695);
+			setState(634); match(BRACE_OPEN);
+			setState(643);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << OP_IN) | (1L << KEYWORD_val) | (1L << KEYWORD_var) | (1L << KEYWORD_vararg))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (HierarchyModifier_abstract - 69)) | (1L << (HierarchyModifier_open - 69)) | (1L << (HierarchyModifier_final - 69)) | (1L << (HierarchyModifier_override - 69)) | (1L << (KeyWordModifier_operator - 69)) | (1L << (KeyWordModifier_infix - 69)) | (1L << (KeyWordModifier_inline - 69)) | (1L << (ClassModifier_enum - 69)) | (1L << (ClassModifier_annotation - 69)) | (1L << (ClassModifier_data - 69)) | (1L << (ClassModifier_sealed - 69)) | (1L << (AccessModifier_private - 69)) | (1L << (AccessModifier_protected - 69)) | (1L << (AccessModifier_public - 69)) | (1L << (AccessModifier_internal - 69)) | (1L << (Modifier_const - 69)) | (1L << (VarianceAnnotation_out - 69)) | (1L << (DOG - 69)) | (1L << (SimpleName - 69)))) != 0)) {
 				{
-				setState(687); constructorParameter();
-				setState(692);
+				setState(635); constructorParameter();
+				setState(640);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(688); match(COMMA);
-					setState(689); constructorParameter();
+					setState(636); match(COMMA);
+					setState(637); constructorParameter();
 					}
 					}
-					setState(694);
+					setState(642);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
 				}
 			}
 
-			setState(697); match(BRACE_CLOSE);
+			setState(645); match(BRACE_CLOSE);
 			}
 			}
 		}
@@ -3686,73 +3131,73 @@ public class KotlinParser extends Parser {
 
 	public final SecondaryConstructorContext secondaryConstructor() throws RecognitionException {
 		SecondaryConstructorContext _localctx = new SecondaryConstructorContext(_ctx, getState());
-		enterRule(_localctx, 100, RULE_secondaryConstructor);
+		enterRule(_localctx, 84, RULE_secondaryConstructor);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(700);
+			setState(648);
 			_la = _input.LA(1);
 			if (((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (AccessModifier_private - 80)) | (1L << (AccessModifier_protected - 80)) | (1L << (AccessModifier_public - 80)) | (1L << (AccessModifier_internal - 80)) | (1L << (Modifier_const - 80)))) != 0)) {
 				{
-				setState(699); accessModifier();
+				setState(647); accessModifier();
 				}
 			}
 
-			setState(702); match(KEYWORD_constructor);
+			setState(650); match(KEYWORD_constructor);
 			{
-			setState(703); match(BRACE_OPEN);
-			setState(712);
+			setState(651); match(BRACE_OPEN);
+			setState(660);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << OP_IN) | (1L << KEYWORD_val) | (1L << KEYWORD_var) | (1L << KEYWORD_vararg))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (HierarchyModifier_abstract - 69)) | (1L << (HierarchyModifier_open - 69)) | (1L << (HierarchyModifier_final - 69)) | (1L << (HierarchyModifier_override - 69)) | (1L << (KeyWordModifier_operator - 69)) | (1L << (KeyWordModifier_infix - 69)) | (1L << (KeyWordModifier_inline - 69)) | (1L << (ClassModifier_enum - 69)) | (1L << (ClassModifier_annotation - 69)) | (1L << (ClassModifier_data - 69)) | (1L << (ClassModifier_sealed - 69)) | (1L << (AccessModifier_private - 69)) | (1L << (AccessModifier_protected - 69)) | (1L << (AccessModifier_public - 69)) | (1L << (AccessModifier_internal - 69)) | (1L << (Modifier_const - 69)) | (1L << (VarianceAnnotation_out - 69)) | (1L << (DOG - 69)) | (1L << (SimpleName - 69)))) != 0)) {
 				{
-				setState(704); constructorParameter();
-				setState(709);
+				setState(652); constructorParameter();
+				setState(657);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(705); match(COMMA);
-					setState(706); constructorParameter();
+					setState(653); match(COMMA);
+					setState(654); constructorParameter();
 					}
 					}
-					setState(711);
+					setState(659);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
 				}
 			}
 
-			setState(714); match(BRACE_CLOSE);
+			setState(662); match(BRACE_CLOSE);
 			}
-			setState(718);
+			setState(666);
 			_la = _input.LA(1);
 			if (_la==COLON) {
 				{
-				setState(716); match(COLON);
-				setState(717); constructorDelegationCall();
+				setState(664); match(COLON);
+				setState(665); constructorDelegationCall();
 				}
 			}
 
-			setState(721);
+			setState(669);
 			_la = _input.LA(1);
 			if (_la==OPEN_BLOCK) {
 				{
-				setState(720); block();
+				setState(668); block();
 				}
 			}
 
-			setState(726);
+			setState(674);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==SEMI) {
 				{
 				{
-				setState(723); match(SEMI);
+				setState(671); match(SEMI);
 				}
 				}
-				setState(728);
+				setState(676);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -3794,22 +3239,22 @@ public class KotlinParser extends Parser {
 
 	public final ConstructorDelegationCallContext constructorDelegationCall() throws RecognitionException {
 		ConstructorDelegationCallContext _localctx = new ConstructorDelegationCallContext(_ctx, getState());
-		enterRule(_localctx, 102, RULE_constructorDelegationCall);
+		enterRule(_localctx, 86, RULE_constructorDelegationCall);
 		try {
-			setState(733);
+			setState(681);
 			switch (_input.LA(1)) {
 			case ConstructorDelegationCall_this:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(729); match(ConstructorDelegationCall_this);
-				setState(730); valueArguments();
+				setState(677); match(ConstructorDelegationCall_this);
+				setState(678); valueArguments();
 				}
 				break;
 			case ConstructorDelegationCall_super:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(731); match(ConstructorDelegationCall_super);
-				setState(732); valueArguments();
+				setState(679); match(ConstructorDelegationCall_super);
+				setState(680); valueArguments();
 				}
 				break;
 			default:
@@ -3858,28 +3303,28 @@ public class KotlinParser extends Parser {
 
 	public final CallSuffixContext callSuffix() throws RecognitionException {
 		CallSuffixContext _localctx = new CallSuffixContext(_ctx, getState());
-		enterRule(_localctx, 104, RULE_callSuffix);
+		enterRule(_localctx, 88, RULE_callSuffix);
 		int _la;
 		try {
-			setState(746);
-			switch ( getInterpreter().adaptivePredict(_input,85,_ctx) ) {
+			setState(694);
+			switch ( getInterpreter().adaptivePredict(_input,70,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(736);
+				setState(684);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(735); typeArguments();
+					setState(683); typeArguments();
 					}
 				}
 
-				setState(738); valueArguments();
-				setState(740);
-				switch ( getInterpreter().adaptivePredict(_input,84,_ctx) ) {
+				setState(686); valueArguments();
+				setState(688);
+				switch ( getInterpreter().adaptivePredict(_input,69,_ctx) ) {
 				case 1:
 					{
-					setState(739); annotatedLambda();
+					setState(687); annotatedLambda();
 					}
 					break;
 				}
@@ -3889,15 +3334,15 @@ public class KotlinParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(742); typeArguments();
-				setState(743); annotatedLambda();
+				setState(690); typeArguments();
+				setState(691); annotatedLambda();
 				}
 				break;
 
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(745); annotatedLambda();
+				setState(693); annotatedLambda();
 				}
 				break;
 			}
@@ -3944,21 +3389,21 @@ public class KotlinParser extends Parser {
 
 	public final ConstructorInvocationContext constructorInvocation() throws RecognitionException {
 		ConstructorInvocationContext _localctx = new ConstructorInvocationContext(_ctx, getState());
-		enterRule(_localctx, 106, RULE_constructorInvocation);
+		enterRule(_localctx, 90, RULE_constructorInvocation);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(748); userType();
-			setState(750);
+			setState(696); userType();
+			setState(698);
 			_la = _input.LA(1);
 			if (_la==LT) {
 				{
-				setState(749); typeArguments();
+				setState(697); typeArguments();
 				}
 			}
 
-			setState(752); valueArguments();
+			setState(700); valueArguments();
 			}
 		}
 		catch (RecognitionException re) {
@@ -4000,13 +3445,13 @@ public class KotlinParser extends Parser {
 
 	public final ExplicitDelegationContext explicitDelegation() throws RecognitionException {
 		ExplicitDelegationContext _localctx = new ExplicitDelegationContext(_ctx, getState());
-		enterRule(_localctx, 108, RULE_explicitDelegation);
+		enterRule(_localctx, 92, RULE_explicitDelegation);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(754); userType();
-			setState(755); match(KEYWORD_by);
-			setState(756); expression();
+			setState(702); userType();
+			setState(703); match(KEYWORD_by);
+			setState(704); expression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -4051,28 +3496,28 @@ public class KotlinParser extends Parser {
 
 	public final DelegationSpecifierContext delegationSpecifier() throws RecognitionException {
 		DelegationSpecifierContext _localctx = new DelegationSpecifierContext(_ctx, getState());
-		enterRule(_localctx, 110, RULE_delegationSpecifier);
+		enterRule(_localctx, 94, RULE_delegationSpecifier);
 		try {
-			setState(761);
-			switch ( getInterpreter().adaptivePredict(_input,87,_ctx) ) {
+			setState(709);
+			switch ( getInterpreter().adaptivePredict(_input,72,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(758); constructorInvocation();
+				setState(706); constructorInvocation();
 				}
 				break;
 
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(759); userType();
+				setState(707); userType();
 				}
 				break;
 
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(760); explicitDelegation();
+				setState(708); explicitDelegation();
 				}
 				break;
 			}
@@ -4142,96 +3587,244 @@ public class KotlinParser extends Parser {
 
 	public final ClassDeclarationContext classDeclaration() throws RecognitionException {
 		ClassDeclarationContext _localctx = new ClassDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 112, RULE_classDeclaration);
+		enterRule(_localctx, 96, RULE_classDeclaration);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(763); modifiers();
-			setState(764);
-			_la = _input.LA(1);
-			if ( !(_la==Declaration_class || _la==Declaration_interface) ) {
-			_errHandler.recoverInline(this);
-			}
-			consume();
-			setState(765); match(SimpleName);
-			setState(767);
+			setState(711); modifiers();
+			setState(712); match(Declaration_class);
+			setState(713); match(SimpleName);
+			setState(715);
 			_la = _input.LA(1);
 			if (_la==LT) {
 				{
-				setState(766); typeParameters();
+				setState(714); typeParameters();
 				}
 			}
 
-			setState(770);
-			switch ( getInterpreter().adaptivePredict(_input,89,_ctx) ) {
+			setState(718);
+			switch ( getInterpreter().adaptivePredict(_input,74,_ctx) ) {
 			case 1:
 				{
-				setState(769); primaryConstructor();
+				setState(717); primaryConstructor();
 				}
 				break;
 			}
-			setState(784);
+			setState(732);
 			_la = _input.LA(1);
 			if (_la==COLON) {
 				{
-				setState(772); match(COLON);
-				setState(774);
+				setState(720); match(COLON);
+				setState(722);
 				_la = _input.LA(1);
 				if (_la==DOG) {
 					{
-					setState(773); annotations();
+					setState(721); annotations();
 					}
 				}
 
-				setState(776); delegationSpecifier();
-				setState(781);
+				setState(724); delegationSpecifier();
+				setState(729);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(777); match(COMMA);
-					setState(778); delegationSpecifier();
+					setState(725); match(COMMA);
+					setState(726); delegationSpecifier();
 					}
 					}
-					setState(783);
+					setState(731);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
 				}
 			}
 
-			setState(786); typeConstraints();
-			setState(789);
-			switch ( getInterpreter().adaptivePredict(_input,93,_ctx) ) {
+			setState(734); typeConstraints();
+			setState(737);
+			switch ( getInterpreter().adaptivePredict(_input,78,_ctx) ) {
 			case 1:
 				{
-				setState(787); classBody();
+				setState(735); classBody();
 				}
 				break;
 
 			case 2:
 				{
-				setState(788); enumClassBody();
+				setState(736); enumClassBody();
 				}
 				break;
 			}
-			setState(794);
+			setState(742);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,94,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,79,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(791); match(SEMI);
+					setState(739); match(SEMI);
 					}
 					} 
 				}
-				setState(796);
+				setState(744);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,94,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,79,_ctx);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class InterfaceDeclarationContext extends ParserRuleContext {
+		public ClassBodyContext classBody() {
+			return getRuleContext(ClassBodyContext.class,0);
+		}
+		public TerminalNode SimpleName() { return getToken(KotlinParser.SimpleName, 0); }
+		public EnumClassBodyContext enumClassBody() {
+			return getRuleContext(EnumClassBodyContext.class,0);
+		}
+		public List<DelegationSpecifierContext> delegationSpecifier() {
+			return getRuleContexts(DelegationSpecifierContext.class);
+		}
+		public List<TerminalNode> SEMI() { return getTokens(KotlinParser.SEMI); }
+		public TypeParametersContext typeParameters() {
+			return getRuleContext(TypeParametersContext.class,0);
+		}
+		public PrimaryConstructorContext primaryConstructor() {
+			return getRuleContext(PrimaryConstructorContext.class,0);
+		}
+		public TerminalNode SEMI(int i) {
+			return getToken(KotlinParser.SEMI, i);
+		}
+		public AnnotationsContext annotations() {
+			return getRuleContext(AnnotationsContext.class,0);
+		}
+		public DelegationSpecifierContext delegationSpecifier(int i) {
+			return getRuleContext(DelegationSpecifierContext.class,i);
+		}
+		public TypeConstraintsContext typeConstraints() {
+			return getRuleContext(TypeConstraintsContext.class,0);
+		}
+		public ModifiersContext modifiers() {
+			return getRuleContext(ModifiersContext.class,0);
+		}
+		public InterfaceDeclarationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_interfaceDeclaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterInterfaceDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitInterfaceDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitInterfaceDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final InterfaceDeclarationContext interfaceDeclaration() throws RecognitionException {
+		InterfaceDeclarationContext _localctx = new InterfaceDeclarationContext(_ctx, getState());
+		enterRule(_localctx, 98, RULE_interfaceDeclaration);
+		int _la;
+		try {
+			int _alt;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(745); modifiers();
+			setState(746); match(Declaration_interface);
+			setState(747); match(SimpleName);
+			setState(749);
+			_la = _input.LA(1);
+			if (_la==LT) {
+				{
+				setState(748); typeParameters();
+				}
+			}
+
+			setState(752);
+			switch ( getInterpreter().adaptivePredict(_input,81,_ctx) ) {
+			case 1:
+				{
+				setState(751); primaryConstructor();
+				}
+				break;
+			}
+			setState(766);
+			_la = _input.LA(1);
+			if (_la==COLON) {
+				{
+				setState(754); match(COLON);
+				setState(756);
+				_la = _input.LA(1);
+				if (_la==DOG) {
+					{
+					setState(755); annotations();
+					}
+				}
+
+				setState(758); delegationSpecifier();
+				setState(763);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				while (_la==COMMA) {
+					{
+					{
+					setState(759); match(COMMA);
+					setState(760); delegationSpecifier();
+					}
+					}
+					setState(765);
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				}
+				}
+			}
+
+			setState(768); typeConstraints();
+			setState(771);
+			switch ( getInterpreter().adaptivePredict(_input,85,_ctx) ) {
+			case 1:
+				{
+				setState(769); classBody();
+				}
+				break;
+
+			case 2:
+				{
+				setState(770); enumClassBody();
+				}
+				break;
+			}
+			setState(776);
+			_errHandler.sync(this);
+			_alt = getInterpreter().adaptivePredict(_input,86,_ctx);
+			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					setState(773); match(SEMI);
+					}
+					} 
+				}
+				setState(778);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,86,_ctx);
 			}
 			}
 		}
@@ -4274,24 +3867,24 @@ public class KotlinParser extends Parser {
 
 	public final SupertypesSpecifiersContext supertypesSpecifiers() throws RecognitionException {
 		SupertypesSpecifiersContext _localctx = new SupertypesSpecifiersContext(_ctx, getState());
-		enterRule(_localctx, 114, RULE_supertypesSpecifiers);
+		enterRule(_localctx, 100, RULE_supertypesSpecifiers);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(797); match(COLON);
-			setState(798); delegationSpecifier();
-			setState(803);
+			setState(779); match(COLON);
+			setState(780); delegationSpecifier();
+			setState(785);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(799); match(COMMA);
-				setState(800); delegationSpecifier();
+				setState(781); match(COMMA);
+				setState(782); delegationSpecifier();
 				}
 				}
-				setState(805);
+				setState(787);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -4347,46 +3940,46 @@ public class KotlinParser extends Parser {
 
 	public final ObjectDeclarationContext objectDeclaration() throws RecognitionException {
 		ObjectDeclarationContext _localctx = new ObjectDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 116, RULE_objectDeclaration);
+		enterRule(_localctx, 102, RULE_objectDeclaration);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(806); modifiers();
-			setState(807); match(Declaration_object);
-			setState(808); match(SimpleName);
-			setState(810);
-			switch ( getInterpreter().adaptivePredict(_input,96,_ctx) ) {
+			setState(788); modifiers();
+			setState(789); match(Declaration_object);
+			setState(790); match(SimpleName);
+			setState(792);
+			switch ( getInterpreter().adaptivePredict(_input,88,_ctx) ) {
 			case 1:
 				{
-				setState(809); primaryConstructor();
+				setState(791); primaryConstructor();
 				}
 				break;
 			}
-			setState(813);
+			setState(795);
 			_la = _input.LA(1);
 			if (_la==COLON) {
 				{
-				setState(812); supertypesSpecifiers();
+				setState(794); supertypesSpecifiers();
 				}
 			}
 
-			setState(815); classBody();
-			setState(819);
+			setState(797); classBody();
+			setState(801);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,98,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,90,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(816); match(SEMI);
+					setState(798); match(SEMI);
 					}
 					} 
 				}
-				setState(821);
+				setState(803);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,98,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,90,_ctx);
 			}
 			}
 		}
@@ -4434,26 +4027,26 @@ public class KotlinParser extends Parser {
 
 	public final TypealiasDeclarationContext typealiasDeclaration() throws RecognitionException {
 		TypealiasDeclarationContext _localctx = new TypealiasDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 118, RULE_typealiasDeclaration);
+		enterRule(_localctx, 104, RULE_typealiasDeclaration);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(822); modifiers();
-			setState(823); match(Declaration_typealias);
-			setState(824); match(SimpleName);
-			setState(825); match(EQ);
-			setState(826); simpleUserType();
-			setState(830);
+			setState(804); modifiers();
+			setState(805); match(Declaration_typealias);
+			setState(806); match(SimpleName);
+			setState(807); match(EQ);
+			setState(808); simpleUserType();
+			setState(812);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==SEMI) {
 				{
 				{
-				setState(827); match(SEMI);
+				setState(809); match(SEMI);
 				}
 				}
-				setState(832);
+				setState(814);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -4505,33 +4098,33 @@ public class KotlinParser extends Parser {
 
 	public final CompanionObjectContext companionObject() throws RecognitionException {
 		CompanionObjectContext _localctx = new CompanionObjectContext(_ctx, getState());
-		enterRule(_localctx, 120, RULE_companionObject);
+		enterRule(_localctx, 106, RULE_companionObject);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(833); modifiers();
-			setState(834); match(Declaration_companion);
-			setState(835); match(Declaration_object);
-			setState(837);
+			setState(815); modifiers();
+			setState(816); match(Declaration_companion);
+			setState(817); match(Declaration_object);
+			setState(819);
 			_la = _input.LA(1);
 			if (_la==COLON) {
 				{
-				setState(836); supertypesSpecifiers();
+				setState(818); supertypesSpecifiers();
 				}
 			}
 
-			setState(839); classBody();
-			setState(843);
+			setState(821); classBody();
+			setState(825);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==SEMI) {
 				{
 				{
-				setState(840); match(SEMI);
+				setState(822); match(SEMI);
 				}
 				}
-				setState(845);
+				setState(827);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -4573,17 +4166,17 @@ public class KotlinParser extends Parser {
 
 	public final ClassBodyContext classBody() throws RecognitionException {
 		ClassBodyContext _localctx = new ClassBodyContext(_ctx, getState());
-		enterRule(_localctx, 122, RULE_classBody);
+		enterRule(_localctx, 108, RULE_classBody);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(850);
-			switch ( getInterpreter().adaptivePredict(_input,102,_ctx) ) {
+			setState(832);
+			switch ( getInterpreter().adaptivePredict(_input,94,_ctx) ) {
 			case 1:
 				{
-				setState(846); match(OPEN_BLOCK);
-				setState(847); members();
-				setState(848); match(CLOSE_BLOCK);
+				setState(828); match(OPEN_BLOCK);
+				setState(829); members();
+				setState(830); match(CLOSE_BLOCK);
 				}
 				break;
 			}
@@ -4628,21 +4221,21 @@ public class KotlinParser extends Parser {
 
 	public final MembersContext members() throws RecognitionException {
 		MembersContext _localctx = new MembersContext(_ctx, getState());
-		enterRule(_localctx, 124, RULE_members);
+		enterRule(_localctx, 110, RULE_members);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(855);
+			setState(837);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (((((_la - 44)) & ~0x3f) == 0 && ((1L << (_la - 44)) & ((1L << (OP_IN - 44)) | (1L << (KEYWORD_val - 44)) | (1L << (KEYWORD_var - 44)) | (1L << (KEYWORD_vararg - 44)) | (1L << (HierarchyModifier_abstract - 44)) | (1L << (HierarchyModifier_open - 44)) | (1L << (HierarchyModifier_final - 44)) | (1L << (HierarchyModifier_override - 44)) | (1L << (KeyWordModifier_operator - 44)) | (1L << (KeyWordModifier_infix - 44)) | (1L << (KeyWordModifier_inline - 44)) | (1L << (ClassModifier_enum - 44)) | (1L << (ClassModifier_annotation - 44)) | (1L << (ClassModifier_data - 44)) | (1L << (ClassModifier_sealed - 44)) | (1L << (AccessModifier_private - 44)) | (1L << (AccessModifier_protected - 44)) | (1L << (AccessModifier_public - 44)) | (1L << (AccessModifier_internal - 44)) | (1L << (Modifier_const - 44)) | (1L << (VarianceAnnotation_out - 44)) | (1L << (DOG - 44)) | (1L << (KEYWORD_constructor - 44)) | (1L << (Declaration_class - 44)) | (1L << (Declaration_interface - 44)) | (1L << (Declaration_object - 44)) | (1L << (Declaration_companion - 44)) | (1L << (Declaration_fun - 44)) | (1L << (Declaration_init - 44)))) != 0)) {
+			while (((((_la - 44)) & ~0x3f) == 0 && ((1L << (_la - 44)) & ((1L << (OP_IN - 44)) | (1L << (KEYWORD_val - 44)) | (1L << (KEYWORD_vararg - 44)) | (1L << (HierarchyModifier_abstract - 44)) | (1L << (HierarchyModifier_open - 44)) | (1L << (HierarchyModifier_final - 44)) | (1L << (HierarchyModifier_override - 44)) | (1L << (KeyWordModifier_operator - 44)) | (1L << (KeyWordModifier_infix - 44)) | (1L << (KeyWordModifier_inline - 44)) | (1L << (ClassModifier_enum - 44)) | (1L << (ClassModifier_annotation - 44)) | (1L << (ClassModifier_data - 44)) | (1L << (ClassModifier_sealed - 44)) | (1L << (AccessModifier_private - 44)) | (1L << (AccessModifier_protected - 44)) | (1L << (AccessModifier_public - 44)) | (1L << (AccessModifier_internal - 44)) | (1L << (Modifier_const - 44)) | (1L << (VarianceAnnotation_out - 44)) | (1L << (DOG - 44)) | (1L << (KEYWORD_constructor - 44)) | (1L << (Declaration_class - 44)) | (1L << (Declaration_interface - 44)) | (1L << (Declaration_object - 44)) | (1L << (Declaration_companion - 44)) | (1L << (Declaration_fun - 44)) | (1L << (Declaration_init - 44)))) != 0)) {
 				{
 				{
-				setState(852); memberDeclaration();
+				setState(834); memberDeclaration();
 				}
 				}
-				setState(857);
+				setState(839);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -4687,35 +4280,35 @@ public class KotlinParser extends Parser {
 
 	public final ValueParametersContext valueParameters() throws RecognitionException {
 		ValueParametersContext _localctx = new ValueParametersContext(_ctx, getState());
-		enterRule(_localctx, 126, RULE_valueParameters);
+		enterRule(_localctx, 112, RULE_valueParameters);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(858); match(BRACE_OPEN);
-			setState(867);
+			setState(840); match(BRACE_OPEN);
+			setState(849);
 			_la = _input.LA(1);
 			if (_la==OP_IN || _la==KEYWORD_vararg || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (HierarchyModifier_abstract - 69)) | (1L << (HierarchyModifier_open - 69)) | (1L << (HierarchyModifier_final - 69)) | (1L << (HierarchyModifier_override - 69)) | (1L << (KeyWordModifier_operator - 69)) | (1L << (KeyWordModifier_infix - 69)) | (1L << (KeyWordModifier_inline - 69)) | (1L << (ClassModifier_enum - 69)) | (1L << (ClassModifier_annotation - 69)) | (1L << (ClassModifier_data - 69)) | (1L << (ClassModifier_sealed - 69)) | (1L << (AccessModifier_private - 69)) | (1L << (AccessModifier_protected - 69)) | (1L << (AccessModifier_public - 69)) | (1L << (AccessModifier_internal - 69)) | (1L << (Modifier_const - 69)) | (1L << (VarianceAnnotation_out - 69)) | (1L << (DOG - 69)) | (1L << (SimpleName - 69)))) != 0)) {
 				{
-				setState(859); functionParameter();
-				setState(864);
+				setState(841); functionParameter();
+				setState(846);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(860); match(COMMA);
-					setState(861); functionParameter();
+					setState(842); match(COMMA);
+					setState(843); functionParameter();
 					}
 					}
-					setState(866);
+					setState(848);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
 				}
 			}
 
-			setState(869); match(BRACE_CLOSE);
+			setState(851); match(BRACE_CLOSE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -4783,79 +4376,214 @@ public class KotlinParser extends Parser {
 
 	public final FunctionDeclarationContext functionDeclaration() throws RecognitionException {
 		FunctionDeclarationContext _localctx = new FunctionDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 128, RULE_functionDeclaration);
+		enterRule(_localctx, 114, RULE_functionDeclaration);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(871); modifiers();
-			setState(872); match(Declaration_fun);
-			setState(874);
+			setState(853); modifiers();
+			setState(854); match(Declaration_fun);
+			setState(856);
 			_la = _input.LA(1);
 			if (_la==LT) {
 				{
-				setState(873); typeParameters();
+				setState(855); typeParameters();
 				}
 			}
 
-			setState(880);
-			switch ( getInterpreter().adaptivePredict(_input,107,_ctx) ) {
+			setState(862);
+			switch ( getInterpreter().adaptivePredict(_input,99,_ctx) ) {
 			case 1:
 				{
-				setState(876); type();
-				setState(877); match(DOT);
+				setState(858); type();
+				setState(859); match(DOT);
 				}
 				break;
 
 			case 2:
 				{
-				setState(879); annotations();
+				setState(861); annotations();
 				}
 				break;
 			}
-			setState(882); match(SimpleName);
-			setState(884);
+			setState(864); match(SimpleName);
+			setState(866);
 			_la = _input.LA(1);
 			if (_la==LT) {
 				{
-				setState(883); typeParameters();
+				setState(865); typeParameters();
 				}
 			}
 
-			setState(886); valueParameters();
-			setState(889);
+			setState(868); valueParameters();
+			setState(871);
 			_la = _input.LA(1);
 			if (_la==COLON) {
 				{
-				setState(887); match(COLON);
-				setState(888); type();
+				setState(869); match(COLON);
+				setState(870); type();
 				}
 			}
 
-			setState(891); typeConstraints();
-			setState(893);
-			switch ( getInterpreter().adaptivePredict(_input,110,_ctx) ) {
+			setState(873); typeConstraints();
+			setState(875);
+			switch ( getInterpreter().adaptivePredict(_input,102,_ctx) ) {
 			case 1:
 				{
-				setState(892); functionBody();
+				setState(874); functionBody();
 				}
 				break;
 			}
-			setState(898);
+			setState(880);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,111,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,103,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(895); match(SEMI);
+					setState(877); match(SEMI);
 					}
 					} 
 				}
-				setState(900);
+				setState(882);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,111,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,103,_ctx);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class LambdaFunctionContext extends ParserRuleContext {
+		public FunctionBodyContext functionBody() {
+			return getRuleContext(FunctionBodyContext.class,0);
+		}
+		public TypeContext type(int i) {
+			return getRuleContext(TypeContext.class,i);
+		}
+		public List<TerminalNode> SEMI() { return getTokens(KotlinParser.SEMI); }
+		public ValueParametersContext valueParameters() {
+			return getRuleContext(ValueParametersContext.class,0);
+		}
+		public List<TypeParametersContext> typeParameters() {
+			return getRuleContexts(TypeParametersContext.class);
+		}
+		public TerminalNode SEMI(int i) {
+			return getToken(KotlinParser.SEMI, i);
+		}
+		public List<TypeContext> type() {
+			return getRuleContexts(TypeContext.class);
+		}
+		public AnnotationsContext annotations() {
+			return getRuleContext(AnnotationsContext.class,0);
+		}
+		public TypeConstraintsContext typeConstraints() {
+			return getRuleContext(TypeConstraintsContext.class,0);
+		}
+		public TypeParametersContext typeParameters(int i) {
+			return getRuleContext(TypeParametersContext.class,i);
+		}
+		public LambdaFunctionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_lambdaFunction; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterLambdaFunction(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitLambdaFunction(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitLambdaFunction(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final LambdaFunctionContext lambdaFunction() throws RecognitionException {
+		LambdaFunctionContext _localctx = new LambdaFunctionContext(_ctx, getState());
+		enterRule(_localctx, 116, RULE_lambdaFunction);
+		int _la;
+		try {
+			int _alt;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(883); match(Declaration_fun);
+			setState(885);
+			switch ( getInterpreter().adaptivePredict(_input,104,_ctx) ) {
+			case 1:
+				{
+				setState(884); typeParameters();
+				}
+				break;
+			}
+			setState(891);
+			switch ( getInterpreter().adaptivePredict(_input,105,_ctx) ) {
+			case 1:
+				{
+				setState(887); type();
+				setState(888); match(DOT);
+				}
+				break;
+
+			case 2:
+				{
+				setState(890); annotations();
+				}
+				break;
+			}
+			setState(894);
+			_la = _input.LA(1);
+			if (_la==LT) {
+				{
+				setState(893); typeParameters();
+				}
+			}
+
+			setState(896); valueParameters();
+			setState(899);
+			switch ( getInterpreter().adaptivePredict(_input,107,_ctx) ) {
+			case 1:
+				{
+				setState(897); match(COLON);
+				setState(898); type();
+				}
+				break;
+			}
+			setState(901); typeConstraints();
+			setState(903);
+			switch ( getInterpreter().adaptivePredict(_input,108,_ctx) ) {
+			case 1:
+				{
+				setState(902); functionBody();
+				}
+				break;
+			}
+			setState(908);
+			_errHandler.sync(this);
+			_alt = getInterpreter().adaptivePredict(_input,109,_ctx);
+			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					setState(905); match(SEMI);
+					}
+					} 
+				}
+				setState(910);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,109,_ctx);
 			}
 			}
 		}
@@ -4902,73 +4630,73 @@ public class KotlinParser extends Parser {
 
 	public final StatementsContext statements() throws RecognitionException {
 		StatementsContext _localctx = new StatementsContext(_ctx, getState());
-		enterRule(_localctx, 130, RULE_statements);
+		enterRule(_localctx, 118, RULE_statements);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(904);
+			setState(914);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,112,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,110,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(901); match(SEMI);
+					setState(911); match(SEMI);
 					}
 					} 
 				}
-				setState(906);
+				setState(916);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,110,_ctx);
+			}
+			setState(930);
+			_la = _input.LA(1);
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IntegerLiteral) | (1L << OPEN_BLOCK) | (1L << HexadecimalLiteral) | (1L << CharacterLiteral) | (1L << TRIPLE_QUOTE) | (1L << SINGLE_QUOTE) | (1L << PACKAGE) | (1L << IMPORT) | (1L << BRACE_OPEN) | (1L << REFERENCE) | (1L << TRUE) | (1L << FALSE) | (1L << NULL) | (1L << OP_PLUS) | (1L << OP_MUNUS) | (1L << OP_IN) | (1L << OP_DECREMENT) | (1L << OP_INCREMENT) | (1L << OP_NOT) | (1L << KEYWORD_val) | (1L << KEYWORD_vararg))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (HierarchyModifier_abstract - 69)) | (1L << (HierarchyModifier_open - 69)) | (1L << (HierarchyModifier_final - 69)) | (1L << (HierarchyModifier_override - 69)) | (1L << (KeyWordModifier_operator - 69)) | (1L << (KeyWordModifier_infix - 69)) | (1L << (KeyWordModifier_inline - 69)) | (1L << (ClassModifier_enum - 69)) | (1L << (ClassModifier_annotation - 69)) | (1L << (ClassModifier_data - 69)) | (1L << (ClassModifier_sealed - 69)) | (1L << (AccessModifier_private - 69)) | (1L << (AccessModifier_protected - 69)) | (1L << (AccessModifier_public - 69)) | (1L << (AccessModifier_internal - 69)) | (1L << (Modifier_const - 69)) | (1L << (VarianceAnnotation_out - 69)) | (1L << (DOG - 69)) | (1L << (Jump_throw - 69)) | (1L << (Jump_continue - 69)) | (1L << (Jump_return - 69)) | (1L << (Jump_break - 69)) | (1L << (ConstructorDelegationCall_this - 69)) | (1L << (ConstructorDelegationCall_super - 69)) | (1L << (Declaration_class - 69)) | (1L << (Declaration_interface - 69)) | (1L << (Declaration_object - 69)) | (1L << (Declaration_companion - 69)) | (1L << (Declaration_fun - 69)) | (1L << (Declaration_init - 69)) | (1L << (CF_if - 69)) | (1L << (CF_when - 69)) | (1L << (CF_while - 69)) | (1L << (CF_for - 69)) | (1L << (CF_do - 69)) | (1L << (CF_try - 69)) | (1L << (BAX - 69)) | (1L << (SimpleName - 69)))) != 0)) {
+				{
+				setState(917); statement();
+				setState(927);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,112,_ctx);
-			}
-			setState(920);
-			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IntegerLiteral) | (1L << OPEN_BLOCK) | (1L << HexadecimalLiteral) | (1L << CharacterLiteral) | (1L << TRIPLE_QUOTE) | (1L << SINGLE_QUOTE) | (1L << PACKAGE) | (1L << IMPORT) | (1L << BRACE_OPEN) | (1L << REFERENCE) | (1L << TRUE) | (1L << FALSE) | (1L << NULL) | (1L << OP_PLUS) | (1L << OP_MUNUS) | (1L << OP_IN) | (1L << OP_DECREMENT) | (1L << OP_INCREMENT) | (1L << OP_NOT) | (1L << KEYWORD_val) | (1L << KEYWORD_var) | (1L << KEYWORD_vararg))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (HierarchyModifier_abstract - 69)) | (1L << (HierarchyModifier_open - 69)) | (1L << (HierarchyModifier_final - 69)) | (1L << (HierarchyModifier_override - 69)) | (1L << (KeyWordModifier_operator - 69)) | (1L << (KeyWordModifier_infix - 69)) | (1L << (KeyWordModifier_inline - 69)) | (1L << (ClassModifier_enum - 69)) | (1L << (ClassModifier_annotation - 69)) | (1L << (ClassModifier_data - 69)) | (1L << (ClassModifier_sealed - 69)) | (1L << (AccessModifier_private - 69)) | (1L << (AccessModifier_protected - 69)) | (1L << (AccessModifier_public - 69)) | (1L << (AccessModifier_internal - 69)) | (1L << (Modifier_const - 69)) | (1L << (VarianceAnnotation_out - 69)) | (1L << (DOG - 69)) | (1L << (Jump_throw - 69)) | (1L << (Jump_continue - 69)) | (1L << (Jump_return - 69)) | (1L << (Jump_break - 69)) | (1L << (ConstructorDelegationCall_this - 69)) | (1L << (ConstructorDelegationCall_super - 69)) | (1L << (Declaration_class - 69)) | (1L << (Declaration_interface - 69)) | (1L << (Declaration_object - 69)) | (1L << (Declaration_companion - 69)) | (1L << (Declaration_fun - 69)) | (1L << (Declaration_init - 69)) | (1L << (CF_if - 69)) | (1L << (CF_when - 69)) | (1L << (CF_while - 69)) | (1L << (CF_for - 69)) | (1L << (CF_do - 69)) | (1L << (CF_try - 69)) | (1L << (BAX - 69)) | (1L << (SimpleName - 69)))) != 0)) {
-				{
-				setState(907); statement();
-				setState(917);
-				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,114,_ctx);
 				while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(911);
+						setState(921);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 						while (_la==SEMI) {
 							{
 							{
-							setState(908); match(SEMI);
+							setState(918); match(SEMI);
 							}
 							}
-							setState(913);
+							setState(923);
 							_errHandler.sync(this);
 							_la = _input.LA(1);
 						}
-						setState(914); statement();
+						setState(924); statement();
 						}
 						} 
 					}
-					setState(919);
+					setState(929);
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,114,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,112,_ctx);
 				}
 				}
 			}
 
-			setState(925);
+			setState(935);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==SEMI) {
 				{
 				{
-				setState(922); match(SEMI);
+				setState(932); match(SEMI);
 				}
 				}
-				setState(927);
+				setState(937);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -5013,21 +4741,21 @@ public class KotlinParser extends Parser {
 
 	public final FunctionBodyContext functionBody() throws RecognitionException {
 		FunctionBodyContext _localctx = new FunctionBodyContext(_ctx, getState());
-		enterRule(_localctx, 132, RULE_functionBody);
+		enterRule(_localctx, 120, RULE_functionBody);
 		try {
-			setState(931);
+			setState(941);
 			switch (_input.LA(1)) {
 			case OPEN_BLOCK:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(928); block();
+				setState(938); block();
 				}
 				break;
 			case EQ:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(929); match(EQ);
-				setState(930); expression();
+				setState(939); match(EQ);
+				setState(940); expression();
 				}
 				break;
 			default:
@@ -5070,13 +4798,13 @@ public class KotlinParser extends Parser {
 
 	public final BlockContext block() throws RecognitionException {
 		BlockContext _localctx = new BlockContext(_ctx, getState());
-		enterRule(_localctx, 134, RULE_block);
+		enterRule(_localctx, 122, RULE_block);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(933); match(OPEN_BLOCK);
-			setState(934); statements();
-			setState(935); match(CLOSE_BLOCK);
+			setState(943); match(OPEN_BLOCK);
+			setState(944); statements();
+			setState(945); match(CLOSE_BLOCK);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5119,23 +4847,23 @@ public class KotlinParser extends Parser {
 
 	public final AnonymousInitializerContext anonymousInitializer() throws RecognitionException {
 		AnonymousInitializerContext _localctx = new AnonymousInitializerContext(_ctx, getState());
-		enterRule(_localctx, 136, RULE_anonymousInitializer);
+		enterRule(_localctx, 124, RULE_anonymousInitializer);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(937); match(Declaration_init);
-			setState(938); block();
-			setState(942);
+			setState(947); match(Declaration_init);
+			setState(948); block();
+			setState(952);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==SEMI) {
 				{
 				{
-				setState(939); match(SEMI);
+				setState(949); match(SEMI);
 				}
 				}
-				setState(944);
+				setState(954);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -5180,23 +4908,23 @@ public class KotlinParser extends Parser {
 
 	public final EnumClassBodyContext enumClassBody() throws RecognitionException {
 		EnumClassBodyContext _localctx = new EnumClassBodyContext(_ctx, getState());
-		enterRule(_localctx, 138, RULE_enumClassBody);
+		enterRule(_localctx, 126, RULE_enumClassBody);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(945); match(OPEN_BLOCK);
-			setState(946); enumEntries();
-			setState(949);
+			setState(955); match(OPEN_BLOCK);
+			setState(956); enumEntries();
+			setState(959);
 			_la = _input.LA(1);
 			if (_la==SEMI) {
 				{
-				setState(947); match(SEMI);
-				setState(948); members();
+				setState(957); match(SEMI);
+				setState(958); members();
 				}
 			}
 
-			setState(951); match(CLOSE_BLOCK);
+			setState(961); match(CLOSE_BLOCK);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5238,29 +4966,29 @@ public class KotlinParser extends Parser {
 
 	public final EnumEntriesContext enumEntries() throws RecognitionException {
 		EnumEntriesContext _localctx = new EnumEntriesContext(_ctx, getState());
-		enterRule(_localctx, 140, RULE_enumEntries);
+		enterRule(_localctx, 128, RULE_enumEntries);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(959);
+			setState(969);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==OP_IN || _la==KEYWORD_vararg || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (HierarchyModifier_abstract - 69)) | (1L << (HierarchyModifier_open - 69)) | (1L << (HierarchyModifier_final - 69)) | (1L << (HierarchyModifier_override - 69)) | (1L << (KeyWordModifier_operator - 69)) | (1L << (KeyWordModifier_infix - 69)) | (1L << (KeyWordModifier_inline - 69)) | (1L << (ClassModifier_enum - 69)) | (1L << (ClassModifier_annotation - 69)) | (1L << (ClassModifier_data - 69)) | (1L << (ClassModifier_sealed - 69)) | (1L << (AccessModifier_private - 69)) | (1L << (AccessModifier_protected - 69)) | (1L << (AccessModifier_public - 69)) | (1L << (AccessModifier_internal - 69)) | (1L << (Modifier_const - 69)) | (1L << (VarianceAnnotation_out - 69)) | (1L << (DOG - 69)) | (1L << (SimpleName - 69)))) != 0)) {
 				{
 				{
-				setState(953); enumEntry();
-				setState(955);
+				setState(963); enumEntry();
+				setState(965);
 				_la = _input.LA(1);
 				if (_la==COMMA) {
 					{
-					setState(954); match(COMMA);
+					setState(964); match(COMMA);
 					}
 				}
 
 				}
 				}
-				setState(961);
+				setState(971);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -5315,34 +5043,34 @@ public class KotlinParser extends Parser {
 
 	public final EnumEntryContext enumEntry() throws RecognitionException {
 		EnumEntryContext _localctx = new EnumEntryContext(_ctx, getState());
-		enterRule(_localctx, 142, RULE_enumEntry);
+		enterRule(_localctx, 130, RULE_enumEntry);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(962); modifiers();
-			setState(963); match(SimpleName);
-			setState(970);
+			setState(972); modifiers();
+			setState(973); match(SimpleName);
+			setState(980);
 			switch (_input.LA(1)) {
 			case COLON:
 				{
 				{
-				setState(964); match(COLON);
-				setState(966);
+				setState(974); match(COLON);
+				setState(976);
 				_la = _input.LA(1);
 				if (_la==DOG) {
 					{
-					setState(965); annotations();
+					setState(975); annotations();
 					}
 				}
 
-				setState(968); constructorInvocation();
+				setState(978); constructorInvocation();
 				}
 				}
 				break;
 			case BRACE_OPEN:
 				{
-				setState(969); valueArguments();
+				setState(979); valueArguments();
 				}
 				break;
 			case SEMI:
@@ -5374,7 +5102,7 @@ public class KotlinParser extends Parser {
 			default:
 				throw new NoViableAltException(this);
 			}
-			setState(972); classBody();
+			setState(982); classBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -5420,37 +5148,37 @@ public class KotlinParser extends Parser {
 
 	public final IfExpressionContext ifExpression() throws RecognitionException {
 		IfExpressionContext _localctx = new IfExpressionContext(_ctx, getState());
-		enterRule(_localctx, 144, RULE_ifExpression);
+		enterRule(_localctx, 132, RULE_ifExpression);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(974); match(CF_if);
-			setState(975); match(BRACE_OPEN);
-			setState(976); expression();
-			setState(977); match(BRACE_CLOSE);
-			setState(978); expression();
-			setState(982);
+			setState(984); match(CF_if);
+			setState(985); match(BRACE_OPEN);
+			setState(986); expression();
+			setState(987); match(BRACE_CLOSE);
+			setState(988); expression();
+			setState(992);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,124,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,122,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(979); match(SEMI);
+					setState(989); match(SEMI);
 					}
 					} 
 				}
-				setState(984);
+				setState(994);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,124,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,122,_ctx);
 			}
-			setState(987);
-			switch ( getInterpreter().adaptivePredict(_input,125,_ctx) ) {
+			setState(997);
+			switch ( getInterpreter().adaptivePredict(_input,123,_ctx) ) {
 			case 1:
 				{
-				setState(985); match(CF_else);
-				setState(986); expression();
+				setState(995); match(CF_else);
+				setState(996); expression();
 				}
 				break;
 			}
@@ -5501,31 +5229,31 @@ public class KotlinParser extends Parser {
 
 	public final TryExpressionContext tryExpression() throws RecognitionException {
 		TryExpressionContext _localctx = new TryExpressionContext(_ctx, getState());
-		enterRule(_localctx, 146, RULE_tryExpression);
+		enterRule(_localctx, 134, RULE_tryExpression);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(989); match(CF_try);
-			setState(990); block();
-			setState(994);
+			setState(999); match(CF_try);
+			setState(1000); block();
+			setState(1004);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==CF_catch) {
 				{
 				{
-				setState(991); catchBlock();
+				setState(1001); catchBlock();
 				}
 				}
-				setState(996);
+				setState(1006);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(998);
+			setState(1008);
 			_la = _input.LA(1);
 			if (_la==CF_FINALLY) {
 				{
-				setState(997); finallyBlock();
+				setState(1007); finallyBlock();
 				}
 			}
 
@@ -5574,26 +5302,26 @@ public class KotlinParser extends Parser {
 
 	public final CatchBlockContext catchBlock() throws RecognitionException {
 		CatchBlockContext _localctx = new CatchBlockContext(_ctx, getState());
-		enterRule(_localctx, 148, RULE_catchBlock);
+		enterRule(_localctx, 136, RULE_catchBlock);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1000); match(CF_catch);
-			setState(1001); match(BRACE_OPEN);
-			setState(1003);
+			setState(1010); match(CF_catch);
+			setState(1011); match(BRACE_OPEN);
+			setState(1013);
 			_la = _input.LA(1);
 			if (_la==DOG) {
 				{
-				setState(1002); annotations();
+				setState(1012); annotations();
 				}
 			}
 
-			setState(1005); match(SimpleName);
-			setState(1006); match(COLON);
-			setState(1007); userType();
-			setState(1008); match(BRACE_CLOSE);
-			setState(1009); block();
+			setState(1015); match(SimpleName);
+			setState(1016); match(COLON);
+			setState(1017); userType();
+			setState(1018); match(BRACE_CLOSE);
+			setState(1019); block();
 			}
 		}
 		catch (RecognitionException re) {
@@ -5632,12 +5360,12 @@ public class KotlinParser extends Parser {
 
 	public final FinallyBlockContext finallyBlock() throws RecognitionException {
 		FinallyBlockContext _localctx = new FinallyBlockContext(_ctx, getState());
-		enterRule(_localctx, 150, RULE_finallyBlock);
+		enterRule(_localctx, 138, RULE_finallyBlock);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1011); match(CF_FINALLY);
-			setState(1012); block();
+			setState(1021); match(CF_FINALLY);
+			setState(1022); block();
 			}
 		}
 		catch (RecognitionException re) {
@@ -5682,26 +5410,26 @@ public class KotlinParser extends Parser {
 
 	public final LoopContext loop() throws RecognitionException {
 		LoopContext _localctx = new LoopContext(_ctx, getState());
-		enterRule(_localctx, 152, RULE_loop);
+		enterRule(_localctx, 140, RULE_loop);
 		try {
-			setState(1017);
+			setState(1027);
 			switch (_input.LA(1)) {
 			case CF_for:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1014); forLoop();
+				setState(1024); forLoop();
 				}
 				break;
 			case CF_while:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1015); whileLoop();
+				setState(1025); whileLoop();
 				}
 				break;
 			case CF_do:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1016); doWhileLoop();
+				setState(1026); doWhileLoop();
 				}
 				break;
 			default:
@@ -5756,40 +5484,40 @@ public class KotlinParser extends Parser {
 
 	public final ForLoopContext forLoop() throws RecognitionException {
 		ForLoopContext _localctx = new ForLoopContext(_ctx, getState());
-		enterRule(_localctx, 154, RULE_forLoop);
+		enterRule(_localctx, 142, RULE_forLoop);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1019); match(CF_for);
-			setState(1020); match(BRACE_OPEN);
-			setState(1022);
+			setState(1029); match(CF_for);
+			setState(1030); match(BRACE_OPEN);
+			setState(1032);
 			_la = _input.LA(1);
 			if (_la==DOG) {
 				{
-				setState(1021); annotations();
+				setState(1031); annotations();
 				}
 			}
 
-			setState(1026);
+			setState(1036);
 			switch (_input.LA(1)) {
 			case BRACE_OPEN:
 				{
-				setState(1024); multipleVariableDeclarations();
+				setState(1034); multipleVariableDeclarations();
 				}
 				break;
 			case SimpleName:
 				{
-				setState(1025); variableDeclarationEntry();
+				setState(1035); variableDeclarationEntry();
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
-			setState(1028); match(OP_IN);
-			setState(1029); expression();
-			setState(1030); match(BRACE_CLOSE);
-			setState(1031); expression();
+			setState(1038); match(OP_IN);
+			setState(1039); expression();
+			setState(1040); match(BRACE_CLOSE);
+			setState(1041); expression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -5831,15 +5559,15 @@ public class KotlinParser extends Parser {
 
 	public final WhileLoopContext whileLoop() throws RecognitionException {
 		WhileLoopContext _localctx = new WhileLoopContext(_ctx, getState());
-		enterRule(_localctx, 156, RULE_whileLoop);
+		enterRule(_localctx, 144, RULE_whileLoop);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1033); match(CF_while);
-			setState(1034); match(BRACE_OPEN);
-			setState(1035); expression();
-			setState(1036); match(BRACE_CLOSE);
-			setState(1037); expression();
+			setState(1043); match(CF_while);
+			setState(1044); match(BRACE_OPEN);
+			setState(1045); expression();
+			setState(1046); match(BRACE_CLOSE);
+			setState(1047); expression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -5881,16 +5609,16 @@ public class KotlinParser extends Parser {
 
 	public final DoWhileLoopContext doWhileLoop() throws RecognitionException {
 		DoWhileLoopContext _localctx = new DoWhileLoopContext(_ctx, getState());
-		enterRule(_localctx, 158, RULE_doWhileLoop);
+		enterRule(_localctx, 146, RULE_doWhileLoop);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1039); match(CF_do);
-			setState(1040); expression();
-			setState(1041); match(CF_while);
-			setState(1042); match(BRACE_OPEN);
-			setState(1043); expression();
-			setState(1044); match(BRACE_CLOSE);
+			setState(1049); match(CF_do);
+			setState(1050); expression();
+			setState(1051); match(CF_while);
+			setState(1052); match(BRACE_OPEN);
+			setState(1053); expression();
+			setState(1054); match(BRACE_CLOSE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5938,27 +5666,27 @@ public class KotlinParser extends Parser {
 
 	public final ExpressionContext expression() throws RecognitionException {
 		ExpressionContext _localctx = new ExpressionContext(_ctx, getState());
-		enterRule(_localctx, 160, RULE_expression);
+		enterRule(_localctx, 148, RULE_expression);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1046); disjunction();
-			setState(1052);
+			setState(1056); disjunction();
+			setState(1062);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,132,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,130,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1047); assignmentOperator();
-					setState(1048); disjunction();
+					setState(1057); assignmentOperator();
+					setState(1058); disjunction();
 					}
 					} 
 				}
-				setState(1054);
+				setState(1064);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,132,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,130,_ctx);
 			}
 			}
 		}
@@ -6001,27 +5729,27 @@ public class KotlinParser extends Parser {
 
 	public final DisjunctionContext disjunction() throws RecognitionException {
 		DisjunctionContext _localctx = new DisjunctionContext(_ctx, getState());
-		enterRule(_localctx, 162, RULE_disjunction);
+		enterRule(_localctx, 150, RULE_disjunction);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1055); conjunction();
-			setState(1060);
+			setState(1065); conjunction();
+			setState(1070);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,133,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,131,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1056); match(DISJ);
-					setState(1057); conjunction();
+					setState(1066); match(DISJ);
+					setState(1067); conjunction();
 					}
 					} 
 				}
-				setState(1062);
+				setState(1072);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,133,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,131,_ctx);
 			}
 			}
 		}
@@ -6064,27 +5792,27 @@ public class KotlinParser extends Parser {
 
 	public final ConjunctionContext conjunction() throws RecognitionException {
 		ConjunctionContext _localctx = new ConjunctionContext(_ctx, getState());
-		enterRule(_localctx, 164, RULE_conjunction);
+		enterRule(_localctx, 152, RULE_conjunction);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1063); equalityComparison();
-			setState(1068);
+			setState(1073); equalityComparison();
+			setState(1078);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,134,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,132,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1064); match(CONJ);
-					setState(1065); equalityComparison();
+					setState(1074); match(CONJ);
+					setState(1075); equalityComparison();
 					}
 					} 
 				}
-				setState(1070);
+				setState(1080);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,134,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,132,_ctx);
 			}
 			}
 		}
@@ -6133,27 +5861,27 @@ public class KotlinParser extends Parser {
 
 	public final EqualityComparisonContext equalityComparison() throws RecognitionException {
 		EqualityComparisonContext _localctx = new EqualityComparisonContext(_ctx, getState());
-		enterRule(_localctx, 166, RULE_equalityComparison);
+		enterRule(_localctx, 154, RULE_equalityComparison);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1071); comparison();
-			setState(1077);
+			setState(1081); comparison();
+			setState(1087);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,135,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,133,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1072); equalityOperation();
-					setState(1073); comparison();
+					setState(1082); equalityOperation();
+					setState(1083); comparison();
 					}
 					} 
 				}
-				setState(1079);
+				setState(1089);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,135,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,133,_ctx);
 			}
 			}
 		}
@@ -6202,27 +5930,27 @@ public class KotlinParser extends Parser {
 
 	public final ComparisonContext comparison() throws RecognitionException {
 		ComparisonContext _localctx = new ComparisonContext(_ctx, getState());
-		enterRule(_localctx, 168, RULE_comparison);
+		enterRule(_localctx, 156, RULE_comparison);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1080); namedInfix();
-			setState(1086);
+			setState(1090); namedInfix();
+			setState(1096);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,136,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,134,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1081); comparisonOperation();
-					setState(1082); namedInfix();
+					setState(1091); comparisonOperation();
+					setState(1092); namedInfix();
 					}
 					} 
 				}
-				setState(1088);
+				setState(1098);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,136,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,134,_ctx);
 			}
 			}
 		}
@@ -6277,30 +6005,30 @@ public class KotlinParser extends Parser {
 
 	public final NamedInfixContext namedInfix() throws RecognitionException {
 		NamedInfixContext _localctx = new NamedInfixContext(_ctx, getState());
-		enterRule(_localctx, 170, RULE_namedInfix);
+		enterRule(_localctx, 158, RULE_namedInfix);
 		try {
 			int _alt;
-			setState(1104);
-			switch ( getInterpreter().adaptivePredict(_input,139,_ctx) ) {
+			setState(1114);
+			switch ( getInterpreter().adaptivePredict(_input,137,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1089); elvisExpression();
-				setState(1095);
+				setState(1099); elvisExpression();
+				setState(1105);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,137,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,135,_ctx);
 				while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(1090); inOperation();
-						setState(1091); elvisExpression();
+						setState(1100); inOperation();
+						setState(1101); elvisExpression();
 						}
 						} 
 					}
-					setState(1097);
+					setState(1107);
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,137,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,135,_ctx);
 				}
 				}
 				break;
@@ -6308,13 +6036,13 @@ public class KotlinParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1098); elvisExpression();
-				setState(1102);
-				switch ( getInterpreter().adaptivePredict(_input,138,_ctx) ) {
+				setState(1108); elvisExpression();
+				setState(1112);
+				switch ( getInterpreter().adaptivePredict(_input,136,_ctx) ) {
 				case 1:
 					{
-					setState(1099); isOperation();
-					setState(1100); type();
+					setState(1109); isOperation();
+					setState(1110); type();
 					}
 					break;
 				}
@@ -6361,27 +6089,27 @@ public class KotlinParser extends Parser {
 
 	public final ElvisExpressionContext elvisExpression() throws RecognitionException {
 		ElvisExpressionContext _localctx = new ElvisExpressionContext(_ctx, getState());
-		enterRule(_localctx, 172, RULE_elvisExpression);
+		enterRule(_localctx, 160, RULE_elvisExpression);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1106); infixFunctionCall();
-			setState(1111);
+			setState(1116); infixFunctionCall();
+			setState(1121);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,140,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,138,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1107); match(ELVIS);
-					setState(1108); infixFunctionCall();
+					setState(1117); match(ELVIS);
+					setState(1118); infixFunctionCall();
 					}
 					} 
 				}
-				setState(1113);
+				setState(1123);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,140,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,138,_ctx);
 			}
 			}
 		}
@@ -6428,27 +6156,27 @@ public class KotlinParser extends Parser {
 
 	public final InfixFunctionCallContext infixFunctionCall() throws RecognitionException {
 		InfixFunctionCallContext _localctx = new InfixFunctionCallContext(_ctx, getState());
-		enterRule(_localctx, 174, RULE_infixFunctionCall);
+		enterRule(_localctx, 162, RULE_infixFunctionCall);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1114); rangeExpression();
-			setState(1119);
+			setState(1124); rangeExpression();
+			setState(1129);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,141,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,139,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1115); match(SimpleName);
-					setState(1116); rangeExpression();
+					setState(1125); match(SimpleName);
+					setState(1126); rangeExpression();
 					}
 					} 
 				}
-				setState(1121);
+				setState(1131);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,141,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,139,_ctx);
 			}
 			}
 		}
@@ -6491,27 +6219,27 @@ public class KotlinParser extends Parser {
 
 	public final RangeExpressionContext rangeExpression() throws RecognitionException {
 		RangeExpressionContext _localctx = new RangeExpressionContext(_ctx, getState());
-		enterRule(_localctx, 176, RULE_rangeExpression);
+		enterRule(_localctx, 164, RULE_rangeExpression);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1122); additiveExpression();
-			setState(1127);
+			setState(1132); additiveExpression();
+			setState(1137);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,142,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,140,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1123); match(RANGE);
-					setState(1124); additiveExpression();
+					setState(1133); match(RANGE);
+					setState(1134); additiveExpression();
 					}
 					} 
 				}
-				setState(1129);
+				setState(1139);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,142,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,140,_ctx);
 			}
 			}
 		}
@@ -6560,27 +6288,27 @@ public class KotlinParser extends Parser {
 
 	public final AdditiveExpressionContext additiveExpression() throws RecognitionException {
 		AdditiveExpressionContext _localctx = new AdditiveExpressionContext(_ctx, getState());
-		enterRule(_localctx, 178, RULE_additiveExpression);
+		enterRule(_localctx, 166, RULE_additiveExpression);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1130); multiplicativeExpression();
-			setState(1136);
+			setState(1140); multiplicativeExpression();
+			setState(1146);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,143,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,141,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1131); additiveOperation();
-					setState(1132); multiplicativeExpression();
+					setState(1141); additiveOperation();
+					setState(1142); multiplicativeExpression();
 					}
 					} 
 				}
-				setState(1138);
+				setState(1148);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,143,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,141,_ctx);
 			}
 			}
 		}
@@ -6629,27 +6357,27 @@ public class KotlinParser extends Parser {
 
 	public final MultiplicativeExpressionContext multiplicativeExpression() throws RecognitionException {
 		MultiplicativeExpressionContext _localctx = new MultiplicativeExpressionContext(_ctx, getState());
-		enterRule(_localctx, 180, RULE_multiplicativeExpression);
+		enterRule(_localctx, 168, RULE_multiplicativeExpression);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1139); typeRHS();
-			setState(1145);
+			setState(1149); typeRHS();
+			setState(1155);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,144,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,142,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1140); multiplicativeOperation();
-					setState(1141); typeRHS();
+					setState(1150); multiplicativeOperation();
+					setState(1151); typeRHS();
 					}
 					} 
 				}
-				setState(1147);
+				setState(1157);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,144,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,142,_ctx);
 			}
 			}
 		}
@@ -6698,27 +6426,27 @@ public class KotlinParser extends Parser {
 
 	public final TypeRHSContext typeRHS() throws RecognitionException {
 		TypeRHSContext _localctx = new TypeRHSContext(_ctx, getState());
-		enterRule(_localctx, 182, RULE_typeRHS);
+		enterRule(_localctx, 170, RULE_typeRHS);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1148); prefixUnaryExpression();
-			setState(1154);
+			setState(1158); prefixUnaryExpression();
+			setState(1164);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,145,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,143,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1149); typeOperation();
-					setState(1150); prefixUnaryExpression();
+					setState(1159); typeOperation();
+					setState(1160); prefixUnaryExpression();
 					}
 					} 
 				}
-				setState(1156);
+				setState(1166);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,145,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,143,_ctx);
 			}
 			}
 		}
@@ -6764,27 +6492,27 @@ public class KotlinParser extends Parser {
 
 	public final PrefixUnaryExpressionContext prefixUnaryExpression() throws RecognitionException {
 		PrefixUnaryExpressionContext _localctx = new PrefixUnaryExpressionContext(_ctx, getState());
-		enterRule(_localctx, 184, RULE_prefixUnaryExpression);
+		enterRule(_localctx, 172, RULE_prefixUnaryExpression);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1160);
+			setState(1170);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,146,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,144,_ctx);
 			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1157); prefixUnaryOperation();
+					setState(1167); prefixUnaryOperation();
 					}
 					} 
 				}
-				setState(1162);
+				setState(1172);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,146,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,144,_ctx);
 			}
-			setState(1163); postfixUnaryExpression();
+			setState(1173); postfixUnaryExpression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -6838,21 +6566,21 @@ public class KotlinParser extends Parser {
 
 	public final PostfixUnaryExpressionContext postfixUnaryExpression() throws RecognitionException {
 		PostfixUnaryExpressionContext _localctx = new PostfixUnaryExpressionContext(_ctx, getState());
-		enterRule(_localctx, 186, RULE_postfixUnaryExpression);
+		enterRule(_localctx, 174, RULE_postfixUnaryExpression);
 		try {
 			int _alt;
-			setState(1184);
-			switch ( getInterpreter().adaptivePredict(_input,150,_ctx) ) {
+			setState(1194);
+			switch ( getInterpreter().adaptivePredict(_input,148,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1165); atomicExpression();
-				setState(1166); callSuffix();
-				setState(1168);
-				switch ( getInterpreter().adaptivePredict(_input,147,_ctx) ) {
+				setState(1175); atomicExpression();
+				setState(1176); callSuffix();
+				setState(1178);
+				switch ( getInterpreter().adaptivePredict(_input,145,_ctx) ) {
 				case 1:
 					{
-					setState(1167); lastArgLambda();
+					setState(1177); lastArgLambda();
 					}
 					break;
 				}
@@ -6862,21 +6590,21 @@ public class KotlinParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1170); atomicExpression();
-				setState(1174);
+				setState(1180); atomicExpression();
+				setState(1184);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,148,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,146,_ctx);
 				while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(1171); postfixUnaryOperation();
+						setState(1181); postfixUnaryOperation();
 						}
 						} 
 					}
-					setState(1176);
+					setState(1186);
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,148,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,146,_ctx);
 				}
 				}
 				break;
@@ -6884,21 +6612,21 @@ public class KotlinParser extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1177); callableReference();
-				setState(1181);
+				setState(1187); callableReference();
+				setState(1191);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,149,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,147,_ctx);
 				while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(1178); postfixUnaryOperation();
+						setState(1188); postfixUnaryOperation();
 						}
 						} 
 					}
-					setState(1183);
+					setState(1193);
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,149,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,147,_ctx);
 				}
 				}
 				break;
@@ -6946,32 +6674,32 @@ public class KotlinParser extends Parser {
 
 	public final CallableReferenceContext callableReference() throws RecognitionException {
 		CallableReferenceContext _localctx = new CallableReferenceContext(_ctx, getState());
-		enterRule(_localctx, 188, RULE_callableReference);
+		enterRule(_localctx, 176, RULE_callableReference);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1196);
+			setState(1206);
 			switch (_input.LA(1)) {
 			case PACKAGE:
 			case REFERENCE:
 			case SimpleName:
 				{
-				setState(1193);
+				setState(1203);
 				_la = _input.LA(1);
 				if (_la==PACKAGE || _la==SimpleName) {
 					{
-					setState(1186); userType();
-					setState(1190);
+					setState(1196); userType();
+					setState(1200);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 					while (_la==Q) {
 						{
 						{
-						setState(1187); match(Q);
+						setState(1197); match(Q);
 						}
 						}
-						setState(1192);
+						setState(1202);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 					}
@@ -6982,37 +6710,43 @@ public class KotlinParser extends Parser {
 				break;
 			case ConstructorDelegationCall_this:
 				{
-				setState(1195); match(ConstructorDelegationCall_this);
+				setState(1205); match(ConstructorDelegationCall_this);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
-			setState(1198); match(REFERENCE);
-			setState(1201);
+			setState(1208); match(REFERENCE);
+			setState(1211);
 			switch (_input.LA(1)) {
 			case IMPORT:
 			case ClassModifier_enum:
+			case ClassModifier_data:
+			case AccessModifier_private:
+			case AccessModifier_protected:
+			case AccessModifier_public:
+			case AccessModifier_internal:
+			case Modifier_const:
 			case Declaration_companion:
 			case Declaration_init:
 			case SimpleName:
 				{
-				setState(1199); identifier();
+				setState(1209); identifier();
 				}
 				break;
 			case Declaration_class:
 				{
-				setState(1200); match(Declaration_class);
+				setState(1210); match(Declaration_class);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
-			setState(1204);
-			switch ( getInterpreter().adaptivePredict(_input,155,_ctx) ) {
+			setState(1214);
+			switch ( getInterpreter().adaptivePredict(_input,153,_ctx) ) {
 			case 1:
 				{
-				setState(1203); typeArguments();
+				setState(1213); typeArguments();
 				}
 				break;
 			}
@@ -7035,6 +6769,10 @@ public class KotlinParser extends Parser {
 		public TerminalNode ClassModifier_enum() { return getToken(KotlinParser.ClassModifier_enum, 0); }
 		public TerminalNode IMPORT() { return getToken(KotlinParser.IMPORT, 0); }
 		public TerminalNode Declaration_init() { return getToken(KotlinParser.Declaration_init, 0); }
+		public AccessModifierContext accessModifier() {
+			return getRuleContext(AccessModifierContext.class,0);
+		}
+		public TerminalNode ClassModifier_data() { return getToken(KotlinParser.ClassModifier_data, 0); }
 		public IdentifierContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -7056,17 +6794,58 @@ public class KotlinParser extends Parser {
 
 	public final IdentifierContext identifier() throws RecognitionException {
 		IdentifierContext _localctx = new IdentifierContext(_ctx, getState());
-		enterRule(_localctx, 190, RULE_identifier);
-		int _la;
+		enterRule(_localctx, 178, RULE_identifier);
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(1206);
-			_la = _input.LA(1);
-			if ( !(_la==IMPORT || ((((_la - 76)) & ~0x3f) == 0 && ((1L << (_la - 76)) & ((1L << (ClassModifier_enum - 76)) | (1L << (Declaration_companion - 76)) | (1L << (Declaration_init - 76)) | (1L << (SimpleName - 76)))) != 0)) ) {
-			_errHandler.recoverInline(this);
-			}
-			consume();
+			setState(1223);
+			switch (_input.LA(1)) {
+			case SimpleName:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(1216); match(SimpleName);
+				}
+				break;
+			case ClassModifier_enum:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(1217); match(ClassModifier_enum);
+				}
+				break;
+			case IMPORT:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(1218); match(IMPORT);
+				}
+				break;
+			case Declaration_companion:
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(1219); match(Declaration_companion);
+				}
+				break;
+			case Declaration_init:
+				enterOuterAlt(_localctx, 5);
+				{
+				setState(1220); match(Declaration_init);
+				}
+				break;
+			case AccessModifier_private:
+			case AccessModifier_protected:
+			case AccessModifier_public:
+			case AccessModifier_internal:
+			case Modifier_const:
+				enterOuterAlt(_localctx, 6);
+				{
+				setState(1221); accessModifier();
+				}
+				break;
+			case ClassModifier_data:
+				enterOuterAlt(_localctx, 7);
+				{
+				setState(1222); match(ClassModifier_data);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -7142,45 +6921,45 @@ public class KotlinParser extends Parser {
 
 	public final StringLiteralContext stringLiteral() throws RecognitionException {
 		StringLiteralContext _localctx = new StringLiteralContext(_ctx, getState());
-		enterRule(_localctx, 192, RULE_stringLiteral);
+		enterRule(_localctx, 180, RULE_stringLiteral);
 		int _la;
 		try {
-			setState(1235);
+			setState(1252);
 			switch (_input.LA(1)) {
 			case SINGLE_QUOTE:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1208); match(SINGLE_QUOTE);
-				setState(1218);
+				setState(1225); match(SINGLE_QUOTE);
+				setState(1235);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MULTILINE_COMMENT) | (1L << SINGLELINE_COMMENT) | (1L << WHITESPACE) | (1L << IntegerLiteral) | (1L << SEMI) | (1L << OPEN_BLOCK) | (1L << CLOSE_BLOCK) | (1L << HexadecimalLiteral) | (1L << CharacterLiteral) | (1L << TRIPLE_QUOTE) | (1L << SINGLE_QUOTE) | (1L << PACKAGE) | (1L << IMPORT) | (1L << DOT) | (1L << STAR) | (1L << COMMA) | (1L << LT) | (1L << LTE) | (1L << GT) | (1L << GTE) | (1L << EQ) | (1L << EQ_EQ) | (1L << EQ_EQ_EQ) | (1L << NEQ) | (1L << COLON) | (1L << BRACE_OPEN) | (1L << BRACE_CLOSE) | (1L << Q) | (1L << DA) | (1L << DISJ) | (1L << CONJ) | (1L << ELVIS) | (1L << LONG_RANGE) | (1L << RANGE) | (1L << REFERENCE) | (1L << TRUE) | (1L << FALSE) | (1L << NULL) | (1L << OP_ASTERISK) | (1L << OP_DIV) | (1L << OP_MOD) | (1L << OP_PLUS) | (1L << OP_MUNUS) | (1L << OP_IN) | (1L << OP_NOT_IN) | (1L << OP_IS) | (1L << OP_NOT_IS) | (1L << OP_AS) | (1L << OP_AS_SAFE) | (1L << OP_PLUS_ASSIGN) | (1L << OP_MINUS_ASSIGN) | (1L << OP_MULT_ASSIGN) | (1L << OP_DIV_ASSIGN) | (1L << OP_MOD_ASSIGN) | (1L << OP_DECREMENT) | (1L << OP_INCREMENT) | (1L << OP_NULL_ASSERT) | (1L << OP_NOT) | (1L << SQ_OPEN) | (1L << SQ_CLOSE) | (1L << KEYWORD_val) | (1L << KEYWORD_var) | (1L << KEYWORD_vararg))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (KEYWORD_by - 64)) | (1L << (KEYWORD_dynamic - 64)) | (1L << (KEYWORD_where - 64)) | (1L << (GET - 64)) | (1L << (SET - 64)) | (1L << (HierarchyModifier_abstract - 64)) | (1L << (HierarchyModifier_open - 64)) | (1L << (HierarchyModifier_final - 64)) | (1L << (HierarchyModifier_override - 64)) | (1L << (KeyWordModifier_operator - 64)) | (1L << (KeyWordModifier_infix - 64)) | (1L << (KeyWordModifier_inline - 64)) | (1L << (ClassModifier_enum - 64)) | (1L << (ClassModifier_annotation - 64)) | (1L << (ClassModifier_data - 64)) | (1L << (ClassModifier_sealed - 64)) | (1L << (AccessModifier_private - 64)) | (1L << (AccessModifier_protected - 64)) | (1L << (AccessModifier_public - 64)) | (1L << (AccessModifier_internal - 64)) | (1L << (Modifier_const - 64)) | (1L << (VarianceAnnotation_out - 64)) | (1L << (DOG - 64)) | (1L << (AnnotationUseSiteTarget_file - 64)) | (1L << (AnnotationUseSiteTarget_field - 64)) | (1L << (AnnotationUseSiteTarget_property - 64)) | (1L << (AnnotationUseSiteTarget_param - 64)) | (1L << (AnnotationUseSiteTarget_sparam - 64)) | (1L << (Jump_throw - 64)) | (1L << (Jump_continue - 64)) | (1L << (Jump_return - 64)) | (1L << (Jump_break - 64)) | (1L << (KEYWORD_constructor - 64)) | (1L << (ConstructorDelegationCall_this - 64)) | (1L << (ConstructorDelegationCall_super - 64)) | (1L << (Declaration_class - 64)) | (1L << (Declaration_interface - 64)) | (1L << (Declaration_object - 64)) | (1L << (Declaration_companion - 64)) | (1L << (Declaration_fun - 64)) | (1L << (Declaration_typealias - 64)) | (1L << (Declaration_init - 64)) | (1L << (CF_if - 64)) | (1L << (CF_else - 64)) | (1L << (CF_when - 64)) | (1L << (CF_while - 64)) | (1L << (CF_for - 64)) | (1L << (CF_do - 64)) | (1L << (CF_try - 64)) | (1L << (CF_catch - 64)) | (1L << (CF_FINALLY - 64)) | (1L << (BAX - 64)) | (1L << (SimpleName - 64)) | (1L << (SINLE_QUOTE_WHITESPACE - 64)) | (1L << (SINGLE_TEXT - 64)) | (1L << (SINLE_QUOTE_ESCAPED_CHAR - 64)) | (1L << (SINLE_QUOTE_EXPRESSION_START - 64)) | (1L << (SINGLE_QUOTE_REF - 64)) | (1L << (MULTILINE_QUOTE_TEXT - 64)) | (1L << (MULTILINE_QUOTE_CLOSE - 64)) | (1L << (MULTILINE_QUOTES - 64)) | (1L << (MULTILINE_QUOTE_EXPRESSION_START - 64)) | (1L << (MULTILINE_QUOTE_REF - 64)))) != 0)) {
 					{
-					setState(1216);
-					switch ( getInterpreter().adaptivePredict(_input,156,_ctx) ) {
+					setState(1233);
+					switch ( getInterpreter().adaptivePredict(_input,155,_ctx) ) {
 					case 1:
 						{
-						setState(1209); match(SINLE_QUOTE_ESCAPED_CHAR);
+						setState(1226); match(SINLE_QUOTE_ESCAPED_CHAR);
 						}
 						break;
 
 					case 2:
 						{
-						setState(1210); match(SINLE_QUOTE_EXPRESSION_START);
-						setState(1211); expression();
-						setState(1212); match(CLOSE_BLOCK);
+						setState(1227); match(SINLE_QUOTE_EXPRESSION_START);
+						setState(1228); expression();
+						setState(1229); match(CLOSE_BLOCK);
 						}
 						break;
 
 					case 3:
 						{
-						setState(1214); match(SINGLE_QUOTE_REF);
+						setState(1231); match(SINGLE_QUOTE_REF);
 						}
 						break;
 
 					case 4:
 						{
-						setState(1215);
+						setState(1232);
 						_la = _input.LA(1);
 						if ( _la <= 0 || (_la==SINLE_QUOTE_CLOSE) ) {
 						_errHandler.recoverInline(this);
@@ -7190,41 +6969,41 @@ public class KotlinParser extends Parser {
 						break;
 					}
 					}
-					setState(1220);
+					setState(1237);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(1221); match(SINLE_QUOTE_CLOSE);
+				setState(1238); match(SINLE_QUOTE_CLOSE);
 				}
 				break;
 			case TRIPLE_QUOTE:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1222); match(TRIPLE_QUOTE);
-				setState(1231);
+				setState(1239); match(TRIPLE_QUOTE);
+				setState(1248);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MULTILINE_COMMENT) | (1L << SINGLELINE_COMMENT) | (1L << WHITESPACE) | (1L << IntegerLiteral) | (1L << SEMI) | (1L << OPEN_BLOCK) | (1L << CLOSE_BLOCK) | (1L << HexadecimalLiteral) | (1L << CharacterLiteral) | (1L << TRIPLE_QUOTE) | (1L << SINGLE_QUOTE) | (1L << PACKAGE) | (1L << IMPORT) | (1L << DOT) | (1L << STAR) | (1L << COMMA) | (1L << LT) | (1L << LTE) | (1L << GT) | (1L << GTE) | (1L << EQ) | (1L << EQ_EQ) | (1L << EQ_EQ_EQ) | (1L << NEQ) | (1L << COLON) | (1L << BRACE_OPEN) | (1L << BRACE_CLOSE) | (1L << Q) | (1L << DA) | (1L << DISJ) | (1L << CONJ) | (1L << ELVIS) | (1L << LONG_RANGE) | (1L << RANGE) | (1L << REFERENCE) | (1L << TRUE) | (1L << FALSE) | (1L << NULL) | (1L << OP_ASTERISK) | (1L << OP_DIV) | (1L << OP_MOD) | (1L << OP_PLUS) | (1L << OP_MUNUS) | (1L << OP_IN) | (1L << OP_NOT_IN) | (1L << OP_IS) | (1L << OP_NOT_IS) | (1L << OP_AS) | (1L << OP_AS_SAFE) | (1L << OP_PLUS_ASSIGN) | (1L << OP_MINUS_ASSIGN) | (1L << OP_MULT_ASSIGN) | (1L << OP_DIV_ASSIGN) | (1L << OP_MOD_ASSIGN) | (1L << OP_DECREMENT) | (1L << OP_INCREMENT) | (1L << OP_NULL_ASSERT) | (1L << OP_NOT) | (1L << SQ_OPEN) | (1L << SQ_CLOSE) | (1L << KEYWORD_val) | (1L << KEYWORD_var) | (1L << KEYWORD_vararg))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (KEYWORD_by - 64)) | (1L << (KEYWORD_dynamic - 64)) | (1L << (KEYWORD_where - 64)) | (1L << (GET - 64)) | (1L << (SET - 64)) | (1L << (HierarchyModifier_abstract - 64)) | (1L << (HierarchyModifier_open - 64)) | (1L << (HierarchyModifier_final - 64)) | (1L << (HierarchyModifier_override - 64)) | (1L << (KeyWordModifier_operator - 64)) | (1L << (KeyWordModifier_infix - 64)) | (1L << (KeyWordModifier_inline - 64)) | (1L << (ClassModifier_enum - 64)) | (1L << (ClassModifier_annotation - 64)) | (1L << (ClassModifier_data - 64)) | (1L << (ClassModifier_sealed - 64)) | (1L << (AccessModifier_private - 64)) | (1L << (AccessModifier_protected - 64)) | (1L << (AccessModifier_public - 64)) | (1L << (AccessModifier_internal - 64)) | (1L << (Modifier_const - 64)) | (1L << (VarianceAnnotation_out - 64)) | (1L << (DOG - 64)) | (1L << (AnnotationUseSiteTarget_file - 64)) | (1L << (AnnotationUseSiteTarget_field - 64)) | (1L << (AnnotationUseSiteTarget_property - 64)) | (1L << (AnnotationUseSiteTarget_param - 64)) | (1L << (AnnotationUseSiteTarget_sparam - 64)) | (1L << (Jump_throw - 64)) | (1L << (Jump_continue - 64)) | (1L << (Jump_return - 64)) | (1L << (Jump_break - 64)) | (1L << (KEYWORD_constructor - 64)) | (1L << (ConstructorDelegationCall_this - 64)) | (1L << (ConstructorDelegationCall_super - 64)) | (1L << (Declaration_class - 64)) | (1L << (Declaration_interface - 64)) | (1L << (Declaration_object - 64)) | (1L << (Declaration_companion - 64)) | (1L << (Declaration_fun - 64)) | (1L << (Declaration_typealias - 64)) | (1L << (Declaration_init - 64)) | (1L << (CF_if - 64)) | (1L << (CF_else - 64)) | (1L << (CF_when - 64)) | (1L << (CF_while - 64)) | (1L << (CF_for - 64)) | (1L << (CF_do - 64)) | (1L << (CF_try - 64)) | (1L << (CF_catch - 64)) | (1L << (CF_FINALLY - 64)) | (1L << (BAX - 64)) | (1L << (SimpleName - 64)) | (1L << (SINLE_QUOTE_WHITESPACE - 64)) | (1L << (SINGLE_TEXT - 64)) | (1L << (SINLE_QUOTE_CLOSE - 64)) | (1L << (SINLE_QUOTE_ESCAPED_CHAR - 64)) | (1L << (SINLE_QUOTE_EXPRESSION_START - 64)) | (1L << (SINGLE_QUOTE_REF - 64)) | (1L << (MULTILINE_QUOTE_TEXT - 64)) | (1L << (MULTILINE_QUOTES - 64)) | (1L << (MULTILINE_QUOTE_EXPRESSION_START - 64)) | (1L << (MULTILINE_QUOTE_REF - 64)))) != 0)) {
 					{
-					setState(1229);
-					switch ( getInterpreter().adaptivePredict(_input,158,_ctx) ) {
+					setState(1246);
+					switch ( getInterpreter().adaptivePredict(_input,157,_ctx) ) {
 					case 1:
 						{
-						setState(1223); match(MULTILINE_QUOTE_EXPRESSION_START);
-						setState(1224); expression();
-						setState(1225); match(CLOSE_BLOCK);
+						setState(1240); match(MULTILINE_QUOTE_EXPRESSION_START);
+						setState(1241); expression();
+						setState(1242); match(CLOSE_BLOCK);
 						}
 						break;
 
 					case 2:
 						{
-						setState(1227); match(MULTILINE_QUOTE_REF);
+						setState(1244); match(MULTILINE_QUOTE_REF);
 						}
 						break;
 
 					case 3:
 						{
-						setState(1228);
+						setState(1245);
 						_la = _input.LA(1);
 						if ( _la <= 0 || (_la==MULTILINE_QUOTE_CLOSE) ) {
 						_errHandler.recoverInline(this);
@@ -7234,11 +7013,11 @@ public class KotlinParser extends Parser {
 						break;
 					}
 					}
-					setState(1233);
+					setState(1250);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(1234); match(MULTILINE_QUOTE_CLOSE);
+				setState(1251); match(MULTILINE_QUOTE_CLOSE);
 				}
 				break;
 			default:
@@ -7266,11 +7045,17 @@ public class KotlinParser extends Parser {
 		public WhenContext when() {
 			return getRuleContext(WhenContext.class,0);
 		}
-		public LoopContext loop() {
-			return getRuleContext(LoopContext.class,0);
-		}
 		public TryExpressionContext tryExpression() {
 			return getRuleContext(TryExpressionContext.class,0);
+		}
+		public IdentifierContext identifier() {
+			return getRuleContext(IdentifierContext.class,0);
+		}
+		public LambdaFunctionContext lambdaFunction() {
+			return getRuleContext(LambdaFunctionContext.class,0);
+		}
+		public LoopContext loop() {
+			return getRuleContext(LoopContext.class,0);
 		}
 		public ObjectLiteralContext objectLiteral() {
 			return getRuleContext(ObjectLiteralContext.class,0);
@@ -7283,9 +7068,6 @@ public class KotlinParser extends Parser {
 		}
 		public TypeContext type() {
 			return getRuleContext(TypeContext.class,0);
-		}
-		public IdentifierContext identifier() {
-			return getRuleContext(IdentifierContext.class,0);
 		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
@@ -7314,16 +7096,16 @@ public class KotlinParser extends Parser {
 
 	public final AtomicExpressionContext atomicExpression() throws RecognitionException {
 		AtomicExpressionContext _localctx = new AtomicExpressionContext(_ctx, getState());
-		enterRule(_localctx, 194, RULE_atomicExpression);
+		enterRule(_localctx, 182, RULE_atomicExpression);
 		try {
-			setState(1267);
+			setState(1285);
 			switch (_input.LA(1)) {
 			case BRACE_OPEN:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1237); match(BRACE_OPEN);
-				setState(1238); expression();
-				setState(1239); match(BRACE_CLOSE);
+				setState(1254); match(BRACE_OPEN);
+				setState(1255); expression();
+				setState(1256); match(BRACE_CLOSE);
 				}
 				break;
 			case IntegerLiteral:
@@ -7336,115 +7118,127 @@ public class KotlinParser extends Parser {
 			case NULL:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1241); literalConstant();
+				setState(1258); literalConstant();
 				}
 				break;
 			case OPEN_BLOCK:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1242); functionLiteral();
+				setState(1259); functionLiteral();
+				}
+				break;
+			case Declaration_fun:
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(1260); lambdaFunction();
 				}
 				break;
 			case ConstructorDelegationCall_this:
-				enterOuterAlt(_localctx, 4);
+				enterOuterAlt(_localctx, 5);
 				{
-				setState(1243); match(ConstructorDelegationCall_this);
-				setState(1245);
-				switch ( getInterpreter().adaptivePredict(_input,161,_ctx) ) {
+				setState(1261); match(ConstructorDelegationCall_this);
+				setState(1263);
+				switch ( getInterpreter().adaptivePredict(_input,160,_ctx) ) {
 				case 1:
 					{
-					setState(1244); labelReference();
+					setState(1262); labelReference();
 					}
 					break;
 				}
 				}
 				break;
 			case ConstructorDelegationCall_super:
-				enterOuterAlt(_localctx, 5);
+				enterOuterAlt(_localctx, 6);
 				{
-				setState(1247); match(ConstructorDelegationCall_super);
-				setState(1252);
-				switch ( getInterpreter().adaptivePredict(_input,162,_ctx) ) {
+				setState(1265); match(ConstructorDelegationCall_super);
+				setState(1270);
+				switch ( getInterpreter().adaptivePredict(_input,161,_ctx) ) {
 				case 1:
 					{
-					setState(1248); match(LT);
-					setState(1249); type();
-					setState(1250); match(GT);
+					setState(1266); match(LT);
+					setState(1267); type();
+					setState(1268); match(GT);
 					}
 					break;
 				}
-				setState(1255);
-				switch ( getInterpreter().adaptivePredict(_input,163,_ctx) ) {
+				setState(1273);
+				switch ( getInterpreter().adaptivePredict(_input,162,_ctx) ) {
 				case 1:
 					{
-					setState(1254); labelReference();
+					setState(1272); labelReference();
 					}
 					break;
 				}
 				}
 				break;
 			case CF_if:
-				enterOuterAlt(_localctx, 6);
+				enterOuterAlt(_localctx, 7);
 				{
-				setState(1257); ifExpression();
+				setState(1275); ifExpression();
 				}
 				break;
 			case CF_when:
-				enterOuterAlt(_localctx, 7);
+				enterOuterAlt(_localctx, 8);
 				{
-				setState(1258); when();
+				setState(1276); when();
 				}
 				break;
 			case CF_try:
-				enterOuterAlt(_localctx, 8);
+				enterOuterAlt(_localctx, 9);
 				{
-				setState(1259); tryExpression();
+				setState(1277); tryExpression();
 				}
 				break;
 			case Declaration_object:
-				enterOuterAlt(_localctx, 9);
+				enterOuterAlt(_localctx, 10);
 				{
-				setState(1260); objectLiteral();
+				setState(1278); objectLiteral();
 				}
 				break;
 			case Jump_throw:
 			case Jump_continue:
 			case Jump_return:
 			case Jump_break:
-				enterOuterAlt(_localctx, 10);
+				enterOuterAlt(_localctx, 11);
 				{
-				setState(1261); jump();
+				setState(1279); jump();
 				}
 				break;
 			case CF_while:
 			case CF_for:
 			case CF_do:
-				enterOuterAlt(_localctx, 11);
+				enterOuterAlt(_localctx, 12);
 				{
-				setState(1262); loop();
+				setState(1280); loop();
 				}
 				break;
 			case IMPORT:
 			case ClassModifier_enum:
+			case ClassModifier_data:
+			case AccessModifier_private:
+			case AccessModifier_protected:
+			case AccessModifier_public:
+			case AccessModifier_internal:
+			case Modifier_const:
 			case Declaration_companion:
 			case Declaration_init:
 			case SimpleName:
-				enterOuterAlt(_localctx, 12);
+				enterOuterAlt(_localctx, 13);
 				{
-				setState(1263); identifier();
+				setState(1281); identifier();
 				}
 				break;
 			case BAX:
-				enterOuterAlt(_localctx, 13);
+				enterOuterAlt(_localctx, 14);
 				{
-				setState(1264); match(BAX);
-				setState(1265); identifier();
+				setState(1282); match(BAX);
+				setState(1283); identifier();
 				}
 				break;
 			case PACKAGE:
-				enterOuterAlt(_localctx, 14);
+				enterOuterAlt(_localctx, 15);
 				{
-				setState(1266); match(PACKAGE);
+				setState(1284); match(PACKAGE);
 				}
 				break;
 			default:
@@ -7490,51 +7284,51 @@ public class KotlinParser extends Parser {
 
 	public final LiteralConstantContext literalConstant() throws RecognitionException {
 		LiteralConstantContext _localctx = new LiteralConstantContext(_ctx, getState());
-		enterRule(_localctx, 196, RULE_literalConstant);
+		enterRule(_localctx, 184, RULE_literalConstant);
 		try {
-			setState(1276);
+			setState(1294);
 			switch (_input.LA(1)) {
 			case TRUE:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1269); match(TRUE);
+				setState(1287); match(TRUE);
 				}
 				break;
 			case FALSE:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1270); match(FALSE);
+				setState(1288); match(FALSE);
 				}
 				break;
 			case TRIPLE_QUOTE:
 			case SINGLE_QUOTE:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1271); stringLiteral();
+				setState(1289); stringLiteral();
 				}
 				break;
 			case IntegerLiteral:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1272); match(IntegerLiteral);
+				setState(1290); match(IntegerLiteral);
 				}
 				break;
 			case HexadecimalLiteral:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(1273); match(HexadecimalLiteral);
+				setState(1291); match(HexadecimalLiteral);
 				}
 				break;
 			case CharacterLiteral:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(1274); match(CharacterLiteral);
+				setState(1292); match(CharacterLiteral);
 				}
 				break;
 			case NULL:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(1275); match(NULL);
+				setState(1293); match(NULL);
 				}
 				break;
 			default:
@@ -7565,6 +7359,9 @@ public class KotlinParser extends Parser {
 		public ObjectDeclarationContext objectDeclaration() {
 			return getRuleContext(ObjectDeclarationContext.class,0);
 		}
+		public InterfaceDeclarationContext interfaceDeclaration() {
+			return getRuleContext(InterfaceDeclarationContext.class,0);
+		}
 		public DeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -7586,35 +7383,42 @@ public class KotlinParser extends Parser {
 
 	public final DeclarationContext declaration() throws RecognitionException {
 		DeclarationContext _localctx = new DeclarationContext(_ctx, getState());
-		enterRule(_localctx, 198, RULE_declaration);
+		enterRule(_localctx, 186, RULE_declaration);
 		try {
-			setState(1282);
-			switch ( getInterpreter().adaptivePredict(_input,166,_ctx) ) {
+			setState(1301);
+			switch ( getInterpreter().adaptivePredict(_input,165,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1278); functionDeclaration();
+				setState(1296); functionDeclaration();
 				}
 				break;
 
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1279); propertyDeclaration();
+				setState(1297); propertyDeclaration();
 				}
 				break;
 
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1280); classDeclaration();
+				setState(1298); classDeclaration();
 				}
 				break;
 
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1281); objectDeclaration();
+				setState(1299); interfaceDeclaration();
+				}
+				break;
+
+			case 5:
+				enterOuterAlt(_localctx, 5);
+				{
+				setState(1300); objectDeclaration();
 				}
 				break;
 			}
@@ -7658,21 +7462,21 @@ public class KotlinParser extends Parser {
 
 	public final StatementContext statement() throws RecognitionException {
 		StatementContext _localctx = new StatementContext(_ctx, getState());
-		enterRule(_localctx, 200, RULE_statement);
+		enterRule(_localctx, 188, RULE_statement);
 		try {
-			setState(1286);
-			switch ( getInterpreter().adaptivePredict(_input,167,_ctx) ) {
+			setState(1305);
+			switch ( getInterpreter().adaptivePredict(_input,166,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1284); declaration();
+				setState(1303); declaration();
 				}
 				break;
 
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1285); expression();
+				setState(1304); expression();
 				}
 				break;
 			}
@@ -7710,12 +7514,12 @@ public class KotlinParser extends Parser {
 
 	public final MultiplicativeOperationContext multiplicativeOperation() throws RecognitionException {
 		MultiplicativeOperationContext _localctx = new MultiplicativeOperationContext(_ctx, getState());
-		enterRule(_localctx, 202, RULE_multiplicativeOperation);
+		enterRule(_localctx, 190, RULE_multiplicativeOperation);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1288);
+			setState(1307);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << STAR) | (1L << OP_DIV) | (1L << OP_MOD))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -7756,12 +7560,12 @@ public class KotlinParser extends Parser {
 
 	public final AdditiveOperationContext additiveOperation() throws RecognitionException {
 		AdditiveOperationContext _localctx = new AdditiveOperationContext(_ctx, getState());
-		enterRule(_localctx, 204, RULE_additiveOperation);
+		enterRule(_localctx, 192, RULE_additiveOperation);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1290);
+			setState(1309);
 			_la = _input.LA(1);
 			if ( !(_la==OP_PLUS || _la==OP_MUNUS) ) {
 			_errHandler.recoverInline(this);
@@ -7803,12 +7607,12 @@ public class KotlinParser extends Parser {
 
 	public final InOperationContext inOperation() throws RecognitionException {
 		InOperationContext _localctx = new InOperationContext(_ctx, getState());
-		enterRule(_localctx, 206, RULE_inOperation);
+		enterRule(_localctx, 194, RULE_inOperation);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1292);
+			setState(1311);
 			_la = _input.LA(1);
 			if ( !(_la==OP_IN || _la==OP_NOT_IN) ) {
 			_errHandler.recoverInline(this);
@@ -7850,12 +7654,12 @@ public class KotlinParser extends Parser {
 
 	public final TypeOperationContext typeOperation() throws RecognitionException {
 		TypeOperationContext _localctx = new TypeOperationContext(_ctx, getState());
-		enterRule(_localctx, 208, RULE_typeOperation);
+		enterRule(_localctx, 196, RULE_typeOperation);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1294);
+			setState(1313);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << COLON) | (1L << OP_AS) | (1L << OP_AS_SAFE))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -7896,12 +7700,12 @@ public class KotlinParser extends Parser {
 
 	public final IsOperationContext isOperation() throws RecognitionException {
 		IsOperationContext _localctx = new IsOperationContext(_ctx, getState());
-		enterRule(_localctx, 210, RULE_isOperation);
+		enterRule(_localctx, 198, RULE_isOperation);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1296);
+			setState(1315);
 			_la = _input.LA(1);
 			if ( !(_la==OP_IS || _la==OP_NOT_IS) ) {
 			_errHandler.recoverInline(this);
@@ -7942,12 +7746,12 @@ public class KotlinParser extends Parser {
 
 	public final ComparisonOperationContext comparisonOperation() throws RecognitionException {
 		ComparisonOperationContext _localctx = new ComparisonOperationContext(_ctx, getState());
-		enterRule(_localctx, 212, RULE_comparisonOperation);
+		enterRule(_localctx, 200, RULE_comparisonOperation);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1298);
+			setState(1317);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LT) | (1L << LTE) | (1L << GT) | (1L << GTE))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -7988,12 +7792,12 @@ public class KotlinParser extends Parser {
 
 	public final EqualityOperationContext equalityOperation() throws RecognitionException {
 		EqualityOperationContext _localctx = new EqualityOperationContext(_ctx, getState());
-		enterRule(_localctx, 214, RULE_equalityOperation);
+		enterRule(_localctx, 202, RULE_equalityOperation);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1300);
+			setState(1319);
 			_la = _input.LA(1);
 			if ( !(_la==EQ_EQ || _la==NEQ) ) {
 			_errHandler.recoverInline(this);
@@ -8034,12 +7838,12 @@ public class KotlinParser extends Parser {
 
 	public final AssignmentOperatorContext assignmentOperator() throws RecognitionException {
 		AssignmentOperatorContext _localctx = new AssignmentOperatorContext(_ctx, getState());
-		enterRule(_localctx, 216, RULE_assignmentOperator);
+		enterRule(_localctx, 204, RULE_assignmentOperator);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1302);
+			setState(1321);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << EQ) | (1L << OP_PLUS_ASSIGN) | (1L << OP_MINUS_ASSIGN) | (1L << OP_MULT_ASSIGN) | (1L << OP_DIV_ASSIGN) | (1L << OP_MOD_ASSIGN))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -8086,54 +7890,60 @@ public class KotlinParser extends Parser {
 
 	public final PrefixUnaryOperationContext prefixUnaryOperation() throws RecognitionException {
 		PrefixUnaryOperationContext _localctx = new PrefixUnaryOperationContext(_ctx, getState());
-		enterRule(_localctx, 218, RULE_prefixUnaryOperation);
+		enterRule(_localctx, 206, RULE_prefixUnaryOperation);
 		try {
-			setState(1311);
+			setState(1330);
 			switch (_input.LA(1)) {
 			case OP_MUNUS:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1304); match(OP_MUNUS);
+				setState(1323); match(OP_MUNUS);
 				}
 				break;
 			case OP_PLUS:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1305); match(OP_PLUS);
+				setState(1324); match(OP_PLUS);
 				}
 				break;
 			case OP_INCREMENT:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1306); match(OP_INCREMENT);
+				setState(1325); match(OP_INCREMENT);
 				}
 				break;
 			case OP_DECREMENT:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1307); match(OP_DECREMENT);
+				setState(1326); match(OP_DECREMENT);
 				}
 				break;
 			case OP_NOT:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(1308); match(OP_NOT);
+				setState(1327); match(OP_NOT);
 				}
 				break;
 			case DOG:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(1309); annotations();
+				setState(1328); annotations();
 				}
 				break;
 			case IMPORT:
 			case ClassModifier_enum:
+			case ClassModifier_data:
+			case AccessModifier_private:
+			case AccessModifier_protected:
+			case AccessModifier_public:
+			case AccessModifier_internal:
+			case Modifier_const:
 			case Declaration_companion:
 			case Declaration_init:
 			case SimpleName:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(1310); labelDefinition();
+				setState(1329); labelDefinition();
 				}
 				break;
 			default:
@@ -8185,26 +7995,26 @@ public class KotlinParser extends Parser {
 
 	public final PostfixUnaryOperationContext postfixUnaryOperation() throws RecognitionException {
 		PostfixUnaryOperationContext _localctx = new PostfixUnaryOperationContext(_ctx, getState());
-		enterRule(_localctx, 220, RULE_postfixUnaryOperation);
+		enterRule(_localctx, 208, RULE_postfixUnaryOperation);
 		try {
-			setState(1321);
+			setState(1340);
 			switch (_input.LA(1)) {
 			case OP_INCREMENT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1313); match(OP_INCREMENT);
+				setState(1332); match(OP_INCREMENT);
 				}
 				break;
 			case OP_DECREMENT:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1314); match(OP_DECREMENT);
+				setState(1333); match(OP_DECREMENT);
 				}
 				break;
 			case OP_NULL_ASSERT:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1315); match(OP_NULL_ASSERT);
+				setState(1334); match(OP_NULL_ASSERT);
 				}
 				break;
 			case OPEN_BLOCK:
@@ -8212,27 +8022,33 @@ public class KotlinParser extends Parser {
 			case LT:
 			case BRACE_OPEN:
 			case ClassModifier_enum:
+			case ClassModifier_data:
+			case AccessModifier_private:
+			case AccessModifier_protected:
+			case AccessModifier_public:
+			case AccessModifier_internal:
+			case Modifier_const:
 			case DOG:
 			case Declaration_companion:
 			case Declaration_init:
 			case SimpleName:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1316); callSuffix();
+				setState(1335); callSuffix();
 				}
 				break;
 			case SQ_OPEN:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(1317); arrayAccess();
+				setState(1336); arrayAccess();
 				}
 				break;
 			case DOT:
 			case Q:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(1318); memberAccessOperation();
-				setState(1319); postfixUnaryExpression();
+				setState(1337); memberAccessOperation();
+				setState(1338); postfixUnaryExpression();
 				}
 				break;
 			default:
@@ -8284,34 +8100,34 @@ public class KotlinParser extends Parser {
 
 	public final AnnotatedLambdaContext annotatedLambda() throws RecognitionException {
 		AnnotatedLambdaContext _localctx = new AnnotatedLambdaContext(_ctx, getState());
-		enterRule(_localctx, 222, RULE_annotatedLambda);
+		enterRule(_localctx, 210, RULE_annotatedLambda);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1327);
+			setState(1346);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==DOG) {
 				{
 				{
-				setState(1323); match(DOG);
-				setState(1324); unescapedAnnotation();
+				setState(1342); match(DOG);
+				setState(1343); unescapedAnnotation();
 				}
 				}
-				setState(1329);
+				setState(1348);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1331);
+			setState(1350);
 			_la = _input.LA(1);
-			if (_la==IMPORT || ((((_la - 76)) & ~0x3f) == 0 && ((1L << (_la - 76)) & ((1L << (ClassModifier_enum - 76)) | (1L << (Declaration_companion - 76)) | (1L << (Declaration_init - 76)) | (1L << (SimpleName - 76)))) != 0)) {
+			if (_la==IMPORT || ((((_la - 76)) & ~0x3f) == 0 && ((1L << (_la - 76)) & ((1L << (ClassModifier_enum - 76)) | (1L << (ClassModifier_data - 76)) | (1L << (AccessModifier_private - 76)) | (1L << (AccessModifier_protected - 76)) | (1L << (AccessModifier_public - 76)) | (1L << (AccessModifier_internal - 76)) | (1L << (Modifier_const - 76)) | (1L << (Declaration_companion - 76)) | (1L << (Declaration_init - 76)) | (1L << (SimpleName - 76)))) != 0)) {
 				{
-				setState(1330); labelDefinition();
+				setState(1349); labelDefinition();
 				}
 			}
 
-			setState(1333); functionLiteral();
+			setState(1352); functionLiteral();
 			}
 		}
 		catch (RecognitionException re) {
@@ -8347,26 +8163,26 @@ public class KotlinParser extends Parser {
 
 	public final MemberAccessOperationContext memberAccessOperation() throws RecognitionException {
 		MemberAccessOperationContext _localctx = new MemberAccessOperationContext(_ctx, getState());
-		enterRule(_localctx, 224, RULE_memberAccessOperation);
+		enterRule(_localctx, 212, RULE_memberAccessOperation);
 		int _la;
 		try {
-			setState(1340);
+			setState(1359);
 			switch (_input.LA(1)) {
 			case DOT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1335); match(DOT);
+				setState(1354); match(DOT);
 				}
 				break;
 			case Q:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1336); match(Q);
-				setState(1338);
+				setState(1355); match(Q);
+				setState(1357);
 				_la = _input.LA(1);
 				if (_la==DOT) {
 					{
-					setState(1337); match(DOT);
+					setState(1356); match(DOT);
 					}
 				}
 
@@ -8418,51 +8234,51 @@ public class KotlinParser extends Parser {
 
 	public final FunctionLiteralContext functionLiteral() throws RecognitionException {
 		FunctionLiteralContext _localctx = new FunctionLiteralContext(_ctx, getState());
-		enterRule(_localctx, 226, RULE_functionLiteral);
+		enterRule(_localctx, 214, RULE_functionLiteral);
 		int _la;
 		try {
-			setState(1361);
-			switch ( getInterpreter().adaptivePredict(_input,176,_ctx) ) {
+			setState(1380);
+			switch ( getInterpreter().adaptivePredict(_input,175,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1342); match(OPEN_BLOCK);
-				setState(1343); statements();
-				setState(1344); match(CLOSE_BLOCK);
+				setState(1361); match(OPEN_BLOCK);
+				setState(1362); statements();
+				setState(1363); match(CLOSE_BLOCK);
 				}
 				break;
 
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1346); match(OPEN_BLOCK);
-				setState(1355);
+				setState(1365); match(OPEN_BLOCK);
+				setState(1374);
 				_la = _input.LA(1);
 				if (_la==SimpleName) {
 					{
 					{
-					setState(1347); functionLiteralparameter();
+					setState(1366); functionLiteralparameter();
 					}
-					setState(1352);
+					setState(1371);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 					while (_la==COMMA) {
 						{
 						{
-						setState(1348); match(COMMA);
-						setState(1349); functionLiteralparameter();
+						setState(1367); match(COMMA);
+						setState(1368); functionLiteralparameter();
 						}
 						}
-						setState(1354);
+						setState(1373);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 					}
 					}
 				}
 
-				setState(1357); match(OP_ASTERISK);
-				setState(1358); statements();
-				setState(1359); match(CLOSE_BLOCK);
+				setState(1376); match(OP_ASTERISK);
+				setState(1377); statements();
+				setState(1378); match(CLOSE_BLOCK);
 				}
 				break;
 			}
@@ -8504,18 +8320,18 @@ public class KotlinParser extends Parser {
 
 	public final FunctionLiteralparameterContext functionLiteralparameter() throws RecognitionException {
 		FunctionLiteralparameterContext _localctx = new FunctionLiteralparameterContext(_ctx, getState());
-		enterRule(_localctx, 228, RULE_functionLiteralparameter);
+		enterRule(_localctx, 216, RULE_functionLiteralparameter);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1363); match(SimpleName);
-			setState(1366);
+			setState(1382); match(SimpleName);
+			setState(1385);
 			_la = _input.LA(1);
 			if (_la==COLON) {
 				{
-				setState(1364); match(COLON);
-				setState(1365); type();
+				setState(1383); match(COLON);
+				setState(1384); type();
 				}
 			}
 
@@ -8560,35 +8376,35 @@ public class KotlinParser extends Parser {
 
 	public final ArrayAccessContext arrayAccess() throws RecognitionException {
 		ArrayAccessContext _localctx = new ArrayAccessContext(_ctx, getState());
-		enterRule(_localctx, 230, RULE_arrayAccess);
+		enterRule(_localctx, 218, RULE_arrayAccess);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1368); match(SQ_OPEN);
-			setState(1377);
+			setState(1387); match(SQ_OPEN);
+			setState(1396);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IntegerLiteral) | (1L << OPEN_BLOCK) | (1L << HexadecimalLiteral) | (1L << CharacterLiteral) | (1L << TRIPLE_QUOTE) | (1L << SINGLE_QUOTE) | (1L << PACKAGE) | (1L << IMPORT) | (1L << BRACE_OPEN) | (1L << REFERENCE) | (1L << TRUE) | (1L << FALSE) | (1L << NULL) | (1L << OP_PLUS) | (1L << OP_MUNUS) | (1L << OP_DECREMENT) | (1L << OP_INCREMENT) | (1L << OP_NOT))) != 0) || ((((_la - 76)) & ~0x3f) == 0 && ((1L << (_la - 76)) & ((1L << (ClassModifier_enum - 76)) | (1L << (DOG - 76)) | (1L << (Jump_throw - 76)) | (1L << (Jump_continue - 76)) | (1L << (Jump_return - 76)) | (1L << (Jump_break - 76)) | (1L << (ConstructorDelegationCall_this - 76)) | (1L << (ConstructorDelegationCall_super - 76)) | (1L << (Declaration_object - 76)) | (1L << (Declaration_companion - 76)) | (1L << (Declaration_init - 76)) | (1L << (CF_if - 76)) | (1L << (CF_when - 76)) | (1L << (CF_while - 76)) | (1L << (CF_for - 76)) | (1L << (CF_do - 76)) | (1L << (CF_try - 76)) | (1L << (BAX - 76)) | (1L << (SimpleName - 76)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IntegerLiteral) | (1L << OPEN_BLOCK) | (1L << HexadecimalLiteral) | (1L << CharacterLiteral) | (1L << TRIPLE_QUOTE) | (1L << SINGLE_QUOTE) | (1L << PACKAGE) | (1L << IMPORT) | (1L << BRACE_OPEN) | (1L << REFERENCE) | (1L << TRUE) | (1L << FALSE) | (1L << NULL) | (1L << OP_PLUS) | (1L << OP_MUNUS) | (1L << OP_DECREMENT) | (1L << OP_INCREMENT) | (1L << OP_NOT))) != 0) || ((((_la - 76)) & ~0x3f) == 0 && ((1L << (_la - 76)) & ((1L << (ClassModifier_enum - 76)) | (1L << (ClassModifier_data - 76)) | (1L << (AccessModifier_private - 76)) | (1L << (AccessModifier_protected - 76)) | (1L << (AccessModifier_public - 76)) | (1L << (AccessModifier_internal - 76)) | (1L << (Modifier_const - 76)) | (1L << (DOG - 76)) | (1L << (Jump_throw - 76)) | (1L << (Jump_continue - 76)) | (1L << (Jump_return - 76)) | (1L << (Jump_break - 76)) | (1L << (ConstructorDelegationCall_this - 76)) | (1L << (ConstructorDelegationCall_super - 76)) | (1L << (Declaration_object - 76)) | (1L << (Declaration_companion - 76)) | (1L << (Declaration_fun - 76)) | (1L << (Declaration_init - 76)) | (1L << (CF_if - 76)) | (1L << (CF_when - 76)) | (1L << (CF_while - 76)) | (1L << (CF_for - 76)) | (1L << (CF_do - 76)) | (1L << (CF_try - 76)) | (1L << (BAX - 76)) | (1L << (SimpleName - 76)))) != 0)) {
 				{
-				setState(1369); expression();
-				setState(1374);
+				setState(1388); expression();
+				setState(1393);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(1370); match(COMMA);
-					setState(1371); expression();
+					setState(1389); match(COMMA);
+					setState(1390); expression();
 					}
 					}
-					setState(1376);
+					setState(1395);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
 				}
 			}
 
-			setState(1379); match(SQ_CLOSE);
+			setState(1398); match(SQ_CLOSE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8633,38 +8449,38 @@ public class KotlinParser extends Parser {
 
 	public final ObjectLiteralContext objectLiteral() throws RecognitionException {
 		ObjectLiteralContext _localctx = new ObjectLiteralContext(_ctx, getState());
-		enterRule(_localctx, 232, RULE_objectLiteral);
+		enterRule(_localctx, 220, RULE_objectLiteral);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1381); match(Declaration_object);
-			setState(1391);
-			switch ( getInterpreter().adaptivePredict(_input,181,_ctx) ) {
+			setState(1400); match(Declaration_object);
+			setState(1410);
+			switch ( getInterpreter().adaptivePredict(_input,180,_ctx) ) {
 			case 1:
 				{
-				setState(1382); match(COLON);
-				setState(1383); delegationSpecifier();
-				setState(1388);
+				setState(1401); match(COLON);
+				setState(1402); delegationSpecifier();
+				setState(1407);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,180,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,179,_ctx);
 				while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(1384); match(COMMA);
-						setState(1385); delegationSpecifier();
+						setState(1403); match(COMMA);
+						setState(1404); delegationSpecifier();
 						}
 						} 
 					}
-					setState(1390);
+					setState(1409);
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,180,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,179,_ctx);
 				}
 				}
 				break;
 			}
-			setState(1393); classBody();
+			setState(1412); classBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -8709,37 +8525,37 @@ public class KotlinParser extends Parser {
 
 	public final WhenContext when() throws RecognitionException {
 		WhenContext _localctx = new WhenContext(_ctx, getState());
-		enterRule(_localctx, 234, RULE_when);
+		enterRule(_localctx, 222, RULE_when);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1395); match(CF_when);
-			setState(1400);
+			setState(1414); match(CF_when);
+			setState(1419);
 			_la = _input.LA(1);
 			if (_la==BRACE_OPEN) {
 				{
-				setState(1396); match(BRACE_OPEN);
-				setState(1397); expression();
-				setState(1398); match(BRACE_CLOSE);
+				setState(1415); match(BRACE_OPEN);
+				setState(1416); expression();
+				setState(1417); match(BRACE_CLOSE);
 				}
 			}
 
-			setState(1402); match(OPEN_BLOCK);
-			setState(1406);
+			setState(1421); match(OPEN_BLOCK);
+			setState(1425);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IntegerLiteral) | (1L << OPEN_BLOCK) | (1L << HexadecimalLiteral) | (1L << CharacterLiteral) | (1L << TRIPLE_QUOTE) | (1L << SINGLE_QUOTE) | (1L << PACKAGE) | (1L << IMPORT) | (1L << BRACE_OPEN) | (1L << REFERENCE) | (1L << TRUE) | (1L << FALSE) | (1L << NULL) | (1L << OP_PLUS) | (1L << OP_MUNUS) | (1L << OP_IN) | (1L << OP_NOT_IN) | (1L << OP_IS) | (1L << OP_NOT_IS) | (1L << OP_DECREMENT) | (1L << OP_INCREMENT) | (1L << OP_NOT))) != 0) || ((((_la - 76)) & ~0x3f) == 0 && ((1L << (_la - 76)) & ((1L << (ClassModifier_enum - 76)) | (1L << (DOG - 76)) | (1L << (Jump_throw - 76)) | (1L << (Jump_continue - 76)) | (1L << (Jump_return - 76)) | (1L << (Jump_break - 76)) | (1L << (ConstructorDelegationCall_this - 76)) | (1L << (ConstructorDelegationCall_super - 76)) | (1L << (Declaration_object - 76)) | (1L << (Declaration_companion - 76)) | (1L << (Declaration_init - 76)) | (1L << (CF_if - 76)) | (1L << (CF_else - 76)) | (1L << (CF_when - 76)) | (1L << (CF_while - 76)) | (1L << (CF_for - 76)) | (1L << (CF_do - 76)) | (1L << (CF_try - 76)) | (1L << (BAX - 76)) | (1L << (SimpleName - 76)))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IntegerLiteral) | (1L << OPEN_BLOCK) | (1L << HexadecimalLiteral) | (1L << CharacterLiteral) | (1L << TRIPLE_QUOTE) | (1L << SINGLE_QUOTE) | (1L << PACKAGE) | (1L << IMPORT) | (1L << BRACE_OPEN) | (1L << REFERENCE) | (1L << TRUE) | (1L << FALSE) | (1L << NULL) | (1L << OP_PLUS) | (1L << OP_MUNUS) | (1L << OP_IN) | (1L << OP_NOT_IN) | (1L << OP_IS) | (1L << OP_NOT_IS) | (1L << OP_DECREMENT) | (1L << OP_INCREMENT) | (1L << OP_NOT))) != 0) || ((((_la - 76)) & ~0x3f) == 0 && ((1L << (_la - 76)) & ((1L << (ClassModifier_enum - 76)) | (1L << (ClassModifier_data - 76)) | (1L << (AccessModifier_private - 76)) | (1L << (AccessModifier_protected - 76)) | (1L << (AccessModifier_public - 76)) | (1L << (AccessModifier_internal - 76)) | (1L << (Modifier_const - 76)) | (1L << (DOG - 76)) | (1L << (Jump_throw - 76)) | (1L << (Jump_continue - 76)) | (1L << (Jump_return - 76)) | (1L << (Jump_break - 76)) | (1L << (ConstructorDelegationCall_this - 76)) | (1L << (ConstructorDelegationCall_super - 76)) | (1L << (Declaration_object - 76)) | (1L << (Declaration_companion - 76)) | (1L << (Declaration_fun - 76)) | (1L << (Declaration_init - 76)) | (1L << (CF_if - 76)) | (1L << (CF_else - 76)) | (1L << (CF_when - 76)) | (1L << (CF_while - 76)) | (1L << (CF_for - 76)) | (1L << (CF_do - 76)) | (1L << (CF_try - 76)) | (1L << (BAX - 76)) | (1L << (SimpleName - 76)))) != 0)) {
 				{
 				{
-				setState(1403); whenEntry();
+				setState(1422); whenEntry();
 				}
 				}
-				setState(1408);
+				setState(1427);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1409); match(CLOSE_BLOCK);
+			setState(1428); match(CLOSE_BLOCK);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8788,10 +8604,10 @@ public class KotlinParser extends Parser {
 
 	public final WhenEntryContext whenEntry() throws RecognitionException {
 		WhenEntryContext _localctx = new WhenEntryContext(_ctx, getState());
-		enterRule(_localctx, 236, RULE_whenEntry);
+		enterRule(_localctx, 224, RULE_whenEntry);
 		int _la;
 		try {
-			setState(1436);
+			setState(1455);
 			switch (_input.LA(1)) {
 			case IntegerLiteral:
 			case OPEN_BLOCK:
@@ -8816,6 +8632,12 @@ public class KotlinParser extends Parser {
 			case OP_INCREMENT:
 			case OP_NOT:
 			case ClassModifier_enum:
+			case ClassModifier_data:
+			case AccessModifier_private:
+			case AccessModifier_protected:
+			case AccessModifier_public:
+			case AccessModifier_internal:
+			case Modifier_const:
 			case DOG:
 			case Jump_throw:
 			case Jump_continue:
@@ -8825,6 +8647,7 @@ public class KotlinParser extends Parser {
 			case ConstructorDelegationCall_super:
 			case Declaration_object:
 			case Declaration_companion:
+			case Declaration_fun:
 			case Declaration_init:
 			case CF_if:
 			case CF_when:
@@ -8836,33 +8659,33 @@ public class KotlinParser extends Parser {
 			case SimpleName:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1411); whenCondition();
-				setState(1416);
+				setState(1430); whenCondition();
+				setState(1435);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(1412); match(COMMA);
-					setState(1413); whenCondition();
+					setState(1431); match(COMMA);
+					setState(1432); whenCondition();
 					}
 					}
-					setState(1418);
+					setState(1437);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(1419); match(OP_ASTERISK);
-				setState(1420); expression();
-				setState(1424);
+				setState(1438); match(OP_ASTERISK);
+				setState(1439); expression();
+				setState(1443);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==SEMI) {
 					{
 					{
-					setState(1421); match(SEMI);
+					setState(1440); match(SEMI);
 					}
 					}
-					setState(1426);
+					setState(1445);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
@@ -8871,19 +8694,19 @@ public class KotlinParser extends Parser {
 			case CF_else:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1427); match(CF_else);
-				setState(1428); match(OP_ASTERISK);
-				setState(1429); expression();
-				setState(1433);
+				setState(1446); match(CF_else);
+				setState(1447); match(OP_ASTERISK);
+				setState(1448); expression();
+				setState(1452);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==SEMI) {
 					{
 					{
-					setState(1430); match(SEMI);
+					setState(1449); match(SEMI);
 					}
 					}
-					setState(1435);
+					setState(1454);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
@@ -8932,10 +8755,10 @@ public class KotlinParser extends Parser {
 
 	public final WhenConditionContext whenCondition() throws RecognitionException {
 		WhenConditionContext _localctx = new WhenConditionContext(_ctx, getState());
-		enterRule(_localctx, 238, RULE_whenCondition);
+		enterRule(_localctx, 226, RULE_whenCondition);
 		int _la;
 		try {
-			setState(1443);
+			setState(1462);
 			switch (_input.LA(1)) {
 			case IntegerLiteral:
 			case OPEN_BLOCK:
@@ -8956,6 +8779,12 @@ public class KotlinParser extends Parser {
 			case OP_INCREMENT:
 			case OP_NOT:
 			case ClassModifier_enum:
+			case ClassModifier_data:
+			case AccessModifier_private:
+			case AccessModifier_protected:
+			case AccessModifier_public:
+			case AccessModifier_internal:
+			case Modifier_const:
 			case DOG:
 			case Jump_throw:
 			case Jump_continue:
@@ -8965,6 +8794,7 @@ public class KotlinParser extends Parser {
 			case ConstructorDelegationCall_super:
 			case Declaration_object:
 			case Declaration_companion:
+			case Declaration_fun:
 			case Declaration_init:
 			case CF_if:
 			case CF_when:
@@ -8976,33 +8806,33 @@ public class KotlinParser extends Parser {
 			case SimpleName:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1438); expression();
+				setState(1457); expression();
 				}
 				break;
 			case OP_IN:
 			case OP_NOT_IN:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1439);
+				setState(1458);
 				_la = _input.LA(1);
 				if ( !(_la==OP_IN || _la==OP_NOT_IN) ) {
 				_errHandler.recoverInline(this);
 				}
 				consume();
-				setState(1440); expression();
+				setState(1459); expression();
 				}
 				break;
 			case OP_IS:
 			case OP_NOT_IS:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1441);
+				setState(1460);
 				_la = _input.LA(1);
 				if ( !(_la==OP_IS || _la==OP_NOT_IS) ) {
 				_errHandler.recoverInline(this);
 				}
 				consume();
-				setState(1442); type();
+				setState(1461); type();
 				}
 				break;
 			default:
@@ -9051,53 +8881,1609 @@ public class KotlinParser extends Parser {
 
 	public final LastArgLambdaContext lastArgLambda() throws RecognitionException {
 		LastArgLambdaContext _localctx = new LastArgLambdaContext(_ctx, getState());
-		enterRule(_localctx, 240, RULE_lastArgLambda);
+		enterRule(_localctx, 228, RULE_lastArgLambda);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1445); match(OPEN_BLOCK);
-			setState(1447);
+			setState(1464); match(OPEN_BLOCK);
+			setState(1466);
 			_la = _input.LA(1);
 			if (_la==BRACE_OPEN) {
 				{
-				setState(1446); match(BRACE_OPEN);
+				setState(1465); match(BRACE_OPEN);
 				}
 			}
 
-			setState(1457);
+			setState(1476);
 			_la = _input.LA(1);
 			if (_la==SimpleName) {
 				{
-				setState(1449); variableDeclarationEntry();
-				setState(1454);
+				setState(1468); variableDeclarationEntry();
+				setState(1473);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(1450); match(COMMA);
-					setState(1451); variableDeclarationEntry();
+					setState(1469); match(COMMA);
+					setState(1470); variableDeclarationEntry();
 					}
 					}
-					setState(1456);
+					setState(1475);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
 				}
 			}
 
-			setState(1460);
+			setState(1479);
 			_la = _input.LA(1);
 			if (_la==BRACE_CLOSE) {
 				{
-				setState(1459); match(BRACE_CLOSE);
+				setState(1478); match(BRACE_CLOSE);
 				}
 			}
 
-			setState(1462); match(OP_ASTERISK);
-			setState(1463); statements();
-			setState(1464); match(CLOSE_BLOCK);
+			setState(1481); match(OP_ASTERISK);
+			setState(1482); statements();
+			setState(1483); match(CLOSE_BLOCK);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class PropertyDeclarationContext extends ParserRuleContext {
+		public MutablePropertyDeclarationContext mutablePropertyDeclaration() {
+			return getRuleContext(MutablePropertyDeclarationContext.class,0);
+		}
+		public ReadonlyPropertyDeclarationContext readonlyPropertyDeclaration() {
+			return getRuleContext(ReadonlyPropertyDeclarationContext.class,0);
+		}
+		public PropertyDeclarationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_propertyDeclaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterPropertyDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitPropertyDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitPropertyDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final PropertyDeclarationContext propertyDeclaration() throws RecognitionException {
+		PropertyDeclarationContext _localctx = new PropertyDeclarationContext(_ctx, getState());
+		enterRule(_localctx, 230, RULE_propertyDeclaration);
+		try {
+			setState(1487);
+			switch ( getInterpreter().adaptivePredict(_input,192,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(1485); readonlyPropertyDeclaration();
+				}
+				break;
+
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(1486); mutablePropertyDeclaration();
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class ReadonlyPropertyDeclarationContext extends ParserRuleContext {
+		public ExtensionPropertyDelegateDeclarationContext extensionPropertyDelegateDeclaration() {
+			return getRuleContext(ExtensionPropertyDelegateDeclarationContext.class,0);
+		}
+		public ReadonlyExtensionPropertyNoDelegateDeclarationContext readonlyExtensionPropertyNoDelegateDeclaration() {
+			return getRuleContext(ReadonlyExtensionPropertyNoDelegateDeclarationContext.class,0);
+		}
+		public PropertyModifierContext propertyModifier() {
+			return getRuleContext(PropertyModifierContext.class,0);
+		}
+		public ReadonlyPropertyNoDelegateDeclarationContext readonlyPropertyNoDelegateDeclaration() {
+			return getRuleContext(ReadonlyPropertyNoDelegateDeclarationContext.class,0);
+		}
+		public PropertyDelegateDeclarationContext propertyDelegateDeclaration() {
+			return getRuleContext(PropertyDelegateDeclarationContext.class,0);
+		}
+		public ReadonlyPropertyDeclarationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_readonlyPropertyDeclaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterReadonlyPropertyDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitReadonlyPropertyDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitReadonlyPropertyDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ReadonlyPropertyDeclarationContext readonlyPropertyDeclaration() throws RecognitionException {
+		ReadonlyPropertyDeclarationContext _localctx = new ReadonlyPropertyDeclarationContext(_ctx, getState());
+		enterRule(_localctx, 232, RULE_readonlyPropertyDeclaration);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1490);
+			_la = _input.LA(1);
+			if (((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (AccessModifier_private - 80)) | (1L << (AccessModifier_protected - 80)) | (1L << (AccessModifier_public - 80)) | (1L << (AccessModifier_internal - 80)))) != 0)) {
+				{
+				setState(1489); propertyModifier();
+				}
+			}
+
+			setState(1492); match(KEYWORD_val);
+			setState(1497);
+			switch ( getInterpreter().adaptivePredict(_input,194,_ctx) ) {
+			case 1:
+				{
+				setState(1493); extensionPropertyDelegateDeclaration();
+				}
+				break;
+
+			case 2:
+				{
+				setState(1494); readonlyExtensionPropertyNoDelegateDeclaration();
+				}
+				break;
+
+			case 3:
+				{
+				setState(1495); propertyDelegateDeclaration();
+				}
+				break;
+
+			case 4:
+				{
+				setState(1496); readonlyPropertyNoDelegateDeclaration();
+				}
+				break;
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class MutablePropertyDeclarationContext extends ParserRuleContext {
+		public ExtensionPropertyDelegateDeclarationContext extensionPropertyDelegateDeclaration() {
+			return getRuleContext(ExtensionPropertyDelegateDeclarationContext.class,0);
+		}
+		public FunctionModifierContext functionModifier() {
+			return getRuleContext(FunctionModifierContext.class,0);
+		}
+		public MutableExtensionPropertyNoDelegateDeclarationContext mutableExtensionPropertyNoDelegateDeclaration() {
+			return getRuleContext(MutableExtensionPropertyNoDelegateDeclarationContext.class,0);
+		}
+		public PropertyDelegateDeclarationContext propertyDelegateDeclaration() {
+			return getRuleContext(PropertyDelegateDeclarationContext.class,0);
+		}
+		public MutablePropertyNoDelegateDeclarationContext mutablePropertyNoDelegateDeclaration() {
+			return getRuleContext(MutablePropertyNoDelegateDeclarationContext.class,0);
+		}
+		public MutablePropertyDeclarationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_mutablePropertyDeclaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterMutablePropertyDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitMutablePropertyDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitMutablePropertyDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final MutablePropertyDeclarationContext mutablePropertyDeclaration() throws RecognitionException {
+		MutablePropertyDeclarationContext _localctx = new MutablePropertyDeclarationContext(_ctx, getState());
+		enterRule(_localctx, 234, RULE_mutablePropertyDeclaration);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1499); functionModifier();
+			setState(1500); match(KEYWORD_var);
+			setState(1505);
+			switch ( getInterpreter().adaptivePredict(_input,195,_ctx) ) {
+			case 1:
+				{
+				setState(1501); extensionPropertyDelegateDeclaration();
+				}
+				break;
+
+			case 2:
+				{
+				setState(1502); mutableExtensionPropertyNoDelegateDeclaration();
+				}
+				break;
+
+			case 3:
+				{
+				setState(1503); propertyDelegateDeclaration();
+				}
+				break;
+
+			case 4:
+				{
+				setState(1504); mutablePropertyNoDelegateDeclaration();
+				}
+				break;
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class ExtensionPropertyDelegateDeclarationContext extends ParserRuleContext {
+		public TypeParametersContext typeParameters() {
+			return getRuleContext(TypeParametersContext.class,0);
+		}
+		public TypeContext type() {
+			return getRuleContext(TypeContext.class,0);
+		}
+		public PropertyDelegateDeclarationContext propertyDelegateDeclaration() {
+			return getRuleContext(PropertyDelegateDeclarationContext.class,0);
+		}
+		public ExtensionPropertyDelegateDeclarationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_extensionPropertyDelegateDeclaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterExtensionPropertyDelegateDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitExtensionPropertyDelegateDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitExtensionPropertyDelegateDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ExtensionPropertyDelegateDeclarationContext extensionPropertyDelegateDeclaration() throws RecognitionException {
+		ExtensionPropertyDelegateDeclarationContext _localctx = new ExtensionPropertyDelegateDeclarationContext(_ctx, getState());
+		enterRule(_localctx, 236, RULE_extensionPropertyDelegateDeclaration);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1508);
+			_la = _input.LA(1);
+			if (_la==LT) {
+				{
+				setState(1507); typeParameters();
+				}
+			}
+
+			setState(1510); type();
+			setState(1511); match(DOT);
+			setState(1512); propertyDelegateDeclaration();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class ReadonlyExtensionPropertyNoDelegateDeclarationContext extends ParserRuleContext {
+		public List<TerminalNode> SEMI() { return getTokens(KotlinParser.SEMI); }
+		public ParameterTypeContext parameterType() {
+			return getRuleContext(ParameterTypeContext.class,0);
+		}
+		public TypeParametersContext typeParameters() {
+			return getRuleContext(TypeParametersContext.class,0);
+		}
+		public TerminalNode SEMI(int i) {
+			return getToken(KotlinParser.SEMI, i);
+		}
+		public TypeContext type() {
+			return getRuleContext(TypeContext.class,0);
+		}
+		public GetterContext getter() {
+			return getRuleContext(GetterContext.class,0);
+		}
+		public ReadonlyExtensionPropertyNoDelegateDeclarationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_readonlyExtensionPropertyNoDelegateDeclaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterReadonlyExtensionPropertyNoDelegateDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitReadonlyExtensionPropertyNoDelegateDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitReadonlyExtensionPropertyNoDelegateDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ReadonlyExtensionPropertyNoDelegateDeclarationContext readonlyExtensionPropertyNoDelegateDeclaration() throws RecognitionException {
+		ReadonlyExtensionPropertyNoDelegateDeclarationContext _localctx = new ReadonlyExtensionPropertyNoDelegateDeclarationContext(_ctx, getState());
+		enterRule(_localctx, 238, RULE_readonlyExtensionPropertyNoDelegateDeclaration);
+		int _la;
+		try {
+			int _alt;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1515);
+			_la = _input.LA(1);
+			if (_la==LT) {
+				{
+				setState(1514); typeParameters();
+				}
+			}
+
+			setState(1517); type();
+			setState(1518); match(DOT);
+			setState(1519); parameterType();
+			setState(1521);
+			switch ( getInterpreter().adaptivePredict(_input,198,_ctx) ) {
+			case 1:
+				{
+				setState(1520); getter();
+				}
+				break;
+			}
+			setState(1526);
+			_errHandler.sync(this);
+			_alt = getInterpreter().adaptivePredict(_input,199,_ctx);
+			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					setState(1523); match(SEMI);
+					}
+					} 
+				}
+				setState(1528);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,199,_ctx);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class ParameterTypeContext extends ParserRuleContext {
+		public TypeContext type() {
+			return getRuleContext(TypeContext.class,0);
+		}
+		public ParameterTypeContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_parameterType; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterParameterType(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitParameterType(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitParameterType(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ParameterTypeContext parameterType() throws RecognitionException {
+		ParameterTypeContext _localctx = new ParameterTypeContext(_ctx, getState());
+		enterRule(_localctx, 240, RULE_parameterType);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1531);
+			_la = _input.LA(1);
+			if (_la==COLON) {
+				{
+				setState(1529); match(COLON);
+				setState(1530); type();
+				}
+			}
+
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class MutableExtensionPropertyNoDelegateDeclarationContext extends ParserRuleContext {
+		public SetterContext setter() {
+			return getRuleContext(SetterContext.class,0);
+		}
+		public VariableDeclarationEntryContext variableDeclarationEntry() {
+			return getRuleContext(VariableDeclarationEntryContext.class,0);
+		}
+		public List<TerminalNode> SEMI() { return getTokens(KotlinParser.SEMI); }
+		public ParameterTypeContext parameterType() {
+			return getRuleContext(ParameterTypeContext.class,0);
+		}
+		public TypeParametersContext typeParameters() {
+			return getRuleContext(TypeParametersContext.class,0);
+		}
+		public TerminalNode SEMI(int i) {
+			return getToken(KotlinParser.SEMI, i);
+		}
+		public TypeContext type() {
+			return getRuleContext(TypeContext.class,0);
+		}
+		public GetterContext getter() {
+			return getRuleContext(GetterContext.class,0);
+		}
+		public MutableExtensionPropertyNoDelegateDeclarationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_mutableExtensionPropertyNoDelegateDeclaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterMutableExtensionPropertyNoDelegateDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitMutableExtensionPropertyNoDelegateDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitMutableExtensionPropertyNoDelegateDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final MutableExtensionPropertyNoDelegateDeclarationContext mutableExtensionPropertyNoDelegateDeclaration() throws RecognitionException {
+		MutableExtensionPropertyNoDelegateDeclarationContext _localctx = new MutableExtensionPropertyNoDelegateDeclarationContext(_ctx, getState());
+		enterRule(_localctx, 242, RULE_mutableExtensionPropertyNoDelegateDeclaration);
+		int _la;
+		try {
+			int _alt;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1534);
+			_la = _input.LA(1);
+			if (_la==LT) {
+				{
+				setState(1533); typeParameters();
+				}
+			}
+
+			setState(1536); type();
+			setState(1537); match(DOT);
+			setState(1538); variableDeclarationEntry();
+			setState(1539); parameterType();
+			setState(1543);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			while (_la==SEMI) {
+				{
+				{
+				setState(1540); match(SEMI);
+				}
+				}
+				setState(1545);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			}
+			setState(1552);
+			switch ( getInterpreter().adaptivePredict(_input,203,_ctx) ) {
+			case 1:
+				{
+				{
+				setState(1546); getter();
+				setState(1547); setter();
+				}
+				}
+				break;
+
+			case 2:
+				{
+				{
+				setState(1549); setter();
+				setState(1550); getter();
+				}
+				}
+				break;
+			}
+			setState(1557);
+			_errHandler.sync(this);
+			_alt = getInterpreter().adaptivePredict(_input,204,_ctx);
+			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					setState(1554); match(SEMI);
+					}
+					} 
+				}
+				setState(1559);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,204,_ctx);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class ReadonlyPropertyNoDelegateDeclarationContext extends ParserRuleContext {
+		public AssignExpressionContext assignExpression() {
+			return getRuleContext(AssignExpressionContext.class,0);
+		}
+		public MultipleVariableDeclarationsContext multipleVariableDeclarations() {
+			return getRuleContext(MultipleVariableDeclarationsContext.class,0);
+		}
+		public VariableDeclarationEntryContext variableDeclarationEntry() {
+			return getRuleContext(VariableDeclarationEntryContext.class,0);
+		}
+		public List<TerminalNode> SEMI() { return getTokens(KotlinParser.SEMI); }
+		public TerminalNode SEMI(int i) {
+			return getToken(KotlinParser.SEMI, i);
+		}
+		public GetterContext getter() {
+			return getRuleContext(GetterContext.class,0);
+		}
+		public TypeConstraintsContext typeConstraints() {
+			return getRuleContext(TypeConstraintsContext.class,0);
+		}
+		public ReadonlyPropertyNoDelegateDeclarationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_readonlyPropertyNoDelegateDeclaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterReadonlyPropertyNoDelegateDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitReadonlyPropertyNoDelegateDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitReadonlyPropertyNoDelegateDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ReadonlyPropertyNoDelegateDeclarationContext readonlyPropertyNoDelegateDeclaration() throws RecognitionException {
+		ReadonlyPropertyNoDelegateDeclarationContext _localctx = new ReadonlyPropertyNoDelegateDeclarationContext(_ctx, getState());
+		enterRule(_localctx, 244, RULE_readonlyPropertyNoDelegateDeclaration);
+		try {
+			int _alt;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1562);
+			switch (_input.LA(1)) {
+			case BRACE_OPEN:
+				{
+				setState(1560); multipleVariableDeclarations();
+				}
+				break;
+			case SimpleName:
+				{
+				setState(1561); variableDeclarationEntry();
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+			setState(1564); typeConstraints();
+			setState(1565); assignExpression();
+			setState(1567);
+			switch ( getInterpreter().adaptivePredict(_input,206,_ctx) ) {
+			case 1:
+				{
+				setState(1566); getter();
+				}
+				break;
+			}
+			setState(1572);
+			_errHandler.sync(this);
+			_alt = getInterpreter().adaptivePredict(_input,207,_ctx);
+			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					setState(1569); match(SEMI);
+					}
+					} 
+				}
+				setState(1574);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,207,_ctx);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class PropertyDelegateDeclarationContext extends ParserRuleContext {
+		public VariableDeclarationEntryContext variableDeclarationEntry() {
+			return getRuleContext(VariableDeclarationEntryContext.class,0);
+		}
+		public TypeConstraintsContext typeConstraints() {
+			return getRuleContext(TypeConstraintsContext.class,0);
+		}
+		public DelegateExpressionContext delegateExpression() {
+			return getRuleContext(DelegateExpressionContext.class,0);
+		}
+		public PropertyDelegateDeclarationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_propertyDelegateDeclaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterPropertyDelegateDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitPropertyDelegateDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitPropertyDelegateDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final PropertyDelegateDeclarationContext propertyDelegateDeclaration() throws RecognitionException {
+		PropertyDelegateDeclarationContext _localctx = new PropertyDelegateDeclarationContext(_ctx, getState());
+		enterRule(_localctx, 246, RULE_propertyDelegateDeclaration);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1575); variableDeclarationEntry();
+			setState(1576); typeConstraints();
+			setState(1577); delegateExpression();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class MutablePropertyNoDelegateDeclarationContext extends ParserRuleContext {
+		public SetterContext setter() {
+			return getRuleContext(SetterContext.class,0);
+		}
+		public AssignExpressionContext assignExpression() {
+			return getRuleContext(AssignExpressionContext.class,0);
+		}
+		public MultipleVariableDeclarationsContext multipleVariableDeclarations() {
+			return getRuleContext(MultipleVariableDeclarationsContext.class,0);
+		}
+		public VariableDeclarationEntryContext variableDeclarationEntry() {
+			return getRuleContext(VariableDeclarationEntryContext.class,0);
+		}
+		public List<TerminalNode> SEMI() { return getTokens(KotlinParser.SEMI); }
+		public TerminalNode SEMI(int i) {
+			return getToken(KotlinParser.SEMI, i);
+		}
+		public GetterContext getter() {
+			return getRuleContext(GetterContext.class,0);
+		}
+		public TypeConstraintsContext typeConstraints() {
+			return getRuleContext(TypeConstraintsContext.class,0);
+		}
+		public MutablePropertyNoDelegateDeclarationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_mutablePropertyNoDelegateDeclaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterMutablePropertyNoDelegateDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitMutablePropertyNoDelegateDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitMutablePropertyNoDelegateDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final MutablePropertyNoDelegateDeclarationContext mutablePropertyNoDelegateDeclaration() throws RecognitionException {
+		MutablePropertyNoDelegateDeclarationContext _localctx = new MutablePropertyNoDelegateDeclarationContext(_ctx, getState());
+		enterRule(_localctx, 248, RULE_mutablePropertyNoDelegateDeclaration);
+		int _la;
+		try {
+			int _alt;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1581);
+			switch (_input.LA(1)) {
+			case BRACE_OPEN:
+				{
+				setState(1579); multipleVariableDeclarations();
+				}
+				break;
+			case SimpleName:
+				{
+				setState(1580); variableDeclarationEntry();
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+			setState(1583); typeConstraints();
+			setState(1584); assignExpression();
+			setState(1588);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			while (_la==SEMI) {
+				{
+				{
+				setState(1585); match(SEMI);
+				}
+				}
+				setState(1590);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			}
+			setState(1597);
+			switch ( getInterpreter().adaptivePredict(_input,210,_ctx) ) {
+			case 1:
+				{
+				{
+				setState(1591); getter();
+				setState(1592); setter();
+				}
+				}
+				break;
+
+			case 2:
+				{
+				{
+				setState(1594); setter();
+				setState(1595); getter();
+				}
+				}
+				break;
+			}
+			setState(1602);
+			_errHandler.sync(this);
+			_alt = getInterpreter().adaptivePredict(_input,211,_ctx);
+			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					setState(1599); match(SEMI);
+					}
+					} 
+				}
+				setState(1604);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,211,_ctx);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class DelegateExpressionContext extends ParserRuleContext {
+		public List<TerminalNode> SEMI() { return getTokens(KotlinParser.SEMI); }
+		public TerminalNode SEMI(int i) {
+			return getToken(KotlinParser.SEMI, i);
+		}
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public DelegateExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_delegateExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterDelegateExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitDelegateExpression(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitDelegateExpression(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final DelegateExpressionContext delegateExpression() throws RecognitionException {
+		DelegateExpressionContext _localctx = new DelegateExpressionContext(_ctx, getState());
+		enterRule(_localctx, 250, RULE_delegateExpression);
+		try {
+			int _alt;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1605); match(KEYWORD_by);
+			setState(1606); expression();
+			setState(1610);
+			_errHandler.sync(this);
+			_alt = getInterpreter().adaptivePredict(_input,212,_ctx);
+			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					setState(1607); match(SEMI);
+					}
+					} 
+				}
+				setState(1612);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,212,_ctx);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class AssignExpressionContext extends ParserRuleContext {
+		public List<TerminalNode> SEMI() { return getTokens(KotlinParser.SEMI); }
+		public TerminalNode SEMI(int i) {
+			return getToken(KotlinParser.SEMI, i);
+		}
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public AssignExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_assignExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAssignExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAssignExpression(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitAssignExpression(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final AssignExpressionContext assignExpression() throws RecognitionException {
+		AssignExpressionContext _localctx = new AssignExpressionContext(_ctx, getState());
+		enterRule(_localctx, 252, RULE_assignExpression);
+		try {
+			int _alt;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1613); match(EQ);
+			setState(1614); expression();
+			setState(1618);
+			_errHandler.sync(this);
+			_alt = getInterpreter().adaptivePredict(_input,213,_ctx);
+			while ( _alt!=2 && _alt!=ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					setState(1615); match(SEMI);
+					}
+					} 
+				}
+				setState(1620);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,213,_ctx);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class GetterSetterDeclarationContext extends ParserRuleContext {
+		public SetterContext setter() {
+			return getRuleContext(SetterContext.class,0);
+		}
+		public List<TerminalNode> SEMI() { return getTokens(KotlinParser.SEMI); }
+		public TerminalNode SEMI(int i) {
+			return getToken(KotlinParser.SEMI, i);
+		}
+		public GetterContext getter() {
+			return getRuleContext(GetterContext.class,0);
+		}
+		public GetterSetterDeclarationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_getterSetterDeclaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterGetterSetterDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitGetterSetterDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitGetterSetterDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final GetterSetterDeclarationContext getterSetterDeclaration() throws RecognitionException {
+		GetterSetterDeclarationContext _localctx = new GetterSetterDeclarationContext(_ctx, getState());
+		enterRule(_localctx, 254, RULE_getterSetterDeclaration);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1633);
+			switch ( getInterpreter().adaptivePredict(_input,218,_ctx) ) {
+			case 1:
+				{
+				{
+				setState(1622);
+				switch ( getInterpreter().adaptivePredict(_input,214,_ctx) ) {
+				case 1:
+					{
+					setState(1621); getter();
+					}
+					break;
+				}
+				setState(1625);
+				_la = _input.LA(1);
+				if (((((_la - 44)) & ~0x3f) == 0 && ((1L << (_la - 44)) & ((1L << (OP_IN - 44)) | (1L << (KEYWORD_vararg - 44)) | (1L << (SET - 44)) | (1L << (HierarchyModifier_abstract - 44)) | (1L << (HierarchyModifier_open - 44)) | (1L << (HierarchyModifier_final - 44)) | (1L << (HierarchyModifier_override - 44)) | (1L << (KeyWordModifier_operator - 44)) | (1L << (KeyWordModifier_infix - 44)) | (1L << (KeyWordModifier_inline - 44)) | (1L << (ClassModifier_enum - 44)) | (1L << (ClassModifier_annotation - 44)) | (1L << (ClassModifier_data - 44)) | (1L << (ClassModifier_sealed - 44)) | (1L << (AccessModifier_private - 44)) | (1L << (AccessModifier_protected - 44)) | (1L << (AccessModifier_public - 44)) | (1L << (AccessModifier_internal - 44)) | (1L << (Modifier_const - 44)) | (1L << (VarianceAnnotation_out - 44)) | (1L << (DOG - 44)))) != 0)) {
+					{
+					setState(1624); setter();
+					}
+				}
+
+				}
+				}
+				break;
+
+			case 2:
+				{
+				{
+				setState(1628);
+				switch ( getInterpreter().adaptivePredict(_input,216,_ctx) ) {
+				case 1:
+					{
+					setState(1627); setter();
+					}
+					break;
+				}
+				setState(1631);
+				_la = _input.LA(1);
+				if (((((_la - 44)) & ~0x3f) == 0 && ((1L << (_la - 44)) & ((1L << (OP_IN - 44)) | (1L << (KEYWORD_vararg - 44)) | (1L << (GET - 44)) | (1L << (HierarchyModifier_abstract - 44)) | (1L << (HierarchyModifier_open - 44)) | (1L << (HierarchyModifier_final - 44)) | (1L << (HierarchyModifier_override - 44)) | (1L << (KeyWordModifier_operator - 44)) | (1L << (KeyWordModifier_infix - 44)) | (1L << (KeyWordModifier_inline - 44)) | (1L << (ClassModifier_enum - 44)) | (1L << (ClassModifier_annotation - 44)) | (1L << (ClassModifier_data - 44)) | (1L << (ClassModifier_sealed - 44)) | (1L << (AccessModifier_private - 44)) | (1L << (AccessModifier_protected - 44)) | (1L << (AccessModifier_public - 44)) | (1L << (AccessModifier_internal - 44)) | (1L << (Modifier_const - 44)) | (1L << (VarianceAnnotation_out - 44)) | (1L << (DOG - 44)))) != 0)) {
+					{
+					setState(1630); getter();
+					}
+				}
+
+				}
+				}
+				break;
+			}
+			setState(1638);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			while (_la==SEMI) {
+				{
+				{
+				setState(1635); match(SEMI);
+				}
+				}
+				setState(1640);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class GetterContext extends ParserRuleContext {
+		public FunctionBodyContext functionBody() {
+			return getRuleContext(FunctionBodyContext.class,0);
+		}
+		public TypeContext type() {
+			return getRuleContext(TypeContext.class,0);
+		}
+		public ModifiersContext modifiers() {
+			return getRuleContext(ModifiersContext.class,0);
+		}
+		public GetterContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_getter; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterGetter(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitGetter(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitGetter(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final GetterContext getter() throws RecognitionException {
+		GetterContext _localctx = new GetterContext(_ctx, getState());
+		enterRule(_localctx, 256, RULE_getter);
+		int _la;
+		try {
+			setState(1654);
+			switch ( getInterpreter().adaptivePredict(_input,221,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(1641); modifiers();
+				setState(1642); match(GET);
+				}
+				break;
+
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(1644); modifiers();
+				setState(1645); match(GET);
+				setState(1646); match(BRACE_OPEN);
+				setState(1647); match(BRACE_CLOSE);
+				setState(1650);
+				_la = _input.LA(1);
+				if (_la==COLON) {
+					{
+					setState(1648); match(COLON);
+					setState(1649); type();
+					}
+				}
+
+				setState(1652); functionBody();
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class SetterContext extends ParserRuleContext {
+		public ModifiersContext modifiers(int i) {
+			return getRuleContext(ModifiersContext.class,i);
+		}
+		public ParameterContext parameter() {
+			return getRuleContext(ParameterContext.class,0);
+		}
+		public FunctionBodyContext functionBody() {
+			return getRuleContext(FunctionBodyContext.class,0);
+		}
+		public TerminalNode SimpleName() { return getToken(KotlinParser.SimpleName, 0); }
+		public List<ModifiersContext> modifiers() {
+			return getRuleContexts(ModifiersContext.class);
+		}
+		public SetterContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_setter; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterSetter(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitSetter(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitSetter(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final SetterContext setter() throws RecognitionException {
+		SetterContext _localctx = new SetterContext(_ctx, getState());
+		enterRule(_localctx, 258, RULE_setter);
+		try {
+			setState(1670);
+			switch ( getInterpreter().adaptivePredict(_input,223,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(1656); modifiers();
+				setState(1657); match(SET);
+				}
+				break;
+
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(1659); modifiers();
+				setState(1660); match(SET);
+				setState(1661); match(BRACE_OPEN);
+				setState(1662); modifiers();
+				setState(1665);
+				switch ( getInterpreter().adaptivePredict(_input,222,_ctx) ) {
+				case 1:
+					{
+					setState(1663); match(SimpleName);
+					}
+					break;
+
+				case 2:
+					{
+					setState(1664); parameter();
+					}
+					break;
+				}
+				setState(1667); match(BRACE_CLOSE);
+				setState(1668); functionBody();
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class FunctionModifierContext extends ParserRuleContext {
+		public FunctionModifierContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_functionModifier; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterFunctionModifier(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitFunctionModifier(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitFunctionModifier(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final FunctionModifierContext functionModifier() throws RecognitionException {
+		FunctionModifierContext _localctx = new FunctionModifierContext(_ctx, getState());
+		enterRule(_localctx, 260, RULE_functionModifier);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1672);
+			_la = _input.LA(1);
+			if ( !(((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (AccessModifier_private - 80)) | (1L << (AccessModifier_protected - 80)) | (1L << (AccessModifier_public - 80)) | (1L << (AccessModifier_internal - 80)))) != 0)) ) {
+			_errHandler.recoverInline(this);
+			}
+			consume();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class PropertyModifierContext extends ParserRuleContext {
+		public PropertyModifierContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_propertyModifier; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterPropertyModifier(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitPropertyModifier(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitPropertyModifier(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final PropertyModifierContext propertyModifier() throws RecognitionException {
+		PropertyModifierContext _localctx = new PropertyModifierContext(_ctx, getState());
+		enterRule(_localctx, 262, RULE_propertyModifier);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1674);
+			_la = _input.LA(1);
+			if ( !(((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (AccessModifier_private - 80)) | (1L << (AccessModifier_protected - 80)) | (1L << (AccessModifier_public - 80)) | (1L << (AccessModifier_internal - 80)))) != 0)) ) {
+			_errHandler.recoverInline(this);
+			}
+			consume();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class HierarchyModifierContext extends ParserRuleContext {
+		public HierarchyModifierContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_hierarchyModifier; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterHierarchyModifier(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitHierarchyModifier(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitHierarchyModifier(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final HierarchyModifierContext hierarchyModifier() throws RecognitionException {
+		HierarchyModifierContext _localctx = new HierarchyModifierContext(_ctx, getState());
+		enterRule(_localctx, 264, RULE_hierarchyModifier);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1676);
+			_la = _input.LA(1);
+			if ( !(((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (HierarchyModifier_abstract - 69)) | (1L << (HierarchyModifier_open - 69)) | (1L << (HierarchyModifier_final - 69)) | (1L << (HierarchyModifier_override - 69)))) != 0)) ) {
+			_errHandler.recoverInline(this);
+			}
+			consume();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class ClassModifierContext extends ParserRuleContext {
+		public ClassModifierContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_classModifier; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterClassModifier(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitClassModifier(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitClassModifier(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ClassModifierContext classModifier() throws RecognitionException {
+		ClassModifierContext _localctx = new ClassModifierContext(_ctx, getState());
+		enterRule(_localctx, 266, RULE_classModifier);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1678);
+			_la = _input.LA(1);
+			if ( !(((((_la - 76)) & ~0x3f) == 0 && ((1L << (_la - 76)) & ((1L << (ClassModifier_enum - 76)) | (1L << (ClassModifier_annotation - 76)) | (1L << (ClassModifier_data - 76)) | (1L << (ClassModifier_sealed - 76)))) != 0)) ) {
+			_errHandler.recoverInline(this);
+			}
+			consume();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class KeyWordModifierContext extends ParserRuleContext {
+		public KeyWordModifierContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_keyWordModifier; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterKeyWordModifier(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitKeyWordModifier(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitKeyWordModifier(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final KeyWordModifierContext keyWordModifier() throws RecognitionException {
+		KeyWordModifierContext _localctx = new KeyWordModifierContext(_ctx, getState());
+		enterRule(_localctx, 268, RULE_keyWordModifier);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1680);
+			_la = _input.LA(1);
+			if ( !(((((_la - 73)) & ~0x3f) == 0 && ((1L << (_la - 73)) & ((1L << (KeyWordModifier_operator - 73)) | (1L << (KeyWordModifier_infix - 73)) | (1L << (KeyWordModifier_inline - 73)))) != 0)) ) {
+			_errHandler.recoverInline(this);
+			}
+			consume();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class AccessModifierContext extends ParserRuleContext {
+		public AccessModifierContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_accessModifier; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAccessModifier(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAccessModifier(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitAccessModifier(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final AccessModifierContext accessModifier() throws RecognitionException {
+		AccessModifierContext _localctx = new AccessModifierContext(_ctx, getState());
+		enterRule(_localctx, 270, RULE_accessModifier);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1682);
+			_la = _input.LA(1);
+			if ( !(((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (AccessModifier_private - 80)) | (1L << (AccessModifier_protected - 80)) | (1L << (AccessModifier_public - 80)) | (1L << (AccessModifier_internal - 80)) | (1L << (Modifier_const - 80)))) != 0)) ) {
+			_errHandler.recoverInline(this);
+			}
+			consume();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class VarianceAnnotationContext extends ParserRuleContext {
+		public VarianceAnnotationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_varianceAnnotation; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterVarianceAnnotation(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitVarianceAnnotation(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof KotlinParserVisitor ) return ((KotlinParserVisitor<? extends T>)visitor).visitVarianceAnnotation(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final VarianceAnnotationContext varianceAnnotation() throws RecognitionException {
+		VarianceAnnotationContext _localctx = new VarianceAnnotationContext(_ctx, getState());
+		enterRule(_localctx, 272, RULE_varianceAnnotation);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(1684);
+			_la = _input.LA(1);
+			if ( !(_la==OP_IN || _la==VarianceAnnotation_out) ) {
+			_errHandler.recoverInline(this);
+			}
+			consume();
 			}
 		}
 		catch (RecognitionException re) {
@@ -9112,7 +10498,7 @@ public class KotlinParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\u0081\u05bd\4\2\t"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\u0081\u0699\4\2\t"+
 		"\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -9125,568 +10511,665 @@ public class KotlinParser extends Parser {
 		"\4U\tU\4V\tV\4W\tW\4X\tX\4Y\tY\4Z\tZ\4[\t[\4\\\t\\\4]\t]\4^\t^\4_\t_\4"+
 		"`\t`\4a\ta\4b\tb\4c\tc\4d\td\4e\te\4f\tf\4g\tg\4h\th\4i\ti\4j\tj\4k\t"+
 		"k\4l\tl\4m\tm\4n\tn\4o\to\4p\tp\4q\tq\4r\tr\4s\ts\4t\tt\4u\tu\4v\tv\4"+
-		"w\tw\4x\tx\4y\ty\4z\tz\3\2\3\2\7\2\u00f7\n\2\f\2\16\2\u00fa\13\2\3\3\5"+
-		"\3\u00fd\n\3\3\3\7\3\u0100\n\3\f\3\16\3\u0103\13\3\3\4\3\4\3\4\3\4\7\4"+
-		"\u0109\n\4\f\4\16\4\u010c\13\4\3\4\7\4\u010f\n\4\f\4\16\4\u0112\13\4\3"+
-		"\5\3\5\3\5\3\5\7\5\u0118\n\5\f\5\16\5\u011b\13\5\3\5\3\5\3\5\3\5\5\5\u0121"+
-		"\n\5\3\5\7\5\u0124\n\5\f\5\16\5\u0127\13\5\3\6\3\6\3\6\3\6\3\6\5\6\u012e"+
-		"\n\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\5\7\u0137\n\7\3\b\5\b\u013a\n\b\3\t\3"+
-		"\t\3\t\3\t\7\t\u0140\n\t\f\t\16\t\u0143\13\t\3\t\3\t\3\n\3\n\3\n\3\n\5"+
-		"\n\u014b\n\n\3\13\3\13\5\13\u014f\n\13\3\13\3\13\7\13\u0153\n\13\f\13"+
-		"\16\13\u0156\13\13\3\13\3\13\3\f\3\f\3\f\3\f\7\f\u015e\n\f\f\f\16\f\u0161"+
-		"\13\f\5\f\u0163\n\f\3\r\5\r\u0166\n\r\3\r\3\r\3\r\3\r\3\16\5\16\u016d"+
-		"\n\16\3\16\3\16\3\17\3\17\3\17\3\17\5\17\u0175\n\17\3\17\5\17\u0178\n"+
-		"\17\3\17\3\17\5\17\u017c\n\17\3\17\3\17\5\17\u0180\n\17\3\17\5\17\u0183"+
-		"\n\17\3\17\3\17\5\17\u0187\n\17\3\17\5\17\u018a\n\17\5\17\u018c\n\17\3"+
-		"\20\3\20\5\20\u0190\n\20\3\20\3\20\3\20\7\20\u0195\n\20\f\20\16\20\u0198"+
-		"\13\20\3\21\3\21\3\21\3\21\5\21\u019e\n\21\3\22\3\22\3\22\3\22\3\22\7"+
-		"\22\u01a5\n\22\f\22\16\22\u01a8\13\22\3\22\3\22\5\22\u01ac\n\22\3\23\3"+
-		"\23\3\23\5\23\u01b1\n\23\3\24\3\24\3\24\3\24\5\24\u01b7\n\24\3\25\3\25"+
-		"\3\25\3\26\3\26\3\26\3\26\7\26\u01c0\n\26\f\26\16\26\u01c3\13\26\5\26"+
-		"\u01c5\n\26\3\26\3\26\3\26\3\26\3\27\3\27\3\27\3\27\7\27\u01cf\n\27\f"+
-		"\27\16\27\u01d2\13\27\3\27\3\27\3\30\3\30\3\30\5\30\u01d9\n\30\3\30\3"+
-		"\30\3\30\5\30\u01de\n\30\3\30\3\30\5\30\u01e2\n\30\3\30\3\30\3\30\3\30"+
-		"\7\30\u01e8\n\30\f\30\16\30\u01eb\13\30\5\30\u01ed\n\30\3\30\5\30\u01f0"+
-		"\n\30\3\30\5\30\u01f3\n\30\3\30\5\30\u01f6\n\30\3\30\5\30\u01f9\n\30\5"+
-		"\30\u01fb\n\30\3\30\7\30\u01fe\n\30\f\30\16\30\u0201\13\30\3\31\3\31\3"+
-		"\31\3\31\3\31\3\31\3\31\3\31\3\31\5\31\u020c\n\31\3\31\3\31\5\31\u0210"+
-		"\n\31\3\32\3\32\3\32\3\32\3\32\3\32\3\32\3\32\3\32\5\32\u021b\n\32\3\32"+
-		"\3\32\3\32\5\32\u0220\n\32\3\33\7\33\u0223\n\33\f\33\16\33\u0226\13\33"+
-		"\3\34\3\34\3\35\3\35\3\35\3\35\3\35\3\35\3\35\5\35\u0231\n\35\3\36\3\36"+
-		"\3\37\3\37\3 \3 \3!\3!\3\"\3\"\3#\6#\u023e\n#\r#\16#\u023f\3$\3$\3$\3"+
-		"$\5$\u0246\n$\3$\3$\3%\3%\3&\3&\3&\5&\u024f\n&\3&\5&\u0252\n&\3&\3&\3"+
-		"\'\3\'\3\'\3\'\7\'\u025a\n\'\f\'\16\'\u025d\13\'\5\'\u025f\n\'\3\'\3\'"+
-		"\3(\3(\3(\7(\u0266\n(\f(\16(\u0269\13(\3(\5(\u026c\n(\3(\5(\u026f\n(\3"+
-		")\3)\3)\3)\5)\u0275\n)\3)\5)\u0278\n)\3)\3)\5)\u027c\n)\3)\3)\5)\u0280"+
-		"\n)\5)\u0282\n)\3*\3*\3*\3*\3*\5*\u0289\n*\3+\3+\3+\3,\3,\3,\3,\3-\3-"+
-		"\5-\u0294\n-\3.\3.\3.\3/\3/\3/\3/\3\60\3\60\5\60\u029f\n\60\3\61\3\61"+
-		"\5\61\u02a3\n\61\3\61\3\61\3\62\3\62\3\62\3\62\3\63\5\63\u02ac\n\63\3"+
-		"\63\5\63\u02af\n\63\3\63\3\63\3\63\3\63\7\63\u02b5\n\63\f\63\16\63\u02b8"+
-		"\13\63\5\63\u02ba\n\63\3\63\3\63\3\64\5\64\u02bf\n\64\3\64\3\64\3\64\3"+
-		"\64\3\64\7\64\u02c6\n\64\f\64\16\64\u02c9\13\64\5\64\u02cb\n\64\3\64\3"+
-		"\64\3\64\3\64\5\64\u02d1\n\64\3\64\5\64\u02d4\n\64\3\64\7\64\u02d7\n\64"+
-		"\f\64\16\64\u02da\13\64\3\65\3\65\3\65\3\65\5\65\u02e0\n\65\3\66\5\66"+
-		"\u02e3\n\66\3\66\3\66\5\66\u02e7\n\66\3\66\3\66\3\66\3\66\5\66\u02ed\n"+
-		"\66\3\67\3\67\5\67\u02f1\n\67\3\67\3\67\38\38\38\38\39\39\39\59\u02fc"+
-		"\n9\3:\3:\3:\3:\5:\u0302\n:\3:\5:\u0305\n:\3:\3:\5:\u0309\n:\3:\3:\3:"+
-		"\7:\u030e\n:\f:\16:\u0311\13:\5:\u0313\n:\3:\3:\3:\5:\u0318\n:\3:\7:\u031b"+
-		"\n:\f:\16:\u031e\13:\3;\3;\3;\3;\7;\u0324\n;\f;\16;\u0327\13;\3<\3<\3"+
-		"<\3<\5<\u032d\n<\3<\5<\u0330\n<\3<\3<\7<\u0334\n<\f<\16<\u0337\13<\3="+
-		"\3=\3=\3=\3=\3=\7=\u033f\n=\f=\16=\u0342\13=\3>\3>\3>\3>\5>\u0348\n>\3"+
-		">\3>\7>\u034c\n>\f>\16>\u034f\13>\3?\3?\3?\3?\5?\u0355\n?\3@\7@\u0358"+
-		"\n@\f@\16@\u035b\13@\3A\3A\3A\3A\7A\u0361\nA\fA\16A\u0364\13A\5A\u0366"+
-		"\nA\3A\3A\3B\3B\3B\5B\u036d\nB\3B\3B\3B\3B\5B\u0373\nB\3B\3B\5B\u0377"+
-		"\nB\3B\3B\3B\5B\u037c\nB\3B\3B\5B\u0380\nB\3B\7B\u0383\nB\fB\16B\u0386"+
-		"\13B\3C\7C\u0389\nC\fC\16C\u038c\13C\3C\3C\7C\u0390\nC\fC\16C\u0393\13"+
-		"C\3C\7C\u0396\nC\fC\16C\u0399\13C\5C\u039b\nC\3C\7C\u039e\nC\fC\16C\u03a1"+
-		"\13C\3D\3D\3D\5D\u03a6\nD\3E\3E\3E\3E\3F\3F\3F\7F\u03af\nF\fF\16F\u03b2"+
-		"\13F\3G\3G\3G\3G\5G\u03b8\nG\3G\3G\3H\3H\5H\u03be\nH\7H\u03c0\nH\fH\16"+
-		"H\u03c3\13H\3I\3I\3I\3I\5I\u03c9\nI\3I\3I\5I\u03cd\nI\3I\3I\3J\3J\3J\3"+
-		"J\3J\3J\7J\u03d7\nJ\fJ\16J\u03da\13J\3J\3J\5J\u03de\nJ\3K\3K\3K\7K\u03e3"+
-		"\nK\fK\16K\u03e6\13K\3K\5K\u03e9\nK\3L\3L\3L\5L\u03ee\nL\3L\3L\3L\3L\3"+
-		"L\3L\3M\3M\3M\3N\3N\3N\5N\u03fc\nN\3O\3O\3O\5O\u0401\nO\3O\3O\5O\u0405"+
-		"\nO\3O\3O\3O\3O\3O\3P\3P\3P\3P\3P\3P\3Q\3Q\3Q\3Q\3Q\3Q\3Q\3R\3R\3R\3R"+
-		"\7R\u041d\nR\fR\16R\u0420\13R\3S\3S\3S\7S\u0425\nS\fS\16S\u0428\13S\3"+
-		"T\3T\3T\7T\u042d\nT\fT\16T\u0430\13T\3U\3U\3U\3U\7U\u0436\nU\fU\16U\u0439"+
-		"\13U\3V\3V\3V\3V\7V\u043f\nV\fV\16V\u0442\13V\3W\3W\3W\3W\7W\u0448\nW"+
-		"\fW\16W\u044b\13W\3W\3W\3W\3W\5W\u0451\nW\5W\u0453\nW\3X\3X\3X\7X\u0458"+
-		"\nX\fX\16X\u045b\13X\3Y\3Y\3Y\7Y\u0460\nY\fY\16Y\u0463\13Y\3Z\3Z\3Z\7"+
-		"Z\u0468\nZ\fZ\16Z\u046b\13Z\3[\3[\3[\3[\7[\u0471\n[\f[\16[\u0474\13[\3"+
-		"\\\3\\\3\\\3\\\7\\\u047a\n\\\f\\\16\\\u047d\13\\\3]\3]\3]\3]\7]\u0483"+
-		"\n]\f]\16]\u0486\13]\3^\7^\u0489\n^\f^\16^\u048c\13^\3^\3^\3_\3_\3_\5"+
-		"_\u0493\n_\3_\3_\7_\u0497\n_\f_\16_\u049a\13_\3_\3_\7_\u049e\n_\f_\16"+
-		"_\u04a1\13_\5_\u04a3\n_\3`\3`\7`\u04a7\n`\f`\16`\u04aa\13`\5`\u04ac\n"+
-		"`\3`\5`\u04af\n`\3`\3`\3`\5`\u04b4\n`\3`\5`\u04b7\n`\3a\3a\3b\3b\3b\3"+
-		"b\3b\3b\3b\3b\7b\u04c3\nb\fb\16b\u04c6\13b\3b\3b\3b\3b\3b\3b\3b\3b\7b"+
-		"\u04d0\nb\fb\16b\u04d3\13b\3b\5b\u04d6\nb\3c\3c\3c\3c\3c\3c\3c\3c\5c\u04e0"+
-		"\nc\3c\3c\3c\3c\3c\5c\u04e7\nc\3c\5c\u04ea\nc\3c\3c\3c\3c\3c\3c\3c\3c"+
-		"\3c\3c\5c\u04f6\nc\3d\3d\3d\3d\3d\3d\3d\5d\u04ff\nd\3e\3e\3e\3e\5e\u0505"+
-		"\ne\3f\3f\5f\u0509\nf\3g\3g\3h\3h\3i\3i\3j\3j\3k\3k\3l\3l\3m\3m\3n\3n"+
-		"\3o\3o\3o\3o\3o\3o\3o\5o\u0522\no\3p\3p\3p\3p\3p\3p\3p\3p\5p\u052c\np"+
-		"\3q\3q\7q\u0530\nq\fq\16q\u0533\13q\3q\5q\u0536\nq\3q\3q\3r\3r\3r\5r\u053d"+
-		"\nr\5r\u053f\nr\3s\3s\3s\3s\3s\3s\3s\3s\7s\u0549\ns\fs\16s\u054c\13s\5"+
-		"s\u054e\ns\3s\3s\3s\3s\5s\u0554\ns\3t\3t\3t\5t\u0559\nt\3u\3u\3u\3u\7"+
-		"u\u055f\nu\fu\16u\u0562\13u\5u\u0564\nu\3u\3u\3v\3v\3v\3v\3v\7v\u056d"+
-		"\nv\fv\16v\u0570\13v\5v\u0572\nv\3v\3v\3w\3w\3w\3w\3w\5w\u057b\nw\3w\3"+
-		"w\7w\u057f\nw\fw\16w\u0582\13w\3w\3w\3x\3x\3x\7x\u0589\nx\fx\16x\u058c"+
-		"\13x\3x\3x\3x\7x\u0591\nx\fx\16x\u0594\13x\3x\3x\3x\3x\7x\u059a\nx\fx"+
-		"\16x\u059d\13x\5x\u059f\nx\3y\3y\3y\3y\3y\5y\u05a6\ny\3z\3z\5z\u05aa\n"+
-		"z\3z\3z\3z\7z\u05af\nz\fz\16z\u05b2\13z\5z\u05b4\nz\3z\5z\u05b7\nz\3z"+
-		"\3z\3z\3z\3z\2\2{\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62"+
-		"\64\668:<>@BDFHJLNPRTVXZ\\^`bdfhjlnprtvxz|~\u0080\u0082\u0084\u0086\u0088"+
-		"\u008a\u008c\u008e\u0090\u0092\u0094\u0096\u0098\u009a\u009c\u009e\u00a0"+
-		"\u00a2\u00a4\u00a6\u00a8\u00aa\u00ac\u00ae\u00b0\u00b2\u00b4\u00b6\u00b8"+
-		"\u00ba\u00bc\u00be\u00c0\u00c2\u00c4\u00c6\u00c8\u00ca\u00cc\u00ce\u00d0"+
-		"\u00d2\u00d4\u00d6\u00d8\u00da\u00dc\u00de\u00e0\u00e2\u00e4\u00e6\u00e8"+
-		"\u00ea\u00ec\u00ee\u00f0\u00f2\2\26\3\2?@\4\2\27\27BB\3\2GJ\3\2NQ\3\2"+
-		"KM\3\2RV\4\2..WW\4\2EFY]\3\2ef\7\2\17\17NNhhkkvv\3\2yy\3\2~~\4\2\21\21"+
+		"w\tw\4x\tx\4y\ty\4z\tz\4{\t{\4|\t|\4}\t}\4~\t~\4\177\t\177\4\u0080\t\u0080"+
+		"\4\u0081\t\u0081\4\u0082\t\u0082\4\u0083\t\u0083\4\u0084\t\u0084\4\u0085"+
+		"\t\u0085\4\u0086\t\u0086\4\u0087\t\u0087\4\u0088\t\u0088\4\u0089\t\u0089"+
+		"\4\u008a\t\u008a\3\2\3\2\7\2\u0117\n\2\f\2\16\2\u011a\13\2\3\3\5\3\u011d"+
+		"\n\3\3\3\7\3\u0120\n\3\f\3\16\3\u0123\13\3\3\4\3\4\3\4\3\4\7\4\u0129\n"+
+		"\4\f\4\16\4\u012c\13\4\3\4\7\4\u012f\n\4\f\4\16\4\u0132\13\4\3\5\3\5\3"+
+		"\5\3\5\7\5\u0138\n\5\f\5\16\5\u013b\13\5\3\5\3\5\3\5\3\5\5\5\u0141\n\5"+
+		"\3\5\7\5\u0144\n\5\f\5\16\5\u0147\13\5\3\6\3\6\3\6\3\6\3\6\3\6\5\6\u014f"+
+		"\n\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\5\7\u0159\n\7\3\b\5\b\u015c\n\b\3"+
+		"\t\3\t\3\t\3\t\7\t\u0162\n\t\f\t\16\t\u0165\13\t\3\t\3\t\3\n\3\n\3\n\3"+
+		"\n\5\n\u016d\n\n\3\13\3\13\5\13\u0171\n\13\3\13\3\13\7\13\u0175\n\13\f"+
+		"\13\16\13\u0178\13\13\3\13\3\13\3\f\3\f\3\f\3\f\7\f\u0180\n\f\f\f\16\f"+
+		"\u0183\13\f\5\f\u0185\n\f\3\r\5\r\u0188\n\r\3\r\3\r\3\r\3\r\3\16\5\16"+
+		"\u018f\n\16\3\16\3\16\3\17\3\17\3\17\3\17\5\17\u0197\n\17\3\17\5\17\u019a"+
+		"\n\17\3\17\3\17\5\17\u019e\n\17\3\17\3\17\5\17\u01a2\n\17\3\17\5\17\u01a5"+
+		"\n\17\3\17\3\17\5\17\u01a9\n\17\3\17\5\17\u01ac\n\17\5\17\u01ae\n\17\3"+
+		"\20\3\20\5\20\u01b2\n\20\3\20\3\20\3\20\7\20\u01b7\n\20\f\20\16\20\u01ba"+
+		"\13\20\3\21\3\21\3\21\3\21\5\21\u01c0\n\21\3\22\3\22\3\22\3\22\3\22\7"+
+		"\22\u01c7\n\22\f\22\16\22\u01ca\13\22\3\22\3\22\5\22\u01ce\n\22\3\23\3"+
+		"\23\3\23\5\23\u01d3\n\23\3\24\3\24\3\24\3\24\5\24\u01d9\n\24\3\25\3\25"+
+		"\3\25\3\26\3\26\3\26\3\26\7\26\u01e2\n\26\f\26\16\26\u01e5\13\26\5\26"+
+		"\u01e7\n\26\3\26\3\26\3\26\3\26\3\27\3\27\3\27\3\27\7\27\u01f1\n\27\f"+
+		"\27\16\27\u01f4\13\27\3\27\3\27\3\30\7\30\u01f9\n\30\f\30\16\30\u01fc"+
+		"\13\30\3\31\3\31\3\32\3\32\3\32\3\32\3\32\3\32\3\32\5\32\u0207\n\32\3"+
+		"\33\6\33\u020a\n\33\r\33\16\33\u020b\3\34\3\34\3\34\3\34\5\34\u0212\n"+
+		"\34\3\34\3\34\3\35\3\35\3\36\3\36\3\36\5\36\u021b\n\36\3\36\5\36\u021e"+
+		"\n\36\3\36\3\36\3\37\3\37\3\37\3\37\7\37\u0226\n\37\f\37\16\37\u0229\13"+
+		"\37\5\37\u022b\n\37\3\37\3\37\3 \3 \3 \7 \u0232\n \f \16 \u0235\13 \3"+
+		" \5 \u0238\n \3 \5 \u023b\n \3!\3!\3!\3!\5!\u0241\n!\3!\5!\u0244\n!\3"+
+		"!\3!\5!\u0248\n!\3!\3!\5!\u024c\n!\5!\u024e\n!\3\"\3\"\3\"\3\"\3\"\5\""+
+		"\u0255\n\"\3#\3#\3#\3$\3$\3$\3$\3%\3%\5%\u0260\n%\3&\3&\3&\3\'\3\'\3\'"+
+		"\3\'\3(\3(\5(\u026b\n(\3)\3)\5)\u026f\n)\3)\3)\3*\3*\3*\3*\3+\5+\u0278"+
+		"\n+\3+\5+\u027b\n+\3+\3+\3+\3+\7+\u0281\n+\f+\16+\u0284\13+\5+\u0286\n"+
+		"+\3+\3+\3,\5,\u028b\n,\3,\3,\3,\3,\3,\7,\u0292\n,\f,\16,\u0295\13,\5,"+
+		"\u0297\n,\3,\3,\3,\3,\5,\u029d\n,\3,\5,\u02a0\n,\3,\7,\u02a3\n,\f,\16"+
+		",\u02a6\13,\3-\3-\3-\3-\5-\u02ac\n-\3.\5.\u02af\n.\3.\3.\5.\u02b3\n.\3"+
+		".\3.\3.\3.\5.\u02b9\n.\3/\3/\5/\u02bd\n/\3/\3/\3\60\3\60\3\60\3\60\3\61"+
+		"\3\61\3\61\5\61\u02c8\n\61\3\62\3\62\3\62\3\62\5\62\u02ce\n\62\3\62\5"+
+		"\62\u02d1\n\62\3\62\3\62\5\62\u02d5\n\62\3\62\3\62\3\62\7\62\u02da\n\62"+
+		"\f\62\16\62\u02dd\13\62\5\62\u02df\n\62\3\62\3\62\3\62\5\62\u02e4\n\62"+
+		"\3\62\7\62\u02e7\n\62\f\62\16\62\u02ea\13\62\3\63\3\63\3\63\3\63\5\63"+
+		"\u02f0\n\63\3\63\5\63\u02f3\n\63\3\63\3\63\5\63\u02f7\n\63\3\63\3\63\3"+
+		"\63\7\63\u02fc\n\63\f\63\16\63\u02ff\13\63\5\63\u0301\n\63\3\63\3\63\3"+
+		"\63\5\63\u0306\n\63\3\63\7\63\u0309\n\63\f\63\16\63\u030c\13\63\3\64\3"+
+		"\64\3\64\3\64\7\64\u0312\n\64\f\64\16\64\u0315\13\64\3\65\3\65\3\65\3"+
+		"\65\5\65\u031b\n\65\3\65\5\65\u031e\n\65\3\65\3\65\7\65\u0322\n\65\f\65"+
+		"\16\65\u0325\13\65\3\66\3\66\3\66\3\66\3\66\3\66\7\66\u032d\n\66\f\66"+
+		"\16\66\u0330\13\66\3\67\3\67\3\67\3\67\5\67\u0336\n\67\3\67\3\67\7\67"+
+		"\u033a\n\67\f\67\16\67\u033d\13\67\38\38\38\38\58\u0343\n8\39\79\u0346"+
+		"\n9\f9\169\u0349\139\3:\3:\3:\3:\7:\u034f\n:\f:\16:\u0352\13:\5:\u0354"+
+		"\n:\3:\3:\3;\3;\3;\5;\u035b\n;\3;\3;\3;\3;\5;\u0361\n;\3;\3;\5;\u0365"+
+		"\n;\3;\3;\3;\5;\u036a\n;\3;\3;\5;\u036e\n;\3;\7;\u0371\n;\f;\16;\u0374"+
+		"\13;\3<\3<\5<\u0378\n<\3<\3<\3<\3<\5<\u037e\n<\3<\5<\u0381\n<\3<\3<\3"+
+		"<\5<\u0386\n<\3<\3<\5<\u038a\n<\3<\7<\u038d\n<\f<\16<\u0390\13<\3=\7="+
+		"\u0393\n=\f=\16=\u0396\13=\3=\3=\7=\u039a\n=\f=\16=\u039d\13=\3=\7=\u03a0"+
+		"\n=\f=\16=\u03a3\13=\5=\u03a5\n=\3=\7=\u03a8\n=\f=\16=\u03ab\13=\3>\3"+
+		">\3>\5>\u03b0\n>\3?\3?\3?\3?\3@\3@\3@\7@\u03b9\n@\f@\16@\u03bc\13@\3A"+
+		"\3A\3A\3A\5A\u03c2\nA\3A\3A\3B\3B\5B\u03c8\nB\7B\u03ca\nB\fB\16B\u03cd"+
+		"\13B\3C\3C\3C\3C\5C\u03d3\nC\3C\3C\5C\u03d7\nC\3C\3C\3D\3D\3D\3D\3D\3"+
+		"D\7D\u03e1\nD\fD\16D\u03e4\13D\3D\3D\5D\u03e8\nD\3E\3E\3E\7E\u03ed\nE"+
+		"\fE\16E\u03f0\13E\3E\5E\u03f3\nE\3F\3F\3F\5F\u03f8\nF\3F\3F\3F\3F\3F\3"+
+		"F\3G\3G\3G\3H\3H\3H\5H\u0406\nH\3I\3I\3I\5I\u040b\nI\3I\3I\5I\u040f\n"+
+		"I\3I\3I\3I\3I\3I\3J\3J\3J\3J\3J\3J\3K\3K\3K\3K\3K\3K\3K\3L\3L\3L\3L\7"+
+		"L\u0427\nL\fL\16L\u042a\13L\3M\3M\3M\7M\u042f\nM\fM\16M\u0432\13M\3N\3"+
+		"N\3N\7N\u0437\nN\fN\16N\u043a\13N\3O\3O\3O\3O\7O\u0440\nO\fO\16O\u0443"+
+		"\13O\3P\3P\3P\3P\7P\u0449\nP\fP\16P\u044c\13P\3Q\3Q\3Q\3Q\7Q\u0452\nQ"+
+		"\fQ\16Q\u0455\13Q\3Q\3Q\3Q\3Q\5Q\u045b\nQ\5Q\u045d\nQ\3R\3R\3R\7R\u0462"+
+		"\nR\fR\16R\u0465\13R\3S\3S\3S\7S\u046a\nS\fS\16S\u046d\13S\3T\3T\3T\7"+
+		"T\u0472\nT\fT\16T\u0475\13T\3U\3U\3U\3U\7U\u047b\nU\fU\16U\u047e\13U\3"+
+		"V\3V\3V\3V\7V\u0484\nV\fV\16V\u0487\13V\3W\3W\3W\3W\7W\u048d\nW\fW\16"+
+		"W\u0490\13W\3X\7X\u0493\nX\fX\16X\u0496\13X\3X\3X\3Y\3Y\3Y\5Y\u049d\n"+
+		"Y\3Y\3Y\7Y\u04a1\nY\fY\16Y\u04a4\13Y\3Y\3Y\7Y\u04a8\nY\fY\16Y\u04ab\13"+
+		"Y\5Y\u04ad\nY\3Z\3Z\7Z\u04b1\nZ\fZ\16Z\u04b4\13Z\5Z\u04b6\nZ\3Z\5Z\u04b9"+
+		"\nZ\3Z\3Z\3Z\5Z\u04be\nZ\3Z\5Z\u04c1\nZ\3[\3[\3[\3[\3[\3[\3[\5[\u04ca"+
+		"\n[\3\\\3\\\3\\\3\\\3\\\3\\\3\\\3\\\7\\\u04d4\n\\\f\\\16\\\u04d7\13\\"+
+		"\3\\\3\\\3\\\3\\\3\\\3\\\3\\\3\\\7\\\u04e1\n\\\f\\\16\\\u04e4\13\\\3\\"+
+		"\5\\\u04e7\n\\\3]\3]\3]\3]\3]\3]\3]\3]\3]\5]\u04f2\n]\3]\3]\3]\3]\3]\5"+
+		"]\u04f9\n]\3]\5]\u04fc\n]\3]\3]\3]\3]\3]\3]\3]\3]\3]\3]\5]\u0508\n]\3"+
+		"^\3^\3^\3^\3^\3^\3^\5^\u0511\n^\3_\3_\3_\3_\3_\5_\u0518\n_\3`\3`\5`\u051c"+
+		"\n`\3a\3a\3b\3b\3c\3c\3d\3d\3e\3e\3f\3f\3g\3g\3h\3h\3i\3i\3i\3i\3i\3i"+
+		"\3i\5i\u0535\ni\3j\3j\3j\3j\3j\3j\3j\3j\5j\u053f\nj\3k\3k\7k\u0543\nk"+
+		"\fk\16k\u0546\13k\3k\5k\u0549\nk\3k\3k\3l\3l\3l\5l\u0550\nl\5l\u0552\n"+
+		"l\3m\3m\3m\3m\3m\3m\3m\3m\7m\u055c\nm\fm\16m\u055f\13m\5m\u0561\nm\3m"+
+		"\3m\3m\3m\5m\u0567\nm\3n\3n\3n\5n\u056c\nn\3o\3o\3o\3o\7o\u0572\no\fo"+
+		"\16o\u0575\13o\5o\u0577\no\3o\3o\3p\3p\3p\3p\3p\7p\u0580\np\fp\16p\u0583"+
+		"\13p\5p\u0585\np\3p\3p\3q\3q\3q\3q\3q\5q\u058e\nq\3q\3q\7q\u0592\nq\f"+
+		"q\16q\u0595\13q\3q\3q\3r\3r\3r\7r\u059c\nr\fr\16r\u059f\13r\3r\3r\3r\7"+
+		"r\u05a4\nr\fr\16r\u05a7\13r\3r\3r\3r\3r\7r\u05ad\nr\fr\16r\u05b0\13r\5"+
+		"r\u05b2\nr\3s\3s\3s\3s\3s\5s\u05b9\ns\3t\3t\5t\u05bd\nt\3t\3t\3t\7t\u05c2"+
+		"\nt\ft\16t\u05c5\13t\5t\u05c7\nt\3t\5t\u05ca\nt\3t\3t\3t\3t\3u\3u\5u\u05d2"+
+		"\nu\3v\5v\u05d5\nv\3v\3v\3v\3v\3v\5v\u05dc\nv\3w\3w\3w\3w\3w\3w\5w\u05e4"+
+		"\nw\3x\5x\u05e7\nx\3x\3x\3x\3x\3y\5y\u05ee\ny\3y\3y\3y\3y\5y\u05f4\ny"+
+		"\3y\7y\u05f7\ny\fy\16y\u05fa\13y\3z\3z\5z\u05fe\nz\3{\5{\u0601\n{\3{\3"+
+		"{\3{\3{\3{\7{\u0608\n{\f{\16{\u060b\13{\3{\3{\3{\3{\3{\3{\5{\u0613\n{"+
+		"\3{\7{\u0616\n{\f{\16{\u0619\13{\3|\3|\5|\u061d\n|\3|\3|\3|\5|\u0622\n"+
+		"|\3|\7|\u0625\n|\f|\16|\u0628\13|\3}\3}\3}\3}\3~\3~\5~\u0630\n~\3~\3~"+
+		"\3~\7~\u0635\n~\f~\16~\u0638\13~\3~\3~\3~\3~\3~\3~\5~\u0640\n~\3~\7~\u0643"+
+		"\n~\f~\16~\u0646\13~\3\177\3\177\3\177\7\177\u064b\n\177\f\177\16\177"+
+		"\u064e\13\177\3\u0080\3\u0080\3\u0080\7\u0080\u0653\n\u0080\f\u0080\16"+
+		"\u0080\u0656\13\u0080\3\u0081\5\u0081\u0659\n\u0081\3\u0081\5\u0081\u065c"+
+		"\n\u0081\3\u0081\5\u0081\u065f\n\u0081\3\u0081\5\u0081\u0662\n\u0081\5"+
+		"\u0081\u0664\n\u0081\3\u0081\7\u0081\u0667\n\u0081\f\u0081\16\u0081\u066a"+
+		"\13\u0081\3\u0082\3\u0082\3\u0082\3\u0082\3\u0082\3\u0082\3\u0082\3\u0082"+
+		"\3\u0082\5\u0082\u0675\n\u0082\3\u0082\3\u0082\5\u0082\u0679\n\u0082\3"+
+		"\u0083\3\u0083\3\u0083\3\u0083\3\u0083\3\u0083\3\u0083\3\u0083\3\u0083"+
+		"\5\u0083\u0684\n\u0083\3\u0083\3\u0083\3\u0083\5\u0083\u0689\n\u0083\3"+
+		"\u0084\3\u0084\3\u0085\3\u0085\3\u0086\3\u0086\3\u0087\3\u0087\3\u0088"+
+		"\3\u0088\3\u0089\3\u0089\3\u008a\3\u008a\3\u008a\2\2\u008b\2\4\6\b\n\f"+
+		"\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>@BDFHJLNPRTVXZ\\^"+
+		"`bdfhjlnprtvxz|~\u0080\u0082\u0084\u0086\u0088\u008a\u008c\u008e\u0090"+
+		"\u0092\u0094\u0096\u0098\u009a\u009c\u009e\u00a0\u00a2\u00a4\u00a6\u00a8"+
+		"\u00aa\u00ac\u00ae\u00b0\u00b2\u00b4\u00b6\u00b8\u00ba\u00bc\u00be\u00c0"+
+		"\u00c2\u00c4\u00c6\u00c8\u00ca\u00cc\u00ce\u00d0\u00d2\u00d4\u00d6\u00d8"+
+		"\u00da\u00dc\u00de\u00e0\u00e2\u00e4\u00e6\u00e8\u00ea\u00ec\u00ee\u00f0"+
+		"\u00f2\u00f4\u00f6\u00f8\u00fa\u00fc\u00fe\u0100\u0102\u0104\u0106\u0108"+
+		"\u010a\u010c\u010e\u0110\u0112\2\24\4\2EFY]\3\2?@\3\2yy\3\2~~\4\2\21\21"+
 		"*+\3\2,-\3\2./\4\2\33\33\62\63\3\2\60\61\3\2\23\26\4\2\30\30\32\32\4\2"+
-		"\27\27\648\u063e\2\u00f4\3\2\2\2\4\u00fc\3\2\2\2\6\u0104\3\2\2\2\b\u0113"+
-		"\3\2\2\2\n\u012d\3\2\2\2\f\u0136\3\2\2\2\16\u0139\3\2\2\2\20\u013b\3\2"+
-		"\2\2\22\u0146\3\2\2\2\24\u014c\3\2\2\2\26\u0162\3\2\2\2\30\u0165\3\2\2"+
-		"\2\32\u016c\3\2\2\2\34\u018b\3\2\2\2\36\u018f\3\2\2\2 \u019d\3\2\2\2\""+
-		"\u019f\3\2\2\2$\u01ad\3\2\2\2&\u01b6\3\2\2\2(\u01b8\3\2\2\2*\u01bb\3\2"+
-		"\2\2,\u01ca\3\2\2\2.\u01d5\3\2\2\2\60\u020f\3\2\2\2\62\u021f\3\2\2\2\64"+
-		"\u0224\3\2\2\2\66\u0227\3\2\2\28\u0230\3\2\2\2:\u0232\3\2\2\2<\u0234\3"+
-		"\2\2\2>\u0236\3\2\2\2@\u0238\3\2\2\2B\u023a\3\2\2\2D\u023d\3\2\2\2F\u0241"+
-		"\3\2\2\2H\u0249\3\2\2\2J\u024e\3\2\2\2L\u0255\3\2\2\2N\u0262\3\2\2\2P"+
-		"\u0281\3\2\2\2R\u0283\3\2\2\2T\u028a\3\2\2\2V\u028d\3\2\2\2X\u0293\3\2"+
-		"\2\2Z\u0295\3\2\2\2\\\u0298\3\2\2\2^\u029e\3\2\2\2`\u02a0\3\2\2\2b\u02a6"+
-		"\3\2\2\2d\u02ae\3\2\2\2f\u02be\3\2\2\2h\u02df\3\2\2\2j\u02ec\3\2\2\2l"+
-		"\u02ee\3\2\2\2n\u02f4\3\2\2\2p\u02fb\3\2\2\2r\u02fd\3\2\2\2t\u031f\3\2"+
-		"\2\2v\u0328\3\2\2\2x\u0338\3\2\2\2z\u0343\3\2\2\2|\u0354\3\2\2\2~\u0359"+
-		"\3\2\2\2\u0080\u035c\3\2\2\2\u0082\u0369\3\2\2\2\u0084\u038a\3\2\2\2\u0086"+
-		"\u03a5\3\2\2\2\u0088\u03a7\3\2\2\2\u008a\u03ab\3\2\2\2\u008c\u03b3\3\2"+
-		"\2\2\u008e\u03c1\3\2\2\2\u0090\u03c4\3\2\2\2\u0092\u03d0\3\2\2\2\u0094"+
-		"\u03df\3\2\2\2\u0096\u03ea\3\2\2\2\u0098\u03f5\3\2\2\2\u009a\u03fb\3\2"+
-		"\2\2\u009c\u03fd\3\2\2\2\u009e\u040b\3\2\2\2\u00a0\u0411\3\2\2\2\u00a2"+
-		"\u0418\3\2\2\2\u00a4\u0421\3\2\2\2\u00a6\u0429\3\2\2\2\u00a8\u0431\3\2"+
-		"\2\2\u00aa\u043a\3\2\2\2\u00ac\u0452\3\2\2\2\u00ae\u0454\3\2\2\2\u00b0"+
-		"\u045c\3\2\2\2\u00b2\u0464\3\2\2\2\u00b4\u046c\3\2\2\2\u00b6\u0475\3\2"+
-		"\2\2\u00b8\u047e\3\2\2\2\u00ba\u048a\3\2\2\2\u00bc\u04a2\3\2\2\2\u00be"+
-		"\u04ae\3\2\2\2\u00c0\u04b8\3\2\2\2\u00c2\u04d5\3\2\2\2\u00c4\u04f5\3\2"+
-		"\2\2\u00c6\u04fe\3\2\2\2\u00c8\u0504\3\2\2\2\u00ca\u0508\3\2\2\2\u00cc"+
-		"\u050a\3\2\2\2\u00ce\u050c\3\2\2\2\u00d0\u050e\3\2\2\2\u00d2\u0510\3\2"+
-		"\2\2\u00d4\u0512\3\2\2\2\u00d6\u0514\3\2\2\2\u00d8\u0516\3\2\2\2\u00da"+
-		"\u0518\3\2\2\2\u00dc\u0521\3\2\2\2\u00de\u052b\3\2\2\2\u00e0\u0531\3\2"+
-		"\2\2\u00e2\u053e\3\2\2\2\u00e4\u0553\3\2\2\2\u00e6\u0555\3\2\2\2\u00e8"+
-		"\u055a\3\2\2\2\u00ea\u0567\3\2\2\2\u00ec\u0575\3\2\2\2\u00ee\u059e\3\2"+
-		"\2\2\u00f0\u05a5\3\2\2\2\u00f2\u05a7\3\2\2\2\u00f4\u00f8\5\4\3\2\u00f5"+
-		"\u00f7\5\n\6\2\u00f6\u00f5\3\2\2\2\u00f7\u00fa\3\2\2\2\u00f8\u00f6\3\2"+
-		"\2\2\u00f8\u00f9\3\2\2\2\u00f9\3\3\2\2\2\u00fa\u00f8\3\2\2\2\u00fb\u00fd"+
-		"\5\6\4\2\u00fc\u00fb\3\2\2\2\u00fc\u00fd\3\2\2\2\u00fd\u0101\3\2\2\2\u00fe"+
-		"\u0100\5\b\5\2\u00ff\u00fe\3\2\2\2\u0100\u0103\3\2\2\2\u0101\u00ff\3\2"+
-		"\2\2\u0101\u0102\3\2\2\2\u0102\5\3\2\2\2\u0103\u0101\3\2\2\2\u0104\u0105"+
-		"\7\16\2\2\u0105\u010a\5\u00c0a\2\u0106\u0107\7\20\2\2\u0107\u0109\5\u00c0"+
-		"a\2\u0108\u0106\3\2\2\2\u0109\u010c\3\2\2\2\u010a\u0108\3\2\2\2\u010a"+
-		"\u010b\3\2\2\2\u010b\u0110\3\2\2\2\u010c\u010a\3\2\2\2\u010d\u010f\7\7"+
-		"\2\2\u010e\u010d\3\2\2\2\u010f\u0112\3\2\2\2\u0110\u010e\3\2\2\2\u0110"+
-		"\u0111\3\2\2\2\u0111\7\3\2\2\2\u0112\u0110\3\2\2\2\u0113\u0114\7\17\2"+
-		"\2\u0114\u0119\5\u00c0a\2\u0115\u0116\7\20\2\2\u0116\u0118\5\u00c0a\2"+
-		"\u0117\u0115\3\2\2\2\u0118\u011b\3\2\2\2\u0119\u0117\3\2\2\2\u0119\u011a"+
-		"\3\2\2\2\u011a\u0120\3\2\2\2\u011b\u0119\3\2\2\2\u011c\u011d\7\20\2\2"+
-		"\u011d\u0121\7\21\2\2\u011e\u011f\7\62\2\2\u011f\u0121\7v\2\2\u0120\u011c"+
-		"\3\2\2\2\u0120\u011e\3\2\2\2\u0120\u0121\3\2\2\2\u0121\u0125\3\2\2\2\u0122"+
-		"\u0124\7\7\2\2\u0123\u0122\3\2\2\2\u0124\u0127\3\2\2\2\u0125\u0123\3\2"+
-		"\2\2\u0125\u0126\3\2\2\2\u0126\t\3\2\2\2\u0127\u0125\3\2\2\2\u0128\u012e"+
-		"\5.\30\2\u0129\u012e\5\u0082B\2\u012a\u012e\5r:\2\u012b\u012e\5v<\2\u012c"+
-		"\u012e\5x=\2\u012d\u0128\3\2\2\2\u012d\u0129\3\2\2\2\u012d\u012a\3\2\2"+
-		"\2\u012d\u012b\3\2\2\2\u012d\u012c\3\2\2\2\u012e\13\3\2\2\2\u012f\u0137"+
-		"\5z>\2\u0130\u0137\5v<\2\u0131\u0137\5\u0082B\2\u0132\u0137\5.\30\2\u0133"+
-		"\u0137\5r:\2\u0134\u0137\5\u008aF\2\u0135\u0137\5f\64\2\u0136\u012f\3"+
-		"\2\2\2\u0136\u0130\3\2\2\2\u0136\u0131\3\2\2\2\u0136\u0132\3\2\2\2\u0136"+
-		"\u0133\3\2\2\2\u0136\u0134\3\2\2\2\u0136\u0135\3\2\2\2\u0137\r\3\2\2\2"+
-		"\u0138\u013a\5B\"\2\u0139\u0138\3\2\2\2\u0139\u013a\3\2\2\2\u013a\17\3"+
-		"\2\2\2\u013b\u013c\7\23\2\2\u013c\u0141\5\22\n\2\u013d\u013e\7\22\2\2"+
-		"\u013e\u0140\5\22\n\2\u013f\u013d\3\2\2\2\u0140\u0143\3\2\2\2\u0141\u013f"+
-		"\3\2\2\2\u0141\u0142\3\2\2\2\u0142\u0144\3\2\2\2\u0143\u0141\3\2\2\2\u0144"+
-		"\u0145\7\25\2\2\u0145\21\3\2\2\2\u0146\u0147\5\64\33\2\u0147\u014a\7v"+
-		"\2\2\u0148\u0149\7\33\2\2\u0149\u014b\5\36\20\2\u014a\u0148\3\2\2\2\u014a"+
-		"\u014b\3\2\2\2\u014b\23\3\2\2\2\u014c\u014e\7\23\2\2\u014d\u014f\5\32"+
-		"\16\2\u014e\u014d\3\2\2\2\u014e\u014f\3\2\2\2\u014f\u0154\3\2\2\2\u0150"+
-		"\u0151\7\22\2\2\u0151\u0153\5\32\16\2\u0152\u0150\3\2\2\2\u0153\u0156"+
-		"\3\2\2\2\u0154\u0152\3\2\2\2\u0154\u0155\3\2\2\2\u0155\u0157\3\2\2\2\u0156"+
-		"\u0154\3\2\2\2\u0157\u0158\7\25\2\2\u0158\25\3\2\2\2\u0159\u015a\7D\2"+
-		"\2\u015a\u015f\5\30\r\2\u015b\u015c\7\22\2\2\u015c\u015e\5\30\r\2\u015d"+
-		"\u015b\3\2\2\2\u015e\u0161\3\2\2\2\u015f\u015d\3\2\2\2\u015f\u0160\3\2"+
-		"\2\2\u0160\u0163\3\2\2\2\u0161\u015f\3\2\2\2\u0162\u0159\3\2\2\2\u0162"+
-		"\u0163\3\2\2\2\u0163\27\3\2\2\2\u0164\u0166\5D#\2\u0165\u0164\3\2\2\2"+
-		"\u0165\u0166\3\2\2\2\u0166\u0167\3\2\2\2\u0167\u0168\7v\2\2\u0168\u0169"+
-		"\7\33\2\2\u0169\u016a\5\32\16\2\u016a\31\3\2\2\2\u016b\u016d\5D#\2\u016c"+
-		"\u016b\3\2\2\2\u016c\u016d\3\2\2\2\u016d\u016e\3\2\2\2\u016e\u016f\5\34"+
-		"\17\2\u016f\33\3\2\2\2\u0170\u0171\7\34\2\2\u0171\u0172\5\34\17\2\u0172"+
-		"\u0174\7\35\2\2\u0173\u0175\7\36\2\2\u0174\u0173\3\2\2\2\u0174\u0175\3"+
-		"\2\2\2\u0175\u0177\3\2\2\2\u0176\u0178\5(\25\2\u0177\u0176\3\2\2\2\u0177"+
-		"\u0178\3\2\2\2\u0178\u018c\3\2\2\2\u0179\u017b\5*\26\2\u017a\u017c\5("+
-		"\25\2\u017b\u017a\3\2\2\2\u017b\u017c\3\2\2\2\u017c\u018c\3\2\2\2\u017d"+
-		"\u017f\5\36\20\2\u017e\u0180\7\36\2\2\u017f\u017e\3\2\2\2\u017f\u0180"+
-		"\3\2\2\2\u0180\u0182\3\2\2\2\u0181\u0183\5(\25\2\u0182\u0181\3\2\2\2\u0182"+
-		"\u0183\3\2\2\2\u0183\u018c\3\2\2\2\u0184\u0186\7C\2\2\u0185\u0187\7\36"+
-		"\2\2\u0186\u0185\3\2\2\2\u0186\u0187\3\2\2\2\u0187\u0189\3\2\2\2\u0188"+
-		"\u018a\5(\25\2\u0189\u0188\3\2\2\2\u0189\u018a\3\2\2\2\u018a\u018c\3\2"+
-		"\2\2\u018b\u0170\3\2\2\2\u018b\u0179\3\2\2\2\u018b\u017d\3\2\2\2\u018b"+
-		"\u0184\3\2\2\2\u018c\35\3\2\2\2\u018d\u018e\7\16\2\2\u018e\u0190\7\20"+
-		"\2\2\u018f\u018d\3\2\2\2\u018f\u0190\3\2\2\2\u0190\u0191\3\2\2\2\u0191"+
-		"\u0196\5\"\22\2\u0192\u0193\7\20\2\2\u0193\u0195\5\"\22\2\u0194\u0192"+
-		"\3\2\2\2\u0195\u0198\3\2\2\2\u0196\u0194\3\2\2\2\u0196\u0197\3\2\2\2\u0197"+
-		"\37\3\2\2\2\u0198\u0196\3\2\2\2\u0199\u019e\7\21\2\2\u019a\u019b\5\16"+
-		"\b\2\u019b\u019c\5\32\16\2\u019c\u019e\3\2\2\2\u019d\u0199\3\2\2\2\u019d"+
-		"\u019a\3\2\2\2\u019e!\3\2\2\2\u019f\u01ab\7v\2\2\u01a0\u01a1\7\23\2\2"+
-		"\u01a1\u01a6\5 \21\2\u01a2\u01a3\7\22\2\2\u01a3\u01a5\5 \21\2\u01a4\u01a2"+
-		"\3\2\2\2\u01a5\u01a8\3\2\2\2\u01a6\u01a4\3\2\2\2\u01a6\u01a7\3\2\2\2\u01a7"+
-		"\u01a9\3\2\2\2\u01a8\u01a6\3\2\2\2\u01a9\u01aa\7\25\2\2\u01aa\u01ac\3"+
-		"\2\2\2\u01ab\u01a0\3\2\2\2\u01ab\u01ac\3\2\2\2\u01ac#\3\2\2\2\u01ad\u01b0"+
-		"\7v\2\2\u01ae\u01af\7\33\2\2\u01af\u01b1\5\32\16\2\u01b0\u01ae\3\2\2\2"+
-		"\u01b0\u01b1\3\2\2\2\u01b1%\3\2\2\2\u01b2\u01b7\5V,\2\u01b3\u01b4\5\64"+
-		"\33\2\u01b4\u01b5\5\32\16\2\u01b5\u01b7\3\2\2\2\u01b6\u01b2\3\2\2\2\u01b6"+
-		"\u01b3\3\2\2\2\u01b7\'\3\2\2\2\u01b8\u01b9\7\20\2\2\u01b9\u01ba\5*\26"+
-		"\2\u01ba)\3\2\2\2\u01bb\u01c4\7\34\2\2\u01bc\u01c1\5&\24\2\u01bd\u01be"+
-		"\7\22\2\2\u01be\u01c0\5&\24\2\u01bf\u01bd\3\2\2\2\u01c0\u01c3\3\2\2\2"+
-		"\u01c1\u01bf\3\2\2\2\u01c1\u01c2\3\2\2\2\u01c2\u01c5\3\2\2\2\u01c3\u01c1"+
-		"\3\2\2\2\u01c4\u01bc\3\2\2\2\u01c4\u01c5\3\2\2\2\u01c5\u01c6\3\2\2\2\u01c6"+
-		"\u01c7\7\35\2\2\u01c7\u01c8\7)\2\2\u01c8\u01c9\5\32\16\2\u01c9+\3\2\2"+
-		"\2\u01ca\u01cb\7\34\2\2\u01cb\u01d0\5$\23\2\u01cc\u01cd\7\22\2\2\u01cd"+
-		"\u01cf\5$\23\2\u01ce\u01cc\3\2\2\2\u01cf\u01d2\3\2\2\2\u01d0\u01ce\3\2"+
-		"\2\2\u01d0\u01d1\3\2\2\2\u01d1\u01d3\3\2\2\2\u01d2\u01d0\3\2\2\2\u01d3"+
-		"\u01d4\7\35\2\2\u01d4-\3\2\2\2\u01d5\u01d6\5\64\33\2\u01d6\u01d8\t\2\2"+
-		"\2\u01d7\u01d9\5\20\t\2\u01d8\u01d7\3\2\2\2\u01d8\u01d9\3\2\2\2\u01d9"+
-		"\u01dd\3\2\2\2\u01da\u01db\5\32\16\2\u01db\u01dc\7\20\2\2\u01dc\u01de"+
-		"\3\2\2\2\u01dd\u01da\3\2\2\2\u01dd\u01de\3\2\2\2\u01de\u01e1\3\2\2\2\u01df"+
-		"\u01e2\5,\27\2\u01e0\u01e2\5$\23\2\u01e1\u01df\3\2\2\2\u01e1\u01e0\3\2"+
-		"\2\2\u01e2\u01e3\3\2\2\2\u01e3\u01ec\5\26\f\2\u01e4\u01e5\t\3\2\2\u01e5"+
-		"\u01e9\5\u00a2R\2\u01e6\u01e8\7\7\2\2\u01e7\u01e6\3\2\2\2\u01e8\u01eb"+
-		"\3\2\2\2\u01e9\u01e7\3\2\2\2\u01e9\u01ea\3\2\2\2\u01ea\u01ed\3\2\2\2\u01eb"+
-		"\u01e9\3\2\2\2\u01ec\u01e4\3\2\2\2\u01ec\u01ed\3\2\2\2\u01ed\u01fa\3\2"+
-		"\2\2\u01ee\u01f0\5\60\31\2\u01ef\u01ee\3\2\2\2\u01ef\u01f0\3\2\2\2\u01f0"+
-		"\u01f2\3\2\2\2\u01f1\u01f3\5\62\32\2\u01f2\u01f1\3\2\2\2\u01f2\u01f3\3"+
-		"\2\2\2\u01f3\u01fb\3\2\2\2\u01f4\u01f6\5\62\32\2\u01f5\u01f4\3\2\2\2\u01f5"+
-		"\u01f6\3\2\2\2\u01f6\u01f8\3\2\2\2\u01f7\u01f9\5\60\31\2\u01f8\u01f7\3"+
-		"\2\2\2\u01f8\u01f9\3\2\2\2\u01f9\u01fb\3\2\2\2\u01fa\u01ef\3\2\2\2\u01fa"+
-		"\u01f5\3\2\2\2\u01fb\u01ff\3\2\2\2\u01fc\u01fe\7\7\2\2\u01fd\u01fc\3\2"+
-		"\2\2\u01fe\u0201\3\2\2\2\u01ff\u01fd\3\2\2\2\u01ff\u0200\3\2\2\2\u0200"+
-		"/\3\2\2\2\u0201\u01ff\3\2\2\2\u0202\u0203\5\64\33\2\u0203\u0204\7E\2\2"+
-		"\u0204\u0210\3\2\2\2\u0205\u0206\5\64\33\2\u0206\u0207\7E\2\2\u0207\u0208"+
-		"\7\34\2\2\u0208\u020b\7\35\2\2\u0209\u020a\7\33\2\2\u020a\u020c\5\32\16"+
-		"\2\u020b\u0209\3\2\2\2\u020b\u020c\3\2\2\2\u020c\u020d\3\2\2\2\u020d\u020e"+
-		"\5\u0086D\2\u020e\u0210\3\2\2\2\u020f\u0202\3\2\2\2\u020f\u0205\3\2\2"+
-		"\2\u0210\61\3\2\2\2\u0211\u0212\5\64\33\2\u0212\u0213\7F\2\2\u0213\u0220"+
-		"\3\2\2\2\u0214\u0215\5\64\33\2\u0215\u0216\7F\2\2\u0216\u0217\7\34\2\2"+
-		"\u0217\u021a\5\64\33\2\u0218\u021b\7v\2\2\u0219\u021b\5V,\2\u021a\u0218"+
-		"\3\2\2\2\u021a\u0219\3\2\2\2\u021b\u021c\3\2\2\2\u021c\u021d\7\35\2\2"+
-		"\u021d\u021e\5\u0086D\2\u021e\u0220\3\2\2\2\u021f\u0211\3\2\2\2\u021f"+
-		"\u0214\3\2\2\2\u0220\63\3\2\2\2\u0221\u0223\5\66\34\2\u0222\u0221\3\2"+
-		"\2\2\u0223\u0226\3\2\2\2\u0224\u0222\3\2\2\2\u0224\u0225\3\2\2\2\u0225"+
-		"\65\3\2\2\2\u0226\u0224\3\2\2\2\u0227\u0228\58\35\2\u0228\67\3\2\2\2\u0229"+
-		"\u0231\5:\36\2\u022a\u0231\5@!\2\u022b\u0231\5B\"\2\u022c\u0231\5D#\2"+
-		"\u022d\u0231\5<\37\2\u022e\u0231\5> \2\u022f\u0231\7A\2\2\u0230\u0229"+
-		"\3\2\2\2\u0230\u022a\3\2\2\2\u0230\u022b\3\2\2\2\u0230\u022c\3\2\2\2\u0230"+
-		"\u022d\3\2\2\2\u0230\u022e\3\2\2\2\u0230\u022f\3\2\2\2\u02319\3\2\2\2"+
-		"\u0232\u0233\t\4\2\2\u0233;\3\2\2\2\u0234\u0235\t\5\2\2\u0235=\3\2\2\2"+
-		"\u0236\u0237\t\6\2\2\u0237?\3\2\2\2\u0238\u0239\t\7\2\2\u0239A\3\2\2\2"+
-		"\u023a\u023b\t\b\2\2\u023bC\3\2\2\2\u023c\u023e\5F$\2\u023d\u023c\3\2"+
-		"\2\2\u023e\u023f\3\2\2\2\u023f\u023d\3\2\2\2\u023f\u0240\3\2\2\2\u0240"+
-		"E\3\2\2\2\u0241\u0245\7X\2\2\u0242\u0243\5H%\2\u0243\u0244\7\33\2\2\u0244"+
-		"\u0246\3\2\2\2\u0245\u0242\3\2\2\2\u0245\u0246\3\2\2\2\u0246\u0247\3\2"+
-		"\2\2\u0247\u0248\5N(\2\u0248G\3\2\2\2\u0249\u024a\t\t\2\2\u024aI\3\2\2"+
-		"\2\u024b\u024c\5\u00c0a\2\u024c\u024d\7\27\2\2\u024d\u024f\3\2\2\2\u024e"+
-		"\u024b\3\2\2\2\u024e\u024f\3\2\2\2\u024f\u0251\3\2\2\2\u0250\u0252\7\21"+
-		"\2\2\u0251\u0250\3\2\2\2\u0251\u0252\3\2\2\2\u0252\u0253\3\2\2\2\u0253"+
-		"\u0254\5\u00a2R\2\u0254K\3\2\2\2\u0255\u025e\7\34\2\2\u0256\u025b\5J&"+
-		"\2\u0257\u0258\7\22\2\2\u0258\u025a\5J&\2\u0259\u0257\3\2\2\2\u025a\u025d"+
-		"\3\2\2\2\u025b\u0259\3\2\2\2\u025b\u025c\3\2\2\2\u025c\u025f\3\2\2\2\u025d"+
-		"\u025b\3\2\2\2\u025e\u0256\3\2\2\2\u025e\u025f\3\2\2\2\u025f\u0260\3\2"+
-		"\2\2\u0260\u0261\7\35\2\2\u0261M\3\2\2\2\u0262\u0267\5\u00c0a\2\u0263"+
-		"\u0264\7\20\2\2\u0264\u0266\5\u00c0a\2\u0265\u0263\3\2\2\2\u0266\u0269"+
-		"\3\2\2\2\u0267\u0265\3\2\2\2\u0267\u0268\3\2\2\2\u0268\u026b\3\2\2\2\u0269"+
-		"\u0267\3\2\2\2\u026a\u026c\5\24\13\2\u026b\u026a\3\2\2\2\u026b\u026c\3"+
-		"\2\2\2\u026c\u026e\3\2\2\2\u026d\u026f\5L\'\2\u026e\u026d\3\2\2\2\u026e"+
-		"\u026f\3\2\2\2\u026fO\3\2\2\2\u0270\u0271\7^\2\2\u0271\u0282\5\u00a2R"+
-		"\2\u0272\u0274\7`\2\2\u0273\u0275\5R*\2\u0274\u0273\3\2\2\2\u0274\u0275"+
-		"\3\2\2\2\u0275\u0277\3\2\2\2\u0276\u0278\5\u00a2R\2\u0277\u0276\3\2\2"+
-		"\2\u0277\u0278\3\2\2\2\u0278\u0282\3\2\2\2\u0279\u027b\7_\2\2\u027a\u027c"+
-		"\5R*\2\u027b\u027a\3\2\2\2\u027b\u027c\3\2\2\2\u027c\u0282\3\2\2\2\u027d"+
-		"\u027f\7a\2\2\u027e\u0280\5R*\2\u027f\u027e\3\2\2\2\u027f\u0280\3\2\2"+
-		"\2\u0280\u0282\3\2\2\2\u0281\u0270\3\2\2\2\u0281\u0272\3\2\2\2\u0281\u0279"+
-		"\3\2\2\2\u0281\u027d\3\2\2\2\u0282Q\3\2\2\2\u0283\u0288\7X\2\2\u0284\u0289"+
-		"\5\u00c0a\2\u0285\u0289\7p\2\2\u0286\u0289\7o\2\2\u0287\u0289\7n\2\2\u0288"+
-		"\u0284\3\2\2\2\u0288\u0285\3\2\2\2\u0288\u0286\3\2\2\2\u0288\u0287\3\2"+
-		"\2\2\u0289S\3\2\2\2\u028a\u028b\5\u00c0a\2\u028b\u028c\7X\2\2\u028cU\3"+
-		"\2\2\2\u028d\u028e\7v\2\2\u028e\u028f\7\33\2\2\u028f\u0290\5\32\16\2\u0290"+
-		"W\3\2\2\2\u0291\u0294\5Z.\2\u0292\u0294\5\\/\2\u0293\u0291\3\2\2\2\u0293"+
-		"\u0292\3\2\2\2\u0294Y\3\2\2\2\u0295\u0296\5\64\33\2\u0296\u0297\5V,\2"+
-		"\u0297[\3\2\2\2\u0298\u0299\5Z.\2\u0299\u029a\7\27\2\2\u029a\u029b\5\u00a2"+
-		"R\2\u029b]\3\2\2\2\u029c\u029f\5`\61\2\u029d\u029f\5b\62\2\u029e\u029c"+
-		"\3\2\2\2\u029e\u029d\3\2\2\2\u029f_\3\2\2\2\u02a0\u02a2\5\64\33\2\u02a1"+
-		"\u02a3\t\2\2\2\u02a2\u02a1\3\2\2\2\u02a2\u02a3\3\2\2\2\u02a3\u02a4\3\2"+
-		"\2\2\u02a4\u02a5\5V,\2\u02a5a\3\2\2\2\u02a6\u02a7\5`\61\2\u02a7\u02a8"+
-		"\7\27\2\2\u02a8\u02a9\5\u00a2R\2\u02a9c\3\2\2\2\u02aa\u02ac\5@!\2\u02ab"+
-		"\u02aa\3\2\2\2\u02ab\u02ac\3\2\2\2\u02ac\u02ad\3\2\2\2\u02ad\u02af\7b"+
-		"\2\2\u02ae\u02ab\3\2\2\2\u02ae\u02af\3\2\2\2\u02af\u02b0\3\2\2\2\u02b0"+
-		"\u02b9\7\34\2\2\u02b1\u02b6\5^\60\2\u02b2\u02b3\7\22\2\2\u02b3\u02b5\5"+
-		"^\60\2\u02b4\u02b2\3\2\2\2\u02b5\u02b8\3\2\2\2\u02b6\u02b4\3\2\2\2\u02b6"+
-		"\u02b7\3\2\2\2\u02b7\u02ba\3\2\2\2\u02b8\u02b6\3\2\2\2\u02b9\u02b1\3\2"+
-		"\2\2\u02b9\u02ba\3\2\2\2\u02ba\u02bb\3\2\2\2\u02bb\u02bc\7\35\2\2\u02bc"+
-		"e\3\2\2\2\u02bd\u02bf\5@!\2\u02be\u02bd\3\2\2\2\u02be\u02bf\3\2\2\2\u02bf"+
-		"\u02c0\3\2\2\2\u02c0\u02c1\7b\2\2\u02c1\u02ca\7\34\2\2\u02c2\u02c7\5^"+
-		"\60\2\u02c3\u02c4\7\22\2\2\u02c4\u02c6\5^\60\2\u02c5\u02c3\3\2\2\2\u02c6"+
-		"\u02c9\3\2\2\2\u02c7\u02c5\3\2\2\2\u02c7\u02c8\3\2\2\2\u02c8\u02cb\3\2"+
-		"\2\2\u02c9\u02c7\3\2\2\2\u02ca\u02c2\3\2\2\2\u02ca\u02cb\3\2\2\2\u02cb"+
-		"\u02cc\3\2\2\2\u02cc\u02cd\7\35\2\2\u02cd\u02d0\3\2\2\2\u02ce\u02cf\7"+
-		"\33\2\2\u02cf\u02d1\5h\65\2\u02d0\u02ce\3\2\2\2\u02d0\u02d1\3\2\2\2\u02d1"+
-		"\u02d3\3\2\2\2\u02d2\u02d4\5\u0088E\2\u02d3\u02d2\3\2\2\2\u02d3\u02d4"+
-		"\3\2\2\2\u02d4\u02d8\3\2\2\2\u02d5\u02d7\7\7\2\2\u02d6\u02d5\3\2\2\2\u02d7"+
-		"\u02da\3\2\2\2\u02d8\u02d6\3\2\2\2\u02d8\u02d9\3\2\2\2\u02d9g\3\2\2\2"+
-		"\u02da\u02d8\3\2\2\2\u02db\u02dc\7c\2\2\u02dc\u02e0\5L\'\2\u02dd\u02de"+
-		"\7d\2\2\u02de\u02e0\5L\'\2\u02df\u02db\3\2\2\2\u02df\u02dd\3\2\2\2\u02e0"+
-		"i\3\2\2\2\u02e1\u02e3\5\24\13\2\u02e2\u02e1\3\2\2\2\u02e2\u02e3\3\2\2"+
-		"\2\u02e3\u02e4\3\2\2\2\u02e4\u02e6\5L\'\2\u02e5\u02e7\5\u00e0q\2\u02e6"+
-		"\u02e5\3\2\2\2\u02e6\u02e7\3\2\2\2\u02e7\u02ed\3\2\2\2\u02e8\u02e9\5\24"+
-		"\13\2\u02e9\u02ea\5\u00e0q\2\u02ea\u02ed\3\2\2\2\u02eb\u02ed\5\u00e0q"+
-		"\2\u02ec\u02e2\3\2\2\2\u02ec\u02e8\3\2\2\2\u02ec\u02eb\3\2\2\2\u02edk"+
-		"\3\2\2\2\u02ee\u02f0\5\36\20\2\u02ef\u02f1\5\24\13\2\u02f0\u02ef\3\2\2"+
-		"\2\u02f0\u02f1\3\2\2\2\u02f1\u02f2\3\2\2\2\u02f2\u02f3\5L\'\2\u02f3m\3"+
-		"\2\2\2\u02f4\u02f5\5\36\20\2\u02f5\u02f6\7B\2\2\u02f6\u02f7\5\u00a2R\2"+
-		"\u02f7o\3\2\2\2\u02f8\u02fc\5l\67\2\u02f9\u02fc\5\36\20\2\u02fa\u02fc"+
-		"\5n8\2\u02fb\u02f8\3\2\2\2\u02fb\u02f9\3\2\2\2\u02fb\u02fa\3\2\2\2\u02fc"+
-		"q\3\2\2\2\u02fd\u02fe\5\64\33\2\u02fe\u02ff\t\n\2\2\u02ff\u0301\7v\2\2"+
-		"\u0300\u0302\5\20\t\2\u0301\u0300\3\2\2\2\u0301\u0302\3\2\2\2\u0302\u0304"+
-		"\3\2\2\2\u0303\u0305\5d\63\2\u0304\u0303\3\2\2\2\u0304\u0305\3\2\2\2\u0305"+
-		"\u0312\3\2\2\2\u0306\u0308\7\33\2\2\u0307\u0309\5D#\2\u0308\u0307\3\2"+
-		"\2\2\u0308\u0309\3\2\2\2\u0309\u030a\3\2\2\2\u030a\u030f\5p9\2\u030b\u030c"+
-		"\7\22\2\2\u030c\u030e\5p9\2\u030d\u030b\3\2\2\2\u030e\u0311\3\2\2\2\u030f"+
-		"\u030d\3\2\2\2\u030f\u0310\3\2\2\2\u0310\u0313\3\2\2\2\u0311\u030f\3\2"+
-		"\2\2\u0312\u0306\3\2\2\2\u0312\u0313\3\2\2\2\u0313\u0314\3\2\2\2\u0314"+
-		"\u0317\5\26\f\2\u0315\u0318\5|?\2\u0316\u0318\5\u008cG\2\u0317\u0315\3"+
-		"\2\2\2\u0317\u0316\3\2\2\2\u0318\u031c\3\2\2\2\u0319\u031b\7\7\2\2\u031a"+
-		"\u0319\3\2\2\2\u031b\u031e\3\2\2\2\u031c\u031a\3\2\2\2\u031c\u031d\3\2"+
-		"\2\2\u031ds\3\2\2\2\u031e\u031c\3\2\2\2\u031f\u0320\7\33\2\2\u0320\u0325"+
-		"\5p9\2\u0321\u0322\7\22\2\2\u0322\u0324\5p9\2\u0323\u0321\3\2\2\2\u0324"+
-		"\u0327\3\2\2\2\u0325\u0323\3\2\2\2\u0325\u0326\3\2\2\2\u0326u\3\2\2\2"+
-		"\u0327\u0325\3\2\2\2\u0328\u0329\5\64\33\2\u0329\u032a\7g\2\2\u032a\u032c"+
-		"\7v\2\2\u032b\u032d\5d\63\2\u032c\u032b\3\2\2\2\u032c\u032d\3\2\2\2\u032d"+
-		"\u032f\3\2\2\2\u032e\u0330\5t;\2\u032f\u032e\3\2\2\2\u032f\u0330\3\2\2"+
-		"\2\u0330\u0331\3\2\2\2\u0331\u0335\5|?\2\u0332\u0334\7\7\2\2\u0333\u0332"+
-		"\3\2\2\2\u0334\u0337\3\2\2\2\u0335\u0333\3\2\2\2\u0335\u0336\3\2\2\2\u0336"+
-		"w\3\2\2\2\u0337\u0335\3\2\2\2\u0338\u0339\5\64\33\2\u0339\u033a\7j\2\2"+
-		"\u033a\u033b\7v\2\2\u033b\u033c\7\27\2\2\u033c\u0340\5\"\22\2\u033d\u033f"+
-		"\7\7\2\2\u033e\u033d\3\2\2\2\u033f\u0342\3\2\2\2\u0340\u033e\3\2\2\2\u0340"+
-		"\u0341\3\2\2\2\u0341y\3\2\2\2\u0342\u0340\3\2\2\2\u0343\u0344\5\64\33"+
-		"\2\u0344\u0345\7h\2\2\u0345\u0347\7g\2\2\u0346\u0348\5t;\2\u0347\u0346"+
-		"\3\2\2\2\u0347\u0348\3\2\2\2\u0348\u0349\3\2\2\2\u0349\u034d\5|?\2\u034a"+
-		"\u034c\7\7\2\2\u034b\u034a\3\2\2\2\u034c\u034f\3\2\2\2\u034d\u034b\3\2"+
-		"\2\2\u034d\u034e\3\2\2\2\u034e{\3\2\2\2\u034f\u034d\3\2\2\2\u0350\u0351"+
-		"\7\b\2\2\u0351\u0352\5~@\2\u0352\u0353\7\t\2\2\u0353\u0355\3\2\2\2\u0354"+
-		"\u0350\3\2\2\2\u0354\u0355\3\2\2\2\u0355}\3\2\2\2\u0356\u0358\5\f\7\2"+
-		"\u0357\u0356\3\2\2\2\u0358\u035b\3\2\2\2\u0359\u0357\3\2\2\2\u0359\u035a"+
-		"\3\2\2\2\u035a\177\3\2\2\2\u035b\u0359\3\2\2\2\u035c\u0365\7\34\2\2\u035d"+
-		"\u0362\5X-\2\u035e\u035f\7\22\2\2\u035f\u0361\5X-\2\u0360\u035e\3\2\2"+
-		"\2\u0361\u0364\3\2\2\2\u0362\u0360\3\2\2\2\u0362\u0363\3\2\2\2\u0363\u0366"+
-		"\3\2\2\2\u0364\u0362\3\2\2\2\u0365\u035d\3\2\2\2\u0365\u0366\3\2\2\2\u0366"+
-		"\u0367\3\2\2\2\u0367\u0368\7\35\2\2\u0368\u0081\3\2\2\2\u0369\u036a\5"+
-		"\64\33\2\u036a\u036c\7i\2\2\u036b\u036d\5\20\t\2\u036c\u036b\3\2\2\2\u036c"+
-		"\u036d\3\2\2\2\u036d\u0372\3\2\2\2\u036e\u036f\5\32\16\2\u036f\u0370\7"+
-		"\20\2\2\u0370\u0373\3\2\2\2\u0371\u0373\5D#\2\u0372\u036e\3\2\2\2\u0372"+
-		"\u0371\3\2\2\2\u0372\u0373\3\2\2\2\u0373\u0374\3\2\2\2\u0374\u0376\7v"+
-		"\2\2\u0375\u0377\5\20\t\2\u0376\u0375\3\2\2\2\u0376\u0377\3\2\2\2\u0377"+
-		"\u0378\3\2\2\2\u0378\u037b\5\u0080A\2\u0379\u037a\7\33\2\2\u037a\u037c"+
-		"\5\32\16\2\u037b\u0379\3\2\2\2\u037b\u037c\3\2\2\2\u037c\u037d\3\2\2\2"+
-		"\u037d\u037f\5\26\f\2\u037e\u0380\5\u0086D\2\u037f\u037e\3\2\2\2\u037f"+
-		"\u0380\3\2\2\2\u0380\u0384\3\2\2\2\u0381\u0383\7\7\2\2\u0382\u0381\3\2"+
-		"\2\2\u0383\u0386\3\2\2\2\u0384\u0382\3\2\2\2\u0384\u0385\3\2\2\2\u0385"+
-		"\u0083\3\2\2\2\u0386\u0384\3\2\2\2\u0387\u0389\7\7\2\2\u0388\u0387\3\2"+
-		"\2\2\u0389\u038c\3\2\2\2\u038a\u0388\3\2\2\2\u038a\u038b\3\2\2\2\u038b"+
-		"\u039a\3\2\2\2\u038c\u038a\3\2\2\2\u038d\u0397\5\u00caf\2\u038e\u0390"+
-		"\7\7\2\2\u038f\u038e\3\2\2\2\u0390\u0393\3\2\2\2\u0391\u038f\3\2\2\2\u0391"+
-		"\u0392\3\2\2\2\u0392\u0394\3\2\2\2\u0393\u0391\3\2\2\2\u0394\u0396\5\u00ca"+
-		"f\2\u0395\u0391\3\2\2\2\u0396\u0399\3\2\2\2\u0397\u0395\3\2\2\2\u0397"+
-		"\u0398\3\2\2\2\u0398\u039b\3\2\2\2\u0399\u0397\3\2\2\2\u039a\u038d\3\2"+
-		"\2\2\u039a\u039b\3\2\2\2\u039b\u039f\3\2\2\2\u039c\u039e\7\7\2\2\u039d"+
-		"\u039c\3\2\2\2\u039e\u03a1\3\2\2\2\u039f\u039d\3\2\2\2\u039f\u03a0\3\2"+
-		"\2\2\u03a0\u0085\3\2\2\2\u03a1\u039f\3\2\2\2\u03a2\u03a6\5\u0088E\2\u03a3"+
-		"\u03a4\7\27\2\2\u03a4\u03a6\5\u00a2R\2\u03a5\u03a2\3\2\2\2\u03a5\u03a3"+
-		"\3\2\2\2\u03a6\u0087\3\2\2\2\u03a7\u03a8\7\b\2\2\u03a8\u03a9\5\u0084C"+
-		"\2\u03a9\u03aa\7\t\2\2\u03aa\u0089\3\2\2\2\u03ab\u03ac\7k\2\2\u03ac\u03b0"+
-		"\5\u0088E\2\u03ad\u03af\7\7\2\2\u03ae\u03ad\3\2\2\2\u03af\u03b2\3\2\2"+
-		"\2\u03b0\u03ae\3\2\2\2\u03b0\u03b1\3\2\2\2\u03b1\u008b\3\2\2\2\u03b2\u03b0"+
-		"\3\2\2\2\u03b3\u03b4\7\b\2\2\u03b4\u03b7\5\u008eH\2\u03b5\u03b6\7\7\2"+
-		"\2\u03b6\u03b8\5~@\2\u03b7\u03b5\3\2\2\2\u03b7\u03b8\3\2\2\2\u03b8\u03b9"+
-		"\3\2\2\2\u03b9\u03ba\7\t\2\2\u03ba\u008d\3\2\2\2\u03bb\u03bd\5\u0090I"+
-		"\2\u03bc\u03be\7\22\2\2\u03bd\u03bc\3\2\2\2\u03bd\u03be\3\2\2\2\u03be"+
-		"\u03c0\3\2\2\2\u03bf\u03bb\3\2\2\2\u03c0\u03c3\3\2\2\2\u03c1\u03bf\3\2"+
-		"\2\2\u03c1\u03c2\3\2\2\2\u03c2\u008f\3\2\2\2\u03c3\u03c1\3\2\2\2\u03c4"+
-		"\u03c5\5\64\33\2\u03c5\u03cc\7v\2\2\u03c6\u03c8\7\33\2\2\u03c7\u03c9\5"+
-		"D#\2\u03c8\u03c7\3\2\2\2\u03c8\u03c9\3\2\2\2\u03c9\u03ca\3\2\2\2\u03ca"+
-		"\u03cd\5l\67\2\u03cb\u03cd\5L\'\2\u03cc\u03c6\3\2\2\2\u03cc\u03cb\3\2"+
-		"\2\2\u03cc\u03cd\3\2\2\2\u03cd\u03ce\3\2\2\2\u03ce\u03cf\5|?\2\u03cf\u0091"+
-		"\3\2\2\2\u03d0\u03d1\7l\2\2\u03d1\u03d2\7\34\2\2\u03d2\u03d3\5\u00a2R"+
-		"\2\u03d3\u03d4\7\35\2\2\u03d4\u03d8\5\u00a2R\2\u03d5\u03d7\7\7\2\2\u03d6"+
-		"\u03d5\3\2\2\2\u03d7\u03da\3\2\2\2\u03d8\u03d6\3\2\2\2\u03d8\u03d9\3\2"+
-		"\2\2\u03d9\u03dd\3\2\2\2\u03da\u03d8\3\2\2\2\u03db\u03dc\7m\2\2\u03dc"+
-		"\u03de\5\u00a2R\2\u03dd\u03db\3\2\2\2\u03dd\u03de\3\2\2\2\u03de\u0093"+
-		"\3\2\2\2\u03df\u03e0\7r\2\2\u03e0\u03e4\5\u0088E\2\u03e1\u03e3\5\u0096"+
-		"L\2\u03e2\u03e1\3\2\2\2\u03e3\u03e6\3\2\2\2\u03e4\u03e2\3\2\2\2\u03e4"+
-		"\u03e5\3\2\2\2\u03e5\u03e8\3\2\2\2\u03e6\u03e4\3\2\2\2\u03e7\u03e9\5\u0098"+
-		"M\2\u03e8\u03e7\3\2\2\2\u03e8\u03e9\3\2\2\2\u03e9\u0095\3\2\2\2\u03ea"+
-		"\u03eb\7s\2\2\u03eb\u03ed\7\34\2\2\u03ec\u03ee\5D#\2\u03ed\u03ec\3\2\2"+
-		"\2\u03ed\u03ee\3\2\2\2\u03ee\u03ef\3\2\2\2\u03ef\u03f0\7v\2\2\u03f0\u03f1"+
-		"\7\33\2\2\u03f1\u03f2\5\36\20\2\u03f2\u03f3\7\35\2\2\u03f3\u03f4\5\u0088"+
-		"E\2\u03f4\u0097\3\2\2\2\u03f5\u03f6\7t\2\2\u03f6\u03f7\5\u0088E\2\u03f7"+
-		"\u0099\3\2\2\2\u03f8\u03fc\5\u009cO\2\u03f9\u03fc\5\u009eP\2\u03fa\u03fc"+
-		"\5\u00a0Q\2\u03fb\u03f8\3\2\2\2\u03fb\u03f9\3\2\2\2\u03fb\u03fa\3\2\2"+
-		"\2\u03fc\u009b\3\2\2\2\u03fd\u03fe\7p\2\2\u03fe\u0400\7\34\2\2\u03ff\u0401"+
-		"\5D#\2\u0400\u03ff\3\2\2\2\u0400\u0401\3\2\2\2\u0401\u0404\3\2\2\2\u0402"+
-		"\u0405\5,\27\2\u0403\u0405\5$\23\2\u0404\u0402\3\2\2\2\u0404\u0403\3\2"+
-		"\2\2\u0405\u0406\3\2\2\2\u0406\u0407\7.\2\2\u0407\u0408\5\u00a2R\2\u0408"+
-		"\u0409\7\35\2\2\u0409\u040a\5\u00a2R\2\u040a\u009d\3\2\2\2\u040b\u040c"+
-		"\7o\2\2\u040c\u040d\7\34\2\2\u040d\u040e\5\u00a2R\2\u040e\u040f\7\35\2"+
-		"\2\u040f\u0410\5\u00a2R\2\u0410\u009f\3\2\2\2\u0411\u0412\7q\2\2\u0412"+
-		"\u0413\5\u00a2R\2\u0413\u0414\7o\2\2\u0414\u0415\7\34\2\2\u0415\u0416"+
-		"\5\u00a2R\2\u0416\u0417\7\35\2\2\u0417\u00a1\3\2\2\2\u0418\u041e\5\u00a4"+
-		"S\2\u0419\u041a\5\u00dan\2\u041a\u041b\5\u00a4S\2\u041b\u041d\3\2\2\2"+
-		"\u041c\u0419\3\2\2\2\u041d\u0420\3\2\2\2\u041e\u041c\3\2\2\2\u041e\u041f"+
-		"\3\2\2\2\u041f\u00a3\3\2\2\2\u0420\u041e\3\2\2\2\u0421\u0426\5\u00a6T"+
-		"\2\u0422\u0423\7 \2\2\u0423\u0425\5\u00a6T\2\u0424\u0422\3\2\2\2\u0425"+
-		"\u0428\3\2\2\2\u0426\u0424\3\2\2\2\u0426\u0427\3\2\2\2\u0427\u00a5\3\2"+
-		"\2\2\u0428\u0426\3\2\2\2\u0429\u042e\5\u00a8U\2\u042a\u042b\7!\2\2\u042b"+
-		"\u042d\5\u00a8U\2\u042c\u042a\3\2\2\2\u042d\u0430\3\2\2\2\u042e\u042c"+
-		"\3\2\2\2\u042e\u042f\3\2\2\2\u042f\u00a7\3\2\2\2\u0430\u042e\3\2\2\2\u0431"+
-		"\u0437\5\u00aaV\2\u0432\u0433\5\u00d8m\2\u0433\u0434\5\u00aaV\2\u0434"+
-		"\u0436\3\2\2\2\u0435\u0432\3\2\2\2\u0436\u0439\3\2\2\2\u0437\u0435\3\2"+
-		"\2\2\u0437\u0438\3\2\2\2\u0438\u00a9\3\2\2\2\u0439\u0437\3\2\2\2\u043a"+
-		"\u0440\5\u00acW\2\u043b\u043c\5\u00d6l\2\u043c\u043d\5\u00acW\2\u043d"+
-		"\u043f\3\2\2\2\u043e\u043b\3\2\2\2\u043f\u0442\3\2\2\2\u0440\u043e\3\2"+
-		"\2\2\u0440\u0441\3\2\2\2\u0441\u00ab\3\2\2\2\u0442\u0440\3\2\2\2\u0443"+
-		"\u0449\5\u00aeX\2\u0444\u0445\5\u00d0i\2\u0445\u0446\5\u00aeX\2\u0446"+
-		"\u0448\3\2\2\2\u0447\u0444\3\2\2\2\u0448\u044b\3\2\2\2\u0449\u0447\3\2"+
-		"\2\2\u0449\u044a\3\2\2\2\u044a\u0453\3\2\2\2\u044b\u0449\3\2\2\2\u044c"+
-		"\u0450\5\u00aeX\2\u044d\u044e\5\u00d4k\2\u044e\u044f\5\32\16\2\u044f\u0451"+
-		"\3\2\2\2\u0450\u044d\3\2\2\2\u0450\u0451\3\2\2\2\u0451\u0453\3\2\2\2\u0452"+
-		"\u0443\3\2\2\2\u0452\u044c\3\2\2\2\u0453\u00ad\3\2\2\2\u0454\u0459\5\u00b0"+
-		"Y\2\u0455\u0456\7\"\2\2\u0456\u0458\5\u00b0Y\2\u0457\u0455\3\2\2\2\u0458"+
-		"\u045b\3\2\2\2\u0459\u0457\3\2\2\2\u0459\u045a\3\2\2\2\u045a\u00af\3\2"+
-		"\2\2\u045b\u0459\3\2\2\2\u045c\u0461\5\u00b2Z\2\u045d\u045e\7v\2\2\u045e"+
-		"\u0460\5\u00b2Z\2\u045f\u045d\3\2\2\2\u0460\u0463\3\2\2\2\u0461\u045f"+
-		"\3\2\2\2\u0461\u0462\3\2\2\2\u0462\u00b1\3\2\2\2\u0463\u0461\3\2\2\2\u0464"+
-		"\u0469\5\u00b4[\2\u0465\u0466\7$\2\2\u0466\u0468\5\u00b4[\2\u0467\u0465"+
-		"\3\2\2\2\u0468\u046b\3\2\2\2\u0469\u0467\3\2\2\2\u0469\u046a\3\2\2\2\u046a"+
-		"\u00b3\3\2\2\2\u046b\u0469\3\2\2\2\u046c\u0472\5\u00b6\\\2\u046d\u046e"+
-		"\5\u00ceh\2\u046e\u046f\5\u00b6\\\2\u046f\u0471\3\2\2\2\u0470\u046d\3"+
-		"\2\2\2\u0471\u0474\3\2\2\2\u0472\u0470\3\2\2\2\u0472\u0473\3\2\2\2\u0473"+
-		"\u00b5\3\2\2\2\u0474\u0472\3\2\2\2\u0475\u047b\5\u00b8]\2\u0476\u0477"+
-		"\5\u00ccg\2\u0477\u0478\5\u00b8]\2\u0478\u047a\3\2\2\2\u0479\u0476\3\2"+
-		"\2\2\u047a\u047d\3\2\2\2\u047b\u0479\3\2\2\2\u047b\u047c\3\2\2\2\u047c"+
-		"\u00b7\3\2\2\2\u047d\u047b\3\2\2\2\u047e\u0484\5\u00ba^\2\u047f\u0480"+
-		"\5\u00d2j\2\u0480\u0481\5\u00ba^\2\u0481\u0483\3\2\2\2\u0482\u047f\3\2"+
-		"\2\2\u0483\u0486\3\2\2\2\u0484\u0482\3\2\2\2\u0484\u0485\3\2\2\2\u0485"+
-		"\u00b9\3\2\2\2\u0486\u0484\3\2\2\2\u0487\u0489\5\u00dco\2\u0488\u0487"+
-		"\3\2\2\2\u0489\u048c\3\2\2\2\u048a\u0488\3\2\2\2\u048a\u048b\3\2\2\2\u048b"+
-		"\u048d\3\2\2\2\u048c\u048a\3\2\2\2\u048d\u048e\5\u00bc_\2\u048e\u00bb"+
-		"\3\2\2\2\u048f\u0490\5\u00c4c\2\u0490\u0492\5j\66\2\u0491\u0493\5\u00f2"+
-		"z\2\u0492\u0491\3\2\2\2\u0492\u0493\3\2\2\2\u0493\u04a3\3\2\2\2\u0494"+
-		"\u0498\5\u00c4c\2\u0495\u0497\5\u00dep\2\u0496\u0495\3\2\2\2\u0497\u049a"+
-		"\3\2\2\2\u0498\u0496\3\2\2\2\u0498\u0499\3\2\2\2\u0499\u04a3\3\2\2\2\u049a"+
-		"\u0498\3\2\2\2\u049b\u049f\5\u00be`\2\u049c\u049e\5\u00dep\2\u049d\u049c"+
-		"\3\2\2\2\u049e\u04a1\3\2\2\2\u049f\u049d\3\2\2\2\u049f\u04a0\3\2\2\2\u04a0"+
-		"\u04a3\3\2\2\2\u04a1\u049f\3\2\2\2\u04a2\u048f\3\2\2\2\u04a2\u0494\3\2"+
-		"\2\2\u04a2\u049b\3\2\2\2\u04a3\u00bd\3\2\2\2\u04a4\u04a8\5\36\20\2\u04a5"+
-		"\u04a7\7\36\2\2\u04a6\u04a5\3\2\2\2\u04a7\u04aa\3\2\2\2\u04a8\u04a6\3"+
-		"\2\2\2\u04a8\u04a9\3\2\2\2\u04a9\u04ac\3\2\2\2\u04aa\u04a8\3\2\2\2\u04ab"+
-		"\u04a4\3\2\2\2\u04ab\u04ac\3\2\2\2\u04ac\u04af\3\2\2\2\u04ad\u04af\7c"+
-		"\2\2\u04ae\u04ab\3\2\2\2\u04ae\u04ad\3\2\2\2\u04af\u04b0\3\2\2\2\u04b0"+
-		"\u04b3\7%\2\2\u04b1\u04b4\5\u00c0a\2\u04b2\u04b4\7e\2\2\u04b3\u04b1\3"+
-		"\2\2\2\u04b3\u04b2\3\2\2\2\u04b4\u04b6\3\2\2\2\u04b5\u04b7\5\24\13\2\u04b6"+
-		"\u04b5\3\2\2\2\u04b6\u04b7\3\2\2\2\u04b7\u00bf\3\2\2\2\u04b8\u04b9\t\13"+
-		"\2\2\u04b9\u00c1\3\2\2\2\u04ba\u04c4\7\r\2\2\u04bb\u04c3\7z\2\2\u04bc"+
-		"\u04bd\7{\2\2\u04bd\u04be\5\u00a2R\2\u04be\u04bf\7\t\2\2\u04bf\u04c3\3"+
-		"\2\2\2\u04c0\u04c3\7|\2\2\u04c1\u04c3\n\f\2\2\u04c2\u04bb\3\2\2\2\u04c2"+
-		"\u04bc\3\2\2\2\u04c2\u04c0\3\2\2\2\u04c2\u04c1\3\2\2\2\u04c3\u04c6\3\2"+
-		"\2\2\u04c4\u04c2\3\2\2\2\u04c4\u04c5\3\2\2\2\u04c5\u04c7\3\2\2\2\u04c6"+
-		"\u04c4\3\2\2\2\u04c7\u04d6\7y\2\2\u04c8\u04d1\7\f\2\2\u04c9\u04ca\7\u0080"+
-		"\2\2\u04ca\u04cb\5\u00a2R\2\u04cb\u04cc\7\t\2\2\u04cc\u04d0\3\2\2\2\u04cd"+
-		"\u04d0\7\u0081\2\2\u04ce\u04d0\n\r\2\2\u04cf\u04c9\3\2\2\2\u04cf\u04cd"+
-		"\3\2\2\2\u04cf\u04ce\3\2\2\2\u04d0\u04d3\3\2\2\2\u04d1\u04cf\3\2\2\2\u04d1"+
-		"\u04d2\3\2\2\2\u04d2\u04d4\3\2\2\2\u04d3\u04d1\3\2\2\2\u04d4\u04d6\7~"+
-		"\2\2\u04d5\u04ba\3\2\2\2\u04d5\u04c8\3\2\2\2\u04d6\u00c3\3\2\2\2\u04d7"+
-		"\u04d8\7\34\2\2\u04d8\u04d9\5\u00a2R\2\u04d9\u04da\7\35\2\2\u04da\u04f6"+
-		"\3\2\2\2\u04db\u04f6\5\u00c6d\2\u04dc\u04f6\5\u00e4s\2\u04dd\u04df\7c"+
-		"\2\2\u04de\u04e0\5R*\2\u04df\u04de\3\2\2\2\u04df\u04e0\3\2\2\2\u04e0\u04f6"+
-		"\3\2\2\2\u04e1\u04e6\7d\2\2\u04e2\u04e3\7\23\2\2\u04e3\u04e4\5\32\16\2"+
-		"\u04e4\u04e5\7\25\2\2\u04e5\u04e7\3\2\2\2\u04e6\u04e2\3\2\2\2\u04e6\u04e7"+
-		"\3\2\2\2\u04e7\u04e9\3\2\2\2\u04e8\u04ea\5R*\2\u04e9\u04e8\3\2\2\2\u04e9"+
-		"\u04ea\3\2\2\2\u04ea\u04f6\3\2\2\2\u04eb\u04f6\5\u0092J\2\u04ec\u04f6"+
-		"\5\u00ecw\2\u04ed\u04f6\5\u0094K\2\u04ee\u04f6\5\u00eav\2\u04ef\u04f6"+
-		"\5P)\2\u04f0\u04f6\5\u009aN\2\u04f1\u04f6\5\u00c0a\2\u04f2\u04f3\7u\2"+
-		"\2\u04f3\u04f6\5\u00c0a\2\u04f4\u04f6\7\16\2\2\u04f5\u04d7\3\2\2\2\u04f5"+
-		"\u04db\3\2\2\2\u04f5\u04dc\3\2\2\2\u04f5\u04dd\3\2\2\2\u04f5\u04e1\3\2"+
-		"\2\2\u04f5\u04eb\3\2\2\2\u04f5\u04ec\3\2\2\2\u04f5\u04ed\3\2\2\2\u04f5"+
-		"\u04ee\3\2\2\2\u04f5\u04ef\3\2\2\2\u04f5\u04f0\3\2\2\2\u04f5\u04f1\3\2"+
-		"\2\2\u04f5\u04f2\3\2\2\2\u04f5\u04f4\3\2\2\2\u04f6\u00c5\3\2\2\2\u04f7"+
-		"\u04ff\7&\2\2\u04f8\u04ff\7\'\2\2\u04f9\u04ff\5\u00c2b\2\u04fa\u04ff\7"+
-		"\6\2\2\u04fb\u04ff\7\n\2\2\u04fc\u04ff\7\13\2\2\u04fd\u04ff\7(\2\2\u04fe"+
-		"\u04f7\3\2\2\2\u04fe\u04f8\3\2\2\2\u04fe\u04f9\3\2\2\2\u04fe\u04fa\3\2"+
-		"\2\2\u04fe\u04fb\3\2\2\2\u04fe\u04fc\3\2\2\2\u04fe\u04fd\3\2\2\2\u04ff"+
-		"\u00c7\3\2\2\2\u0500\u0505\5\u0082B\2\u0501\u0505\5.\30\2\u0502\u0505"+
-		"\5r:\2\u0503\u0505\5v<\2\u0504\u0500\3\2\2\2\u0504\u0501\3\2\2\2\u0504"+
-		"\u0502\3\2\2\2\u0504\u0503\3\2\2\2\u0505\u00c9\3\2\2\2\u0506\u0509\5\u00c8"+
-		"e\2\u0507\u0509\5\u00a2R\2\u0508\u0506\3\2\2\2\u0508\u0507\3\2\2\2\u0509"+
-		"\u00cb\3\2\2\2\u050a\u050b\t\16\2\2\u050b\u00cd\3\2\2\2\u050c\u050d\t"+
-		"\17\2\2\u050d\u00cf\3\2\2\2\u050e\u050f\t\20\2\2\u050f\u00d1\3\2\2\2\u0510"+
-		"\u0511\t\21\2\2\u0511\u00d3\3\2\2\2\u0512\u0513\t\22\2\2\u0513\u00d5\3"+
-		"\2\2\2\u0514\u0515\t\23\2\2\u0515\u00d7\3\2\2\2\u0516\u0517\t\24\2\2\u0517"+
-		"\u00d9\3\2\2\2\u0518\u0519\t\25\2\2\u0519\u00db\3\2\2\2\u051a\u0522\7"+
-		"-\2\2\u051b\u0522\7,\2\2\u051c\u0522\7:\2\2\u051d\u0522\79\2\2\u051e\u0522"+
-		"\7<\2\2\u051f\u0522\5D#\2\u0520\u0522\5T+\2\u0521\u051a\3\2\2\2\u0521"+
-		"\u051b\3\2\2\2\u0521\u051c\3\2\2\2\u0521\u051d\3\2\2\2\u0521\u051e\3\2"+
-		"\2\2\u0521\u051f\3\2\2\2\u0521\u0520\3\2\2\2\u0522\u00dd\3\2\2\2\u0523"+
-		"\u052c\7:\2\2\u0524\u052c\79\2\2\u0525\u052c\7;\2\2\u0526\u052c\5j\66"+
-		"\2\u0527\u052c\5\u00e8u\2\u0528\u0529\5\u00e2r\2\u0529\u052a\5\u00bc_"+
-		"\2\u052a\u052c\3\2\2\2\u052b\u0523\3\2\2\2\u052b\u0524\3\2\2\2\u052b\u0525"+
-		"\3\2\2\2\u052b\u0526\3\2\2\2\u052b\u0527\3\2\2\2\u052b\u0528\3\2\2\2\u052c"+
-		"\u00df\3\2\2\2\u052d\u052e\7X\2\2\u052e\u0530\5N(\2\u052f\u052d\3\2\2"+
-		"\2\u0530\u0533\3\2\2\2\u0531\u052f\3\2\2\2\u0531\u0532\3\2\2\2\u0532\u0535"+
-		"\3\2\2\2\u0533\u0531\3\2\2\2\u0534\u0536\5T+\2\u0535\u0534\3\2\2\2\u0535"+
-		"\u0536\3\2\2\2\u0536\u0537\3\2\2\2\u0537\u0538\5\u00e4s\2\u0538\u00e1"+
-		"\3\2\2\2\u0539\u053f\7\20\2\2\u053a\u053c\7\36\2\2\u053b\u053d\7\20\2"+
-		"\2\u053c\u053b\3\2\2\2\u053c\u053d\3\2\2\2\u053d\u053f\3\2\2\2\u053e\u0539"+
-		"\3\2\2\2\u053e\u053a\3\2\2\2\u053f\u00e3\3\2\2\2\u0540\u0541\7\b\2\2\u0541"+
-		"\u0542\5\u0084C\2\u0542\u0543\7\t\2\2\u0543\u0554\3\2\2\2\u0544\u054d"+
-		"\7\b\2\2\u0545\u054a\5\u00e6t\2\u0546\u0547\7\22\2\2\u0547\u0549\5\u00e6"+
-		"t\2\u0548\u0546\3\2\2\2\u0549\u054c\3\2\2\2\u054a\u0548\3\2\2\2\u054a"+
-		"\u054b\3\2\2\2\u054b\u054e\3\2\2\2\u054c\u054a\3\2\2\2\u054d\u0545\3\2"+
-		"\2\2\u054d\u054e\3\2\2\2\u054e\u054f\3\2\2\2\u054f\u0550\7)\2\2\u0550"+
-		"\u0551\5\u0084C\2\u0551\u0552\7\t\2\2\u0552\u0554\3\2\2\2\u0553\u0540"+
-		"\3\2\2\2\u0553\u0544\3\2\2\2\u0554\u00e5\3\2\2\2\u0555\u0558\7v\2\2\u0556"+
-		"\u0557\7\33\2\2\u0557\u0559\5\32\16\2\u0558\u0556\3\2\2\2\u0558\u0559"+
-		"\3\2\2\2\u0559\u00e7\3\2\2\2\u055a\u0563\7=\2\2\u055b\u0560\5\u00a2R\2"+
-		"\u055c\u055d\7\22\2\2\u055d\u055f\5\u00a2R\2\u055e\u055c\3\2\2\2\u055f"+
-		"\u0562\3\2\2\2\u0560\u055e\3\2\2\2\u0560\u0561\3\2\2\2\u0561\u0564\3\2"+
-		"\2\2\u0562\u0560\3\2\2\2\u0563\u055b\3\2\2\2\u0563\u0564\3\2\2\2\u0564"+
-		"\u0565\3\2\2\2\u0565\u0566\7>\2\2\u0566\u00e9\3\2\2\2\u0567\u0571\7g\2"+
-		"\2\u0568\u0569\7\33\2\2\u0569\u056e\5p9\2\u056a\u056b\7\22\2\2\u056b\u056d"+
-		"\5p9\2\u056c\u056a\3\2\2\2\u056d\u0570\3\2\2\2\u056e\u056c\3\2\2\2\u056e"+
-		"\u056f\3\2\2\2\u056f\u0572\3\2\2\2\u0570\u056e\3\2\2\2\u0571\u0568\3\2"+
-		"\2\2\u0571\u0572\3\2\2\2\u0572\u0573\3\2\2\2\u0573\u0574\5|?\2\u0574\u00eb"+
-		"\3\2\2\2\u0575\u057a\7n\2\2\u0576\u0577\7\34\2\2\u0577\u0578\5\u00a2R"+
-		"\2\u0578\u0579\7\35\2\2\u0579\u057b\3\2\2\2\u057a\u0576\3\2\2\2\u057a"+
-		"\u057b\3\2\2\2\u057b\u057c\3\2\2\2\u057c\u0580\7\b\2\2\u057d\u057f\5\u00ee"+
-		"x\2\u057e\u057d\3\2\2\2\u057f\u0582\3\2\2\2\u0580\u057e\3\2\2\2\u0580"+
-		"\u0581\3\2\2\2\u0581\u0583\3\2\2\2\u0582\u0580\3\2\2\2\u0583\u0584\7\t"+
-		"\2\2\u0584\u00ed\3\2\2\2\u0585\u058a\5\u00f0y\2\u0586\u0587\7\22\2\2\u0587"+
-		"\u0589\5\u00f0y\2\u0588\u0586\3\2\2\2\u0589\u058c\3\2\2\2\u058a\u0588"+
-		"\3\2\2\2\u058a\u058b\3\2\2\2\u058b\u058d\3\2\2\2\u058c\u058a\3\2\2\2\u058d"+
-		"\u058e\7)\2\2\u058e\u0592\5\u00a2R\2\u058f\u0591\7\7\2\2\u0590\u058f\3"+
-		"\2\2\2\u0591\u0594\3\2\2\2\u0592\u0590\3\2\2\2\u0592\u0593\3\2\2\2\u0593"+
-		"\u059f\3\2\2\2\u0594\u0592\3\2\2\2\u0595\u0596\7m\2\2\u0596\u0597\7)\2"+
-		"\2\u0597\u059b\5\u00a2R\2\u0598\u059a\7\7\2\2\u0599\u0598\3\2\2\2\u059a"+
-		"\u059d\3\2\2\2\u059b\u0599\3\2\2\2\u059b\u059c\3\2\2\2\u059c\u059f\3\2"+
-		"\2\2\u059d\u059b\3\2\2\2\u059e\u0585\3\2\2\2\u059e\u0595\3\2\2\2\u059f"+
-		"\u00ef\3\2\2\2\u05a0\u05a6\5\u00a2R\2\u05a1\u05a2\t\20\2\2\u05a2\u05a6"+
-		"\5\u00a2R\2\u05a3\u05a4\t\22\2\2\u05a4\u05a6\5\32\16\2\u05a5\u05a0\3\2"+
-		"\2\2\u05a5\u05a1\3\2\2\2\u05a5\u05a3\3\2\2\2\u05a6\u00f1\3\2\2\2\u05a7"+
-		"\u05a9\7\b\2\2\u05a8\u05aa\7\34\2\2\u05a9\u05a8\3\2\2\2\u05a9\u05aa\3"+
-		"\2\2\2\u05aa\u05b3\3\2\2\2\u05ab\u05b0\5$\23\2\u05ac\u05ad\7\22\2\2\u05ad"+
-		"\u05af\5$\23\2\u05ae\u05ac\3\2\2\2\u05af\u05b2\3\2\2\2\u05b0\u05ae\3\2"+
-		"\2\2\u05b0\u05b1\3\2\2\2\u05b1\u05b4\3\2\2\2\u05b2\u05b0\3\2\2\2\u05b3"+
-		"\u05ab\3\2\2\2\u05b3\u05b4\3\2\2\2\u05b4\u05b6\3\2\2\2\u05b5\u05b7\7\35"+
-		"\2\2\u05b6\u05b5\3\2\2\2\u05b6\u05b7\3\2\2\2\u05b7\u05b8\3\2\2\2\u05b8"+
-		"\u05b9\7)\2\2\u05b9\u05ba\5\u0084C\2\u05ba\u05bb\7\t\2\2\u05bb\u00f3\3"+
-		"\2\2\2\u00c3\u00f8\u00fc\u0101\u010a\u0110\u0119\u0120\u0125\u012d\u0136"+
-		"\u0139\u0141\u014a\u014e\u0154\u015f\u0162\u0165\u016c\u0174\u0177\u017b"+
-		"\u017f\u0182\u0186\u0189\u018b\u018f\u0196\u019d\u01a6\u01ab\u01b0\u01b6"+
-		"\u01c1\u01c4\u01d0\u01d8\u01dd\u01e1\u01e9\u01ec\u01ef\u01f2\u01f5\u01f8"+
-		"\u01fa\u01ff\u020b\u020f\u021a\u021f\u0224\u0230\u023f\u0245\u024e\u0251"+
-		"\u025b\u025e\u0267\u026b\u026e\u0274\u0277\u027b\u027f\u0281\u0288\u0293"+
-		"\u029e\u02a2\u02ab\u02ae\u02b6\u02b9\u02be\u02c7\u02ca\u02d0\u02d3\u02d8"+
-		"\u02df\u02e2\u02e6\u02ec\u02f0\u02fb\u0301\u0304\u0308\u030f\u0312\u0317"+
-		"\u031c\u0325\u032c\u032f\u0335\u0340\u0347\u034d\u0354\u0359\u0362\u0365"+
-		"\u036c\u0372\u0376\u037b\u037f\u0384\u038a\u0391\u0397\u039a\u039f\u03a5"+
-		"\u03b0\u03b7\u03bd\u03c1\u03c8\u03cc\u03d8\u03dd\u03e4\u03e8\u03ed\u03fb"+
-		"\u0400\u0404\u041e\u0426\u042e\u0437\u0440\u0449\u0450\u0452\u0459\u0461"+
-		"\u0469\u0472\u047b\u0484\u048a\u0492\u0498\u049f\u04a2\u04a8\u04ab\u04ae"+
-		"\u04b3\u04b6\u04c2\u04c4\u04cf\u04d1\u04d5\u04df\u04e6\u04e9\u04f5\u04fe"+
-		"\u0504\u0508\u0521\u052b\u0531\u0535\u053c\u053e\u054a\u054d\u0553\u0558"+
-		"\u0560\u0563\u056e\u0571\u057a\u0580\u058a\u0592\u059b\u059e\u05a5\u05a9"+
-		"\u05b0\u05b3\u05b6";
+		"\27\27\648\3\2RU\3\2GJ\3\2NQ\3\2KM\3\2RV\4\2..WW\u0737\2\u0114\3\2\2\2"+
+		"\4\u011c\3\2\2\2\6\u0124\3\2\2\2\b\u0133\3\2\2\2\n\u014e\3\2\2\2\f\u0158"+
+		"\3\2\2\2\16\u015b\3\2\2\2\20\u015d\3\2\2\2\22\u0168\3\2\2\2\24\u016e\3"+
+		"\2\2\2\26\u0184\3\2\2\2\30\u0187\3\2\2\2\32\u018e\3\2\2\2\34\u01ad\3\2"+
+		"\2\2\36\u01b1\3\2\2\2 \u01bf\3\2\2\2\"\u01c1\3\2\2\2$\u01cf\3\2\2\2&\u01d8"+
+		"\3\2\2\2(\u01da\3\2\2\2*\u01dd\3\2\2\2,\u01ec\3\2\2\2.\u01fa\3\2\2\2\60"+
+		"\u01fd\3\2\2\2\62\u0206\3\2\2\2\64\u0209\3\2\2\2\66\u020d\3\2\2\28\u0215"+
+		"\3\2\2\2:\u021a\3\2\2\2<\u0221\3\2\2\2>\u022e\3\2\2\2@\u024d\3\2\2\2B"+
+		"\u024f\3\2\2\2D\u0256\3\2\2\2F\u0259\3\2\2\2H\u025f\3\2\2\2J\u0261\3\2"+
+		"\2\2L\u0264\3\2\2\2N\u026a\3\2\2\2P\u026c\3\2\2\2R\u0272\3\2\2\2T\u027a"+
+		"\3\2\2\2V\u028a\3\2\2\2X\u02ab\3\2\2\2Z\u02b8\3\2\2\2\\\u02ba\3\2\2\2"+
+		"^\u02c0\3\2\2\2`\u02c7\3\2\2\2b\u02c9\3\2\2\2d\u02eb\3\2\2\2f\u030d\3"+
+		"\2\2\2h\u0316\3\2\2\2j\u0326\3\2\2\2l\u0331\3\2\2\2n\u0342\3\2\2\2p\u0347"+
+		"\3\2\2\2r\u034a\3\2\2\2t\u0357\3\2\2\2v\u0375\3\2\2\2x\u0394\3\2\2\2z"+
+		"\u03af\3\2\2\2|\u03b1\3\2\2\2~\u03b5\3\2\2\2\u0080\u03bd\3\2\2\2\u0082"+
+		"\u03cb\3\2\2\2\u0084\u03ce\3\2\2\2\u0086\u03da\3\2\2\2\u0088\u03e9\3\2"+
+		"\2\2\u008a\u03f4\3\2\2\2\u008c\u03ff\3\2\2\2\u008e\u0405\3\2\2\2\u0090"+
+		"\u0407\3\2\2\2\u0092\u0415\3\2\2\2\u0094\u041b\3\2\2\2\u0096\u0422\3\2"+
+		"\2\2\u0098\u042b\3\2\2\2\u009a\u0433\3\2\2\2\u009c\u043b\3\2\2\2\u009e"+
+		"\u0444\3\2\2\2\u00a0\u045c\3\2\2\2\u00a2\u045e\3\2\2\2\u00a4\u0466\3\2"+
+		"\2\2\u00a6\u046e\3\2\2\2\u00a8\u0476\3\2\2\2\u00aa\u047f\3\2\2\2\u00ac"+
+		"\u0488\3\2\2\2\u00ae\u0494\3\2\2\2\u00b0\u04ac\3\2\2\2\u00b2\u04b8\3\2"+
+		"\2\2\u00b4\u04c9\3\2\2\2\u00b6\u04e6\3\2\2\2\u00b8\u0507\3\2\2\2\u00ba"+
+		"\u0510\3\2\2\2\u00bc\u0517\3\2\2\2\u00be\u051b\3\2\2\2\u00c0\u051d\3\2"+
+		"\2\2\u00c2\u051f\3\2\2\2\u00c4\u0521\3\2\2\2\u00c6\u0523\3\2\2\2\u00c8"+
+		"\u0525\3\2\2\2\u00ca\u0527\3\2\2\2\u00cc\u0529\3\2\2\2\u00ce\u052b\3\2"+
+		"\2\2\u00d0\u0534\3\2\2\2\u00d2\u053e\3\2\2\2\u00d4\u0544\3\2\2\2\u00d6"+
+		"\u0551\3\2\2\2\u00d8\u0566\3\2\2\2\u00da\u0568\3\2\2\2\u00dc\u056d\3\2"+
+		"\2\2\u00de\u057a\3\2\2\2\u00e0\u0588\3\2\2\2\u00e2\u05b1\3\2\2\2\u00e4"+
+		"\u05b8\3\2\2\2\u00e6\u05ba\3\2\2\2\u00e8\u05d1\3\2\2\2\u00ea\u05d4\3\2"+
+		"\2\2\u00ec\u05dd\3\2\2\2\u00ee\u05e6\3\2\2\2\u00f0\u05ed\3\2\2\2\u00f2"+
+		"\u05fd\3\2\2\2\u00f4\u0600\3\2\2\2\u00f6\u061c\3\2\2\2\u00f8\u0629\3\2"+
+		"\2\2\u00fa\u062f\3\2\2\2\u00fc\u0647\3\2\2\2\u00fe\u064f\3\2\2\2\u0100"+
+		"\u0663\3\2\2\2\u0102\u0678\3\2\2\2\u0104\u0688\3\2\2\2\u0106\u068a\3\2"+
+		"\2\2\u0108\u068c\3\2\2\2\u010a\u068e\3\2\2\2\u010c\u0690\3\2\2\2\u010e"+
+		"\u0692\3\2\2\2\u0110\u0694\3\2\2\2\u0112\u0696\3\2\2\2\u0114\u0118\5\4"+
+		"\3\2\u0115\u0117\5\n\6\2\u0116\u0115\3\2\2\2\u0117\u011a\3\2\2\2\u0118"+
+		"\u0116\3\2\2\2\u0118\u0119\3\2\2\2\u0119\3\3\2\2\2\u011a\u0118\3\2\2\2"+
+		"\u011b\u011d\5\6\4\2\u011c\u011b\3\2\2\2\u011c\u011d\3\2\2\2\u011d\u0121"+
+		"\3\2\2\2\u011e\u0120\5\b\5\2\u011f\u011e\3\2\2\2\u0120\u0123\3\2\2\2\u0121"+
+		"\u011f\3\2\2\2\u0121\u0122\3\2\2\2\u0122\5\3\2\2\2\u0123\u0121\3\2\2\2"+
+		"\u0124\u0125\7\16\2\2\u0125\u012a\5\u00b4[\2\u0126\u0127\7\20\2\2\u0127"+
+		"\u0129\5\u00b4[\2\u0128\u0126\3\2\2\2\u0129\u012c\3\2\2\2\u012a\u0128"+
+		"\3\2\2\2\u012a\u012b\3\2\2\2\u012b\u0130\3\2\2\2\u012c\u012a\3\2\2\2\u012d"+
+		"\u012f\7\7\2\2\u012e\u012d\3\2\2\2\u012f\u0132\3\2\2\2\u0130\u012e\3\2"+
+		"\2\2\u0130\u0131\3\2\2\2\u0131\7\3\2\2\2\u0132\u0130\3\2\2\2\u0133\u0134"+
+		"\7\17\2\2\u0134\u0139\5\u00b4[\2\u0135\u0136\7\20\2\2\u0136\u0138\5\u00b4"+
+		"[\2\u0137\u0135\3\2\2\2\u0138\u013b\3\2\2\2\u0139\u0137\3\2\2\2\u0139"+
+		"\u013a\3\2\2\2\u013a\u0140\3\2\2\2\u013b\u0139\3\2\2\2\u013c\u013d\7\20"+
+		"\2\2\u013d\u0141\7\21\2\2\u013e\u013f\7\62\2\2\u013f\u0141\7v\2\2\u0140"+
+		"\u013c\3\2\2\2\u0140\u013e\3\2\2\2\u0140\u0141\3\2\2\2\u0141\u0145\3\2"+
+		"\2\2\u0142\u0144\7\7\2\2\u0143\u0142\3\2\2\2\u0144\u0147\3\2\2\2\u0145"+
+		"\u0143\3\2\2\2\u0145\u0146\3\2\2\2\u0146\t\3\2\2\2\u0147\u0145\3\2\2\2"+
+		"\u0148\u014f\5\u00e8u\2\u0149\u014f\5t;\2\u014a\u014f\5b\62\2\u014b\u014f"+
+		"\5d\63\2\u014c\u014f\5h\65\2\u014d\u014f\5j\66\2\u014e\u0148\3\2\2\2\u014e"+
+		"\u0149\3\2\2\2\u014e\u014a\3\2\2\2\u014e\u014b\3\2\2\2\u014e\u014c\3\2"+
+		"\2\2\u014e\u014d\3\2\2\2\u014f\13\3\2\2\2\u0150\u0159\5l\67\2\u0151\u0159"+
+		"\5h\65\2\u0152\u0159\5t;\2\u0153\u0159\5\u00e8u\2\u0154\u0159\5b\62\2"+
+		"\u0155\u0159\5d\63\2\u0156\u0159\5~@\2\u0157\u0159\5V,\2\u0158\u0150\3"+
+		"\2\2\2\u0158\u0151\3\2\2\2\u0158\u0152\3\2\2\2\u0158\u0153\3\2\2\2\u0158"+
+		"\u0154\3\2\2\2\u0158\u0155\3\2\2\2\u0158\u0156\3\2\2\2\u0158\u0157\3\2"+
+		"\2\2\u0159\r\3\2\2\2\u015a\u015c\5\u0112\u008a\2\u015b\u015a\3\2\2\2\u015b"+
+		"\u015c\3\2\2\2\u015c\17\3\2\2\2\u015d\u015e\7\23\2\2\u015e\u0163\5\22"+
+		"\n\2\u015f\u0160\7\22\2\2\u0160\u0162\5\22\n\2\u0161\u015f\3\2\2\2\u0162"+
+		"\u0165\3\2\2\2\u0163\u0161\3\2\2\2\u0163\u0164\3\2\2\2\u0164\u0166\3\2"+
+		"\2\2\u0165\u0163\3\2\2\2\u0166\u0167\7\25\2\2\u0167\21\3\2\2\2\u0168\u0169"+
+		"\5.\30\2\u0169\u016c\7v\2\2\u016a\u016b\7\33\2\2\u016b\u016d\5\36\20\2"+
+		"\u016c\u016a\3\2\2\2\u016c\u016d\3\2\2\2\u016d\23\3\2\2\2\u016e\u0170"+
+		"\7\23\2\2\u016f\u0171\5\32\16\2\u0170\u016f\3\2\2\2\u0170\u0171\3\2\2"+
+		"\2\u0171\u0176\3\2\2\2\u0172\u0173\7\22\2\2\u0173\u0175\5\32\16\2\u0174"+
+		"\u0172\3\2\2\2\u0175\u0178\3\2\2\2\u0176\u0174\3\2\2\2\u0176\u0177\3\2"+
+		"\2\2\u0177\u0179\3\2\2\2\u0178\u0176\3\2\2\2\u0179\u017a\7\25\2\2\u017a"+
+		"\25\3\2\2\2\u017b\u017c\7D\2\2\u017c\u0181\5\30\r\2\u017d\u017e\7\22\2"+
+		"\2\u017e\u0180\5\30\r\2\u017f\u017d\3\2\2\2\u0180\u0183\3\2\2\2\u0181"+
+		"\u017f\3\2\2\2\u0181\u0182\3\2\2\2\u0182\u0185\3\2\2\2\u0183\u0181\3\2"+
+		"\2\2\u0184\u017b\3\2\2\2\u0184\u0185\3\2\2\2\u0185\27\3\2\2\2\u0186\u0188"+
+		"\5\64\33\2\u0187\u0186\3\2\2\2\u0187\u0188\3\2\2\2\u0188\u0189\3\2\2\2"+
+		"\u0189\u018a\7v\2\2\u018a\u018b\7\33\2\2\u018b\u018c\5\32\16\2\u018c\31"+
+		"\3\2\2\2\u018d\u018f\5\64\33\2\u018e\u018d\3\2\2\2\u018e\u018f\3\2\2\2"+
+		"\u018f\u0190\3\2\2\2\u0190\u0191\5\34\17\2\u0191\33\3\2\2\2\u0192\u0193"+
+		"\7\34\2\2\u0193\u0194\5\34\17\2\u0194\u0196\7\35\2\2\u0195\u0197\7\36"+
+		"\2\2\u0196\u0195\3\2\2\2\u0196\u0197\3\2\2\2\u0197\u0199\3\2\2\2\u0198"+
+		"\u019a\5(\25\2\u0199\u0198\3\2\2\2\u0199\u019a\3\2\2\2\u019a\u01ae\3\2"+
+		"\2\2\u019b\u019d\5*\26\2\u019c\u019e\5(\25\2\u019d\u019c\3\2\2\2\u019d"+
+		"\u019e\3\2\2\2\u019e\u01ae\3\2\2\2\u019f\u01a1\5\36\20\2\u01a0\u01a2\7"+
+		"\36\2\2\u01a1\u01a0\3\2\2\2\u01a1\u01a2\3\2\2\2\u01a2\u01a4\3\2\2\2\u01a3"+
+		"\u01a5\5(\25\2\u01a4\u01a3\3\2\2\2\u01a4\u01a5\3\2\2\2\u01a5\u01ae\3\2"+
+		"\2\2\u01a6\u01a8\7C\2\2\u01a7\u01a9\7\36\2\2\u01a8\u01a7\3\2\2\2\u01a8"+
+		"\u01a9\3\2\2\2\u01a9\u01ab\3\2\2\2\u01aa\u01ac\5(\25\2\u01ab\u01aa\3\2"+
+		"\2\2\u01ab\u01ac\3\2\2\2\u01ac\u01ae\3\2\2\2\u01ad\u0192\3\2\2\2\u01ad"+
+		"\u019b\3\2\2\2\u01ad\u019f\3\2\2\2\u01ad\u01a6\3\2\2\2\u01ae\35\3\2\2"+
+		"\2\u01af\u01b0\7\16\2\2\u01b0\u01b2\7\20\2\2\u01b1\u01af\3\2\2\2\u01b1"+
+		"\u01b2\3\2\2\2\u01b2\u01b3\3\2\2\2\u01b3\u01b8\5\"\22\2\u01b4\u01b5\7"+
+		"\20\2\2\u01b5\u01b7\5\"\22\2\u01b6\u01b4\3\2\2\2\u01b7\u01ba\3\2\2\2\u01b8"+
+		"\u01b6\3\2\2\2\u01b8\u01b9\3\2\2\2\u01b9\37\3\2\2\2\u01ba\u01b8\3\2\2"+
+		"\2\u01bb\u01c0\7\21\2\2\u01bc\u01bd\5\16\b\2\u01bd\u01be\5\32\16\2\u01be"+
+		"\u01c0\3\2\2\2\u01bf\u01bb\3\2\2\2\u01bf\u01bc\3\2\2\2\u01c0!\3\2\2\2"+
+		"\u01c1\u01cd\7v\2\2\u01c2\u01c3\7\23\2\2\u01c3\u01c8\5 \21\2\u01c4\u01c5"+
+		"\7\22\2\2\u01c5\u01c7\5 \21\2\u01c6\u01c4\3\2\2\2\u01c7\u01ca\3\2\2\2"+
+		"\u01c8\u01c6\3\2\2\2\u01c8\u01c9\3\2\2\2\u01c9\u01cb\3\2\2\2\u01ca\u01c8"+
+		"\3\2\2\2\u01cb\u01cc\7\25\2\2\u01cc\u01ce\3\2\2\2\u01cd\u01c2\3\2\2\2"+
+		"\u01cd\u01ce\3\2\2\2\u01ce#\3\2\2\2\u01cf\u01d2\7v\2\2\u01d0\u01d1\7\33"+
+		"\2\2\u01d1\u01d3\5\32\16\2\u01d2\u01d0\3\2\2\2\u01d2\u01d3\3\2\2\2\u01d3"+
+		"%\3\2\2\2\u01d4\u01d9\5F$\2\u01d5\u01d6\5.\30\2\u01d6\u01d7\5\32\16\2"+
+		"\u01d7\u01d9\3\2\2\2\u01d8\u01d4\3\2\2\2\u01d8\u01d5\3\2\2\2\u01d9\'\3"+
+		"\2\2\2\u01da\u01db\7\20\2\2\u01db\u01dc\5*\26\2\u01dc)\3\2\2\2\u01dd\u01e6"+
+		"\7\34\2\2\u01de\u01e3\5&\24\2\u01df\u01e0\7\22\2\2\u01e0\u01e2\5&\24\2"+
+		"\u01e1\u01df\3\2\2\2\u01e2\u01e5\3\2\2\2\u01e3\u01e1\3\2\2\2\u01e3\u01e4"+
+		"\3\2\2\2\u01e4\u01e7\3\2\2\2\u01e5\u01e3\3\2\2\2\u01e6\u01de\3\2\2\2\u01e6"+
+		"\u01e7\3\2\2\2\u01e7\u01e8\3\2\2\2\u01e8\u01e9\7\35\2\2\u01e9\u01ea\7"+
+		")\2\2\u01ea\u01eb\5\32\16\2\u01eb+\3\2\2\2\u01ec\u01ed\7\34\2\2\u01ed"+
+		"\u01f2\5$\23\2\u01ee\u01ef\7\22\2\2\u01ef\u01f1\5$\23\2\u01f0\u01ee\3"+
+		"\2\2\2\u01f1\u01f4\3\2\2\2\u01f2\u01f0\3\2\2\2\u01f2\u01f3\3\2\2\2\u01f3"+
+		"\u01f5\3\2\2\2\u01f4\u01f2\3\2\2\2\u01f5\u01f6\7\35\2\2\u01f6-\3\2\2\2"+
+		"\u01f7\u01f9\5\60\31\2\u01f8\u01f7\3\2\2\2\u01f9\u01fc\3\2\2\2\u01fa\u01f8"+
+		"\3\2\2\2\u01fa\u01fb\3\2\2\2\u01fb/\3\2\2\2\u01fc\u01fa\3\2\2\2\u01fd"+
+		"\u01fe\5\62\32\2\u01fe\61\3\2\2\2\u01ff\u0207\5\u010a\u0086\2\u0200\u0207"+
+		"\5\u0110\u0089\2\u0201\u0207\5\u0112\u008a\2\u0202\u0207\5\64\33\2\u0203"+
+		"\u0207\5\u010c\u0087\2\u0204\u0207\5\u010e\u0088\2\u0205\u0207\7A\2\2"+
+		"\u0206\u01ff\3\2\2\2\u0206\u0200\3\2\2\2\u0206\u0201\3\2\2\2\u0206\u0202"+
+		"\3\2\2\2\u0206\u0203\3\2\2\2\u0206\u0204\3\2\2\2\u0206\u0205\3\2\2\2\u0207"+
+		"\63\3\2\2\2\u0208\u020a\5\66\34\2\u0209\u0208\3\2\2\2\u020a\u020b\3\2"+
+		"\2\2\u020b\u0209\3\2\2\2\u020b\u020c\3\2\2\2\u020c\65\3\2\2\2\u020d\u0211"+
+		"\7X\2\2\u020e\u020f\58\35\2\u020f\u0210\7\33\2\2\u0210\u0212\3\2\2\2\u0211"+
+		"\u020e\3\2\2\2\u0211\u0212\3\2\2\2\u0212\u0213\3\2\2\2\u0213\u0214\5>"+
+		" \2\u0214\67\3\2\2\2\u0215\u0216\t\2\2\2\u02169\3\2\2\2\u0217\u0218\5"+
+		"\u00b4[\2\u0218\u0219\7\27\2\2\u0219\u021b\3\2\2\2\u021a\u0217\3\2\2\2"+
+		"\u021a\u021b\3\2\2\2\u021b\u021d\3\2\2\2\u021c\u021e\7\21\2\2\u021d\u021c"+
+		"\3\2\2\2\u021d\u021e\3\2\2\2\u021e\u021f\3\2\2\2\u021f\u0220\5\u0096L"+
+		"\2\u0220;\3\2\2\2\u0221\u022a\7\34\2\2\u0222\u0227\5:\36\2\u0223\u0224"+
+		"\7\22\2\2\u0224\u0226\5:\36\2\u0225\u0223\3\2\2\2\u0226\u0229\3\2\2\2"+
+		"\u0227\u0225\3\2\2\2\u0227\u0228\3\2\2\2\u0228\u022b\3\2\2\2\u0229\u0227"+
+		"\3\2\2\2\u022a\u0222\3\2\2\2\u022a\u022b\3\2\2\2\u022b\u022c\3\2\2\2\u022c"+
+		"\u022d\7\35\2\2\u022d=\3\2\2\2\u022e\u0233\5\u00b4[\2\u022f\u0230\7\20"+
+		"\2\2\u0230\u0232\5\u00b4[\2\u0231\u022f\3\2\2\2\u0232\u0235\3\2\2\2\u0233"+
+		"\u0231\3\2\2\2\u0233\u0234\3\2\2\2\u0234\u0237\3\2\2\2\u0235\u0233\3\2"+
+		"\2\2\u0236\u0238\5\24\13\2\u0237\u0236\3\2\2\2\u0237\u0238\3\2\2\2\u0238"+
+		"\u023a\3\2\2\2\u0239\u023b\5<\37\2\u023a\u0239\3\2\2\2\u023a\u023b\3\2"+
+		"\2\2\u023b?\3\2\2\2\u023c\u023d\7^\2\2\u023d\u024e\5\u0096L\2\u023e\u0240"+
+		"\7`\2\2\u023f\u0241\5B\"\2\u0240\u023f\3\2\2\2\u0240\u0241\3\2\2\2\u0241"+
+		"\u0243\3\2\2\2\u0242\u0244\5\u0096L\2\u0243\u0242\3\2\2\2\u0243\u0244"+
+		"\3\2\2\2\u0244\u024e\3\2\2\2\u0245\u0247\7_\2\2\u0246\u0248\5B\"\2\u0247"+
+		"\u0246\3\2\2\2\u0247\u0248\3\2\2\2\u0248\u024e\3\2\2\2\u0249\u024b\7a"+
+		"\2\2\u024a\u024c\5B\"\2\u024b\u024a\3\2\2\2\u024b\u024c\3\2\2\2\u024c"+
+		"\u024e\3\2\2\2\u024d\u023c\3\2\2\2\u024d\u023e\3\2\2\2\u024d\u0245\3\2"+
+		"\2\2\u024d\u0249\3\2\2\2\u024eA\3\2\2\2\u024f\u0254\7X\2\2\u0250\u0255"+
+		"\5\u00b4[\2\u0251\u0255\7p\2\2\u0252\u0255\7o\2\2\u0253\u0255\7n\2\2\u0254"+
+		"\u0250\3\2\2\2\u0254\u0251\3\2\2\2\u0254\u0252\3\2\2\2\u0254\u0253\3\2"+
+		"\2\2\u0255C\3\2\2\2\u0256\u0257\5\u00b4[\2\u0257\u0258\7X\2\2\u0258E\3"+
+		"\2\2\2\u0259\u025a\7v\2\2\u025a\u025b\7\33\2\2\u025b\u025c\5\32\16\2\u025c"+
+		"G\3\2\2\2\u025d\u0260\5J&\2\u025e\u0260\5L\'\2\u025f\u025d\3\2\2\2\u025f"+
+		"\u025e\3\2\2\2\u0260I\3\2\2\2\u0261\u0262\5.\30\2\u0262\u0263\5F$\2\u0263"+
+		"K\3\2\2\2\u0264\u0265\5J&\2\u0265\u0266\7\27\2\2\u0266\u0267\5\u0096L"+
+		"\2\u0267M\3\2\2\2\u0268\u026b\5P)\2\u0269\u026b\5R*\2\u026a\u0268\3\2"+
+		"\2\2\u026a\u0269\3\2\2\2\u026bO\3\2\2\2\u026c\u026e\5.\30\2\u026d\u026f"+
+		"\t\3\2\2\u026e\u026d\3\2\2\2\u026e\u026f\3\2\2\2\u026f\u0270\3\2\2\2\u0270"+
+		"\u0271\5F$\2\u0271Q\3\2\2\2\u0272\u0273\5P)\2\u0273\u0274\7\27\2\2\u0274"+
+		"\u0275\5\u0096L\2\u0275S\3\2\2\2\u0276\u0278\5\u0110\u0089\2\u0277\u0276"+
+		"\3\2\2\2\u0277\u0278\3\2\2\2\u0278\u0279\3\2\2\2\u0279\u027b\7b\2\2\u027a"+
+		"\u0277\3\2\2\2\u027a\u027b\3\2\2\2\u027b\u027c\3\2\2\2\u027c\u0285\7\34"+
+		"\2\2\u027d\u0282\5N(\2\u027e\u027f\7\22\2\2\u027f\u0281\5N(\2\u0280\u027e"+
+		"\3\2\2\2\u0281\u0284\3\2\2\2\u0282\u0280\3\2\2\2\u0282\u0283\3\2\2\2\u0283"+
+		"\u0286\3\2\2\2\u0284\u0282\3\2\2\2\u0285\u027d\3\2\2\2\u0285\u0286\3\2"+
+		"\2\2\u0286\u0287\3\2\2\2\u0287\u0288\7\35\2\2\u0288U\3\2\2\2\u0289\u028b"+
+		"\5\u0110\u0089\2\u028a\u0289\3\2\2\2\u028a\u028b\3\2\2\2\u028b\u028c\3"+
+		"\2\2\2\u028c\u028d\7b\2\2\u028d\u0296\7\34\2\2\u028e\u0293\5N(\2\u028f"+
+		"\u0290\7\22\2\2\u0290\u0292\5N(\2\u0291\u028f\3\2\2\2\u0292\u0295\3\2"+
+		"\2\2\u0293\u0291\3\2\2\2\u0293\u0294\3\2\2\2\u0294\u0297\3\2\2\2\u0295"+
+		"\u0293\3\2\2\2\u0296\u028e\3\2\2\2\u0296\u0297\3\2\2\2\u0297\u0298\3\2"+
+		"\2\2\u0298\u0299\7\35\2\2\u0299\u029c\3\2\2\2\u029a\u029b\7\33\2\2\u029b"+
+		"\u029d\5X-\2\u029c\u029a\3\2\2\2\u029c\u029d\3\2\2\2\u029d\u029f\3\2\2"+
+		"\2\u029e\u02a0\5|?\2\u029f\u029e\3\2\2\2\u029f\u02a0\3\2\2\2\u02a0\u02a4"+
+		"\3\2\2\2\u02a1\u02a3\7\7\2\2\u02a2\u02a1\3\2\2\2\u02a3\u02a6\3\2\2\2\u02a4"+
+		"\u02a2\3\2\2\2\u02a4\u02a5\3\2\2\2\u02a5W\3\2\2\2\u02a6\u02a4\3\2\2\2"+
+		"\u02a7\u02a8\7c\2\2\u02a8\u02ac\5<\37\2\u02a9\u02aa\7d\2\2\u02aa\u02ac"+
+		"\5<\37\2\u02ab\u02a7\3\2\2\2\u02ab\u02a9\3\2\2\2\u02acY\3\2\2\2\u02ad"+
+		"\u02af\5\24\13\2\u02ae\u02ad\3\2\2\2\u02ae\u02af\3\2\2\2\u02af\u02b0\3"+
+		"\2\2\2\u02b0\u02b2\5<\37\2\u02b1\u02b3\5\u00d4k\2\u02b2\u02b1\3\2\2\2"+
+		"\u02b2\u02b3\3\2\2\2\u02b3\u02b9\3\2\2\2\u02b4\u02b5\5\24\13\2\u02b5\u02b6"+
+		"\5\u00d4k\2\u02b6\u02b9\3\2\2\2\u02b7\u02b9\5\u00d4k\2\u02b8\u02ae\3\2"+
+		"\2\2\u02b8\u02b4\3\2\2\2\u02b8\u02b7\3\2\2\2\u02b9[\3\2\2\2\u02ba\u02bc"+
+		"\5\36\20\2\u02bb\u02bd\5\24\13\2\u02bc\u02bb\3\2\2\2\u02bc\u02bd\3\2\2"+
+		"\2\u02bd\u02be\3\2\2\2\u02be\u02bf\5<\37\2\u02bf]\3\2\2\2\u02c0\u02c1"+
+		"\5\36\20\2\u02c1\u02c2\7B\2\2\u02c2\u02c3\5\u0096L\2\u02c3_\3\2\2\2\u02c4"+
+		"\u02c8\5\\/\2\u02c5\u02c8\5\36\20\2\u02c6\u02c8\5^\60\2\u02c7\u02c4\3"+
+		"\2\2\2\u02c7\u02c5\3\2\2\2\u02c7\u02c6\3\2\2\2\u02c8a\3\2\2\2\u02c9\u02ca"+
+		"\5.\30\2\u02ca\u02cb\7e\2\2\u02cb\u02cd\7v\2\2\u02cc\u02ce\5\20\t\2\u02cd"+
+		"\u02cc\3\2\2\2\u02cd\u02ce\3\2\2\2\u02ce\u02d0\3\2\2\2\u02cf\u02d1\5T"+
+		"+\2\u02d0\u02cf\3\2\2\2\u02d0\u02d1\3\2\2\2\u02d1\u02de\3\2\2\2\u02d2"+
+		"\u02d4\7\33\2\2\u02d3\u02d5\5\64\33\2\u02d4\u02d3\3\2\2\2\u02d4\u02d5"+
+		"\3\2\2\2\u02d5\u02d6\3\2\2\2\u02d6\u02db\5`\61\2\u02d7\u02d8\7\22\2\2"+
+		"\u02d8\u02da\5`\61\2\u02d9\u02d7\3\2\2\2\u02da\u02dd\3\2\2\2\u02db\u02d9"+
+		"\3\2\2\2\u02db\u02dc\3\2\2\2\u02dc\u02df\3\2\2\2\u02dd\u02db\3\2\2\2\u02de"+
+		"\u02d2\3\2\2\2\u02de\u02df\3\2\2\2\u02df\u02e0\3\2\2\2\u02e0\u02e3\5\26"+
+		"\f\2\u02e1\u02e4\5n8\2\u02e2\u02e4\5\u0080A\2\u02e3\u02e1\3\2\2\2\u02e3"+
+		"\u02e2\3\2\2\2\u02e4\u02e8\3\2\2\2\u02e5\u02e7\7\7\2\2\u02e6\u02e5\3\2"+
+		"\2\2\u02e7\u02ea\3\2\2\2\u02e8\u02e6\3\2\2\2\u02e8\u02e9\3\2\2\2\u02e9"+
+		"c\3\2\2\2\u02ea\u02e8\3\2\2\2\u02eb\u02ec\5.\30\2\u02ec\u02ed\7f\2\2\u02ed"+
+		"\u02ef\7v\2\2\u02ee\u02f0\5\20\t\2\u02ef\u02ee\3\2\2\2\u02ef\u02f0\3\2"+
+		"\2\2\u02f0\u02f2\3\2\2\2\u02f1\u02f3\5T+\2\u02f2\u02f1\3\2\2\2\u02f2\u02f3"+
+		"\3\2\2\2\u02f3\u0300\3\2\2\2\u02f4\u02f6\7\33\2\2\u02f5\u02f7\5\64\33"+
+		"\2\u02f6\u02f5\3\2\2\2\u02f6\u02f7\3\2\2\2\u02f7\u02f8\3\2\2\2\u02f8\u02fd"+
+		"\5`\61\2\u02f9\u02fa\7\22\2\2\u02fa\u02fc\5`\61\2\u02fb\u02f9\3\2\2\2"+
+		"\u02fc\u02ff\3\2\2\2\u02fd\u02fb\3\2\2\2\u02fd\u02fe\3\2\2\2\u02fe\u0301"+
+		"\3\2\2\2\u02ff\u02fd\3\2\2\2\u0300\u02f4\3\2\2\2\u0300\u0301\3\2\2\2\u0301"+
+		"\u0302\3\2\2\2\u0302\u0305\5\26\f\2\u0303\u0306\5n8\2\u0304\u0306\5\u0080"+
+		"A\2\u0305\u0303\3\2\2\2\u0305\u0304\3\2\2\2\u0306\u030a\3\2\2\2\u0307"+
+		"\u0309\7\7\2\2\u0308\u0307\3\2\2\2\u0309\u030c\3\2\2\2\u030a\u0308\3\2"+
+		"\2\2\u030a\u030b\3\2\2\2\u030be\3\2\2\2\u030c\u030a\3\2\2\2\u030d\u030e"+
+		"\7\33\2\2\u030e\u0313\5`\61\2\u030f\u0310\7\22\2\2\u0310\u0312\5`\61\2"+
+		"\u0311\u030f\3\2\2\2\u0312\u0315\3\2\2\2\u0313\u0311\3\2\2\2\u0313\u0314"+
+		"\3\2\2\2\u0314g\3\2\2\2\u0315\u0313\3\2\2\2\u0316\u0317\5.\30\2\u0317"+
+		"\u0318\7g\2\2\u0318\u031a\7v\2\2\u0319\u031b\5T+\2\u031a\u0319\3\2\2\2"+
+		"\u031a\u031b\3\2\2\2\u031b\u031d\3\2\2\2\u031c\u031e\5f\64\2\u031d\u031c"+
+		"\3\2\2\2\u031d\u031e\3\2\2\2\u031e\u031f\3\2\2\2\u031f\u0323\5n8\2\u0320"+
+		"\u0322\7\7\2\2\u0321\u0320\3\2\2\2\u0322\u0325\3\2\2\2\u0323\u0321\3\2"+
+		"\2\2\u0323\u0324\3\2\2\2\u0324i\3\2\2\2\u0325\u0323\3\2\2\2\u0326\u0327"+
+		"\5.\30\2\u0327\u0328\7j\2\2\u0328\u0329\7v\2\2\u0329\u032a\7\27\2\2\u032a"+
+		"\u032e\5\"\22\2\u032b\u032d\7\7\2\2\u032c\u032b\3\2\2\2\u032d\u0330\3"+
+		"\2\2\2\u032e\u032c\3\2\2\2\u032e\u032f\3\2\2\2\u032fk\3\2\2\2\u0330\u032e"+
+		"\3\2\2\2\u0331\u0332\5.\30\2\u0332\u0333\7h\2\2\u0333\u0335\7g\2\2\u0334"+
+		"\u0336\5f\64\2\u0335\u0334\3\2\2\2\u0335\u0336\3\2\2\2\u0336\u0337\3\2"+
+		"\2\2\u0337\u033b\5n8\2\u0338\u033a\7\7\2\2\u0339\u0338\3\2\2\2\u033a\u033d"+
+		"\3\2\2\2\u033b\u0339\3\2\2\2\u033b\u033c\3\2\2\2\u033cm\3\2\2\2\u033d"+
+		"\u033b\3\2\2\2\u033e\u033f\7\b\2\2\u033f\u0340\5p9\2\u0340\u0341\7\t\2"+
+		"\2\u0341\u0343\3\2\2\2\u0342\u033e\3\2\2\2\u0342\u0343\3\2\2\2\u0343o"+
+		"\3\2\2\2\u0344\u0346\5\f\7\2\u0345\u0344\3\2\2\2\u0346\u0349\3\2\2\2\u0347"+
+		"\u0345\3\2\2\2\u0347\u0348\3\2\2\2\u0348q\3\2\2\2\u0349\u0347\3\2\2\2"+
+		"\u034a\u0353\7\34\2\2\u034b\u0350\5H%\2\u034c\u034d\7\22\2\2\u034d\u034f"+
+		"\5H%\2\u034e\u034c\3\2\2\2\u034f\u0352\3\2\2\2\u0350\u034e\3\2\2\2\u0350"+
+		"\u0351\3\2\2\2\u0351\u0354\3\2\2\2\u0352\u0350\3\2\2\2\u0353\u034b\3\2"+
+		"\2\2\u0353\u0354\3\2\2\2\u0354\u0355\3\2\2\2\u0355\u0356\7\35\2\2\u0356"+
+		"s\3\2\2\2\u0357\u0358\5.\30\2\u0358\u035a\7i\2\2\u0359\u035b\5\20\t\2"+
+		"\u035a\u0359\3\2\2\2\u035a\u035b\3\2\2\2\u035b\u0360\3\2\2\2\u035c\u035d"+
+		"\5\32\16\2\u035d\u035e\7\20\2\2\u035e\u0361\3\2\2\2\u035f\u0361\5\64\33"+
+		"\2\u0360\u035c\3\2\2\2\u0360\u035f\3\2\2\2\u0360\u0361\3\2\2\2\u0361\u0362"+
+		"\3\2\2\2\u0362\u0364\7v\2\2\u0363\u0365\5\20\t\2\u0364\u0363\3\2\2\2\u0364"+
+		"\u0365\3\2\2\2\u0365\u0366\3\2\2\2\u0366\u0369\5r:\2\u0367\u0368\7\33"+
+		"\2\2\u0368\u036a\5\32\16\2\u0369\u0367\3\2\2\2\u0369\u036a\3\2\2\2\u036a"+
+		"\u036b\3\2\2\2\u036b\u036d\5\26\f\2\u036c\u036e\5z>\2\u036d\u036c\3\2"+
+		"\2\2\u036d\u036e\3\2\2\2\u036e\u0372\3\2\2\2\u036f\u0371\7\7\2\2\u0370"+
+		"\u036f\3\2\2\2\u0371\u0374\3\2\2\2\u0372\u0370\3\2\2\2\u0372\u0373\3\2"+
+		"\2\2\u0373u\3\2\2\2\u0374\u0372\3\2\2\2\u0375\u0377\7i\2\2\u0376\u0378"+
+		"\5\20\t\2\u0377\u0376\3\2\2\2\u0377\u0378\3\2\2\2\u0378\u037d\3\2\2\2"+
+		"\u0379\u037a\5\32\16\2\u037a\u037b\7\20\2\2\u037b\u037e\3\2\2\2\u037c"+
+		"\u037e\5\64\33\2\u037d\u0379\3\2\2\2\u037d\u037c\3\2\2\2\u037d\u037e\3"+
+		"\2\2\2\u037e\u0380\3\2\2\2\u037f\u0381\5\20\t\2\u0380\u037f\3\2\2\2\u0380"+
+		"\u0381\3\2\2\2\u0381\u0382\3\2\2\2\u0382\u0385\5r:\2\u0383\u0384\7\33"+
+		"\2\2\u0384\u0386\5\32\16\2\u0385\u0383\3\2\2\2\u0385\u0386\3\2\2\2\u0386"+
+		"\u0387\3\2\2\2\u0387\u0389\5\26\f\2\u0388\u038a\5z>\2\u0389\u0388\3\2"+
+		"\2\2\u0389\u038a\3\2\2\2\u038a\u038e\3\2\2\2\u038b\u038d\7\7\2\2\u038c"+
+		"\u038b\3\2\2\2\u038d\u0390\3\2\2\2\u038e\u038c\3\2\2\2\u038e\u038f\3\2"+
+		"\2\2\u038fw\3\2\2\2\u0390\u038e\3\2\2\2\u0391\u0393\7\7\2\2\u0392\u0391"+
+		"\3\2\2\2\u0393\u0396\3\2\2\2\u0394\u0392\3\2\2\2\u0394\u0395\3\2\2\2\u0395"+
+		"\u03a4\3\2\2\2\u0396\u0394\3\2\2\2\u0397\u03a1\5\u00be`\2\u0398\u039a"+
+		"\7\7\2\2\u0399\u0398\3\2\2\2\u039a\u039d\3\2\2\2\u039b\u0399\3\2\2\2\u039b"+
+		"\u039c\3\2\2\2\u039c\u039e\3\2\2\2\u039d\u039b\3\2\2\2\u039e\u03a0\5\u00be"+
+		"`\2\u039f\u039b\3\2\2\2\u03a0\u03a3\3\2\2\2\u03a1\u039f\3\2\2\2\u03a1"+
+		"\u03a2\3\2\2\2\u03a2\u03a5\3\2\2\2\u03a3\u03a1\3\2\2\2\u03a4\u0397\3\2"+
+		"\2\2\u03a4\u03a5\3\2\2\2\u03a5\u03a9\3\2\2\2\u03a6\u03a8\7\7\2\2\u03a7"+
+		"\u03a6\3\2\2\2\u03a8\u03ab\3\2\2\2\u03a9\u03a7\3\2\2\2\u03a9\u03aa\3\2"+
+		"\2\2\u03aay\3\2\2\2\u03ab\u03a9\3\2\2\2\u03ac\u03b0\5|?\2\u03ad\u03ae"+
+		"\7\27\2\2\u03ae\u03b0\5\u0096L\2\u03af\u03ac\3\2\2\2\u03af\u03ad\3\2\2"+
+		"\2\u03b0{\3\2\2\2\u03b1\u03b2\7\b\2\2\u03b2\u03b3\5x=\2\u03b3\u03b4\7"+
+		"\t\2\2\u03b4}\3\2\2\2\u03b5\u03b6\7k\2\2\u03b6\u03ba\5|?\2\u03b7\u03b9"+
+		"\7\7\2\2\u03b8\u03b7\3\2\2\2\u03b9\u03bc\3\2\2\2\u03ba\u03b8\3\2\2\2\u03ba"+
+		"\u03bb\3\2\2\2\u03bb\177\3\2\2\2\u03bc\u03ba\3\2\2\2\u03bd\u03be\7\b\2"+
+		"\2\u03be\u03c1\5\u0082B\2\u03bf\u03c0\7\7\2\2\u03c0\u03c2\5p9\2\u03c1"+
+		"\u03bf\3\2\2\2\u03c1\u03c2\3\2\2\2\u03c2\u03c3\3\2\2\2\u03c3\u03c4\7\t"+
+		"\2\2\u03c4\u0081\3\2\2\2\u03c5\u03c7\5\u0084C\2\u03c6\u03c8\7\22\2\2\u03c7"+
+		"\u03c6\3\2\2\2\u03c7\u03c8\3\2\2\2\u03c8\u03ca\3\2\2\2\u03c9\u03c5\3\2"+
+		"\2\2\u03ca\u03cd\3\2\2\2\u03cb\u03c9\3\2\2\2\u03cb\u03cc\3\2\2\2\u03cc"+
+		"\u0083\3\2\2\2\u03cd\u03cb\3\2\2\2\u03ce\u03cf\5.\30\2\u03cf\u03d6\7v"+
+		"\2\2\u03d0\u03d2\7\33\2\2\u03d1\u03d3\5\64\33\2\u03d2\u03d1\3\2\2\2\u03d2"+
+		"\u03d3\3\2\2\2\u03d3\u03d4\3\2\2\2\u03d4\u03d7\5\\/\2\u03d5\u03d7\5<\37"+
+		"\2\u03d6\u03d0\3\2\2\2\u03d6\u03d5\3\2\2\2\u03d6\u03d7\3\2\2\2\u03d7\u03d8"+
+		"\3\2\2\2\u03d8\u03d9\5n8\2\u03d9\u0085\3\2\2\2\u03da\u03db\7l\2\2\u03db"+
+		"\u03dc\7\34\2\2\u03dc\u03dd\5\u0096L\2\u03dd\u03de\7\35\2\2\u03de\u03e2"+
+		"\5\u0096L\2\u03df\u03e1\7\7\2\2\u03e0\u03df\3\2\2\2\u03e1\u03e4\3\2\2"+
+		"\2\u03e2\u03e0\3\2\2\2\u03e2\u03e3\3\2\2\2\u03e3\u03e7\3\2\2\2\u03e4\u03e2"+
+		"\3\2\2\2\u03e5\u03e6\7m\2\2\u03e6\u03e8\5\u0096L\2\u03e7\u03e5\3\2\2\2"+
+		"\u03e7\u03e8\3\2\2\2\u03e8\u0087\3\2\2\2\u03e9\u03ea\7r\2\2\u03ea\u03ee"+
+		"\5|?\2\u03eb\u03ed\5\u008aF\2\u03ec\u03eb\3\2\2\2\u03ed\u03f0\3\2\2\2"+
+		"\u03ee\u03ec\3\2\2\2\u03ee\u03ef\3\2\2\2\u03ef\u03f2\3\2\2\2\u03f0\u03ee"+
+		"\3\2\2\2\u03f1\u03f3\5\u008cG\2\u03f2\u03f1\3\2\2\2\u03f2\u03f3\3\2\2"+
+		"\2\u03f3\u0089\3\2\2\2\u03f4\u03f5\7s\2\2\u03f5\u03f7\7\34\2\2\u03f6\u03f8"+
+		"\5\64\33\2\u03f7\u03f6\3\2\2\2\u03f7\u03f8\3\2\2\2\u03f8\u03f9\3\2\2\2"+
+		"\u03f9\u03fa\7v\2\2\u03fa\u03fb\7\33\2\2\u03fb\u03fc\5\36\20\2\u03fc\u03fd"+
+		"\7\35\2\2\u03fd\u03fe\5|?\2\u03fe\u008b\3\2\2\2\u03ff\u0400\7t\2\2\u0400"+
+		"\u0401\5|?\2\u0401\u008d\3\2\2\2\u0402\u0406\5\u0090I\2\u0403\u0406\5"+
+		"\u0092J\2\u0404\u0406\5\u0094K\2\u0405\u0402\3\2\2\2\u0405\u0403\3\2\2"+
+		"\2\u0405\u0404\3\2\2\2\u0406\u008f\3\2\2\2\u0407\u0408\7p\2\2\u0408\u040a"+
+		"\7\34\2\2\u0409\u040b\5\64\33\2\u040a\u0409\3\2\2\2\u040a\u040b\3\2\2"+
+		"\2\u040b\u040e\3\2\2\2\u040c\u040f\5,\27\2\u040d\u040f\5$\23\2\u040e\u040c"+
+		"\3\2\2\2\u040e\u040d\3\2\2\2\u040f\u0410\3\2\2\2\u0410\u0411\7.\2\2\u0411"+
+		"\u0412\5\u0096L\2\u0412\u0413\7\35\2\2\u0413\u0414\5\u0096L\2\u0414\u0091"+
+		"\3\2\2\2\u0415\u0416\7o\2\2\u0416\u0417\7\34\2\2\u0417\u0418\5\u0096L"+
+		"\2\u0418\u0419\7\35\2\2\u0419\u041a\5\u0096L\2\u041a\u0093\3\2\2\2\u041b"+
+		"\u041c\7q\2\2\u041c\u041d\5\u0096L\2\u041d\u041e\7o\2\2\u041e\u041f\7"+
+		"\34\2\2\u041f\u0420\5\u0096L\2\u0420\u0421\7\35\2\2\u0421\u0095\3\2\2"+
+		"\2\u0422\u0428\5\u0098M\2\u0423\u0424\5\u00ceh\2\u0424\u0425\5\u0098M"+
+		"\2\u0425\u0427\3\2\2\2\u0426\u0423\3\2\2\2\u0427\u042a\3\2\2\2\u0428\u0426"+
+		"\3\2\2\2\u0428\u0429\3\2\2\2\u0429\u0097\3\2\2\2\u042a\u0428\3\2\2\2\u042b"+
+		"\u0430\5\u009aN\2\u042c\u042d\7 \2\2\u042d\u042f\5\u009aN\2\u042e\u042c"+
+		"\3\2\2\2\u042f\u0432\3\2\2\2\u0430\u042e\3\2\2\2\u0430\u0431\3\2\2\2\u0431"+
+		"\u0099\3\2\2\2\u0432\u0430\3\2\2\2\u0433\u0438\5\u009cO\2\u0434\u0435"+
+		"\7!\2\2\u0435\u0437\5\u009cO\2\u0436\u0434\3\2\2\2\u0437\u043a\3\2\2\2"+
+		"\u0438\u0436\3\2\2\2\u0438\u0439\3\2\2\2\u0439\u009b\3\2\2\2\u043a\u0438"+
+		"\3\2\2\2\u043b\u0441\5\u009eP\2\u043c\u043d\5\u00ccg\2\u043d\u043e\5\u009e"+
+		"P\2\u043e\u0440\3\2\2\2\u043f\u043c\3\2\2\2\u0440\u0443\3\2\2\2\u0441"+
+		"\u043f\3\2\2\2\u0441\u0442\3\2\2\2\u0442\u009d\3\2\2\2\u0443\u0441\3\2"+
+		"\2\2\u0444\u044a\5\u00a0Q\2\u0445\u0446\5\u00caf\2\u0446\u0447\5\u00a0"+
+		"Q\2\u0447\u0449\3\2\2\2\u0448\u0445\3\2\2\2\u0449\u044c\3\2\2\2\u044a"+
+		"\u0448\3\2\2\2\u044a\u044b\3\2\2\2\u044b\u009f\3\2\2\2\u044c\u044a\3\2"+
+		"\2\2\u044d\u0453\5\u00a2R\2\u044e\u044f\5\u00c4c\2\u044f\u0450\5\u00a2"+
+		"R\2\u0450\u0452\3\2\2\2\u0451\u044e\3\2\2\2\u0452\u0455\3\2\2\2\u0453"+
+		"\u0451\3\2\2\2\u0453\u0454\3\2\2\2\u0454\u045d\3\2\2\2\u0455\u0453\3\2"+
+		"\2\2\u0456\u045a\5\u00a2R\2\u0457\u0458\5\u00c8e\2\u0458\u0459\5\32\16"+
+		"\2\u0459\u045b\3\2\2\2\u045a\u0457\3\2\2\2\u045a\u045b\3\2\2\2\u045b\u045d"+
+		"\3\2\2\2\u045c\u044d\3\2\2\2\u045c\u0456\3\2\2\2\u045d\u00a1\3\2\2\2\u045e"+
+		"\u0463\5\u00a4S\2\u045f\u0460\7\"\2\2\u0460\u0462\5\u00a4S\2\u0461\u045f"+
+		"\3\2\2\2\u0462\u0465\3\2\2\2\u0463\u0461\3\2\2\2\u0463\u0464\3\2\2\2\u0464"+
+		"\u00a3\3\2\2\2\u0465\u0463\3\2\2\2\u0466\u046b\5\u00a6T\2\u0467\u0468"+
+		"\7v\2\2\u0468\u046a\5\u00a6T\2\u0469\u0467\3\2\2\2\u046a\u046d\3\2\2\2"+
+		"\u046b\u0469\3\2\2\2\u046b\u046c\3\2\2\2\u046c\u00a5\3\2\2\2\u046d\u046b"+
+		"\3\2\2\2\u046e\u0473\5\u00a8U\2\u046f\u0470\7$\2\2\u0470\u0472\5\u00a8"+
+		"U\2\u0471\u046f\3\2\2\2\u0472\u0475\3\2\2\2\u0473\u0471\3\2\2\2\u0473"+
+		"\u0474\3\2\2\2\u0474\u00a7\3\2\2\2\u0475\u0473\3\2\2\2\u0476\u047c\5\u00aa"+
+		"V\2\u0477\u0478\5\u00c2b\2\u0478\u0479\5\u00aaV\2\u0479\u047b\3\2\2\2"+
+		"\u047a\u0477\3\2\2\2\u047b\u047e\3\2\2\2\u047c\u047a\3\2\2\2\u047c\u047d"+
+		"\3\2\2\2\u047d\u00a9\3\2\2\2\u047e\u047c\3\2\2\2\u047f\u0485\5\u00acW"+
+		"\2\u0480\u0481\5\u00c0a\2\u0481\u0482\5\u00acW\2\u0482\u0484\3\2\2\2\u0483"+
+		"\u0480\3\2\2\2\u0484\u0487\3\2\2\2\u0485\u0483\3\2\2\2\u0485\u0486\3\2"+
+		"\2\2\u0486\u00ab\3\2\2\2\u0487\u0485\3\2\2\2\u0488\u048e\5\u00aeX\2\u0489"+
+		"\u048a\5\u00c6d\2\u048a\u048b\5\u00aeX\2\u048b\u048d\3\2\2\2\u048c\u0489"+
+		"\3\2\2\2\u048d\u0490\3\2\2\2\u048e\u048c\3\2\2\2\u048e\u048f\3\2\2\2\u048f"+
+		"\u00ad\3\2\2\2\u0490\u048e\3\2\2\2\u0491\u0493\5\u00d0i\2\u0492\u0491"+
+		"\3\2\2\2\u0493\u0496\3\2\2\2\u0494\u0492\3\2\2\2\u0494\u0495\3\2\2\2\u0495"+
+		"\u0497\3\2\2\2\u0496\u0494\3\2\2\2\u0497\u0498\5\u00b0Y\2\u0498\u00af"+
+		"\3\2\2\2\u0499\u049a\5\u00b8]\2\u049a\u049c\5Z.\2\u049b\u049d\5\u00e6"+
+		"t\2\u049c\u049b\3\2\2\2\u049c\u049d\3\2\2\2\u049d\u04ad\3\2\2\2\u049e"+
+		"\u04a2\5\u00b8]\2\u049f\u04a1\5\u00d2j\2\u04a0\u049f\3\2\2\2\u04a1\u04a4"+
+		"\3\2\2\2\u04a2\u04a0\3\2\2\2\u04a2\u04a3\3\2\2\2\u04a3\u04ad\3\2\2\2\u04a4"+
+		"\u04a2\3\2\2\2\u04a5\u04a9\5\u00b2Z\2\u04a6\u04a8\5\u00d2j\2\u04a7\u04a6"+
+		"\3\2\2\2\u04a8\u04ab\3\2\2\2\u04a9\u04a7\3\2\2\2\u04a9\u04aa\3\2\2\2\u04aa"+
+		"\u04ad\3\2\2\2\u04ab\u04a9\3\2\2\2\u04ac\u0499\3\2\2\2\u04ac\u049e\3\2"+
+		"\2\2\u04ac\u04a5\3\2\2\2\u04ad\u00b1\3\2\2\2\u04ae\u04b2\5\36\20\2\u04af"+
+		"\u04b1\7\36\2\2\u04b0\u04af\3\2\2\2\u04b1\u04b4\3\2\2\2\u04b2\u04b0\3"+
+		"\2\2\2\u04b2\u04b3\3\2\2\2\u04b3\u04b6\3\2\2\2\u04b4\u04b2\3\2\2\2\u04b5"+
+		"\u04ae\3\2\2\2\u04b5\u04b6\3\2\2\2\u04b6\u04b9\3\2\2\2\u04b7\u04b9\7c"+
+		"\2\2\u04b8\u04b5\3\2\2\2\u04b8\u04b7\3\2\2\2\u04b9\u04ba\3\2\2\2\u04ba"+
+		"\u04bd\7%\2\2\u04bb\u04be\5\u00b4[\2\u04bc\u04be\7e\2\2\u04bd\u04bb\3"+
+		"\2\2\2\u04bd\u04bc\3\2\2\2\u04be\u04c0\3\2\2\2\u04bf\u04c1\5\24\13\2\u04c0"+
+		"\u04bf\3\2\2\2\u04c0\u04c1\3\2\2\2\u04c1\u00b3\3\2\2\2\u04c2\u04ca\7v"+
+		"\2\2\u04c3\u04ca\7N\2\2\u04c4\u04ca\7\17\2\2\u04c5\u04ca\7h\2\2\u04c6"+
+		"\u04ca\7k\2\2\u04c7\u04ca\5\u0110\u0089\2\u04c8\u04ca\7P\2\2\u04c9\u04c2"+
+		"\3\2\2\2\u04c9\u04c3\3\2\2\2\u04c9\u04c4\3\2\2\2\u04c9\u04c5\3\2\2\2\u04c9"+
+		"\u04c6\3\2\2\2\u04c9\u04c7\3\2\2\2\u04c9\u04c8\3\2\2\2\u04ca\u00b5\3\2"+
+		"\2\2\u04cb\u04d5\7\r\2\2\u04cc\u04d4\7z\2\2\u04cd\u04ce\7{\2\2\u04ce\u04cf"+
+		"\5\u0096L\2\u04cf\u04d0\7\t\2\2\u04d0\u04d4\3\2\2\2\u04d1\u04d4\7|\2\2"+
+		"\u04d2\u04d4\n\4\2\2\u04d3\u04cc\3\2\2\2\u04d3\u04cd\3\2\2\2\u04d3\u04d1"+
+		"\3\2\2\2\u04d3\u04d2\3\2\2\2\u04d4\u04d7\3\2\2\2\u04d5\u04d3\3\2\2\2\u04d5"+
+		"\u04d6\3\2\2\2\u04d6\u04d8\3\2\2\2\u04d7\u04d5\3\2\2\2\u04d8\u04e7\7y"+
+		"\2\2\u04d9\u04e2\7\f\2\2\u04da\u04db\7\u0080\2\2\u04db\u04dc\5\u0096L"+
+		"\2\u04dc\u04dd\7\t\2\2\u04dd\u04e1\3\2\2\2\u04de\u04e1\7\u0081\2\2\u04df"+
+		"\u04e1\n\5\2\2\u04e0\u04da\3\2\2\2\u04e0\u04de\3\2\2\2\u04e0\u04df\3\2"+
+		"\2\2\u04e1\u04e4\3\2\2\2\u04e2\u04e0\3\2\2\2\u04e2\u04e3\3\2\2\2\u04e3"+
+		"\u04e5\3\2\2\2\u04e4\u04e2\3\2\2\2\u04e5\u04e7\7~\2\2\u04e6\u04cb\3\2"+
+		"\2\2\u04e6\u04d9\3\2\2\2\u04e7\u00b7\3\2\2\2\u04e8\u04e9\7\34\2\2\u04e9"+
+		"\u04ea\5\u0096L\2\u04ea\u04eb\7\35\2\2\u04eb\u0508\3\2\2\2\u04ec\u0508"+
+		"\5\u00ba^\2\u04ed\u0508\5\u00d8m\2\u04ee\u0508\5v<\2\u04ef\u04f1\7c\2"+
+		"\2\u04f0\u04f2\5B\"\2\u04f1\u04f0\3\2\2\2\u04f1\u04f2\3\2\2\2\u04f2\u0508"+
+		"\3\2\2\2\u04f3\u04f8\7d\2\2\u04f4\u04f5\7\23\2\2\u04f5\u04f6\5\32\16\2"+
+		"\u04f6\u04f7\7\25\2\2\u04f7\u04f9\3\2\2\2\u04f8\u04f4\3\2\2\2\u04f8\u04f9"+
+		"\3\2\2\2\u04f9\u04fb\3\2\2\2\u04fa\u04fc\5B\"\2\u04fb\u04fa\3\2\2\2\u04fb"+
+		"\u04fc\3\2\2\2\u04fc\u0508\3\2\2\2\u04fd\u0508\5\u0086D\2\u04fe\u0508"+
+		"\5\u00e0q\2\u04ff\u0508\5\u0088E\2\u0500\u0508\5\u00dep\2\u0501\u0508"+
+		"\5@!\2\u0502\u0508\5\u008eH\2\u0503\u0508\5\u00b4[\2\u0504\u0505\7u\2"+
+		"\2\u0505\u0508\5\u00b4[\2\u0506\u0508\7\16\2\2\u0507\u04e8\3\2\2\2\u0507"+
+		"\u04ec\3\2\2\2\u0507\u04ed\3\2\2\2\u0507\u04ee\3\2\2\2\u0507\u04ef\3\2"+
+		"\2\2\u0507\u04f3\3\2\2\2\u0507\u04fd\3\2\2\2\u0507\u04fe\3\2\2\2\u0507"+
+		"\u04ff\3\2\2\2\u0507\u0500\3\2\2\2\u0507\u0501\3\2\2\2\u0507\u0502\3\2"+
+		"\2\2\u0507\u0503\3\2\2\2\u0507\u0504\3\2\2\2\u0507\u0506\3\2\2\2\u0508"+
+		"\u00b9\3\2\2\2\u0509\u0511\7&\2\2\u050a\u0511\7\'\2\2\u050b\u0511\5\u00b6"+
+		"\\\2\u050c\u0511\7\6\2\2\u050d\u0511\7\n\2\2\u050e\u0511\7\13\2\2\u050f"+
+		"\u0511\7(\2\2\u0510\u0509\3\2\2\2\u0510\u050a\3\2\2\2\u0510\u050b\3\2"+
+		"\2\2\u0510\u050c\3\2\2\2\u0510\u050d\3\2\2\2\u0510\u050e\3\2\2\2\u0510"+
+		"\u050f\3\2\2\2\u0511\u00bb\3\2\2\2\u0512\u0518\5t;\2\u0513\u0518\5\u00e8"+
+		"u\2\u0514\u0518\5b\62\2\u0515\u0518\5d\63\2\u0516\u0518\5h\65\2\u0517"+
+		"\u0512\3\2\2\2\u0517\u0513\3\2\2\2\u0517\u0514\3\2\2\2\u0517\u0515\3\2"+
+		"\2\2\u0517\u0516\3\2\2\2\u0518\u00bd\3\2\2\2\u0519\u051c\5\u00bc_\2\u051a"+
+		"\u051c\5\u0096L\2\u051b\u0519\3\2\2\2\u051b\u051a\3\2\2\2\u051c\u00bf"+
+		"\3\2\2\2\u051d\u051e\t\6\2\2\u051e\u00c1\3\2\2\2\u051f\u0520\t\7\2\2\u0520"+
+		"\u00c3\3\2\2\2\u0521\u0522\t\b\2\2\u0522\u00c5\3\2\2\2\u0523\u0524\t\t"+
+		"\2\2\u0524\u00c7\3\2\2\2\u0525\u0526\t\n\2\2\u0526\u00c9\3\2\2\2\u0527"+
+		"\u0528\t\13\2\2\u0528\u00cb\3\2\2\2\u0529\u052a\t\f\2\2\u052a\u00cd\3"+
+		"\2\2\2\u052b\u052c\t\r\2\2\u052c\u00cf\3\2\2\2\u052d\u0535\7-\2\2\u052e"+
+		"\u0535\7,\2\2\u052f\u0535\7:\2\2\u0530\u0535\79\2\2\u0531\u0535\7<\2\2"+
+		"\u0532\u0535\5\64\33\2\u0533\u0535\5D#\2\u0534\u052d\3\2\2\2\u0534\u052e"+
+		"\3\2\2\2\u0534\u052f\3\2\2\2\u0534\u0530\3\2\2\2\u0534\u0531\3\2\2\2\u0534"+
+		"\u0532\3\2\2\2\u0534\u0533\3\2\2\2\u0535\u00d1\3\2\2\2\u0536\u053f\7:"+
+		"\2\2\u0537\u053f\79\2\2\u0538\u053f\7;\2\2\u0539\u053f\5Z.\2\u053a\u053f"+
+		"\5\u00dco\2\u053b\u053c\5\u00d6l\2\u053c\u053d\5\u00b0Y\2\u053d\u053f"+
+		"\3\2\2\2\u053e\u0536\3\2\2\2\u053e\u0537\3\2\2\2\u053e\u0538\3\2\2\2\u053e"+
+		"\u0539\3\2\2\2\u053e\u053a\3\2\2\2\u053e\u053b\3\2\2\2\u053f\u00d3\3\2"+
+		"\2\2\u0540\u0541\7X\2\2\u0541\u0543\5> \2\u0542\u0540\3\2\2\2\u0543\u0546"+
+		"\3\2\2\2\u0544\u0542\3\2\2\2\u0544\u0545\3\2\2\2\u0545\u0548\3\2\2\2\u0546"+
+		"\u0544\3\2\2\2\u0547\u0549\5D#\2\u0548\u0547\3\2\2\2\u0548\u0549\3\2\2"+
+		"\2\u0549\u054a\3\2\2\2\u054a\u054b\5\u00d8m\2\u054b\u00d5\3\2\2\2\u054c"+
+		"\u0552\7\20\2\2\u054d\u054f\7\36\2\2\u054e\u0550\7\20\2\2\u054f\u054e"+
+		"\3\2\2\2\u054f\u0550\3\2\2\2\u0550\u0552\3\2\2\2\u0551\u054c\3\2\2\2\u0551"+
+		"\u054d\3\2\2\2\u0552\u00d7\3\2\2\2\u0553\u0554\7\b\2\2\u0554\u0555\5x"+
+		"=\2\u0555\u0556\7\t\2\2\u0556\u0567\3\2\2\2\u0557\u0560\7\b\2\2\u0558"+
+		"\u055d\5\u00dan\2\u0559\u055a\7\22\2\2\u055a\u055c\5\u00dan\2\u055b\u0559"+
+		"\3\2\2\2\u055c\u055f\3\2\2\2\u055d\u055b\3\2\2\2\u055d\u055e\3\2\2\2\u055e"+
+		"\u0561\3\2\2\2\u055f\u055d\3\2\2\2\u0560\u0558\3\2\2\2\u0560\u0561\3\2"+
+		"\2\2\u0561\u0562\3\2\2\2\u0562\u0563\7)\2\2\u0563\u0564\5x=\2\u0564\u0565"+
+		"\7\t\2\2\u0565\u0567\3\2\2\2\u0566\u0553\3\2\2\2\u0566\u0557\3\2\2\2\u0567"+
+		"\u00d9\3\2\2\2\u0568\u056b\7v\2\2\u0569\u056a\7\33\2\2\u056a\u056c\5\32"+
+		"\16\2\u056b\u0569\3\2\2\2\u056b\u056c\3\2\2\2\u056c\u00db\3\2\2\2\u056d"+
+		"\u0576\7=\2\2\u056e\u0573\5\u0096L\2\u056f\u0570\7\22\2\2\u0570\u0572"+
+		"\5\u0096L\2\u0571\u056f\3\2\2\2\u0572\u0575\3\2\2\2\u0573\u0571\3\2\2"+
+		"\2\u0573\u0574\3\2\2\2\u0574\u0577\3\2\2\2\u0575\u0573\3\2\2\2\u0576\u056e"+
+		"\3\2\2\2\u0576\u0577\3\2\2\2\u0577\u0578\3\2\2\2\u0578\u0579\7>\2\2\u0579"+
+		"\u00dd\3\2\2\2\u057a\u0584\7g\2\2\u057b\u057c\7\33\2\2\u057c\u0581\5`"+
+		"\61\2\u057d\u057e\7\22\2\2\u057e\u0580\5`\61\2\u057f\u057d\3\2\2\2\u0580"+
+		"\u0583\3\2\2\2\u0581\u057f\3\2\2\2\u0581\u0582\3\2\2\2\u0582\u0585\3\2"+
+		"\2\2\u0583\u0581\3\2\2\2\u0584\u057b\3\2\2\2\u0584\u0585\3\2\2\2\u0585"+
+		"\u0586\3\2\2\2\u0586\u0587\5n8\2\u0587\u00df\3\2\2\2\u0588\u058d\7n\2"+
+		"\2\u0589\u058a\7\34\2\2\u058a\u058b\5\u0096L\2\u058b\u058c\7\35\2\2\u058c"+
+		"\u058e\3\2\2\2\u058d\u0589\3\2\2\2\u058d\u058e\3\2\2\2\u058e\u058f\3\2"+
+		"\2\2\u058f\u0593\7\b\2\2\u0590\u0592\5\u00e2r\2\u0591\u0590\3\2\2\2\u0592"+
+		"\u0595\3\2\2\2\u0593\u0591\3\2\2\2\u0593\u0594\3\2\2\2\u0594\u0596\3\2"+
+		"\2\2\u0595\u0593\3\2\2\2\u0596\u0597\7\t\2\2\u0597\u00e1\3\2\2\2\u0598"+
+		"\u059d\5\u00e4s\2\u0599\u059a\7\22\2\2\u059a\u059c\5\u00e4s\2\u059b\u0599"+
+		"\3\2\2\2\u059c\u059f\3\2\2\2\u059d\u059b\3\2\2\2\u059d\u059e\3\2\2\2\u059e"+
+		"\u05a0\3\2\2\2\u059f\u059d\3\2\2\2\u05a0\u05a1\7)\2\2\u05a1\u05a5\5\u0096"+
+		"L\2\u05a2\u05a4\7\7\2\2\u05a3\u05a2\3\2\2\2\u05a4\u05a7\3\2\2\2\u05a5"+
+		"\u05a3\3\2\2\2\u05a5\u05a6\3\2\2\2\u05a6\u05b2\3\2\2\2\u05a7\u05a5\3\2"+
+		"\2\2\u05a8\u05a9\7m\2\2\u05a9\u05aa\7)\2\2\u05aa\u05ae\5\u0096L\2\u05ab"+
+		"\u05ad\7\7\2\2\u05ac\u05ab\3\2\2\2\u05ad\u05b0\3\2\2\2\u05ae\u05ac\3\2"+
+		"\2\2\u05ae\u05af\3\2\2\2\u05af\u05b2\3\2\2\2\u05b0\u05ae\3\2\2\2\u05b1"+
+		"\u0598\3\2\2\2\u05b1\u05a8\3\2\2\2\u05b2\u00e3\3\2\2\2\u05b3\u05b9\5\u0096"+
+		"L\2\u05b4\u05b5\t\b\2\2\u05b5\u05b9\5\u0096L\2\u05b6\u05b7\t\n\2\2\u05b7"+
+		"\u05b9\5\32\16\2\u05b8\u05b3\3\2\2\2\u05b8\u05b4\3\2\2\2\u05b8\u05b6\3"+
+		"\2\2\2\u05b9\u00e5\3\2\2\2\u05ba\u05bc\7\b\2\2\u05bb\u05bd\7\34\2\2\u05bc"+
+		"\u05bb\3\2\2\2\u05bc\u05bd\3\2\2\2\u05bd\u05c6\3\2\2\2\u05be\u05c3\5$"+
+		"\23\2\u05bf\u05c0\7\22\2\2\u05c0\u05c2\5$\23\2\u05c1\u05bf\3\2\2\2\u05c2"+
+		"\u05c5\3\2\2\2\u05c3\u05c1\3\2\2\2\u05c3\u05c4\3\2\2\2\u05c4\u05c7\3\2"+
+		"\2\2\u05c5\u05c3\3\2\2\2\u05c6\u05be\3\2\2\2\u05c6\u05c7\3\2\2\2\u05c7"+
+		"\u05c9\3\2\2\2\u05c8\u05ca\7\35\2\2\u05c9\u05c8\3\2\2\2\u05c9\u05ca\3"+
+		"\2\2\2\u05ca\u05cb\3\2\2\2\u05cb\u05cc\7)\2\2\u05cc\u05cd\5x=\2\u05cd"+
+		"\u05ce\7\t\2\2\u05ce\u00e7\3\2\2\2\u05cf\u05d2\5\u00eav\2\u05d0\u05d2"+
+		"\5\u00ecw\2\u05d1\u05cf\3\2\2\2\u05d1\u05d0\3\2\2\2\u05d2\u00e9\3\2\2"+
+		"\2\u05d3\u05d5\5\u0108\u0085\2\u05d4\u05d3\3\2\2\2\u05d4\u05d5\3\2\2\2"+
+		"\u05d5\u05d6\3\2\2\2\u05d6\u05db\7?\2\2\u05d7\u05dc\5\u00eex\2\u05d8\u05dc"+
+		"\5\u00f0y\2\u05d9\u05dc\5\u00f8}\2\u05da\u05dc\5\u00f6|\2\u05db\u05d7"+
+		"\3\2\2\2\u05db\u05d8\3\2\2\2\u05db\u05d9\3\2\2\2\u05db\u05da\3\2\2\2\u05dc"+
+		"\u00eb\3\2\2\2\u05dd\u05de\5\u0106\u0084\2\u05de\u05e3\7@\2\2\u05df\u05e4"+
+		"\5\u00eex\2\u05e0\u05e4\5\u00f4{\2\u05e1\u05e4\5\u00f8}\2\u05e2\u05e4"+
+		"\5\u00fa~\2\u05e3\u05df\3\2\2\2\u05e3\u05e0\3\2\2\2\u05e3\u05e1\3\2\2"+
+		"\2\u05e3\u05e2\3\2\2\2\u05e4\u00ed\3\2\2\2\u05e5\u05e7\5\20\t\2\u05e6"+
+		"\u05e5\3\2\2\2\u05e6\u05e7\3\2\2\2\u05e7\u05e8\3\2\2\2\u05e8\u05e9\5\32"+
+		"\16\2\u05e9\u05ea\7\20\2\2\u05ea\u05eb\5\u00f8}\2\u05eb\u00ef\3\2\2\2"+
+		"\u05ec\u05ee\5\20\t\2\u05ed\u05ec\3\2\2\2\u05ed\u05ee\3\2\2\2\u05ee\u05ef"+
+		"\3\2\2\2\u05ef\u05f0\5\32\16\2\u05f0\u05f1\7\20\2\2\u05f1\u05f3\5\u00f2"+
+		"z\2\u05f2\u05f4\5\u0102\u0082\2\u05f3\u05f2\3\2\2\2\u05f3\u05f4\3\2\2"+
+		"\2\u05f4\u05f8\3\2\2\2\u05f5\u05f7\7\7\2\2\u05f6\u05f5\3\2\2\2\u05f7\u05fa"+
+		"\3\2\2\2\u05f8\u05f6\3\2\2\2\u05f8\u05f9\3\2\2\2\u05f9\u00f1\3\2\2\2\u05fa"+
+		"\u05f8\3\2\2\2\u05fb\u05fc\7\33\2\2\u05fc\u05fe\5\32\16\2\u05fd\u05fb"+
+		"\3\2\2\2\u05fd\u05fe\3\2\2\2\u05fe\u00f3\3\2\2\2\u05ff\u0601\5\20\t\2"+
+		"\u0600\u05ff\3\2\2\2\u0600\u0601\3\2\2\2\u0601\u0602\3\2\2\2\u0602\u0603"+
+		"\5\32\16\2\u0603\u0604\7\20\2\2\u0604\u0605\5$\23\2\u0605\u0609\5\u00f2"+
+		"z\2\u0606\u0608\7\7\2\2\u0607\u0606\3\2\2\2\u0608\u060b\3\2\2\2\u0609"+
+		"\u0607\3\2\2\2\u0609\u060a\3\2\2\2\u060a\u0612\3\2\2\2\u060b\u0609\3\2"+
+		"\2\2\u060c\u060d\5\u0102\u0082\2\u060d\u060e\5\u0104\u0083\2\u060e\u0613"+
+		"\3\2\2\2\u060f\u0610\5\u0104\u0083\2\u0610\u0611\5\u0102\u0082\2\u0611"+
+		"\u0613\3\2\2\2\u0612\u060c\3\2\2\2\u0612\u060f\3\2\2\2\u0613\u0617\3\2"+
+		"\2\2\u0614\u0616\7\7\2\2\u0615\u0614\3\2\2\2\u0616\u0619\3\2\2\2\u0617"+
+		"\u0615\3\2\2\2\u0617\u0618\3\2\2\2\u0618\u00f5\3\2\2\2\u0619\u0617\3\2"+
+		"\2\2\u061a\u061d\5,\27\2\u061b\u061d\5$\23\2\u061c\u061a\3\2\2\2\u061c"+
+		"\u061b\3\2\2\2\u061d\u061e\3\2\2\2\u061e\u061f\5\26\f\2\u061f\u0621\5"+
+		"\u00fe\u0080\2\u0620\u0622\5\u0102\u0082\2\u0621\u0620\3\2\2\2\u0621\u0622"+
+		"\3\2\2\2\u0622\u0626\3\2\2\2\u0623\u0625\7\7\2\2\u0624\u0623\3\2\2\2\u0625"+
+		"\u0628\3\2\2\2\u0626\u0624\3\2\2\2\u0626\u0627\3\2\2\2\u0627\u00f7\3\2"+
+		"\2\2\u0628\u0626\3\2\2\2\u0629\u062a\5$\23\2\u062a\u062b\5\26\f\2\u062b"+
+		"\u062c\5\u00fc\177\2\u062c\u00f9\3\2\2\2\u062d\u0630\5,\27\2\u062e\u0630"+
+		"\5$\23\2\u062f\u062d\3\2\2\2\u062f\u062e\3\2\2\2\u0630\u0631\3\2\2\2\u0631"+
+		"\u0632\5\26\f\2\u0632\u0636\5\u00fe\u0080\2\u0633\u0635\7\7\2\2\u0634"+
+		"\u0633\3\2\2\2\u0635\u0638\3\2\2\2\u0636\u0634\3\2\2\2\u0636\u0637\3\2"+
+		"\2\2\u0637\u063f\3\2\2\2\u0638\u0636\3\2\2\2\u0639\u063a\5\u0102\u0082"+
+		"\2\u063a\u063b\5\u0104\u0083\2\u063b\u0640\3\2\2\2\u063c\u063d\5\u0104"+
+		"\u0083\2\u063d\u063e\5\u0102\u0082\2\u063e\u0640\3\2\2\2\u063f\u0639\3"+
+		"\2\2\2\u063f\u063c\3\2\2\2\u0640\u0644\3\2\2\2\u0641\u0643\7\7\2\2\u0642"+
+		"\u0641\3\2\2\2\u0643\u0646\3\2\2\2\u0644\u0642\3\2\2\2\u0644\u0645\3\2"+
+		"\2\2\u0645\u00fb\3\2\2\2\u0646\u0644\3\2\2\2\u0647\u0648\7B\2\2\u0648"+
+		"\u064c\5\u0096L\2\u0649\u064b\7\7\2\2\u064a\u0649\3\2\2\2\u064b\u064e"+
+		"\3\2\2\2\u064c\u064a\3\2\2\2\u064c\u064d\3\2\2\2\u064d\u00fd\3\2\2\2\u064e"+
+		"\u064c\3\2\2\2\u064f\u0650\7\27\2\2\u0650\u0654\5\u0096L\2\u0651\u0653"+
+		"\7\7\2\2\u0652\u0651\3\2\2\2\u0653\u0656\3\2\2\2\u0654\u0652\3\2\2\2\u0654"+
+		"\u0655\3\2\2\2\u0655\u00ff\3\2\2\2\u0656\u0654\3\2\2\2\u0657\u0659\5\u0102"+
+		"\u0082\2\u0658\u0657\3\2\2\2\u0658\u0659\3\2\2\2\u0659\u065b\3\2\2\2\u065a"+
+		"\u065c\5\u0104\u0083\2\u065b\u065a\3\2\2\2\u065b\u065c\3\2\2\2\u065c\u0664"+
+		"\3\2\2\2\u065d\u065f\5\u0104\u0083\2\u065e\u065d\3\2\2\2\u065e\u065f\3"+
+		"\2\2\2\u065f\u0661\3\2\2\2\u0660\u0662\5\u0102\u0082\2\u0661\u0660\3\2"+
+		"\2\2\u0661\u0662\3\2\2\2\u0662\u0664\3\2\2\2\u0663\u0658\3\2\2\2\u0663"+
+		"\u065e\3\2\2\2\u0664\u0668\3\2\2\2\u0665\u0667\7\7\2\2\u0666\u0665\3\2"+
+		"\2\2\u0667\u066a\3\2\2\2\u0668\u0666\3\2\2\2\u0668\u0669\3\2\2\2\u0669"+
+		"\u0101\3\2\2\2\u066a\u0668\3\2\2\2\u066b\u066c\5.\30\2\u066c\u066d\7E"+
+		"\2\2\u066d\u0679\3\2\2\2\u066e\u066f\5.\30\2\u066f\u0670\7E\2\2\u0670"+
+		"\u0671\7\34\2\2\u0671\u0674\7\35\2\2\u0672\u0673\7\33\2\2\u0673\u0675"+
+		"\5\32\16\2\u0674\u0672\3\2\2\2\u0674\u0675\3\2\2\2\u0675\u0676\3\2\2\2"+
+		"\u0676\u0677\5z>\2\u0677\u0679\3\2\2\2\u0678\u066b\3\2\2\2\u0678\u066e"+
+		"\3\2\2\2\u0679\u0103\3\2\2\2\u067a\u067b\5.\30\2\u067b\u067c\7F\2\2\u067c"+
+		"\u0689\3\2\2\2\u067d\u067e\5.\30\2\u067e\u067f\7F\2\2\u067f\u0680\7\34"+
+		"\2\2\u0680\u0683\5.\30\2\u0681\u0684\7v\2\2\u0682\u0684\5F$\2\u0683\u0681"+
+		"\3\2\2\2\u0683\u0682\3\2\2\2\u0684\u0685\3\2\2\2\u0685\u0686\7\35\2\2"+
+		"\u0686\u0687\5z>\2\u0687\u0689\3\2\2\2\u0688\u067a\3\2\2\2\u0688\u067d"+
+		"\3\2\2\2\u0689\u0105\3\2\2\2\u068a\u068b\t\16\2\2\u068b\u0107\3\2\2\2"+
+		"\u068c\u068d\t\16\2\2\u068d\u0109\3\2\2\2\u068e\u068f\t\17\2\2\u068f\u010b"+
+		"\3\2\2\2\u0690\u0691\t\20\2\2\u0691\u010d\3\2\2\2\u0692\u0693\t\21\2\2"+
+		"\u0693\u010f\3\2\2\2\u0694\u0695\t\22\2\2\u0695\u0111\3\2\2\2\u0696\u0697"+
+		"\t\23\2\2\u0697\u0113\3\2\2\2\u00e2\u0118\u011c\u0121\u012a\u0130\u0139"+
+		"\u0140\u0145\u014e\u0158\u015b\u0163\u016c\u0170\u0176\u0181\u0184\u0187"+
+		"\u018e\u0196\u0199\u019d\u01a1\u01a4\u01a8\u01ab\u01ad\u01b1\u01b8\u01bf"+
+		"\u01c8\u01cd\u01d2\u01d8\u01e3\u01e6\u01f2\u01fa\u0206\u020b\u0211\u021a"+
+		"\u021d\u0227\u022a\u0233\u0237\u023a\u0240\u0243\u0247\u024b\u024d\u0254"+
+		"\u025f\u026a\u026e\u0277\u027a\u0282\u0285\u028a\u0293\u0296\u029c\u029f"+
+		"\u02a4\u02ab\u02ae\u02b2\u02b8\u02bc\u02c7\u02cd\u02d0\u02d4\u02db\u02de"+
+		"\u02e3\u02e8\u02ef\u02f2\u02f6\u02fd\u0300\u0305\u030a\u0313\u031a\u031d"+
+		"\u0323\u032e\u0335\u033b\u0342\u0347\u0350\u0353\u035a\u0360\u0364\u0369"+
+		"\u036d\u0372\u0377\u037d\u0380\u0385\u0389\u038e\u0394\u039b\u03a1\u03a4"+
+		"\u03a9\u03af\u03ba\u03c1\u03c7\u03cb\u03d2\u03d6\u03e2\u03e7\u03ee\u03f2"+
+		"\u03f7\u0405\u040a\u040e\u0428\u0430\u0438\u0441\u044a\u0453\u045a\u045c"+
+		"\u0463\u046b\u0473\u047c\u0485\u048e\u0494\u049c\u04a2\u04a9\u04ac\u04b2"+
+		"\u04b5\u04b8\u04bd\u04c0\u04c9\u04d3\u04d5\u04e0\u04e2\u04e6\u04f1\u04f8"+
+		"\u04fb\u0507\u0510\u0517\u051b\u0534\u053e\u0544\u0548\u054f\u0551\u055d"+
+		"\u0560\u0566\u056b\u0573\u0576\u0581\u0584\u058d\u0593\u059d\u05a5\u05ae"+
+		"\u05b1\u05b8\u05bc\u05c3\u05c6\u05c9\u05d1\u05d4\u05db\u05e3\u05e6\u05ed"+
+		"\u05f3\u05f8\u05fd\u0600\u0609\u0612\u0617\u061c\u0621\u0626\u062f\u0636"+
+		"\u063f\u0644\u064c\u0654\u0658\u065b\u065e\u0661\u0663\u0668\u0674\u0678"+
+		"\u0683\u0688";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

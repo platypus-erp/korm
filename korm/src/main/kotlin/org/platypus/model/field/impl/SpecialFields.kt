@@ -1,7 +1,6 @@
 package org.platypus.model.field.impl
 
 import org.platypus.model.IModel
-import org.platypus.model.Model
 import org.platypus.model.ModelType
 import org.platypus.model.field.api.FieldSlots
 import org.platypus.model.field.api.FieldSlotsImpl
@@ -56,8 +55,7 @@ class PKModelField<M : IModel<M>>(override val model: M) :
 
 private val needCommonField = setOf(ModelType.CLASSIC_MODEL, ModelType.RECURSIVE_MODEL)
 
-class NameModelField<M : Model<M>
-        >(model: M)
+class NameModelField<M : IModel<M>>(model: M)
     : RealModelField<M, String>(model, "name", FieldSlotsImpl("name")) {
 
     override val store: Boolean
@@ -75,7 +73,7 @@ class NameModelField<M : Model<M>
     override fun <PARAM_TYPE, RETURN> accept(visitor: FieldVisitor<PARAM_TYPE, RETURN>, p: PARAM_TYPE): RETURN = visitor.visit(this, p)
     override fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN = visitor.visit(this, param)
 
-    fun Model<M>.extends(ext: NameModelField.Builder<M>.() -> Unit) {
+    fun IModel<M>.extends(ext: NameModelField.Builder<M>.() -> Unit) {
         val f = NameModelField.Builder(this@NameModelField.model, this@NameModelField.fieldName)
         f.ext()
         this@NameModelField.length = f.lenght ?: this@NameModelField.length
@@ -83,7 +81,7 @@ class NameModelField<M : Model<M>
         this@NameModelField.slots.merge(f.slots)
     }
 
-    class Builder<M : Model<M>>
+    class Builder<M : IModel<M>>
     private constructor(val model: M, val fieldName: String, val slots: MutableFieldSlotsImpl<String>) : MutableFieldSlots<String> by slots {
         constructor(model: M, fieldName: String) : this(model, fieldName, MutableFieldSlotsImpl())
 
@@ -96,7 +94,7 @@ class NameModelField<M : Model<M>
     }
 }
 
-class ExternalRefModelField<M : Model<M>>(model: M)
+class ExternalRefModelField<M: IModel<M>>(model: M)
     : RealModelField<M, String>(model, "external_ref", FieldSlotsImpl(readonly = true, copy = false, required = true, defaultValueFun = { "${model.tableName}_${Random().nextInt().absoluteValue}" }, store = true)) {
 
     override val store: Boolean
@@ -112,7 +110,7 @@ class ExternalRefModelField<M : Model<M>>(model: M)
     override fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN = visitor.visit(this, param)
 }
 
-class WriteDateModelField<M : Model<M>>(model: M)
+class WriteDateModelField<M: IModel<M>>(model: M)
     : RealModelField<M, LocalDateTime>(model, "write_date", FieldSlotsImpl(readonly = true, copy = false, default = LocalDateTime.now())) {
 
     override val store: Boolean
@@ -128,7 +126,7 @@ class WriteDateModelField<M : Model<M>>(model: M)
     override fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN = visitor.visit(this, param)
 }
 
-class CreateDateModelField<M : Model<M>>(model: M)
+class CreateDateModelField<M: IModel<M>>(model: M)
     : RealModelField<M, LocalDateTime>(model, "create_date", FieldSlotsImpl(readonly = true, copy = false, required = true, default = LocalDateTime.now())) {
 
     override val store: Boolean
@@ -142,7 +140,7 @@ class CreateDateModelField<M : Model<M>>(model: M)
     override fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN = visitor.visit(this, param)
 }
 
-class WriteUID<M : Model<M>>(model: M)
+class WriteUID<M: IModel<M>>(model: M)
     : ReferenceField<M, Users>(model, "write_uid", FieldSlotsImpl(readonly = true, copy = false), ReferenceOption.RESTRICT, null) {
 
     override val required: Boolean = false
@@ -158,7 +156,7 @@ class WriteUID<M : Model<M>>(model: M)
     override fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN = visitor.visit(this, param)
 }
 
-class CreateUID<M : Model<M>>(model: M)
+class CreateUID<M: IModel<M>>(model: M)
     : ReferenceField<M, Users>(model, "create_uid", FieldSlotsImpl(readonly = true, copy = false, required = true), ReferenceOption.RESTRICT, null) {
 
     override val store: Boolean
@@ -174,7 +172,7 @@ class CreateUID<M : Model<M>>(model: M)
     override fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN = visitor.visit(this, param)
 }
 
-class ArchivedModelField<M : Model<M>>(model: M)
+class ArchivedModelField<M: IModel<M>>(model: M)
     : RealModelField<M, Boolean>(model, "archived", FieldSlotsImpl(readonly = true, copy = false, required = true, default = false)) {
 
     override var store: Boolean = false

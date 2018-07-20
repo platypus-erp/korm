@@ -1,6 +1,6 @@
 package org.platypus.model.field.impl
 
-import org.platypus.model.Model
+import org.platypus.model.IModel
 import org.platypus.model.field.api.FieldSlotsImpl
 import org.platypus.model.field.api.FieldVisitor
 import org.platypus.model.field.api.ModelField
@@ -11,7 +11,7 @@ import org.platypus.model.field.api.type.SqlFieldType
 import org.platypus.orm.OrmConstraint
 import org.platypus.orm.sql.expression.ExpressionVisitor
 
-class BinaryField<M : Model<M>>(
+class BinaryField<M : IModel<M>>(
         name: String, model: M, slots: FieldSlotsImpl<ByteArray>
 ) : RealModelField<M, ByteArray>(model, name, slots) {
     override val type: SqlFieldType
@@ -24,7 +24,7 @@ class BinaryField<M : Model<M>>(
         this.slots.merge(f)
     }
 
-    class Builder<M : Model<M>>
+    class Builder<M : IModel<M>>
     private constructor(val model: M, val fieldName: String, private val slots: MutableFieldSlotsImpl<ByteArray>)
         : ModelField.Builder<M, BinaryField<M>>, MutableFieldSlots<ByteArray> by slots {
         constructor(model: M, fieldName: String) : this(model, fieldName, MutableFieldSlotsImpl())

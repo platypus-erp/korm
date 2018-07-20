@@ -1,7 +1,7 @@
 package org.platypus.model.field.impl
 
 import org.platypus.DecimalPrecision
-import org.platypus.model.Model
+import org.platypus.model.IModel
 import org.platypus.model.field.api.FieldSlotsImpl
 import org.platypus.model.field.api.FieldVisitor
 import org.platypus.model.field.api.ModelField
@@ -13,7 +13,7 @@ import org.platypus.orm.OrmConstraint
 import org.platypus.orm.sql.expression.ExpressionVisitor
 import java.math.BigDecimal
 
-class DecimalField<M : Model<M>>(
+class DecimalField<M : IModel<M>>(
         name: String, model: M, slots: FieldSlotsImpl<BigDecimal>, defaultPrecision: DecimalPrecision?
 ) : SimpleField<M, BigDecimal>(model, name, slots) {
 
@@ -32,7 +32,7 @@ class DecimalField<M : Model<M>>(
         this.slots.merge(f)
     }
 
-    class Builder<M : Model<M>>
+    class Builder<M : IModel<M>>
     private constructor(val model: M, val fieldName: String, private val slots: MutableFieldSlotsImpl<BigDecimal>)
         : ModelField.Builder<M, DecimalField<M>>, MutableFieldSlots<BigDecimal> by slots {
         constructor(model: M, fieldName: String) : this(model, fieldName, MutableFieldSlotsImpl())

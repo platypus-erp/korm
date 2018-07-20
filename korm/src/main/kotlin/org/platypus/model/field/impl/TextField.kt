@@ -12,7 +12,7 @@ import org.platypus.model.field.api.type.StringSqlFieldType
 import org.platypus.orm.OrmConstraint
 import org.platypus.orm.sql.expression.ExpressionVisitor
 
-class TextField<M : Model<M>>(
+class TextField<M : IModel<M>>(
         name: String, model: M, slots: FieldSlotsImpl<String>
 ) : SimpleField<M, String>(model, name, slots) {
 
@@ -26,7 +26,7 @@ class TextField<M : Model<M>>(
     override fun <PARAM_TYPE, RETURN> accept(visitor: FieldVisitor<PARAM_TYPE, RETURN>, p: PARAM_TYPE): RETURN = visitor.visit(this, p)
     override fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN = visitor.visit(this, param)
 
-    class Builder<M : Model<M>>
+    class Builder<M : IModel<M>>
     private constructor(val model: M, val fieldName: String, private val slots: MutableFieldSlotsImpl<String>)
         : ModelField.Builder<M, TextField<M>>, MutableFieldSlots<String> by slots {
         constructor(model: M, fieldName: String) : this(model, fieldName, MutableFieldSlotsImpl())

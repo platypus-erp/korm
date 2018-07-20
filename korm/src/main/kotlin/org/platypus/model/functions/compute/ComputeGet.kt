@@ -3,7 +3,7 @@ package org.platypus.model.functions.compute
 import io.ktor.http.HttpMethod
 import org.platypus.bag.Bag
 import org.platypus.entity.Record
-import org.platypus.model.Model
+import org.platypus.model.IModel
 import org.platypus.model.field.api.ModelField
 import org.platypus.model.functions.ApiNoParam
 import org.platypus.model.functions.ApiNoParamExtends
@@ -13,18 +13,18 @@ import org.platypus.model.functions.PublicApiReturn
 import org.platypus.model.functions.asResult
 import org.platypus.model.functions.multi.ApiMultiNoParamStacker
 
-class ComputeGetExtends<M : Model<M>, R>
+class ComputeGetExtends<M : IModel<M>, R>
 (
         funn: ComputeGetExtends<M, R>.(Record<M>) -> R,
         superStack: ApiNoParam<Record<M>, M, R>
 ) : ApiNoParamExtends<Record<M>, M, R, ComputeGetOriginal<M, R>, ComputeGetExtends<M, R>>(funn, superStack)
 
-class ComputeGetOriginal<M : Model<M>, R>
+class ComputeGetOriginal<M : IModel<M>, R>
 (
         originalFunction: (Record<M>) -> R
 ) : ApiNoParamOriginal<Record<M>, M, R, ComputeGetOriginal<M, R>, ComputeGetExtends<M, R>>(originalFunction)
 
-class ComputeGetStacker<M : Model<M>, R : Any>
+class ComputeGetStacker<M : IModel<M>, R : Any>
 (
         originalFunction: (Record<M>) -> R,
         private val field: ModelField<M, R>

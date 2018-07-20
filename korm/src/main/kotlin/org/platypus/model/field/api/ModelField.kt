@@ -1,6 +1,6 @@
 package org.platypus.model.field.api
 
-import org.platypus.model.Model
+import org.platypus.model.IModel
 import org.platypus.model.functions.compute.ComputeGetStacker
 import org.platypus.model.functions.compute.ComputeSetStacker
 import org.platypus.model.functions.one.ApiOneNoParamStacker
@@ -15,7 +15,7 @@ enum class OnChangeType {
     UI, SERVER, BOTH, NONE
 }
 
-abstract class ModelField<M : Model<M>, KOTLIN_TYPE : Any>(
+abstract class ModelField<M : IModel<M>, KOTLIN_TYPE : Any>(
         override val model: M,
         nameField: String, internal var slots: FieldSlotsImpl<KOTLIN_TYPE>
 ) : IModelField<M, KOTLIN_TYPE>,
@@ -38,22 +38,22 @@ abstract class ModelField<M : Model<M>, KOTLIN_TYPE : Any>(
     private val onChange: Map<OnChangeType, Set<ApiOneNoParamStacker<M, Unit>>>
         get() = privateOnChange
 
-    internal fun Model<M>.setOnSet(onSet: ComputeSetStacker<M, KOTLIN_TYPE>): ComputeSetStacker<M, KOTLIN_TYPE> {
+    internal fun IModel<M>.setOnSet(onSet: ComputeSetStacker<M, KOTLIN_TYPE>): ComputeSetStacker<M, KOTLIN_TYPE> {
         this@ModelField.onSet = onSet
         return onSet
     }
 
-    internal fun Model<M>.setOnGet(onGet: ComputeGetStacker<M, KOTLIN_TYPE>): ComputeGetStacker<M, KOTLIN_TYPE> {
+    internal fun IModel<M>.setOnGet(onGet: ComputeGetStacker<M, KOTLIN_TYPE>): ComputeGetStacker<M, KOTLIN_TYPE> {
         this@ModelField.onGet = onGet
         return onGet
     }
 
-    internal fun Model<M>.addOnChange(type: OnChangeType, onChangeFunction: ApiOneNoParamStacker<M, Unit>): ApiOneNoParamStacker<M, Unit> {
+    internal fun IModel<M>.addOnChange(type: OnChangeType, onChangeFunction: ApiOneNoParamStacker<M, Unit>): ApiOneNoParamStacker<M, Unit> {
         privateOnChange.getOrPut(type, { HashSet() }).add(onChangeFunction)
         return onChangeFunction
     }
 
-    interface Builder<M : Model<M>, out FIELD : ModelField<M, *>> {
+    interface Builder<M : IModel<M>, out FIELD : ModelField<M, *>> {
         fun build(): FIELD
     }
 

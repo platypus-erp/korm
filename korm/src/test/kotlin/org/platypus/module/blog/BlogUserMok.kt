@@ -1,23 +1,20 @@
 package org.platypus.module.blog
 
-import org.platypus.PlatypusEnvironment
-import org.platypus.bag.Bag
 import org.platypus.context.ContextKeyNonNull
-import org.platypus.entity.Record
 import org.platypus.model.Model
+import org.platypus.module.blog.gen.blog.user.UserMok
 import org.platypus.orm.ReferenceOption
 import org.platypus.orm.sql.and
 import org.platypus.orm.sql.expression.eq
 import org.platypus.orm.sql.expression.greater
 import org.platypus.orm.sql.or
-import org.platypus.repository.RecordRepository
-import org.platypus.repository.RecordRepositoryImpl
 
 val useSquareBracket = ContextKeyNonNull("useSquareBracket", false)
 val fakeKey = ContextKeyNonNull("fakeKey", false)
 
+
 //TODO replace with inherit User
-object UserMokModel : Model<UserMokModel>("test.user") {
+object UserMokModel : Model<UserMokModel>("blog.user") {
 
     val decoratedName = string("decoratedName")
 
@@ -39,7 +36,7 @@ object UserMokModel : Model<UserMokModel>("test.user") {
     }
     val isStaff = boolean("isStaff")
     val isActive = boolean("isActive")
-    val profile = revOne2one("profile", {ProfileModel.user}) {
+    val profile = revOne2one("profile", { ProfileModel.user }) {
         onDelete = ReferenceOption.RESTRICT
         required = true
     }
@@ -83,31 +80,4 @@ object UserMokModel : Model<UserMokModel>("test.user") {
 
 }
 
-val PlatypusEnvironment.userMokRepo: UserRepo
-    get() = RecordRepositoryImpl(this, UserMokModel)
 
-typealias UserMokBag = Bag<UserMokModel>
-
-typealias UserRepo = RecordRepository<UserMokModel>
-
-typealias UserMok = Record<UserMokModel>
-
-var UserMok.decoratedName by UserMokModel.decoratedName
-var UserMok.email by UserMokModel.email
-var UserMok.password by UserMokModel.password
-var UserMok.status by UserMokModel.status
-var UserMok.isStaff by UserMokModel.isStaff
-var UserMok.isActive by UserMokModel.isActive
-var UserMok.profile by UserMokModel.profile
-var UserMok.age by UserMokModel.age
-var UserMok.blogs by UserMokModel.blogs
-var UserMok.lastPost by UserMokModel.lastPost
-var UserMok.resume by UserMokModel.resume
-var UserMok.email2 by UserMokModel.email2
-var UserMok.isPremium by UserMokModel.isPremium
-var UserMok.nums by UserMokModel.nums
-var UserMok.size by UserMokModel.size
-
-
-fun UserMok.prefixedUser(prefix: String) = UserMokModel.prefixedUser.call(this, prefix)
-fun UserMok.decorateEmail(prefix: String) = UserMokModel.decorateEmail.call(this, prefix)

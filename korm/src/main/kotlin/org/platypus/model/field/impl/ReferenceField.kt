@@ -2,7 +2,7 @@ package org.platypus.model.field.impl
 
 import org.platypus.bag.Bag
 import org.platypus.entity.Record
-import org.platypus.model.Model
+import org.platypus.model.IModel
 import org.platypus.model.field.api.FieldSlotsImpl
 import org.platypus.model.field.api.ModelField
 import org.platypus.model.field.api.ReferencedField
@@ -12,8 +12,8 @@ import org.platypus.utils.suffix
 
 //TODO to replace with an interface ?
 abstract class ReferenceField<
-        M : Model<M>,
-        TM : Model<TM>
+        M : IModel<M>,
+        TM : IModel<TM>
         >
 (model: M,
  name: String,
@@ -29,8 +29,8 @@ abstract class ReferenceField<
 }
 
 abstract class MutliReferenceField<
-        M : Model<M>,
-        TM : Model<TM>
+        M : IModel<M>,
+        TM : IModel<TM>
         >
 (model: M,
  name: String,
@@ -42,9 +42,9 @@ abstract class MutliReferenceField<
         protected set
 }
 
-abstract class SimpleField<M : Model<M>, T : Any>
+abstract class SimpleField<M : IModel<M>, T : Any>
 (model: M, name: String, slots: FieldSlotsImpl<T>) : RealModelField<M, T>(model, name, slots)
 
 
-abstract class RealModelField<M : Model<M>, T : Any>
+abstract class RealModelField<M : IModel<M>, T : Any>
 (model: M, name: String, slots: FieldSlotsImpl<T>) : ModelField<M, T>(model, name, slots)

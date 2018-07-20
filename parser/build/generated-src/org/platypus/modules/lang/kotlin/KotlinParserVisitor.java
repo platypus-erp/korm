@@ -1,4 +1,4 @@
-// Generated from /home/apasquier/WorkSpace/Kotlin/platypus/parser/src/main/antlr/KotlinParser.g4 by ANTLR 4.2.2
+// Generated from /home/chmuche/workspace/kotlin/korm/parser/src/main/antlr/KotlinParser.g4 by ANTLR 4.2.2
 package org.platypus.modules.lang.kotlin;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
@@ -38,6 +38,13 @@ public interface KotlinParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIsOperation(@NotNull KotlinParser.IsOperationContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link KotlinParser#mutableExtensionPropertyNoDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMutableExtensionPropertyNoDelegateDeclaration(@NotNull KotlinParser.MutableExtensionPropertyNoDelegateDeclarationContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link KotlinParser#toplevelObject}.
@@ -136,6 +143,20 @@ public interface KotlinParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIdentifier(@NotNull KotlinParser.IdentifierContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link KotlinParser#readonlyPropertyNoDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReadonlyPropertyNoDelegateDeclaration(@NotNull KotlinParser.ReadonlyPropertyNoDelegateDeclarationContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link KotlinParser#assignExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignExpression(@NotNull KotlinParser.AssignExpressionContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link KotlinParser#inOperation}.
@@ -271,6 +292,13 @@ public interface KotlinParserVisitor<T> extends ParseTreeVisitor<T> {
 	T visitConjunction(@NotNull KotlinParser.ConjunctionContext ctx);
 
 	/**
+	 * Visit a parse tree produced by {@link KotlinParser#readonlyPropertyDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReadonlyPropertyDeclaration(@NotNull KotlinParser.ReadonlyPropertyDeclarationContext ctx);
+
+	/**
 	 * Visit a parse tree produced by {@link KotlinParser#primaryConstructor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -341,6 +369,13 @@ public interface KotlinParserVisitor<T> extends ParseTreeVisitor<T> {
 	T visitDeclaration(@NotNull KotlinParser.DeclarationContext ctx);
 
 	/**
+	 * Visit a parse tree produced by {@link KotlinParser#mutablePropertyNoDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMutablePropertyNoDelegateDeclaration(@NotNull KotlinParser.MutablePropertyNoDelegateDeclarationContext ctx);
+
+	/**
 	 * Visit a parse tree produced by {@link KotlinParser#typeConstraint}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -376,11 +411,18 @@ public interface KotlinParserVisitor<T> extends ParseTreeVisitor<T> {
 	T visitVarianceAnnotation(@NotNull KotlinParser.VarianceAnnotationContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link KotlinParser#setter}.
+	 * Visit a parse tree produced by {@link KotlinParser#propertyModifier}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSetter(@NotNull KotlinParser.SetterContext ctx);
+	T visitPropertyModifier(@NotNull KotlinParser.PropertyModifierContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link KotlinParser#extensionPropertyDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExtensionPropertyDelegateDeclaration(@NotNull KotlinParser.ExtensionPropertyDelegateDeclarationContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link KotlinParser#elvisExpression}.
@@ -388,6 +430,13 @@ public interface KotlinParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitElvisExpression(@NotNull KotlinParser.ElvisExpressionContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link KotlinParser#setter}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSetter(@NotNull KotlinParser.SetterContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link KotlinParser#functionDeclaration}.
@@ -402,6 +451,13 @@ public interface KotlinParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDoWhileLoop(@NotNull KotlinParser.DoWhileLoopContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link KotlinParser#delegateExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDelegateExpression(@NotNull KotlinParser.DelegateExpressionContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link KotlinParser#extensionFunctionTypeNoReceiver}.
@@ -458,6 +514,13 @@ public interface KotlinParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVariableDeclarationEntry(@NotNull KotlinParser.VariableDeclarationEntryContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link KotlinParser#lambdaFunction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLambdaFunction(@NotNull KotlinParser.LambdaFunctionContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link KotlinParser#valueArgument}.
@@ -579,11 +642,25 @@ public interface KotlinParserVisitor<T> extends ParseTreeVisitor<T> {
 	T visitMemberAccessOperation(@NotNull KotlinParser.MemberAccessOperationContext ctx);
 
 	/**
+	 * Visit a parse tree produced by {@link KotlinParser#readonlyExtensionPropertyNoDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReadonlyExtensionPropertyNoDelegateDeclaration(@NotNull KotlinParser.ReadonlyExtensionPropertyNoDelegateDeclarationContext ctx);
+
+	/**
 	 * Visit a parse tree produced by {@link KotlinParser#functionLiteral}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitFunctionLiteral(@NotNull KotlinParser.FunctionLiteralContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link KotlinParser#propertyDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPropertyDelegateDeclaration(@NotNull KotlinParser.PropertyDelegateDeclarationContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link KotlinParser#annotationUseSiteTarget}.
@@ -719,6 +796,13 @@ public interface KotlinParserVisitor<T> extends ParseTreeVisitor<T> {
 	T visitTypeConstraints(@NotNull KotlinParser.TypeConstraintsContext ctx);
 
 	/**
+	 * Visit a parse tree produced by {@link KotlinParser#tryExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTryExpression(@NotNull KotlinParser.TryExpressionContext ctx);
+
+	/**
 	 * Visit a parse tree produced by {@link KotlinParser#accessModifier}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -726,11 +810,11 @@ public interface KotlinParserVisitor<T> extends ParseTreeVisitor<T> {
 	T visitAccessModifier(@NotNull KotlinParser.AccessModifierContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link KotlinParser#tryExpression}.
+	 * Visit a parse tree produced by {@link KotlinParser#getterSetterDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTryExpression(@NotNull KotlinParser.TryExpressionContext ctx);
+	T visitGetterSetterDeclaration(@NotNull KotlinParser.GetterSetterDeclarationContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link KotlinParser#parameter}.
@@ -747,6 +831,13 @@ public interface KotlinParserVisitor<T> extends ParseTreeVisitor<T> {
 	T visitStatement(@NotNull KotlinParser.StatementContext ctx);
 
 	/**
+	 * Visit a parse tree produced by {@link KotlinParser#mutablePropertyDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMutablePropertyDeclaration(@NotNull KotlinParser.MutablePropertyDeclarationContext ctx);
+
+	/**
 	 * Visit a parse tree produced by {@link KotlinParser#prefixUnaryOperation}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -761,6 +852,13 @@ public interface KotlinParserVisitor<T> extends ParseTreeVisitor<T> {
 	T visitLastArgLambda(@NotNull KotlinParser.LastArgLambdaContext ctx);
 
 	/**
+	 * Visit a parse tree produced by {@link KotlinParser#functionModifier}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionModifier(@NotNull KotlinParser.FunctionModifierContext ctx);
+
+	/**
 	 * Visit a parse tree produced by {@link KotlinParser#typeDescriptor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -773,6 +871,20 @@ public interface KotlinParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFuncParameterWithDefault(@NotNull KotlinParser.FuncParameterWithDefaultContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link KotlinParser#parameterType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParameterType(@NotNull KotlinParser.ParameterTypeContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link KotlinParser#interfaceDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInterfaceDeclaration(@NotNull KotlinParser.InterfaceDeclarationContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link KotlinParser#atomicExpression}.

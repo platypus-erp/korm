@@ -99,7 +99,7 @@ internal class TreeViewBuilderImpl<M : Model<M>>(override val model: M) : TreeVi
     override fun <TM : Model<TM>, T : Any> field(field: ReferenceField<M, TM>, invisible: Boolean, readonly: Boolean, groups: Set<String>, placeHolder: String?, id: String?, label: String?, cssClass: String?, widget: String?, options: String?, fieldGet: TM.() -> RealModelField<TM, T>) {
         val joinedField = field.target.fieldGet()
         _fields.add(TreeWidgetUI(joinedField, label, invisible, true))
-        querySearch.joinField(field)
+//        querySearch.joinField(field)
 //        querySearch.addField(joinedField)
     }
 

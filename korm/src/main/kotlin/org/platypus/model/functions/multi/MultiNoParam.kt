@@ -1,14 +1,14 @@
 package org.platypus.model.functions.multi
 
 import org.platypus.bag.Bag
-import org.platypus.model.Model
+import org.platypus.model.IModel
 import org.platypus.model.functions.ApiNoParam
 import org.platypus.model.functions.ApiNoParamExtends
 import org.platypus.model.functions.ApiNoParamOriginal
 import org.platypus.model.functions.ApiNoParamStacker
 
 class ApiMultiNoParamExtends<
-        M : Model<M>,
+        M : IModel<M>,
         R>(
         funn: ApiMultiNoParamExtends<M, R>.(Bag<M>) -> R,
         superStack: ApiNoParam<Bag<M>, M, R>
@@ -20,7 +20,7 @@ class ApiMultiNoParamExtends<
         ApiMultiNoParamExtends<M, R>
         >(funn, superStack)
 
-class ApiMultiNoParamOriginal<M : Model<M>, R>
+class ApiMultiNoParamOriginal<M : IModel<M>, R>
 (originalFunction: (Bag<M>) -> R)
     : ApiNoParamOriginal<
         Bag<M>,
@@ -30,7 +30,7 @@ class ApiMultiNoParamOriginal<M : Model<M>, R>
         ApiMultiNoParamExtends<M, R>
         >(originalFunction)
 
-class ApiMultiNoParamStacker<M : Model<M>, R>(
+class ApiMultiNoParamStacker<M : IModel<M>, R>(
         originalFunction: (Bag<M>) -> R
 ) : ApiNoParamStacker<Bag<M>, M, R, ApiMultiNoParamOriginal<M, R>, ApiMultiNoParamExtends<M, R>>(originalFunction) {
 

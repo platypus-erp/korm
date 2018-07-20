@@ -3,7 +3,6 @@ package org.platypus.model.field.impl
 import org.platypus.bag.Bag
 import org.platypus.model.IModel
 import org.platypus.model.LinkModel
-import org.platypus.model.Model
 import org.platypus.model.ModelMany2Many
 import org.platypus.model.field.api.FieldSlotsImpl
 import org.platypus.model.field.api.FieldVisitor
@@ -17,7 +16,7 @@ import org.platypus.orm.OrmConstraint
 import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.expression.ExpressionVisitor
 
-class Many2ManyField<M : Model<M>, TM : Model<TM>>
+class Many2ManyField<M : IModel<M>, TM : IModel<TM>>
 (
         name: String,
         model: M,
@@ -49,7 +48,7 @@ class Many2ManyField<M : Model<M>, TM : Model<TM>>
     override fun <PARAM_TYPE, RETURN> accept(visitor: FieldVisitor<PARAM_TYPE, RETURN>, p: PARAM_TYPE): RETURN = visitor.visit(this, p)
     override fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN = visitor.visit(this, param)
 
-    class Builder<M : Model<M>,TM : Model<TM>>
+    class Builder<M : IModel<M>,TM : IModel<TM>>
     private constructor(val model: M, val fieldName: String,
                         val target: ModelMany2Many.() -> LinkModel<M, TM>,
                         private val slots: MutableFieldSlotsImpl<Bag<TM>>)

@@ -1,4 +1,4 @@
-// Generated from /home/apasquier/WorkSpace/Kotlin/platypus/parser/src/main/antlr/KotlinParser.g4 by ANTLR 4.2.2
+// Generated from /home/chmuche/workspace/kotlin/korm/parser/src/main/antlr/KotlinParser.g4 by ANTLR 4.2.2
 package org.platypus.modules.lang.kotlin;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -63,6 +63,19 @@ public class KotlinParserBaseListener implements KotlinParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIsOperation(@NotNull KotlinParser.IsOperationContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMutableExtensionPropertyNoDelegateDeclaration(@NotNull KotlinParser.MutableExtensionPropertyNoDelegateDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMutableExtensionPropertyNoDelegateDeclaration(@NotNull KotlinParser.MutableExtensionPropertyNoDelegateDeclarationContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -245,6 +258,32 @@ public class KotlinParserBaseListener implements KotlinParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIdentifier(@NotNull KotlinParser.IdentifierContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReadonlyPropertyNoDelegateDeclaration(@NotNull KotlinParser.ReadonlyPropertyNoDelegateDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReadonlyPropertyNoDelegateDeclaration(@NotNull KotlinParser.ReadonlyPropertyNoDelegateDeclarationContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAssignExpression(@NotNull KotlinParser.AssignExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssignExpression(@NotNull KotlinParser.AssignExpressionContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -498,6 +537,19 @@ public class KotlinParserBaseListener implements KotlinParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterReadonlyPropertyDeclaration(@NotNull KotlinParser.ReadonlyPropertyDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReadonlyPropertyDeclaration(@NotNull KotlinParser.ReadonlyPropertyDeclarationContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPrimaryConstructor(@NotNull KotlinParser.PrimaryConstructorContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -628,6 +680,19 @@ public class KotlinParserBaseListener implements KotlinParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMutablePropertyNoDelegateDeclaration(@NotNull KotlinParser.MutablePropertyNoDelegateDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMutablePropertyNoDelegateDeclaration(@NotNull KotlinParser.MutablePropertyNoDelegateDeclarationContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterTypeConstraint(@NotNull KotlinParser.TypeConstraintContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -693,13 +758,26 @@ public class KotlinParserBaseListener implements KotlinParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSetter(@NotNull KotlinParser.SetterContext ctx) { }
+	@Override public void enterPropertyModifier(@NotNull KotlinParser.PropertyModifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSetter(@NotNull KotlinParser.SetterContext ctx) { }
+	@Override public void exitPropertyModifier(@NotNull KotlinParser.PropertyModifierContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExtensionPropertyDelegateDeclaration(@NotNull KotlinParser.ExtensionPropertyDelegateDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExtensionPropertyDelegateDeclaration(@NotNull KotlinParser.ExtensionPropertyDelegateDeclarationContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -713,6 +791,19 @@ public class KotlinParserBaseListener implements KotlinParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitElvisExpression(@NotNull KotlinParser.ElvisExpressionContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSetter(@NotNull KotlinParser.SetterContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSetter(@NotNull KotlinParser.SetterContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -739,6 +830,19 @@ public class KotlinParserBaseListener implements KotlinParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitDoWhileLoop(@NotNull KotlinParser.DoWhileLoopContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDelegateExpression(@NotNull KotlinParser.DelegateExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDelegateExpression(@NotNull KotlinParser.DelegateExpressionContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -843,6 +947,19 @@ public class KotlinParserBaseListener implements KotlinParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVariableDeclarationEntry(@NotNull KotlinParser.VariableDeclarationEntryContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLambdaFunction(@NotNull KotlinParser.LambdaFunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLambdaFunction(@NotNull KotlinParser.LambdaFunctionContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -1070,6 +1187,19 @@ public class KotlinParserBaseListener implements KotlinParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterReadonlyExtensionPropertyNoDelegateDeclaration(@NotNull KotlinParser.ReadonlyExtensionPropertyNoDelegateDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReadonlyExtensionPropertyNoDelegateDeclaration(@NotNull KotlinParser.ReadonlyExtensionPropertyNoDelegateDeclarationContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFunctionLiteral(@NotNull KotlinParser.FunctionLiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -1077,6 +1207,19 @@ public class KotlinParserBaseListener implements KotlinParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFunctionLiteral(@NotNull KotlinParser.FunctionLiteralContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPropertyDelegateDeclaration(@NotNull KotlinParser.PropertyDelegateDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPropertyDelegateDeclaration(@NotNull KotlinParser.PropertyDelegateDeclarationContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -1330,6 +1473,19 @@ public class KotlinParserBaseListener implements KotlinParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterTryExpression(@NotNull KotlinParser.TryExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTryExpression(@NotNull KotlinParser.TryExpressionContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAccessModifier(@NotNull KotlinParser.AccessModifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -1343,13 +1499,13 @@ public class KotlinParserBaseListener implements KotlinParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTryExpression(@NotNull KotlinParser.TryExpressionContext ctx) { }
+	@Override public void enterGetterSetterDeclaration(@NotNull KotlinParser.GetterSetterDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTryExpression(@NotNull KotlinParser.TryExpressionContext ctx) { }
+	@Override public void exitGetterSetterDeclaration(@NotNull KotlinParser.GetterSetterDeclarationContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -1382,6 +1538,19 @@ public class KotlinParserBaseListener implements KotlinParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMutablePropertyDeclaration(@NotNull KotlinParser.MutablePropertyDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMutablePropertyDeclaration(@NotNull KotlinParser.MutablePropertyDeclarationContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPrefixUnaryOperation(@NotNull KotlinParser.PrefixUnaryOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -1408,6 +1577,19 @@ public class KotlinParserBaseListener implements KotlinParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterFunctionModifier(@NotNull KotlinParser.FunctionModifierContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunctionModifier(@NotNull KotlinParser.FunctionModifierContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterTypeDescriptor(@NotNull KotlinParser.TypeDescriptorContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -1428,6 +1610,32 @@ public class KotlinParserBaseListener implements KotlinParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFuncParameterWithDefault(@NotNull KotlinParser.FuncParameterWithDefaultContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParameterType(@NotNull KotlinParser.ParameterTypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParameterType(@NotNull KotlinParser.ParameterTypeContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterInterfaceDeclaration(@NotNull KotlinParser.InterfaceDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInterfaceDeclaration(@NotNull KotlinParser.InterfaceDeclarationContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

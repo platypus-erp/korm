@@ -1,6 +1,6 @@
 package org.platypus.model.field.impl
 
-import org.platypus.model.Model
+import org.platypus.model.IModel
 import org.platypus.model.field.api.FieldSlotsImpl
 import org.platypus.model.field.api.FieldVisitor
 import org.platypus.model.field.api.ModelField
@@ -12,7 +12,7 @@ import org.platypus.orm.OrmConstraint
 import org.platypus.orm.sql.expression.ExpressionVisitor
 import java.time.LocalDateTime
 
-class DateTimeField<M : Model<M>>(
+class DateTimeField<M : IModel<M>>(
         name: String, model: M, slots: FieldSlotsImpl<LocalDateTime>
 ) : SimpleField<M, LocalDateTime>(model, name, slots) {
 
@@ -26,7 +26,7 @@ class DateTimeField<M : Model<M>>(
         this.slots.merge(f)
     }
 
-    class Builder<M : Model<M>>
+    class Builder<M : IModel<M>>
     private constructor(val model: M, val fieldName: String, private val slots: MutableFieldSlotsImpl<LocalDateTime>)
         : ModelField.Builder<M, DateTimeField<M>>, MutableFieldSlots<LocalDateTime> by slots {
         constructor(model: M, fieldName: String) : this(model, fieldName, MutableFieldSlotsImpl())

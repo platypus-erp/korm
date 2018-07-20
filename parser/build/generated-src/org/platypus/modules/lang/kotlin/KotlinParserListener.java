@@ -1,4 +1,4 @@
-// Generated from /home/apasquier/WorkSpace/Kotlin/platypus/parser/src/main/antlr/KotlinParser.g4 by ANTLR 4.2.2
+// Generated from /home/chmuche/workspace/kotlin/korm/parser/src/main/antlr/KotlinParser.g4 by ANTLR 4.2.2
 package org.platypus.modules.lang.kotlin;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -51,6 +51,17 @@ public interface KotlinParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIsOperation(@NotNull KotlinParser.IsOperationContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link KotlinParser#mutableExtensionPropertyNoDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterMutableExtensionPropertyNoDelegateDeclaration(@NotNull KotlinParser.MutableExtensionPropertyNoDelegateDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KotlinParser#mutableExtensionPropertyNoDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitMutableExtensionPropertyNoDelegateDeclaration(@NotNull KotlinParser.MutableExtensionPropertyNoDelegateDeclarationContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link KotlinParser#toplevelObject}.
@@ -205,6 +216,28 @@ public interface KotlinParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIdentifier(@NotNull KotlinParser.IdentifierContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link KotlinParser#readonlyPropertyNoDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterReadonlyPropertyNoDelegateDeclaration(@NotNull KotlinParser.ReadonlyPropertyNoDelegateDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KotlinParser#readonlyPropertyNoDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitReadonlyPropertyNoDelegateDeclaration(@NotNull KotlinParser.ReadonlyPropertyNoDelegateDeclarationContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link KotlinParser#assignExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignExpression(@NotNull KotlinParser.AssignExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KotlinParser#assignExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignExpression(@NotNull KotlinParser.AssignExpressionContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link KotlinParser#inOperation}.
@@ -416,6 +449,17 @@ public interface KotlinParserListener extends ParseTreeListener {
 	void exitConjunction(@NotNull KotlinParser.ConjunctionContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link KotlinParser#readonlyPropertyDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterReadonlyPropertyDeclaration(@NotNull KotlinParser.ReadonlyPropertyDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KotlinParser#readonlyPropertyDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitReadonlyPropertyDeclaration(@NotNull KotlinParser.ReadonlyPropertyDeclarationContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link KotlinParser#primaryConstructor}.
 	 * @param ctx the parse tree
 	 */
@@ -526,6 +570,17 @@ public interface KotlinParserListener extends ParseTreeListener {
 	void exitDeclaration(@NotNull KotlinParser.DeclarationContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link KotlinParser#mutablePropertyNoDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterMutablePropertyNoDelegateDeclaration(@NotNull KotlinParser.MutablePropertyNoDelegateDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KotlinParser#mutablePropertyNoDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitMutablePropertyNoDelegateDeclaration(@NotNull KotlinParser.MutablePropertyNoDelegateDeclarationContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link KotlinParser#typeConstraint}.
 	 * @param ctx the parse tree
 	 */
@@ -581,15 +636,26 @@ public interface KotlinParserListener extends ParseTreeListener {
 	void exitVarianceAnnotation(@NotNull KotlinParser.VarianceAnnotationContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link KotlinParser#setter}.
+	 * Enter a parse tree produced by {@link KotlinParser#propertyModifier}.
 	 * @param ctx the parse tree
 	 */
-	void enterSetter(@NotNull KotlinParser.SetterContext ctx);
+	void enterPropertyModifier(@NotNull KotlinParser.PropertyModifierContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link KotlinParser#setter}.
+	 * Exit a parse tree produced by {@link KotlinParser#propertyModifier}.
 	 * @param ctx the parse tree
 	 */
-	void exitSetter(@NotNull KotlinParser.SetterContext ctx);
+	void exitPropertyModifier(@NotNull KotlinParser.PropertyModifierContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link KotlinParser#extensionPropertyDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterExtensionPropertyDelegateDeclaration(@NotNull KotlinParser.ExtensionPropertyDelegateDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KotlinParser#extensionPropertyDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitExtensionPropertyDelegateDeclaration(@NotNull KotlinParser.ExtensionPropertyDelegateDeclarationContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link KotlinParser#elvisExpression}.
@@ -601,6 +667,17 @@ public interface KotlinParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitElvisExpression(@NotNull KotlinParser.ElvisExpressionContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link KotlinParser#setter}.
+	 * @param ctx the parse tree
+	 */
+	void enterSetter(@NotNull KotlinParser.SetterContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KotlinParser#setter}.
+	 * @param ctx the parse tree
+	 */
+	void exitSetter(@NotNull KotlinParser.SetterContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link KotlinParser#functionDeclaration}.
@@ -623,6 +700,17 @@ public interface KotlinParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDoWhileLoop(@NotNull KotlinParser.DoWhileLoopContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link KotlinParser#delegateExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterDelegateExpression(@NotNull KotlinParser.DelegateExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KotlinParser#delegateExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitDelegateExpression(@NotNull KotlinParser.DelegateExpressionContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link KotlinParser#extensionFunctionTypeNoReceiver}.
@@ -711,6 +799,17 @@ public interface KotlinParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVariableDeclarationEntry(@NotNull KotlinParser.VariableDeclarationEntryContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link KotlinParser#lambdaFunction}.
+	 * @param ctx the parse tree
+	 */
+	void enterLambdaFunction(@NotNull KotlinParser.LambdaFunctionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KotlinParser#lambdaFunction}.
+	 * @param ctx the parse tree
+	 */
+	void exitLambdaFunction(@NotNull KotlinParser.LambdaFunctionContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link KotlinParser#valueArgument}.
@@ -900,6 +999,17 @@ public interface KotlinParserListener extends ParseTreeListener {
 	void exitMemberAccessOperation(@NotNull KotlinParser.MemberAccessOperationContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link KotlinParser#readonlyExtensionPropertyNoDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterReadonlyExtensionPropertyNoDelegateDeclaration(@NotNull KotlinParser.ReadonlyExtensionPropertyNoDelegateDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KotlinParser#readonlyExtensionPropertyNoDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitReadonlyExtensionPropertyNoDelegateDeclaration(@NotNull KotlinParser.ReadonlyExtensionPropertyNoDelegateDeclarationContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link KotlinParser#functionLiteral}.
 	 * @param ctx the parse tree
 	 */
@@ -909,6 +1019,17 @@ public interface KotlinParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunctionLiteral(@NotNull KotlinParser.FunctionLiteralContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link KotlinParser#propertyDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterPropertyDelegateDeclaration(@NotNull KotlinParser.PropertyDelegateDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KotlinParser#propertyDelegateDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitPropertyDelegateDeclaration(@NotNull KotlinParser.PropertyDelegateDeclarationContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link KotlinParser#annotationUseSiteTarget}.
@@ -1120,6 +1241,17 @@ public interface KotlinParserListener extends ParseTreeListener {
 	void exitTypeConstraints(@NotNull KotlinParser.TypeConstraintsContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link KotlinParser#tryExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterTryExpression(@NotNull KotlinParser.TryExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KotlinParser#tryExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitTryExpression(@NotNull KotlinParser.TryExpressionContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link KotlinParser#accessModifier}.
 	 * @param ctx the parse tree
 	 */
@@ -1131,15 +1263,15 @@ public interface KotlinParserListener extends ParseTreeListener {
 	void exitAccessModifier(@NotNull KotlinParser.AccessModifierContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link KotlinParser#tryExpression}.
+	 * Enter a parse tree produced by {@link KotlinParser#getterSetterDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void enterTryExpression(@NotNull KotlinParser.TryExpressionContext ctx);
+	void enterGetterSetterDeclaration(@NotNull KotlinParser.GetterSetterDeclarationContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link KotlinParser#tryExpression}.
+	 * Exit a parse tree produced by {@link KotlinParser#getterSetterDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void exitTryExpression(@NotNull KotlinParser.TryExpressionContext ctx);
+	void exitGetterSetterDeclaration(@NotNull KotlinParser.GetterSetterDeclarationContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link KotlinParser#parameter}.
@@ -1164,6 +1296,17 @@ public interface KotlinParserListener extends ParseTreeListener {
 	void exitStatement(@NotNull KotlinParser.StatementContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link KotlinParser#mutablePropertyDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterMutablePropertyDeclaration(@NotNull KotlinParser.MutablePropertyDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KotlinParser#mutablePropertyDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitMutablePropertyDeclaration(@NotNull KotlinParser.MutablePropertyDeclarationContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link KotlinParser#prefixUnaryOperation}.
 	 * @param ctx the parse tree
 	 */
@@ -1186,6 +1329,17 @@ public interface KotlinParserListener extends ParseTreeListener {
 	void exitLastArgLambda(@NotNull KotlinParser.LastArgLambdaContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link KotlinParser#functionModifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionModifier(@NotNull KotlinParser.FunctionModifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KotlinParser#functionModifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionModifier(@NotNull KotlinParser.FunctionModifierContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link KotlinParser#typeDescriptor}.
 	 * @param ctx the parse tree
 	 */
@@ -1206,6 +1360,28 @@ public interface KotlinParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFuncParameterWithDefault(@NotNull KotlinParser.FuncParameterWithDefaultContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link KotlinParser#parameterType}.
+	 * @param ctx the parse tree
+	 */
+	void enterParameterType(@NotNull KotlinParser.ParameterTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KotlinParser#parameterType}.
+	 * @param ctx the parse tree
+	 */
+	void exitParameterType(@NotNull KotlinParser.ParameterTypeContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link KotlinParser#interfaceDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterInterfaceDeclaration(@NotNull KotlinParser.InterfaceDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KotlinParser#interfaceDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitInterfaceDeclaration(@NotNull KotlinParser.InterfaceDeclarationContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link KotlinParser#atomicExpression}.

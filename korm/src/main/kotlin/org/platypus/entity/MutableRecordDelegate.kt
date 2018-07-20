@@ -1,5 +1,6 @@
 package org.platypus.entity
 
+import org.platypus.model.IModel
 import org.platypus.model.Model
 import org.platypus.model.field.impl.ArchivedModelField
 import org.platypus.model.field.impl.BinaryField
@@ -24,7 +25,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import kotlin.reflect.KProperty
 
-interface MutableRecordDelegate<M : Model<M>> : RecordDelegate<M> {
+interface MutableRecordDelegate<M : IModel<M>> : RecordDelegate<M> {
     operator fun NameModelField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: String?)
     operator fun IntField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: Int?)
     operator fun StringField<M>.setValue(o: MutableRecordDelegate<M>, desc: KProperty<*>, value: String?)
