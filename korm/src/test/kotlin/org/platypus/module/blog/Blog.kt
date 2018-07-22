@@ -5,7 +5,7 @@ import org.platypus.orm.ReferenceOption
 
 object BlogModel : Model<BlogModel>("blog.blog") {
 
-    val user = many2one("co_creator", UserMokModel) {
+    val co_creator = many2one("co_creator", UserMokModel) {
         onDelete = ReferenceOption.RESTRICT
         required = true
 //        defaultValueFun = {

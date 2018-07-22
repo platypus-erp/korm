@@ -63,7 +63,7 @@ private object CreateTestModule : ModuleBuilder("perm_create", {
 object CreateGroup : Spek({
     given("An Test environment") {
         CreateTestModule.inNewTestEnvironement {
-            on("Creating as Admin user") {
+            on("Creating as Admin co_creator") {
                 val e = entity1Repo.new {
                     name = "EntityRule"
                 }
@@ -85,7 +85,7 @@ object CreateGroup : Spek({
                     }
                 }
             }
-            on("Creating as simple user With sudo Admin") {
+            on("Creating as simple co_creator With sudo Admin") {
                 val e = sudo().entity1Repo.new {
                     name = "EntityRule"
                 }

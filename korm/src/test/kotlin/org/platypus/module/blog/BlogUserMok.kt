@@ -13,8 +13,9 @@ val useSquareBracket = ContextKeyNonNull("useSquareBracket", false)
 val fakeKey = ContextKeyNonNull("fakeKey", false)
 
 
+
 //TODO replace with inherit User
-object UserMokModel : Model<UserMokModel>("blog.user") {
+object UserMokModel : Model<UserMokModel>("blog.co_creator") {
 
     val decoratedName = string("decoratedName")
 

@@ -371,45 +371,45 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
 //    )
 
 
-    fun string(name: String, info: StringField.Builder<M>.() -> Unit = {}): StringField<M> =
+    protected fun string(name: String, info: StringField.Builder<M>.() -> Unit = {}): StringField<M> =
             StringField.Builder(thisModel, name).registerField(info)
 
-    fun date(name: String, info: DateField.Builder<M>.() -> Unit = {}): DateField<M> =
+    protected fun date(name: String, info: DateField.Builder<M>.() -> Unit = {}): DateField<M> =
             DateField.Builder(thisModel, name).registerField(info)
 
-    fun dateTime(name: String, info: DateTimeField.Builder<M>.() -> Unit = {}): DateTimeField<M> =
+    protected fun dateTime(name: String, info: DateTimeField.Builder<M>.() -> Unit = {}): DateTimeField<M> =
             DateTimeField.Builder(thisModel, name).registerField(info)
 
-    fun time(name: String, info: TimeField.Builder<M>.() -> Unit = {}): TimeField<M> =
+    protected fun time(name: String, info: TimeField.Builder<M>.() -> Unit = {}): TimeField<M> =
             TimeField.Builder(thisModel, name).registerField(info)
 
-    fun boolean(name: String, info: BooleanField.Builder<M>.() -> Unit = {}): BooleanField<M> =
+    protected fun boolean(name: String, info: BooleanField.Builder<M>.() -> Unit = {}): BooleanField<M> =
             BooleanField.Builder(thisModel, name).registerField(info)
 
-    fun text(name: String, info: TextField.Builder<M>.() -> Unit = {}): TextField<M> =
+    protected fun text(name: String, info: TextField.Builder<M>.() -> Unit = {}): TextField<M> =
             TextField.Builder(thisModel, name).registerField(info)
 
-    fun decimal(name: String, info: DecimalField.Builder<M>.() -> Unit = {}): DecimalField<M> =
+    protected fun decimal(name: String, info: DecimalField.Builder<M>.() -> Unit = {}): DecimalField<M> =
             DecimalField.Builder(thisModel, name).registerField(info)
 
-    fun integer(name: String, info: IntField.Builder<M>.() -> Unit = {}): IntField<M> =
+    protected fun integer(name: String, info: IntField.Builder<M>.() -> Unit = {}): IntField<M> =
             IntField.Builder(thisModel, name).registerField(info)
 
-    fun binary(name: String, info: BinaryField.Builder<M>.() -> Unit = {}): BinaryField<M> =
+    protected fun binary(name: String, info: BinaryField.Builder<M>.() -> Unit = {}): BinaryField<M> =
             BinaryField.Builder(thisModel, name).registerField(info)
 
-    fun <TM : Model<TM>> many2many(name: String, target: ModelMany2Many.() -> LinkModel<M, TM>, info: Many2ManyField.Builder<M, TM>.() -> Unit = {}): Many2ManyField<M, TM> {
+    protected fun <TM : Model<TM>> many2many(name: String, target: ModelMany2Many.() -> LinkModel<M, TM>, info: Many2ManyField.Builder<M, TM>.() -> Unit = {}): Many2ManyField<M, TM> {
         return Many2ManyField.Builder(thisModel, name, target).registerField(info)
     }
 
-    fun <TM : Model<TM>> many2manyR(name: String, target: ModelMany2Many.() -> LinkModel<TM, M>, info: Many2ManyField.Builder<M, TM>.() -> Unit = {}): Many2ManyField<M, TM> {
+    protected fun <TM : Model<TM>> many2manyR(name: String, target: ModelMany2Many.() -> LinkModel<TM, M>, info: Many2ManyField.Builder<M, TM>.() -> Unit = {}): Many2ManyField<M, TM> {
         return Many2ManyField.Builder(thisModel, name, { target(ModelMany2Many).reverse }).registerField(info)
     }
 
-    fun <D : Selection<D>> selection(name: String, selection: D, info: SelectionField.Builder<M, D>.() -> Unit = {}): SelectionField<M, D> =
+    protected fun <D : Selection<D>> selection(name: String, selection: D, info: SelectionField.Builder<M, D>.() -> Unit = {}): SelectionField<M, D> =
             SelectionField.Builder(thisModel, name, selection).registerField(info)
 
-    fun <MT : Model<MT>, KT, F : ModelField<MT, KT>>
+    protected fun <MT : Model<MT>, KT, F : ModelField<MT, KT>>
             ReferenceField<M, MT>.related(label: String? = null, help: String? = null, store: Boolean = false, readonly: Boolean = true, getter: MT.() -> F): F {
         return this.target.getter()
     }
@@ -424,7 +424,7 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
      * @param targetField A lambda with the targeted [Many2OneField]
      * @param info The builder to fieldSet additional info
      */
-    fun <TM : Model<TM>> one2many(name: String, targetField: () -> Many2OneField<TM, M>,
+    protected fun <TM : Model<TM>> one2many(name: String, targetField: () -> Many2OneField<TM, M>,
                                   info: One2ManyField.Builder<M, TM>.() -> Unit = {}): One2ManyField<M, TM> =
             One2ManyField.Builder(thisModel, name, targetField).registerField(info)
 
@@ -435,7 +435,7 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
      * The field id is used to create de link
      * @param info The builder to fieldSet additionnal info
      */
-    fun <TM : Model<TM>> many2one(name: String, target: TM, info: Many2OneField.Builder<M, TM>.() -> Unit = {}): Many2OneField<M, TM> =
+    protected fun <TM : Model<TM>> many2one(name: String, target: TM, info: Many2OneField.Builder<M, TM>.() -> Unit = {}): Many2OneField<M, TM> =
             Many2OneField.Builder(thisModel, name, target).registerField(info)
 
 
@@ -447,7 +447,7 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
      * @param info The builder to fieldSet additional info
      * @see many2one if you don't wan't an unique link
      */
-    fun <TM : Model<TM>> one2one(name: String, target: TM, info: One2OneField.Builder<M, TM>.() -> Unit = {}): One2OneField<M, TM> =
+    protected fun <TM : Model<TM>> one2one(name: String, target: TM, info: One2OneField.Builder<M, TM>.() -> Unit = {}): One2OneField<M, TM> =
             One2OneField.Builder(thisModel, name, target).registerField(info)
 
     /**
@@ -457,49 +457,55 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
      * @param targetField A lambda with the targeted [Many2OneField]
      * @param info The builder to fieldSet additional info
      */
-    fun <TM : Model<TM>> revOne2one(name: String, targetField: () -> One2OneField<TM, M>, info: RevOne2OneField.Builder<M, TM>.() -> Unit = {}): RevOne2OneField<M, TM> =
+    protected fun <TM : Model<TM>> revOne2one(name: String, targetField: () -> One2OneField<TM, M>, info: RevOne2OneField.Builder<M, TM>.() -> Unit = {}): RevOne2OneField<M, TM> =
             RevOne2OneField.Builder(thisModel, name, targetField).registerField(info)
 
 
     private fun <B : ModelField.Builder<M, FIELD>,
             FIELD : ModelField<M, *>>
             B.registerField(info: B.() -> Unit): FIELD {
-        this.info()
-        val f = this.build()
+        return applyBuilder(this, info)
+    }
+
+    internal fun <B : ModelField.Builder<M, FIELD>,
+            FIELD : ModelField<M, *>>
+            applyBuilder(builder:B, info: B.() -> Unit): FIELD {
+        builder.info()
+        val f = builder.build()
         internalFields.add(f)
         return f
     }
 
 
-    infix fun NameModelField<M>.extends(function: NameModelField.Builder<M>.() -> Unit) {
+    protected infix fun NameModelField<M>.extends(function: NameModelField.Builder<M>.() -> Unit) {
         this@Model.extends(function)
     }
 
-    fun <KT : Any> ModelField<M, KT>.constraint(function: (Record<M>) -> Unit): ApiOneNoParamStacker<M, Unit> {
+    protected fun <KT : Any> ModelField<M, KT>.constraint(function: (Record<M>) -> Unit): ApiOneNoParamStacker<M, Unit> {
         return this@Model.addOnChange(OnChangeType.SERVER, ApiOneNoParamStacker(function))
     }
 
-    protected infix fun <R> ApiOneNoParamStacker<M, R>.extends(function: ApiOneNoParamExtends<M, R>.(Record<M>) -> R) {
+    protected infix fun <R> ApiOneNoParamStacker<M, R>.extend(function: ApiOneNoParamExtends<M, R>.(Record<M>) -> R) {
         this.addExtend(function)
     }
 
-    protected infix fun <P, R> ApiOneParamStacker<M, P, R>.extends(function: ApiOneParamExtends<M, P, R>.(Record<M>, P) -> R) {
+    protected infix fun <P, R> ApiOneParamStacker<M, P, R>.extend(function: ApiOneParamExtends<M, P, R>.(Record<M>, P) -> R) {
         this.addExtend(function)
     }
 
-    protected infix fun <R> ApiMultiNoParamStacker<M, R>.extends(function: ApiMultiNoParamExtends<M, R>.(Bag<M>) -> R) {
+    protected infix fun <R> ApiMultiNoParamStacker<M, R>.extend(function: ApiMultiNoParamExtends<M, R>.(Bag<M>) -> R) {
         this.addExtend(function)
     }
 
-    protected infix fun <P, R> ApiMultiParamStacker<M, P, R>.extends(function: ApiMultiParamExtends<M, P, R>.(Bag<M>, P) -> R) {
+    protected infix fun <P, R> ApiMultiParamStacker<M, P, R>.extend(function: ApiMultiParamExtends<M, P, R>.(Bag<M>, P) -> R) {
         this.addExtend(function)
     }
 
-    protected infix fun <R> ApiEmptyNoParamStacker<M, R>.extends(function: ApiEmptyNoParamExtends<M, R>.(RecordRepository<M>) -> R) {
+    protected infix fun <R> ApiEmptyNoParamStacker<M, R>.extend(function: ApiEmptyNoParamExtends<M, R>.(RecordRepository<M>) -> R) {
         this.addExtend(function)
     }
 
-    protected infix fun <P, R> ApiEmptyParamStacker<M, P, R>.extends(function: ApiEmptyParamExtends<M, P, R>.(RecordRepository<M>, P) -> R) {
+    protected infix fun <P, R> ApiEmptyParamStacker<M, P, R>.extend(function: ApiEmptyParamExtends<M, P, R>.(RecordRepository<M>, P) -> R) {
         this.addExtend(function)
     }
 

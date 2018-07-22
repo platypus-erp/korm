@@ -35,16 +35,16 @@ fun test() {
     platy.newEnv().use { env ->
         env.blogRepo.search {
             adjustSelect {
-                it.user.select { email }
-                it.user.join { resume }.select { leisure }
-                it.user.join { resume }.select { education }
-                it.user.join { resume }.select { experience }
+                it.co_creator.select { email }
+                it.co_creator.join { resume }.select { leisure }
+                it.co_creator.join { resume }.select { education }
+                it.co_creator.join { resume }.select { experience }
             }
 
             where {
                 (it.name ilike "dkf")
-                        .or(it.user.predicate { email ilike "dfk" })
-                        .or(it.user.join { resume }.predicate { experience ilike "fkdj" })
+                        .or(it.co_creator.predicate { email ilike "dfk" })
+                        .or(it.co_creator.join { resume }.predicate { experience ilike "fkdj" })
             }
         }
 
@@ -114,7 +114,7 @@ object SelectSpek : Spek({
                     it("Should contains the ids and only one query is executed, only the name is fetched") {
                         val search = SearchQueryImpl(BlogModel, env).adjustSelect {
                             it.name
-                            it.user.select { nums }
+                            it.co_creator.select { nums }
                         }
                         val ids = search.execute()
                         ids.shouldNotBeEmpty()
@@ -123,13 +123,13 @@ object SelectSpek : Spek({
                         for (id in ids) {
                             env.internal.cache.state(BlogModel of id) shouldBe CacheState.PARTIALLY
                             for (f in BlogModel.storeFields.filter { it != BlogModel.id }) {
-                                if (f != BlogModel.name || f != BlogModel.user) {
+                                if (f != BlogModel.name || f != BlogModel.co_creator) {
                                     env.internal.cache.state(BlogModel of id, f) shouldBe CacheState.NONE
                                 } else {
                                     env.internal.cache.state(BlogModel of id, f) shouldBe CacheState.FETCHED
                                 }
                             }
-                            val userCache = env.internal.cache[BlogModel of id, BlogModel.user]
+                            val userCache = env.internal.cache[BlogModel of id, BlogModel.co_creator]
                             userCache.first shouldBe CacheState.FETCHED
                             userCache.second.shouldNotBeNull()
                             env.internal.cache.state(userCache.second!!, UserMokModel.id) shouldBe CacheState.PARTIALLY
