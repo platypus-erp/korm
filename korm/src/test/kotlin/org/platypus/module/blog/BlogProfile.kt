@@ -24,7 +24,7 @@ object ProfileModel : Model<ProfileModel>("test.profile") {
     val age = integer("age")
     val gender = selection("gender", ProfileGender)
     val money = decimal("money")
-    val user = one2one("co_creator", UserMokModel) {
+    val user = one2one("user", UserMokModel) {
         required = true
     }
     val bestPost = revOne2one("bestPost", { BlogPostModel.bestPostProfile })

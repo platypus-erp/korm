@@ -58,11 +58,11 @@ import org.platypus.model.functions.one.ApiOneParamStacker
 import org.platypus.module.base.models.Users
 import org.platypus.orm.CheckConstraint
 import org.platypus.orm.UniqueConstraint
-import org.platypus.orm.sql.and
 import org.platypus.orm.sql.dml.statements.DeleteStatement
 import org.platypus.orm.sql.expression.Expression
-import org.platypus.orm.sql.expression.TypedExpression
-import org.platypus.orm.sql.expression.eq
+import org.platypus.orm.sql.predicate.PredicateField
+import org.platypus.orm.sql.predicate.and
+import org.platypus.orm.sql.predicate.eq
 import org.platypus.orm.sql.query.ORDERBY_TYPE
 import org.platypus.orm.sql.query.SearchQuery
 import org.platypus.orm.sql.query.SearchQueryImpl
@@ -150,24 +150,8 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
         return listOf(this)
     }
 
-    private val _slots = ModelSlotsImpl(type)
-    /**
-     * Some additional information of the models
-     */
-    override val slots: ModelSlots
-        get() = _slots
-
-    var modelHelp: String
-        get() = _slots.help ?: "Contains all the $modelLabel of the ERP"
-        protected set(value) {
-            _slots.help = value
-        }
-
-    var modelLabel: String
-        get() = _slots.label ?: modelName
-        protected set(value) {
-            _slots.label = value
-        }
+    override val modelLabel: String = modelName
+    override val modelHelp: String = "Contains all the $modelLabel of the ERP"
 
     override fun <PARAM : Any, RETURN : Any> accept(visitor: ModelVisitor<PARAM, RETURN>, p: PARAM): RETURN = visitor.visit(this, p)
 
@@ -204,7 +188,7 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
     val metadata: ModelMetaDataImpl<M> = ModelMetaDataImpl()
 
 
-    protected fun check(name: String, errorMsg: String? = null, checkPredicate: M.() -> Expression<Boolean>) {
+    protected fun check(name: String, errorMsg: String? = null, checkPredicate: M.() -> PredicateField) {
         sqlCheck[name] = CheckConstraint(name, errorMsg, checkPredicate)
     }
 
@@ -286,7 +270,7 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
 
     val delete = api.public("delete",
             fun(self: Record<M>): PublicApiReturn<Int> {
-                val where = self.model.metadata.deleteRule(self.env.sudoUser, self.model.id eq id)
+                val where = self.model.metadata.deleteRule(self.env.sudoUser, self.model.id eq self.id)
                 val nb = DeleteStatement(self.env, self.model, where).execute()
                 if (nb != null) {
                     self.warmCache().remove(self.modelID)
@@ -425,7 +409,7 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
      * @param info The builder to fieldSet additional info
      */
     protected fun <TM : Model<TM>> one2many(name: String, targetField: () -> Many2OneField<TM, M>,
-                                  info: One2ManyField.Builder<M, TM>.() -> Unit = {}): One2ManyField<M, TM> =
+                                            info: One2ManyField.Builder<M, TM>.() -> Unit = {}): One2ManyField<M, TM> =
             One2ManyField.Builder(thisModel, name, targetField).registerField(info)
 
     /**
@@ -469,7 +453,7 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
 
     internal fun <B : ModelField.Builder<M, FIELD>,
             FIELD : ModelField<M, *>>
-            applyBuilder(builder:B, info: B.() -> Unit): FIELD {
+            applyBuilder(builder: B, info: B.() -> Unit): FIELD {
         builder.info()
         val f = builder.build()
         internalFields.add(f)
@@ -477,7 +461,7 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
     }
 
 
-    protected infix fun NameModelField<M>.extends(function: NameModelField.Builder<M>.() -> Unit) {
+    protected infix fun NameModelField<M>.extend(function: NameModelField.Builder<M>.() -> Unit) {
         this@Model.extends(function)
     }
 
@@ -540,8 +524,8 @@ abstract class Model<M : Model<M>>(baseModelName: String, type: ModelType = Mode
 
 data class NameSearchParam(
         val value: String = "",
-        val where: Expression<Boolean>? = null,
-        val operator: (nameExpr: TypedExpression<String>, value: String) -> Expression<Boolean> = { e, v -> e.eq(v) },
+        val where: PredicateField? = null,
+        val operator: (nameExpr: IModelField<*, String>, value: String) -> PredicateField = { e, v -> e.eq(v) },
         val limit: Int = 100
 )
 

@@ -23,12 +23,13 @@ object BaseBlogModule : ModuleBuilder("base_blogModule", {
     models {
         +BlogModel
         +BlogPostModel
+        +BlogPostCommentModel
         +PostTagModel
         +ProfileModel
         +ResumeModel
         +UserMokModel
     }
     datas {
-        add(dataBlogJane)
+        add(dataBlog)
     }
 })

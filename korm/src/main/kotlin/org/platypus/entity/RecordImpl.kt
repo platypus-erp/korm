@@ -41,7 +41,7 @@ import org.platypus.model.field.impl.WriteDateModelField
 import org.platypus.model.field.impl.WriteUID
 import org.platypus.module.base.entities.User
 import org.platypus.module.base.entities.users
-import org.platypus.orm.sql.expression.eq
+import org.platypus.orm.sql.predicate.eq
 import org.platypus.orm.sql.query.SearchQuery
 import org.platypus.repository.RecordRepository
 import org.platypus.repository.RecordRepositoryImpl
@@ -339,14 +339,14 @@ internal class RecordImpl<M : Model<M>> private constructor(
         return warmCache()[o.model of o.id, this].second
     }
 
-    override operator fun DecimalField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): BigDecimal? {
+    override operator fun DecimalField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): BigDecimal {
         fetchIfNeeded(this)
-        return warmCache()[o.model of o.id, this].second
+        return warmCache()[o.model of o.id, this].second ?: BigDecimal.ZERO
     }
 
-    override operator fun IntField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Int? {
+    override operator fun IntField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Int {
         fetchIfNeeded(this)
-        return warmCache()[o.model of o.id, this].second
+        return warmCache()[o.model of o.id, this].second ?: 0
     }
 
     override operator fun <D : Selection<D>> SelectionField<M, D>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): SelectionValue<D>? {

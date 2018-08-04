@@ -23,10 +23,10 @@ import org.platypus.entity.EntityState
 import org.platypus.entity.EntityValidateMode
 import org.platypus.module.blog.BaseBlogModule
 import org.platypus.module.blog.BlogModel
-import org.platypus.module.blog.blogRepo
+import org.platypus.module.blog.gen.blog.blog.blogRepo
 import org.platypus.newTest
 import org.platypus.newTestBlog
-import org.platypus.orm.sql.expression.eq
+import org.platypus.orm.sql.predicate.eq
 import org.platypus.orm.sql.select
 import org.platypus.utils.EntityNotFoundById
 import org.platypus.utils.EntityNotFoundByRef
@@ -582,7 +582,7 @@ object CreatingBagSpek : Spek({
                     it("From search function") {
                         val bag = env.blogRepo.search {
                             where {
-                                it.co_creator eq 3
+                                it.user eq 3
                             }
                         }
                         env.internal.cr.stat.nbSelect shouldEqualTo 0
@@ -590,7 +590,7 @@ object CreatingBagSpek : Spek({
                     }
                     it("From where function") {
                         val bag = env.blogRepo.where {
-                            it.co_creator eq 3
+                            it.user eq 3
 
                         }
                         env.internal.cr.stat.nbSelect shouldEqualTo 0
@@ -619,7 +619,7 @@ object CreatingRecordSpek : Spek({
                     it("From searchFirst function") {
                         val bag = env.blogRepo.searchFirst {
                             where {
-                                it.co_creator eq 3
+                                it.user eq 3
                             }
                         }
                         env.internal.cr.stat.nbSelect shouldEqualTo 0
@@ -627,7 +627,7 @@ object CreatingRecordSpek : Spek({
                     }
                     it("From whereFirst function") {
                         val bag = env.blogRepo.whereFirst {
-                            it.co_creator eq 3
+                            it.user eq 3
 
                         }
                         env.internal.cr.stat.nbSelect shouldEqualTo 0

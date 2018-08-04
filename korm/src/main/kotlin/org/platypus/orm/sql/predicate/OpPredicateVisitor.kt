@@ -5,8 +5,8 @@ interface PredicateVisitor<PARAM, RETURN> {
     fun visit(element: IsNullOp, param: PARAM): RETURN
     fun visit(element: IsNotNullOp, param: PARAM): RETURN
     fun visit(element: BetweenOp, param: PARAM): RETURN
-    fun visit(element: InList<*>, param: PARAM): RETURN
-    fun visit(element: NotInList<*>, param: PARAM): RETURN
+    fun visit(element: InListOp<*>, param: PARAM): RETURN
+    fun visit(element: NotInListOp<*>, param: PARAM): RETURN
     fun visit(element: EqOp, param: PARAM): RETURN
     fun visit(element: NeqOp, param: PARAM): RETURN
     fun visit(element: LessOp, param: PARAM): RETURN
@@ -15,6 +15,7 @@ interface PredicateVisitor<PARAM, RETURN> {
     fun visit(element: LikeOp, param: PARAM): RETURN
     fun visit(element: GreaterOp, param: PARAM): RETURN
     fun visit(element: ILikeOp, param: PARAM): RETURN
+    fun visit(element: NotILikeOp, param: PARAM): RETURN
     fun visit(element: NotLikeOp, param: PARAM): RETURN
     fun visit(element: RegexpOp, param: PARAM): RETURN
     fun visit(element: NotRegexpOp, param: PARAM): RETURN

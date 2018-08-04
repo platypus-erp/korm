@@ -7,7 +7,7 @@ import org.platypus.cache.of
 import org.platypus.entity.Record
 import org.platypus.entity.RecordImpl
 import org.platypus.model.Model
-import org.platypus.orm.sql.expression.inList
+import org.platypus.orm.sql.predicate.inList
 import org.platypus.orm.sql.query.SearchQueryImpl
 import java.util.*
 import java.util.function.Consumer

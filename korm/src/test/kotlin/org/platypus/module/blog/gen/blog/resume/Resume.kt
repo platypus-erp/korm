@@ -14,8 +14,6 @@ typealias ResumeBag = Bag<ResumeModel>
 typealias ResumeRepo = RecordRepository<ResumeModel>
 typealias Resume = Record<ResumeModel>
 var Resume.education by ResumeModel.education
-
-
 var Resume.experience by ResumeModel.experience
 var Resume.leisure by ResumeModel.leisure
 

@@ -16,13 +16,13 @@ typealias BlogRepo = RecordRepository<BlogModel>
 typealias Blog = Record<BlogModel>
 typealias BlogModelAlias = Alias<BlogModel>
 
-var Blog.user by BlogModel.co_creator
+var Blog.user by BlogModel.user
 var Blog.maintainer by BlogModel.maintainer
 var Blog.posts by BlogModel.posts
 var Blog.tags by BlogModel.tags
 
 
-val BlogModelAlias.user by BlogModel.co_creator
+val BlogModelAlias.user by BlogModel.user
 val BlogModelAlias.maintainer by BlogModel.maintainer
 val BlogModelAlias.posts by BlogModel.posts
 val BlogModelAlias.tags by BlogModel.tags

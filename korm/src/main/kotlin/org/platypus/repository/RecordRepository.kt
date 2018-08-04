@@ -9,7 +9,7 @@ import org.platypus.bag.Bag
 import org.platypus.data.DataRef
 import org.platypus.entity.Record
 import org.platypus.model.Model
-import org.platypus.orm.sql.expression.Expression
+import org.platypus.orm.sql.predicate.PredicateField
 import org.platypus.orm.sql.query.Query
 import org.platypus.orm.sql.query.SearchQuery
 import org.platypus.orm.sql.query.SearchQueryImpl
@@ -89,13 +89,13 @@ interface RecordRepository<M : Model<M>> : Environmentable, SudoAble<RecordRepos
      * Create a bag with the given where expression
      * This expression will be evaluated only if needed
      */
-    fun where(predicate: SearchQueryWherePart<M>.(M) -> Expression<Boolean>): Bag<M>
+    fun where(predicate: SearchQueryWherePart<M>.(M) -> PredicateField): Bag<M>
 
     /**
      * Find the first record with the given where expression
      * Automatically a Limit 1 will be added to the query
      */
-    fun whereFirst(predicate: SearchQueryWherePart<M>.(M) -> Expression<Boolean>): Record<M>
+    fun whereFirst(predicate: SearchQueryWherePart<M>.(M) -> PredicateField): Record<M>
 
     /**
      * Create a [SearchQueryImpl] initialized with [init]

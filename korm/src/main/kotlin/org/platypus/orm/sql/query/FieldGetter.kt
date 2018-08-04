@@ -2,7 +2,6 @@ package org.platypus.orm.sql.query
 
 import org.platypus.model.Alias
 import org.platypus.model.IModel
-import org.platypus.model.Model
 import org.platypus.model.field.impl.Many2OneField
 import org.platypus.model.field.impl.RealModelField
 import org.platypus.model.field.impl.ReferenceField
@@ -40,12 +39,12 @@ private fun PersistenceDialect.getAliasStatement(field: ReferenceField<*, *>, al
 }
 
 data class Join2<M1: IModel<M1>, M2: IModel<M2>>(
-        val fromTable: Alias<M1>,
+        val fromTable: M1,
         override val field: ReferenceField<M1, M2>,
         override val alias: Alias<M2>) : JoinStatementPart<M1, M2> {
 
     override fun queryJoin(from: ColumnSet): Join {
-        return from.join(alias, Join.JoinType.LEFT, alias[alias.delegate.id], fromTable[field])
+        return from.join(alias, Join.JoinType.LEFT, alias[alias.delegate.id], field)
     }
 }
 

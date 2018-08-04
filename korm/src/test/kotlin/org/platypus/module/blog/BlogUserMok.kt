@@ -4,23 +4,22 @@ import org.platypus.context.ContextKeyNonNull
 import org.platypus.model.Model
 import org.platypus.module.blog.gen.blog.user.UserMok
 import org.platypus.orm.ReferenceOption
-import org.platypus.orm.sql.and
-import org.platypus.orm.sql.expression.eq
-import org.platypus.orm.sql.expression.greater
-import org.platypus.orm.sql.or
+import org.platypus.orm.sql.predicate.and
+import org.platypus.orm.sql.predicate.eq
+import org.platypus.orm.sql.predicate.greater
+import org.platypus.orm.sql.predicate.or
 
 val useSquareBracket = ContextKeyNonNull("useSquareBracket", false)
 val fakeKey = ContextKeyNonNull("fakeKey", false)
 
 
-
 //TODO replace with inherit User
-object UserMokModel : Model<UserMokModel>("blog.co_creator") {
+object UserMokModel : Model<UserMokModel>("blog.user") {
 
     val decoratedName = string("decoratedName")
 
     init {
-        name extends {
+        name extend {
             copy = false
         }
     }
@@ -44,7 +43,7 @@ object UserMokModel : Model<UserMokModel>("blog.co_creator") {
     val age = integer("age") {
         store = true
     }
-    val blogs = one2many("posts", { BlogModel.co_creator })
+    val blogs = one2many("posts", { BlogModel.user })
 
 
     //    val Pmoney = profile.related().money

@@ -17,6 +17,7 @@ typealias BlogPostComment = Record<BlogPostCommentModel>
 
 
 var BlogPostComment.content by BlogPostCommentModel.content
+var BlogPostComment.children by BlogPostCommentModel.children
 var BlogPostComment.post by BlogPostCommentModel.post
 var BlogPostComment.rate by BlogPostCommentModel.rate
 var BlogPostComment.pseudo by BlogPostCommentModel.pseudo

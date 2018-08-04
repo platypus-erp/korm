@@ -24,7 +24,7 @@ import org.platypus.orm.PersistenceDialect
 import org.platypus.orm.sql.dml.statements.InsertStatement
 import org.platypus.orm.sql.dml.statements.UpdateStatement
 import org.platypus.orm.sql.dml.storeFields
-import org.platypus.orm.sql.expression.eq
+import org.platypus.orm.sql.predicate.eq
 import org.platypus.orm.transaction.TransactionApi
 import org.platypus.orm.transaction.TransactionExecutor
 import org.platypus.repository.RecordRepository

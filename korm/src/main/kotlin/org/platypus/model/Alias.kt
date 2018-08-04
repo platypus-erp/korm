@@ -135,3 +135,18 @@ class Alias<M : IModel<M>>(val delegate: M, val alias: String) : IModel<M> by de
 
     override fun hashCode(): Int = tableNameWithAlias.hashCode()
 }
+
+val <M : Model<M>> Alias<M>.externalRef
+    get() = this[delegate.externalRef]
+
+val <M : Model<M>> Alias<M>.createDate
+    get() = this[delegate.createDate]
+
+val <M : Model<M>> Alias<M>.createUid
+    get() = this[delegate.createUid]
+
+val <M : Model<M>> Alias<M>.writeDate
+    get() = this[delegate.writeDate]
+
+val <M : Model<M>> Alias<M>.writeUid
+    get() = this[delegate.writeUid]

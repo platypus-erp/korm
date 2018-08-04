@@ -3,15 +3,19 @@ package org.platypus.module.contact.models
 import org.platypus.model.Model
 import org.platypus.module.base.models.Languages
 import org.platypus.module.base.models.Users
-import org.platypus.module.contact.entities.resCompaniesRepo
-import org.platypus.orm.sql.and
-import org.platypus.orm.sql.or
+import org.platypus.module.contact.gen.res.company.resCompanyRepo
+import org.platypus.module.contact.mainCompany
+import org.platypus.orm.sql.predicate.and
+import org.platypus.orm.sql.predicate.eq
+import org.platypus.orm.sql.predicate.isNotNull
+import org.platypus.orm.sql.predicate.neq
+import org.platypus.orm.sql.predicate.or
 
-object Partners : Model<Partners>("res.partners") {
+object Partners : Model<Partners>("res.partner") {
 
     init {
         archived.enable()
-        name extends {
+        name extend {
             required = true
         }
     }
@@ -84,6 +88,12 @@ object Partners : Model<Partners>("res.partners") {
         default = true
     }
 
+    val supplier = boolean("customer") {
+        label = "Is a Supplier"
+        help = "Check this box if this contact is a supplier."
+        default = true
+    }
+
     val vendor = boolean("vendor") {
         label = "Is a Vendor"
         help = "Check this box if this contact is a vendor. " +
@@ -127,7 +137,7 @@ object Partners : Model<Partners>("res.partners") {
     val company = many2one("company", ResCompanies) {
         index = true
         defaultValueFun = {
-            it.resCompaniesRepo.dataRef.mainCompany
+            it.resCompanyRepo.datas.mainCompany
         }
     }
 

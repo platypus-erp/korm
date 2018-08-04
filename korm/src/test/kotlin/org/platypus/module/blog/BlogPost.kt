@@ -5,9 +5,9 @@ import org.platypus.model.ModelMany2Many
 import org.platypus.orm.ReferenceOption
 
 
-object BlogPostModel : Model<BlogPostModel>("test.post") {
+object BlogPostModel : Model<BlogPostModel>("blog.post") {
     init {
-        name extends {
+        name extend {
             label = "title"
         }
     }

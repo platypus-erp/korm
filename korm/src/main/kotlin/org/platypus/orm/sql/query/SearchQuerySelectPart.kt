@@ -3,9 +3,7 @@ package org.platypus.orm.sql.query
 import org.platypus.TypedCloneable
 import org.platypus.model.Alias
 import org.platypus.model.IModel
-import org.platypus.model.Model
 import org.platypus.model.field.api.IModelField
-import org.platypus.model.field.impl.FieldAlias
 import org.platypus.model.field.impl.Many2OneField
 import org.platypus.model.field.impl.RealModelField
 import org.platypus.orm.sql.dml.ColumnSet
@@ -22,14 +20,13 @@ class SearchQuerySelectPartImpl<M : IModel<M>> internal constructor(
         private val count: Boolean = false,
         private val distinct: Boolean = false,
         val slice: MutableSet<IModelField<*, *>>,
-        val from: Alias<M>,
-        var currentColumnSet: ColumnSet = from
+        var currentColumnSet: ColumnSet = model
 ) : SearchQuerySelectPart<M> {
 
 
-    constructor(model: M, count: Boolean = false, distinct: Boolean = false) : this(model, count, distinct, HashSet(), Alias(model, "from_table"))
+    constructor(model: M, count: Boolean = false, distinct: Boolean = false) : this(model, count, distinct, HashSet())
 
-    fun addToSlice(f: FieldAlias<*, *>) {
+    fun addToSlice(f: IModelField<*, *>) {
         slice.add(f)
     }
 
@@ -37,11 +34,11 @@ class SearchQuerySelectPartImpl<M : IModel<M>> internal constructor(
         get() = slice.groupBySet { it.model }
 
     init {
-        slice.add(from[model.id])
+        slice.add(model.id)
     }
 
     override fun typedClone(): SearchQuerySelectPart<M> {
-        return SearchQuerySelectPartImpl(model, count, distinct, slice, from, currentColumnSet)
+        return SearchQuerySelectPartImpl(model, count, distinct, slice, currentColumnSet)
     }
 
     override val fieldsExpression: Set<Expression<*>>
@@ -50,15 +47,14 @@ class SearchQuerySelectPartImpl<M : IModel<M>> internal constructor(
         get() = currentColumnSet
 
     override fun <T : Any> RealModelField<M, T>.select() {
-        addToSlice(from[this])
+        addToSlice(this)
     }
 
     override fun <M1 : IModel<M1>, T : Any> Many2OneField<M, M1>.select(getter: M1.() -> RealModelField<M1, T>): RealModelField<M1, T> {
         val join = this.createJoin()
-        addToSlice(from[this])
+        addToSlice(this)
         val field = join.field.target.getter()
         addToSlice(join.alias[field])
-//        TEST IF not already in join
         currentColumnSet = join.queryJoin(currentColumnSet)
         return field
     }
@@ -121,7 +117,7 @@ class SearchQuerySelectPartImpl<M : IModel<M>> internal constructor(
 
     override fun <M1: IModel<M1>, M2: IModel<M2>> Many2OneField<M, M1>.join(getter: M1.() -> Many2OneField<M1, M2>): Join3<M, M1, M2> {
         val join = createJoin()
-        addToSlice(from[this])
+        addToSlice(this)
         val f = this.target.getter()
         addToSlice(join.alias[f])
         addToSlice(join.alias[this.target.id])
@@ -135,6 +131,8 @@ class SearchQuerySelectPartImpl<M : IModel<M>> internal constructor(
         addToSlice(this.alias[this.field.target.id])
         return this.join4(f)
     }
+
+
 
     override fun <M1: IModel<M1>, M2: IModel<M2>, M3: IModel<M3>, M4: IModel<M4>> Join4<M, M1, M2, M3>.join(getter: M3.() -> Many2OneField<M3, M4>): Join5<M, M1, M2, M3, M4> {
         val f = this.field.target.getter()
@@ -179,7 +177,7 @@ class SearchQuerySelectPartImpl<M : IModel<M>> internal constructor(
     }
 
     private fun <M1: IModel<M1>> Many2OneField<M, M1>.createJoin(): Join2<M, M1> {
-        return Join2(from, this, Alias(this.target, this.fieldName))
+        return Join2(model, this, Alias(this.target, this.fieldName))
     }
 
 

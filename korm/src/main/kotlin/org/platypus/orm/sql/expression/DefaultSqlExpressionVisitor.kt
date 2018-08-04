@@ -34,7 +34,7 @@ import org.platypus.orm.sql.predicate.Exists
 import org.platypus.orm.sql.predicate.GreaterEqOp
 import org.platypus.orm.sql.predicate.GreaterOp
 import org.platypus.orm.sql.predicate.ILikeOp
-import org.platypus.orm.sql.predicate.InList
+import org.platypus.orm.sql.predicate.InListOp
 import org.platypus.orm.sql.predicate.IsNotNullOp
 import org.platypus.orm.sql.predicate.IsNullOp
 import org.platypus.orm.sql.predicate.LessEqOp
@@ -42,7 +42,8 @@ import org.platypus.orm.sql.predicate.LessOp
 import org.platypus.orm.sql.predicate.LikeOp
 import org.platypus.orm.sql.predicate.NeqOp
 import org.platypus.orm.sql.predicate.NotExists
-import org.platypus.orm.sql.predicate.NotInList
+import org.platypus.orm.sql.predicate.NotILikeOp
+import org.platypus.orm.sql.predicate.NotInListOp
 import org.platypus.orm.sql.predicate.NotLikeOp
 import org.platypus.orm.sql.predicate.NotRegexpOp
 import org.platypus.orm.sql.predicate.OrOp
@@ -210,7 +211,7 @@ interface DefaultSqlExpressionVisitor : ExpressionVisitor<QueryBuilder, String> 
     private fun inInListOrIsNotInList(expr: TypedExpression<*>, list: Iterable<*>, isInList: Boolean, query: QueryBuilder) = buildString {
         list.iterator().let { i ->
             if (!i.hasNext()) {
-                append(((!isInList).literal() eq true.literal()).accept(this@DefaultSqlExpressionVisitor, query))
+                append(EqOp((!isInList).literal(), true.literal()).accept(this@DefaultSqlExpressionVisitor, query))
             } else {
                 val first = i.next()
                 if (!i.hasNext()) {
@@ -235,11 +236,11 @@ interface DefaultSqlExpressionVisitor : ExpressionVisitor<QueryBuilder, String> 
         }
     }
 
-    override fun visit(element: InList<*>, param: QueryBuilder): String {
+    override fun visit(element: InListOp<*>, param: QueryBuilder): String {
         return inInListOrIsNotInList(element.expr, element.list, true, param)
     }
 
-    override fun visit(element: NotInList<*>, param: QueryBuilder): String {
+    override fun visit(element: NotInListOp<*>, param: QueryBuilder): String {
         return inInListOrIsNotInList(element.expr, element.list, false, param)
     }
 
@@ -270,6 +271,7 @@ interface DefaultSqlExpressionVisitor : ExpressionVisitor<QueryBuilder, String> 
     override fun visit(element: ILikeOp, param: QueryBuilder): String = param.comparisonOp(element.expr1, element.expr2, "ILIKE")
 
     override fun visit(element: NotLikeOp, param: QueryBuilder): String = param.comparisonOp(element.expr1, element.expr2, "NOT LIKE")
+    override fun visit(element: NotILikeOp, param: QueryBuilder): String = param.comparisonOp(element.expr1, element.expr2, "NOT ILIKE")
 
     override fun visit(element: RegexpOp, param: QueryBuilder): String = param.comparisonOp(element.expr1, element.expr2, "REGEXP")
 

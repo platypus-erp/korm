@@ -9,7 +9,7 @@ import org.platypus.model.field.impl.Many2ManyField
 import org.platypus.model.field.impl.Many2OneFieldLink
 import org.platypus.model.field.impl.PKModelField
 import org.platypus.orm.ReferenceOption
-import org.platypus.orm.sql.expression.eq
+import org.platypus.orm.sql.predicate.eq
 import org.platypus.orm.sql.select
 import kotlin.reflect.KProperty
 
@@ -38,7 +38,7 @@ class LinkModel<M1 : IModel<M1>, M2 : IModel<M2>>(
 ) : IModel<LinkModel<M1, M2>> {
 
     override val id: PKModelField<LinkModel<M1, M2>> = PKModelField(this)
-    override val slots: ModelSlots = ModelSlotsImpl(ModelType.LINK_MODEL)
+//    override val slots: ModelSlots = ModelSlotsImpl(ModelType.LINK_MODEL)
     override val fields: Set<IModelField<*, *>>
         get() = setOf(id, m1M2O, m2M2O)
 

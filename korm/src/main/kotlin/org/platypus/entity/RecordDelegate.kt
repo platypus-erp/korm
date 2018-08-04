@@ -44,8 +44,8 @@ interface RecordDelegate<M : IModel<M>> : Identifiable {
     operator fun DateField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): LocalDate?
     operator fun DateTimeField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): LocalDateTime?
     operator fun BooleanField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Boolean
-    operator fun DecimalField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): BigDecimal?
-    operator fun IntField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Int?
+    operator fun DecimalField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): BigDecimal
+    operator fun IntField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Int
     operator fun <D : Selection<D>> SelectionField<M, D>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): SelectionValue<D>?
     operator fun BinaryField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): ByteArray?
     operator fun CreateUID<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): User

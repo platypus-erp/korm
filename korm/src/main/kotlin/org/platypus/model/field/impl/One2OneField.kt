@@ -12,9 +12,9 @@ import org.platypus.model.field.api.type.One2OneFieldType
 import org.platypus.model.field.api.type.SqlFieldType
 import org.platypus.orm.OrmConstraint
 import org.platypus.orm.ReferenceOption
-import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.expression.ExpressionVisitor
 import org.platypus.orm.sql.expression.TypedExpression
+import org.platypus.orm.sql.predicate.PredicateField
 
 class One2OneField<
         M : IModel<M>,
@@ -26,7 +26,7 @@ class One2OneField<
         private val privateTarget: TM,
         slots: FieldSlotsImpl<Record<TM>>,
         defaultOnDelete: ReferenceOption?,
-        defaultDomain: (TM.() -> Expression<Boolean>)?
+        defaultDomain: (TM.() -> PredicateField)?
 ) : ReferenceField<M, TM>(model, name, slots, defaultOnDelete, defaultDomain) {
 
     init {
@@ -68,7 +68,7 @@ class One2OneField<
         constructor(model: M, fieldName: String, target: TM) : this(model, fieldName, target, MutableFieldSlotsImpl())
 
         var onDelete: ReferenceOption? = null
-        var domain: (TM.() -> Expression<Boolean>)? = null
+        var domain: (TM.() -> PredicateField)? = null
 
         fun add(constraint: OrmConstraint<Record<TM>>) {
             throw UnsupportedOperationException()

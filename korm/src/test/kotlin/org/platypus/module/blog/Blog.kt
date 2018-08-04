@@ -5,7 +5,7 @@ import org.platypus.orm.ReferenceOption
 
 object BlogModel : Model<BlogModel>("blog.blog") {
 
-    val co_creator = many2one("co_creator", UserMokModel) {
+    val user = many2one("user", UserMokModel) {
         onDelete = ReferenceOption.RESTRICT
         required = true
 //        defaultValueFun = {
@@ -22,7 +22,7 @@ object BlogModel : Model<BlogModel>("blog.blog") {
     }
 
     init {
-        name extends {
+        name extend {
             label = "Title"
             defaultValueFun = {
                 "Blog of " + it.envUser.getData(it).displayName

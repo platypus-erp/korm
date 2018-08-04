@@ -3,13 +3,14 @@ package org.platypus.module.contact.models
 import org.platypus.model.Model
 import org.platypus.model.NameSearchParam
 import org.platypus.model.functions.asResult
-import org.platypus.module.contact.entities.Bank
 import org.platypus.module.contact.entities.bic
-import org.platypus.orm.sql.or
+import org.platypus.orm.sql.predicate.eq
+import org.platypus.orm.sql.predicate.iStartWith
+import org.platypus.orm.sql.predicate.or
 
 object Banks : Model<Banks>("res.bank") {
     init {
-        name extends {
+        name extend {
             required = true
         }
         //True
@@ -29,7 +30,7 @@ object Banks : Model<Banks>("res.bank") {
 
 
     init {
-        nameGet extends {
+        nameGet extend {
             val name = if (it.bic != null) {
                 "${it.name} - ${it.bic}"
             } else {
@@ -38,10 +39,10 @@ object Banks : Model<Banks>("res.bank") {
             name.asResult()
         }
 
-        nameSearch extends { repo, param ->
+        nameSearch extend { repo, param ->
             repo.callSuper(NameSearchParam(
                     param.value, param.where,
-                    { e, v -> Banks.bic.ilike("$v%") or (e.eq(v)) },
+                    { e, v -> (bic iStartWith v) or (e eq v) },
                     param.limit))
         }
     }

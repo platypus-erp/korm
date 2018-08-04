@@ -57,11 +57,11 @@ class OneDeleteSetNullSpeck : Spek({
     describe("ON delete a record referenced with a RESTRICT Many2One thenthe cache should  do the job") {
         given("A fake module With all data in cache") {
             val env = Platypus.newTest(onSetNullModule).newEnv()
-            dataSetNull.loadData(env)
+            dataSetNull.loadData(onSetNullModule.module.getModule(), env)
             on("Delete 'em1'") {
-                env.model4Repo["em2"].delete()
+                env.model4Repo.byRef("em2").delete()
                 it("'em1'.m2oModel4 should be null") {
-                    env.model3Repo["em1"].m2oModel4.`should be null`()
+                    env.model3Repo.byRef("em1").m2oModel4.`should be null`()
                 }
             }
         }

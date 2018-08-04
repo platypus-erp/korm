@@ -1,15 +1,13 @@
 package org.platypus.module.contact.models
 
 import org.platypus.model.Model
-import org.platypus.orm.sql.and
-import org.platypus.orm.sql.or
 
 object CountriesState : Model<CountriesState>("res.country.state") {
+    override val modelName: String = "Country state"
 
     init {
-        modelLabel = "Country state"
 //        TODO order by code
-        name extends {
+        name extend {
             label = "State Name"
             required = true
             help = "Administrative divisions of a country. E.g. Fed. State, Departement, Canton"
@@ -19,7 +17,6 @@ object CountriesState : Model<CountriesState>("res.country.state") {
     val country = many2one("country", Countries) {
         label = "Country"
         required = true
-        domain = { (code like "sdfj") or ((code inList listOf("TOTO", "TUTU") and name.isNotNull())) }
     }
     val code = string("code") {
         label = "State Code"

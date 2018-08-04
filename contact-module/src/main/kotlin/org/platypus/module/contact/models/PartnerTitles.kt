@@ -2,9 +2,9 @@ package org.platypus.module.contact.models
 
 import org.platypus.model.Model
 
-object PartnerTitles : Model<PartnerTitles>("partner.title") {
+object PartnerTitles : Model<PartnerTitles>("res.partner.title") {
     init {
-        name extends {
+        name extend {
             l10n = true
             required = true
         }

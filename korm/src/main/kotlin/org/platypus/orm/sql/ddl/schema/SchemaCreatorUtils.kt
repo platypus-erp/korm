@@ -2,7 +2,6 @@ package org.platypus.orm.sql.ddl.schema
 
 import org.infinispan.configuration.cache.Index
 import org.platypus.model.IModel
-import org.platypus.model.ModelType
 import org.platypus.orm.database.vendors.ForeignKeyConstraint
 import java.sql.DatabaseMetaData
 import java.sql.ResultSet
@@ -79,10 +78,7 @@ class SchemaCreatorUtils(databaseName: String, metadata: DatabaseMetaData) {
 
 
     private fun IModel<*>.toMetadata(): ModelMetadata {
-        return ModelMetadata(tableName.inProperCase, when (slots.type) {
-            ModelType.MODEL_VIEW, ModelType.MODEL_STORED_VIEW -> "VIEW"
-            else -> "TABLE"
-        })
+        return ModelMetadata(tableName.inProperCase, "TABLE")
     }
 
     fun checkTableMapping(table: IModel<*>) = true

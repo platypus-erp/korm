@@ -1,35 +1,23 @@
 package org.platypus.module.contact.models
 
-import org.platypus.entity.PlatypusSelection
-import org.platypus.entity.PlatypusSelectionCompanion
+import org.platypus.entity.Selection
+import org.platypus.module.contact.models.CurrencySymbolPosition.getValue
+import org.platypus.module.contact.models.PartnerCompanyType.getValue
+import org.platypus.module.contact.models.PartnerType.getValue
 
-class PartnerCompanyType(value: String, label: String) : PlatypusSelection<Partners>(value, label) {
-    companion object : PlatypusSelectionCompanion<Partners, PartnerCompanyType>(PartnerCompanyType::class, { v, l -> PartnerCompanyType(v, l) }) {
-        val person by "Individual"
-        val company by "Company"
-    }
-}
+object PartnerCompanyType : Selection<PartnerCompanyType>()
 
-class PartnerType(value: String, label: String) : PlatypusSelection<Partners>(value, label) {
-    companion object : PlatypusSelectionCompanion<Partners, PartnerType>(PartnerType::class, { v, l -> PartnerType(v, l) }) {
-        val contact by "Contact"
-        val invoice by "Invoice address"
-        val delivery by "Shipping address"
-        val other by "Other address"
+val PartnerCompanyType.person by "Individual"
+val PartnerCompanyType.company by "Company"
 
-        init {
-            _default = contact
-        }
-    }
-}
+object PartnerType : Selection<PartnerType>()
 
-class CurrencySymbolPosition(value: String, label: String) : PlatypusSelection<Currencies>(value, label) {
-    companion object : PlatypusSelectionCompanion<Currencies, CurrencySymbolPosition>(CurrencySymbolPosition::class, { v, l -> CurrencySymbolPosition(v, l) }) {
-        val after by "After Amount"
-        val before by "Before Amount"
+val PartnerType.contact by "Contact"
+val PartnerType.invoice by "Invoice address"
+val PartnerType.delivery by "Shipping address"
+val PartnerType.other by "Other address"
 
-        init {
-            _default = after
-        }
-    }
-}
+object CurrencySymbolPosition : Selection<CurrencySymbolPosition>()
+
+val CurrencySymbolPosition.after by "After Amount"
+val CurrencySymbolPosition.before by "Before Amount"

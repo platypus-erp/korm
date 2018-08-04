@@ -5,7 +5,7 @@ import org.platypus.orm.sql.query.ORDERBY_TYPE
 
 object Languages : Model<Languages>("res.language") {
     init {
-        name extends {
+        name extend {
             required = true
         }
         archived.enable()

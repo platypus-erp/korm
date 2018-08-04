@@ -12,9 +12,9 @@ import org.platypus.model.field.api.comparatorField
 import org.platypus.model.field.api.type.Many2OneFieldType
 import org.platypus.model.field.api.type.SqlFieldType
 import org.platypus.orm.ReferenceOption
-import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.expression.ExpressionVisitor
 import org.platypus.orm.sql.expression.FieldExpression
+import org.platypus.orm.sql.predicate.PredicateField
 
 
 class Many2OneFieldLink<M : IModel<M>, TM : IModel<TM>>(
@@ -22,7 +22,7 @@ class Many2OneFieldLink<M : IModel<M>, TM : IModel<TM>>(
         override val model: M,
         override val target: TM,
         defaultOnDelete: ReferenceOption,
-        defaultDomain: (TM.() -> Expression<Boolean>)?
+        defaultDomain: (TM.() -> PredicateField)?
 ) : IModelField<M, Record<TM>>,
         FieldSlots<Record<TM>> by FieldSlotsImpl("ID", readonly = true, copy = false, store = true, required = true),
         FieldExpression<Record<TM>>, ReferencedField<M,  TM> {

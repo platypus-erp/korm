@@ -7,7 +7,7 @@ import org.platypus.model.field.api.FieldSlotsImpl
 import org.platypus.model.field.api.ModelField
 import org.platypus.model.field.api.ReferencedField
 import org.platypus.orm.ReferenceOption
-import org.platypus.orm.sql.expression.Expression
+import org.platypus.orm.sql.predicate.PredicateField
 import org.platypus.utils.suffix
 
 //TODO to replace with an interface ?
@@ -19,10 +19,10 @@ abstract class ReferenceField<
  name: String,
  slots: FieldSlotsImpl<Record<TM>>,
  defaultOnDelete: ReferenceOption?,
- defaultDomain: (TM.() -> Expression<Boolean>)?
+ defaultDomain: (TM.() -> PredicateField)?
 ) : RealModelField<M, Record<TM>>(model, name, slots), ReferencedField<M, TM> {
 
-    var domain: (TM.() -> Expression<Boolean>)? = defaultDomain
+    var domain: (TM.() -> PredicateField)? = defaultDomain
         protected set
     override var onDelete: ReferenceOption = defaultOnDelete ?: ReferenceOption.SET_NULL
         protected set
@@ -35,10 +35,10 @@ abstract class MutliReferenceField<
 (model: M,
  name: String,
  slots: FieldSlotsImpl<Bag<TM>>,
- defaultDomain: (TM.() -> Expression<Boolean>)?
+ defaultDomain: (TM.() -> PredicateField)?
 ) : RealModelField<M, Bag<TM>>(model, name.suffix("_id"), slots) {
 
-    var domain: (TM.() -> Expression<Boolean>)? = defaultDomain
+    var domain: (TM.() -> PredicateField)? = defaultDomain
         protected set
 }
 

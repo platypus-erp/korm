@@ -35,6 +35,4 @@ class FieldAlias<M : IModel<M>, T : Any>(
         result = 31 * result + newModel.hashCode()
         return result
     }
-
-
 }

@@ -10,14 +10,16 @@ import org.platypus.module.base.entities.hasGroup
 import org.platypus.module.base.entities.hashPassword
 import org.platypus.module.base.entities.password
 import org.platypus.module.base.entities.users
-import org.platypus.orm.sql.expression.eq
+import org.platypus.orm.sql.predicate.eq
 import java.util.*
 
 object Users : Model<Users>("base.users") {
 
+    override val modelLabel = "Users"
+
     init {
-        name.extends { label = "Login" }
-        modelLabel = "Users"
+        name.extend { label = "Login" }
+
     }
 
     val password = string("password") {

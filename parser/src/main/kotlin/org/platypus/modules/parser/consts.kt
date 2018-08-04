@@ -41,5 +41,5 @@ val types = mapOf(
         Pair("time", "LocalTime"),
         Pair("one2many", "One2Many"),
         Pair("many2many", "Many2Many"),
-        Pair("many2one", "Many2One")
+        Pair("many2one", "Many2OneField")
 )

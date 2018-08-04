@@ -16,10 +16,19 @@ interface IModel<M : IModel<M>> : ColumnSet {
     val id: PKModelField<M>
 
     /**
-     * Some additional information of the models
+     * The display fieldName of the models
      */
-    val slots: ModelSlots
+    val modelLabel: String
+        get() = ""
+    /**
+     * A little help of what this models is used for
+     */
+    val modelHelp: String
+        get() = ""
 
     fun <PARAM : Any, RETURN : Any> accept(visitor: ModelVisitor<PARAM, RETURN>, p: PARAM): RETURN
 
 }
+
+val <M : Model<M>> Model<M>.externalRef
+    get() = this.externalRef

@@ -2,10 +2,10 @@ package org.platypus.module.base.views
 
 import org.platypus.module.base.models.Languages
 import org.platypus.module.base.ui.resAuthMenu
-import org.platypus.orm.sql.expression.eq
-import org.platypus.orm.sql.expression.eqOrNull
-import org.platypus.orm.sql.ilike
-import org.platypus.orm.sql.or
+import org.platypus.orm.sql.predicate.eq
+import org.platypus.orm.sql.predicate.eqOrNull
+import org.platypus.orm.sql.predicate.ilike
+import org.platypus.orm.sql.predicate.or
 import org.platypus.ui.action.MenuAction
 import org.platypus.ui.action.MenuAction.getValue
 import org.platypus.ui.action.newMenuAction

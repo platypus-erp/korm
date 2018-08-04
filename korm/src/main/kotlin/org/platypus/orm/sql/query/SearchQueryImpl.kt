@@ -2,12 +2,12 @@ package org.platypus.orm.sql.query
 
 import org.platypus.PlatypusEnvironment
 import org.platypus.cache.of
-import org.platypus.model.Alias
 import org.platypus.model.Model
 import org.platypus.model.field.api.ModelField
-import org.platypus.orm.sql.and
 import org.platypus.orm.sql.expression.Expression
-import org.platypus.orm.sql.or
+import org.platypus.orm.sql.predicate.PredicateField
+import org.platypus.orm.sql.predicate.and
+import org.platypus.orm.sql.predicate.or
 import org.platypus.orm.sql.visitor.FieldGetVisitor
 import org.platypus.orm.sql.visitor.IdPkVisitor
 
@@ -15,7 +15,7 @@ internal class SearchQueryImpl<M : Model<M>>(
         private val model: M,
         val env: PlatypusEnvironment,
         private val searchPart: SearchQuerySelectPartImpl<M> = SearchQuerySelectPartImpl(model, false, false),
-        private val predicate: Expression<Boolean>? = null,
+        private val predicate: PredicateField? = null,
         private val offset: Int = 0,
         private val limit: Int = -1,
         private val _orderByColumns: MutableList<Pair<Expression<*>, ORDERBY_TYPE>> = mutableListOf()
@@ -24,8 +24,6 @@ internal class SearchQueryImpl<M : Model<M>>(
     override val currentPredicate: (M) -> Expression<Boolean>?
         get() = { m -> predicate }
 
-
-    val modelAlias = Alias(model, "from_table")
 
     internal fun buildQuery(env: PlatypusEnvironment): Query {
         val q = Query(env, searchPart, predicate)
@@ -44,7 +42,6 @@ internal class SearchQueryImpl<M : Model<M>>(
                         false,
                         false,
                         searchPart.slice,
-                        searchPart.from,
                         searchPart.currentColumnSet).apply {
                     select(model)
                 },
@@ -103,13 +100,13 @@ internal class SearchQueryImpl<M : Model<M>>(
         )
     }
 
-    override fun or(predicate: SearchQueryWherePart<M>.(M) -> Expression<Boolean>): SearchQueryImpl<M> {
+    override fun or(predicate: SearchQueryWherePart<M>.(M) -> PredicateField): SearchQueryImpl<M> {
         return SearchQueryImpl(
                 model,
                 env,
                 searchPart,
                 if (this.predicate != null) {
-                    this.predicate.or(SearchQueryWherePartImpl(model,modelAlias, searchPart.source).predicate(model))
+                    this.predicate.or(SearchQueryWherePartImpl(model, searchPart.source).predicate(model))
                 } else {
                     this.predicate
                 },
@@ -119,13 +116,13 @@ internal class SearchQueryImpl<M : Model<M>>(
         )
     }
 
-    override fun and(predicate: SearchQueryWherePart<M>.(M) -> Expression<Boolean>): SearchQueryImpl<M> {
+    override fun and(predicate: SearchQueryWherePart<M>.(M) -> PredicateField): SearchQueryImpl<M> {
         return SearchQueryImpl(
                 model,
                 env,
                 searchPart,
                 if (this.predicate != null) {
-                    this.predicate.and(SearchQueryWherePartImpl(model, modelAlias, searchPart.source).predicate(model))
+                    this.predicate.and(SearchQueryWherePartImpl(model, searchPart.source).predicate(model))
                 } else {
                     this.predicate
                 },
@@ -135,12 +132,12 @@ internal class SearchQueryImpl<M : Model<M>>(
         )
     }
 
-    override fun where(predicate: SearchQueryWherePart<M>.(M) -> Expression<Boolean>): SearchQuery<M> {
+    override fun where(predicate: SearchQueryWherePart<M>.(M) -> PredicateField): SearchQuery<M> {
         return SearchQueryImpl(
                 model,
                 env,
                 searchPart,
-                SearchQueryWherePartImpl(model, modelAlias, searchPart.source).predicate(model),
+                SearchQueryWherePartImpl(model, searchPart.source).predicate(model),
                 offset,
                 limit,
                 _orderByColumns
@@ -148,3 +145,4 @@ internal class SearchQueryImpl<M : Model<M>>(
     }
 
 }
+

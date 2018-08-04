@@ -69,11 +69,11 @@ class OneDeleteCascadeSpeck : Spek({
     describe("ON delete a record referenced with a RESTRICT Many2One then the cache should  do the job") {
         given("A fake module With all data in cache") {
             val env = Platypus.newTest(onCascadeModule).newEnv()
-            dataCascade.loadData(env)
+            dataCascade.loadData(onCascadeModule.module.getModule(), env)
             on("Delete 'em1'") {
-                env.model6Repo["em2"].delete()
+                env.model6Repo.byRef("em2").delete()
                 it("'em1' should be deleted") {
-                    assertThrows<EntityNotFoundByRef> { env.model5Repo["em1"] }
+                    assertThrows<EntityNotFoundByRef> { env.model5Repo.byRef("em1") }
                 }
             }
         }

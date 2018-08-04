@@ -61,7 +61,7 @@ import org.platypus.orm.sql.predicate.Exists
 import org.platypus.orm.sql.predicate.GreaterEqOp
 import org.platypus.orm.sql.predicate.GreaterOp
 import org.platypus.orm.sql.predicate.ILikeOp
-import org.platypus.orm.sql.predicate.InList
+import org.platypus.orm.sql.predicate.InListOp
 import org.platypus.orm.sql.predicate.IsNotNullOp
 import org.platypus.orm.sql.predicate.IsNullOp
 import org.platypus.orm.sql.predicate.LessEqOp
@@ -69,7 +69,8 @@ import org.platypus.orm.sql.predicate.LessOp
 import org.platypus.orm.sql.predicate.LikeOp
 import org.platypus.orm.sql.predicate.NeqOp
 import org.platypus.orm.sql.predicate.NotExists
-import org.platypus.orm.sql.predicate.NotInList
+import org.platypus.orm.sql.predicate.NotILikeOp
+import org.platypus.orm.sql.predicate.NotInListOp
 import org.platypus.orm.sql.predicate.NotLikeOp
 import org.platypus.orm.sql.predicate.NotRegexpOp
 import org.platypus.orm.sql.predicate.OrOp
@@ -133,9 +134,9 @@ object CanonicalNameExpression : ExpressionVisitor<Any?, String> {
 
     override fun visit(element: BetweenOp, param: Any?): String = throw IllegalStateException("Can't find a name of ${element::class}")
 
-    override fun visit(element: InList<*>, param: Any?): String = throw IllegalStateException("Can't find a name of ${element::class}")
+    override fun visit(element: InListOp<*>, param: Any?): String = throw IllegalStateException("Can't find a name of ${element::class}")
 
-    override fun visit(element: NotInList<*>, param: Any?): String = throw IllegalStateException("Can't find a name of ${element::class}")
+    override fun visit(element: NotInListOp<*>, param: Any?): String = throw IllegalStateException("Can't find a name of ${element::class}")
 
     override fun visit(element: EqOp, param: Any?): String = throw IllegalStateException("Can't find a name of ${element::class}")
 
@@ -168,6 +169,8 @@ object CanonicalNameExpression : ExpressionVisitor<Any?, String> {
     override fun visit(element: NotExists, param: Any?): String = throw IllegalStateException("Can't find a name of ${element::class}")
 
     override fun visit(element: NotOp<*>, param: Any?): String = throw IllegalStateException("Can't find a name of ${element::class}")
+
+    override fun visit(element: NotILikeOp, param: Any?): String = throw IllegalStateException("Can't find a name of ${element::class}")
 
     override fun visit(element: ExpressionAlias<*>, param: Any?): String = element.alias
 
@@ -222,4 +225,6 @@ object CanonicalNameExpression : ExpressionVisitor<Any?, String> {
     override fun visit(field: WriteUID<*>, p: Any?): String = field.fieldName
 
     override fun visit(field: Many2OneFieldLink<*, *>, p: Any?): String = field.fieldName
+
+
 }

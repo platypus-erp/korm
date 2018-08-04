@@ -11,7 +11,7 @@ import org.platypus.model.Model
 import org.platypus.module.base.entities.Language
 import org.platypus.module.base.models.Users
 import org.platypus.orm.sql.dml.statements.InsertStatement
-import org.platypus.orm.sql.expression.eq
+import org.platypus.orm.sql.predicate.eq
 import org.platypus.orm.sql.query.buildSelect
 import org.platypus.orm.transaction.TransactionApi
 import org.platypus.orm.transaction.TransactionMode

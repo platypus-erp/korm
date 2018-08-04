@@ -11,7 +11,7 @@ import org.platypus.cache.of
 import org.platypus.entity.Record
 import org.platypus.model.Model
 import org.platypus.model.field.impl.One2ManyField
-import org.platypus.orm.sql.expression.eq
+import org.platypus.orm.sql.predicate.eq
 import org.platypus.repository.RecordRepositoryImpl
 
 
@@ -98,7 +98,7 @@ private class One2ManyBagCache<
         return when (res.first) {
             CacheState.NONE, CacheState.PARTIALLY -> {
                 if (env.internal.cache.isInDB(modelID)) {
-                    val ids = RecordRepositoryImpl(env, model).where { prop.targetField().asExpr() eq modelID.id }.ids.toList()
+                    val ids = RecordRepositoryImpl(env, model).where { prop.targetField() eq modelID.id }.ids.toList()
                     cacheProvider()[modelID, prop] = CacheState.FETCHED to (prop.model of ids)
                     prop.model of ids
                 } else {

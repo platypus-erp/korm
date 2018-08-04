@@ -20,11 +20,11 @@ class BetweenOp(val expr: Expression<*>, val from: LiteralOp<*>, val to: Literal
 }
 
 
-class InList<T>(val expr: TypedExpression<T>, val list: Iterable<T>) : Expression<Boolean> {
+class InListOp<T>(val expr: TypedExpression<T>, val list: Iterable<T>) : Expression<Boolean> {
     override fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN = visitor.visit(this, param)
 }
 
-class NotInList<T>(val expr: TypedExpression<T>, val list: Iterable<T>) : Expression<Boolean> {
+class NotInListOp<T>(val expr: TypedExpression<T>, val list: Iterable<T>) : Expression<Boolean> {
     override fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN = visitor.visit(this, param)
 
 }
@@ -66,6 +66,11 @@ class LikeOp(val expr1: Expression<*>, val expr2: Expression<*>) : Expression<Bo
 }
 
 class ILikeOp(val expr1: Expression<*>, val expr2: Expression<*>) : Expression<Boolean> {
+    override fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN =
+            visitor.visit(this, param)
+}
+
+class NotILikeOp(val expr1: Expression<*>, val expr2: Expression<*>) : Expression<Boolean> {
     override fun <PARAM, RETURN> accept(visitor: ExpressionVisitor<PARAM, RETURN>, param: PARAM): RETURN =
             visitor.visit(this, param)
 }

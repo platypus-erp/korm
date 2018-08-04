@@ -13,10 +13,10 @@ import org.platypus.orm.sql.expression.ExpressionVisitor
 class NameModelField<M : IModel<M>>(model: M)
     : RealModelField<M, String>(model, "name", FieldSlotsImpl("name")) {
 
-    override val store: Boolean
-        get() {
-            return model.slots.type in needCommonField
-        }
+    //    override val store: Boolean
+//        get() {
+//            return model.slots.type in needCommonField
+//        }
     override val type: SqlFieldType
         get() = StringSqlFieldType(required)
 

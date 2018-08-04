@@ -13,8 +13,8 @@ import org.platypus.model.field.api.MutableFieldSlotsImpl
 import org.platypus.model.field.api.type.Many2ManyFieldType
 import org.platypus.model.field.api.type.SqlFieldType
 import org.platypus.orm.OrmConstraint
-import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.expression.ExpressionVisitor
+import org.platypus.orm.sql.predicate.PredicateField
 
 class Many2ManyField<M : IModel<M>, TM : IModel<TM>>
 (
@@ -22,7 +22,7 @@ class Many2ManyField<M : IModel<M>, TM : IModel<TM>>
         model: M,
         val target: ModelMany2Many.() -> LinkModel<M, TM>,
         slots: FieldSlotsImpl<Bag<TM>>,
-        defaultDomain: (TM.() -> Expression<Boolean>)?
+        defaultDomain: (TM.() -> PredicateField)?
 
 ) : MutliReferenceField<M, TM>(model, name, slots, defaultDomain) {
 
@@ -55,7 +55,7 @@ class Many2ManyField<M : IModel<M>, TM : IModel<TM>>
         : ModelField.Builder<M, Many2ManyField<M, TM>>, MutableFieldSlots<Bag< TM>> by slots {
         constructor(model: M, fieldName: String, target: ModelMany2Many.() -> LinkModel<M, TM>) : this(model, fieldName, target, MutableFieldSlotsImpl())
 
-        val domain: (TM.() -> Expression<Boolean>)? = null
+        val domain: (TM.() -> PredicateField)? = null
 
         fun add(constraint: OrmConstraint<Bag<TM>>) {
             slots.constraint.add(constraint)

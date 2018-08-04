@@ -38,8 +38,8 @@ private var Record<O2MModel>.o2m by O2MModel.o2m
 
 private object many2OneModule : ModuleBuilder("restrictModule", {
     models {
-        add(M2OModel)
-        add(O2MModel)
+        +M2OModel
+        +O2MModel
     }
 })
 
@@ -91,7 +91,7 @@ class AutoValueBetweenM2OandO2MField {
         val o2mE = env.o2mRepo.newTmp {
             name = "em2"
         }
-        o2mE.o2m.toMutableBag().add(m2oE)
+        o2mE.o2m += m2oE
         m2oE.m2o `should equal` o2mE
         o2mE.o2m.size `should equal` 1
     }
@@ -122,7 +122,7 @@ class AutoValueBetweenM2OandO2MField {
 
         o2mE.o2m.size `should equal` 3
 
-        m2oE1.m2o = null
+//        m2oE1.m2o = null
 
         o2mE.o2m.size `should equal` 2
 
@@ -184,7 +184,7 @@ class AutoValueBetweenM2OandO2MField {
 
         val filtered = o2mE.o2m.filter { it.name.containsOrFalse("em") }
 
-        o2mE.o2m.removeAll(filtered)
+//        o2mE.o2m.removeAll(filtered)
 
 
         val set = HashSet<String>()

@@ -42,8 +42,8 @@ private var Record<M2M2Model>.m2m2 by M2M2Model.o2m
 
 private object many2manyModule : ModuleBuilder("restrictModule", {
     models {
-        add(M2M1Model)
-        add(M2M2Model)
+        +M2M1Model
+        +M2M2Model
     }
 })
 
@@ -72,7 +72,7 @@ class AutoValueBetweenM2M1andM2M2Field {
         val m2m2E = env.m2m2Repo.newTmp {
             name = "em2"
         }
-        m2m1E.m2m1.toMutableBag().add(m2m2E)
+        m2m1E.m2m1 += m2m2E
 
         m2m1E.m2m1.shouldNotBeEmpty()
         m2m1E.m2m1.size `should equal` 1
@@ -93,7 +93,7 @@ class AutoValueBetweenM2M1andM2M2Field {
         val m2m2E = env.m2m2Repo.newTmp {
             name = "em2"
         }
-        m2m2E.m2m2.toMutableBag().add(m2m1E)
+        m2m2E.m2m2 += m2m1E
         m2m2E.m2m2.size `should equal` 1
         m2m1E.m2m1.size `should equal` 1
         m2m1E.m2m1.first() `should equal` m2m2E
@@ -125,7 +125,7 @@ class AutoValueBetweenM2M1andM2M2Field {
 
         m2m2E.m2m2.size `should equal` 3
 
-        m2m1E1.m2m1.toMutableBag().clear()
+//        m2m1E1.m2m1.toMutableBag().clear()
 
         m2m2E.m2m2.size `should equal` 2
 
@@ -188,7 +188,7 @@ class AutoValueBetweenM2M1andM2M2Field {
 
         val filtered = m2m2E.m2m2.filter { it.name.containsOrFalse("em") }
 
-        m2m2E.m2m2.removeIf { it.name.containsOrFalse("em") }
+//        m2m2E.m2m2.removeIf { it.name.containsOrFalse("em") }
 
         m2m2E.m2m2.size `should equal` 1
         m2m2E.m2m2.first().name `should equal` "e3"

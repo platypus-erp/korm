@@ -48,9 +48,9 @@ class ClassicModelCreateDDL {
 
     @Test
     fun oneFieldClassicModel() {
-        DummyModel.string("field1") {
-            required = false
-        }
+//        DummyModel.string("field1") {
+//            required = false
+//        }
         val ddl = DummyModel.accept(modelCreateDDL, DDL_MODE.CREATE)
         assertEquals("CREATE TABLE IF NOT EXISTS dummy_model (field1 VARCHAR(50))", ddl.struc)
     }

@@ -7,6 +7,8 @@ object DummyModel : Model<DummyModel>("dummy.models") {
     fun clear() {
         internalFields.clear()
     }
+
+
 }
 
 object DummyModel2 : Model<DummyModel2>("dummy.model2") {

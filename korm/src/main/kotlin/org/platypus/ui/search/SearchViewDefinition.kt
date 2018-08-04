@@ -4,11 +4,9 @@ import com.beust.klaxon.JsonObject
 import org.platypus.PlatypusEnvironment
 import org.platypus.model.Model
 import org.platypus.model.field.api.ModelField
-import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.expression.LiteralOp
 import org.platypus.orm.sql.literal
-import org.platypus.orm.sql.predicate.AndOp
-import org.platypus.orm.sql.predicate.OrOp
+import org.platypus.orm.sql.predicate.PredicateField
 import org.platypus.orm.sql.query.ORDERBY_TYPE
 import org.platypus.orm.sql.query.SearchQuery
 import org.platypus.orm.sql.query.SearchQueryImpl
@@ -63,7 +61,7 @@ class SearchViewDefinition<M : Model<M>>(
         return res
     }
 
-    internal fun JsonObject.jsonFilterToPredicate(): Expression<Boolean>? {
+    internal fun JsonObject.jsonFilterToPredicate(): PredicateField? {
         if (isEmpty()) {
             return null
         }
@@ -72,13 +70,14 @@ class SearchViewDefinition<M : Model<M>>(
         val op = string("op")!!
         val props = builder.build(uniqueName).elements.filter { it is SearchPropertyElement }.map { it as SearchPropertyElement }
         val mapPropName: Map<String, SearchPropertyElement> = props.map { it.prop.fieldName to it }.toMap()
-        val expr: Expression<Boolean> = when (op) {
-            "and" -> {
-                AndOp(left.jsonFilterToPredicate()!!, right.jsonFilterToPredicate()!!)
-            }
-            "or" -> {
-                OrOp(left.jsonFilterToPredicate()!!, right.jsonFilterToPredicate()!!)
-            }
+        return null
+//        val expr: PredicateField = when (op) {
+//            "and" -> {
+//                AndOp(left.jsonFilterToPredicate()!!, right.jsonFilterToPredicate()!!)
+//            }
+//            "or" -> {
+//                OrOp(left.jsonFilterToPredicate()!!, right.jsonFilterToPredicate()!!)
+//            }
 //            "=" -> {
 //                val f = mapPropName[left.string("field")]!!.prop
 //                EqOp(f, right.getRightValue())
@@ -169,15 +168,15 @@ class SearchViewDefinition<M : Model<M>>(
 //                val f = mapPropName[left.string("field")]!!.prop
 //                BetweenOp(f, right.getRightValue(valueName = "valueFrom"), right.getRightValue(valueName = "valueTo"))
 //            }
-            "filterID" -> {
-                TODO("Find the filter in the search view and returning it")
-
-            }
-            else -> throw IllegalStateException("Can't decode Json ${toJsonString()}")
-
-        }
-
-        return expr
+//            "filterID" -> {
+//                TODO("Find the filter in the search view and returning it")
+//
+//            }
+//            else -> throw IllegalStateException("Can't decode Json ${toJsonString()}")
+//
+//        }
+//
+//        return expr
     }
 
     private fun JsonObject.getRightValue(valueName: String = "value", prefix: String? = null, suffix: String? = null): LiteralOp<*> {

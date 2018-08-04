@@ -10,8 +10,8 @@ import org.platypus.model.field.api.MutableFieldSlotsImpl
 import org.platypus.model.field.api.type.One2ManyFieldType
 import org.platypus.model.field.api.type.SqlFieldType
 import org.platypus.orm.OrmConstraint
-import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.expression.ExpressionVisitor
+import org.platypus.orm.sql.predicate.PredicateField
 
 class One2ManyField<
         M : IModel<M>,
@@ -21,7 +21,7 @@ class One2ManyField<
         model: M,
         val targetField: () -> Many2OneField<TM, M>,
         slots: FieldSlotsImpl<Bag<TM>>,
-        defaultDomain: (TM.() -> Expression<Boolean>)?
+        defaultDomain: (TM.() -> PredicateField)?
 ) : MutliReferenceField<M, TM>(model, name, slots, defaultDomain) {
 
     override val store: Boolean = false
@@ -45,7 +45,7 @@ class One2ManyField<
     ) : ModelField.Builder<M, One2ManyField<M, TM>>, MutableFieldSlots<Bag<TM>> by slots {
         constructor(model: M, fieldName: String, targetField: () -> Many2OneField<TM, M>) : this(model, fieldName, targetField, MutableFieldSlotsImpl())
 
-        val domain: (TM.() -> Expression<Boolean>)? = null
+        val domain: (TM.() -> PredicateField)? = null
 
         fun add(constraint: OrmConstraint<Bag<TM>>) {
             slots.constraint.add(constraint)

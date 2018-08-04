@@ -58,10 +58,10 @@ class OneDeleteRestrictFailSpeck : Spek({
     describe("ON delete a record referenced with a RESTRICT Many2One thenthe cache should  do the job") {
         given("A fake module With all data in cache") {
             val env = Platypus.newTest(onRestrictModule).newEnv()
-            data.loadData(env)
+            data.loadData(onRestrictModule.module.getModule(), env)
             on("Delete 'em1'") {
                 it("Should Raise an error") {
-                    assertThrows<OnDeleteRestrictError> { env.model2Repo["em2"].delete() }
+                    assertThrows<OnDeleteRestrictError> { env.model2Repo.byRef("em2").delete() }
                 }
             }
         }
@@ -72,11 +72,11 @@ class OneDeleteRestrictNoFailSpeck : Spek({
     describe("ON delete a record referenced with a RESTRICT Many2One thenthe cache should  do the job") {
         given("A fake module With all data in cache") {
             val env = Platypus.newTest(onRestrictModule).newEnv()
-            data.loadData(env)
+            data.loadData(onRestrictModule.module.getModule(),env)
             on("Delete 'em1'") {
-                env.model1Repo["em1"].delete()
+                env.model1Repo.byRef("em1").delete()
                 it("Possible to delete 'em2' without exceptions") {
-                    env.model2Repo["em2"].delete()
+                    env.model2Repo.byRef("em2").delete()
                 }
             }
         }

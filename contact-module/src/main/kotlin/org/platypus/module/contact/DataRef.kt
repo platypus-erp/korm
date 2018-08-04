@@ -2,7 +2,8 @@ package org.platypus.module.contact
 
 import org.platypus.module.ModuleDataType
 import org.platypus.module.data
-import org.platypus.module.contact.entities.*
+import org.platypus.module.contact.gen.res.company.ResCompanyData
+import org.platypus.module.contact.gen.res.currency.CurrencyData
 import org.platypus.module.contact.models.CurrencySymbolPosition
 import java.math.BigDecimal
 

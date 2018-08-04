@@ -36,7 +36,7 @@ import org.platypus.orm.sql.predicate.Exists
 import org.platypus.orm.sql.predicate.GreaterEqOp
 import org.platypus.orm.sql.predicate.GreaterOp
 import org.platypus.orm.sql.predicate.ILikeOp
-import org.platypus.orm.sql.predicate.InList
+import org.platypus.orm.sql.predicate.InListOp
 import org.platypus.orm.sql.predicate.IsNotNullOp
 import org.platypus.orm.sql.predicate.IsNullOp
 import org.platypus.orm.sql.predicate.LessEqOp
@@ -44,7 +44,8 @@ import org.platypus.orm.sql.predicate.LessOp
 import org.platypus.orm.sql.predicate.LikeOp
 import org.platypus.orm.sql.predicate.NeqOp
 import org.platypus.orm.sql.predicate.NotExists
-import org.platypus.orm.sql.predicate.NotInList
+import org.platypus.orm.sql.predicate.NotILikeOp
+import org.platypus.orm.sql.predicate.NotInListOp
 import org.platypus.orm.sql.predicate.NotLikeOp
 import org.platypus.orm.sql.predicate.NotRegexpOp
 import org.platypus.orm.sql.predicate.OrOp
@@ -54,19 +55,19 @@ interface ExpressionVisitorDefault<PARAM, DEFAULT> : FieldVisitorDefault<PARAM, 
 
     override fun visit(element: LiteralOp<*>, param: PARAM): DEFAULT = default
 
-    override fun visit(element: NoOpConversion<*,*>, param: PARAM): DEFAULT = default
+    override fun visit(element: NoOpConversion<*, *>, param: PARAM): DEFAULT = default
 
     override fun visit(element: NotOp<*>, param: PARAM): DEFAULT = default
 
     override fun visit(element: QueryParameter<*>, param: PARAM): DEFAULT = default
 
-    override fun visit(element: PlusOp<*,*>, param: PARAM): DEFAULT = default
+    override fun visit(element: PlusOp<*, *>, param: PARAM): DEFAULT = default
 
-    override fun visit(element: MinusOp<*,*>, param: PARAM): DEFAULT = default
+    override fun visit(element: MinusOp<*, *>, param: PARAM): DEFAULT = default
 
-    override fun visit(element: MultiplyOp<*,*>, param: PARAM): DEFAULT = default
+    override fun visit(element: MultiplyOp<*, *>, param: PARAM): DEFAULT = default
 
-    override fun visit(element: DivideOp<*,*>, param: PARAM): DEFAULT = default
+    override fun visit(element: DivideOp<*, *>, param: PARAM): DEFAULT = default
 
     override fun visit(element: Count, param: PARAM): DEFAULT = default
 
@@ -114,9 +115,9 @@ interface ExpressionVisitorDefault<PARAM, DEFAULT> : FieldVisitorDefault<PARAM, 
 
     override fun visit(element: BetweenOp, param: PARAM): DEFAULT = default
 
-    override fun visit(element: InList<*>, param: PARAM): DEFAULT = default
+    override fun visit(element: InListOp<*>, param: PARAM): DEFAULT = default
 
-    override fun visit(element: NotInList<*>, param: PARAM): DEFAULT = default
+    override fun visit(element: NotInListOp<*>, param: PARAM): DEFAULT = default
 
     override fun visit(element: EqOp, param: PARAM): DEFAULT = default
 
@@ -133,6 +134,7 @@ interface ExpressionVisitorDefault<PARAM, DEFAULT> : FieldVisitorDefault<PARAM, 
     override fun visit(element: GreaterOp, param: PARAM): DEFAULT = default
 
     override fun visit(element: ILikeOp, param: PARAM): DEFAULT = default
+    override fun visit(element: NotILikeOp, param: PARAM): DEFAULT = default
 
     override fun visit(element: NotLikeOp, param: PARAM): DEFAULT = default
 

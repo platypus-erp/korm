@@ -2,7 +2,6 @@ package org.platypus.module.contact.models
 
 import org.platypus.model.Model
 import org.platypus.model.field.constraints.maxSize
-import org.platypus.module.contact.entities.Country
 
 object Countries : Model<Countries>("res.country") {
     val code = string("code") {

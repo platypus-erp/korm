@@ -1,17 +1,14 @@
 package org.platypus.orm.sql
 
-import org.platypus.orm.sql.expression.Expression
 import org.platypus.orm.sql.expression.LiteralOp
-import org.platypus.orm.sql.predicate.AndOp
-import org.platypus.orm.sql.predicate.OrOp
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
-infix fun Expression<Boolean>.and(op: Expression<Boolean>): Expression<Boolean> = AndOp(this, op)
-
-infix fun Expression<Boolean>.or(op: Expression<Boolean>): Expression<Boolean> = OrOp(this, op)
+//infix fun Expression<Boolean>.and(op: Expression<Boolean>): Expression<Boolean> = AndOp(this, op)
+//
+//infix fun Expression<Boolean>.or(op: Expression<Boolean>): Expression<Boolean> = OrOp(this, op)
 
 //fun <T:Any> idParam(value: EntityID<T>, column: TableColumn<EntityID<T>>): Expression<EntityID<T>> = QueryParameter(value, EntityIdColumnType(column))
 //fun <T:Any> idParam(value: EntityID<T>, column: Column<EntityID<T>>): Expression<EntityID<T>> = QueryParameter(value, EntityIDColumnType(column))

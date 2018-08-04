@@ -1,7 +1,6 @@
 package org.platypus.model.field.impl
 
 import org.platypus.model.IModel
-import org.platypus.model.Model
 import org.platypus.model.field.api.FieldSlotsImpl
 import org.platypus.model.field.api.FieldVisitor
 import org.platypus.model.field.api.ModelField
@@ -30,6 +29,8 @@ class TextField<M : IModel<M>>(
     private constructor(val model: M, val fieldName: String, private val slots: MutableFieldSlotsImpl<String>)
         : ModelField.Builder<M, TextField<M>>, MutableFieldSlots<String> by slots {
         constructor(model: M, fieldName: String) : this(model, fieldName, MutableFieldSlotsImpl())
+
+        var l10n: Boolean? = null
 
         fun add(constraint: OrmConstraint<String>) {
             slots.constraint.add(constraint)

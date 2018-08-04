@@ -34,7 +34,7 @@ abstract class ModelField<M : IModel<M>, KOTLIN_TYPE : Any>(
     val searchable:Boolean
         get() = onGet == null || (onSet != null && store)
 
-            private val privateOnChange: EnumMap<OnChangeType, MutableSet<ApiOneNoParamStacker<M, Unit>>> = EnumMap(OnChangeType::class.java)
+    private val privateOnChange: EnumMap<OnChangeType, MutableSet<ApiOneNoParamStacker<M, Unit>>> = EnumMap(OnChangeType::class.java)
     private val onChange: Map<OnChangeType, Set<ApiOneNoParamStacker<M, Unit>>>
         get() = privateOnChange
 

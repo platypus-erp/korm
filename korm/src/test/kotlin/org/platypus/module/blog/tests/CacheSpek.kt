@@ -2,6 +2,7 @@ package org.platypus.module.blog.tests
 
 import org.amshove.kluent.`should equal`
 import org.amshove.kluent.shouldBe
+import org.amshove.kluent.shouldBeEmpty
 import org.amshove.kluent.shouldBeLessThan
 import org.amshove.kluent.shouldBeNull
 import org.amshove.kluent.shouldEqual
@@ -13,8 +14,11 @@ import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.platypus.Platypus
 import org.platypus.module.blog.gen.blog.blog.blogRepo
+import org.platypus.module.blog.gen.blog.blog.posts
 import org.platypus.module.blog.gen.blog.blog.tags
+import org.platypus.module.blog.gen.blog.post.tags
 import org.platypus.module.blog.gen.blog.blog.user
+import org.platypus.module.blog.gen.blog.post.comments
 import org.platypus.module.blog.gen.blog.post.tag.tagRepo
 import org.platypus.module.blog.gen.blog.profile.profileRepo
 import org.platypus.module.blog.gen.blog.profile.user
@@ -29,7 +33,7 @@ import org.platypus.module.blog.gen.blog.user.userMokRepo
 import org.platypus.newTestBlog
 
 object CacheReadSpek : Spek({
-    describe("Creating co_creator Jane with related Profile and Posts and Tags then query it") {
+    describe("Creating user Jane with related Profile and Posts and Tags then query it") {
         given("An environement") {
             Platypus.newTestBlog {
                 assertNoDMLRunned()
@@ -87,7 +91,7 @@ object CacheReadSpek : Spek({
 
 object CacheCreateUpdateSpek : Spek({
     given("An environement without data") {
-        on("Creating a new co_creator") {
+        on("Creating a new user") {
             Platypus.newTestBlog {
                 val john = env.userMokRepo.new {
                     name = "John Smith"
@@ -112,7 +116,7 @@ object CacheCreateUpdateSpek : Spek({
                 }
             }
         }
-        on("Creating a new blog And changing the co_creator for Many 2 One relation") {
+        on("Creating a new blog And changing the user for Many 2 One relation") {
             Platypus.newTestBlog {
                 val john1 = env.userMokRepo.new {
                     name = "John Smith 1"
@@ -135,7 +139,7 @@ object CacheCreateUpdateSpek : Spek({
                     newBlog.user shouldEqual john1
                     john2.blogs.shouldBeEmpty()
                 }
-                it("The blog should change automaticaly of co_creator") {
+                it("The blog should change automaticaly of user") {
                     john2.blogs = john2.blogs + newBlog
                     john2.blogs.size shouldEqualTo 1
                     newBlog.user shouldEqual john2
@@ -145,7 +149,7 @@ object CacheCreateUpdateSpek : Spek({
             }
         }
 
-        on("Creating a new blog And changing the co_creator for One 2 One relation") {
+        on("Creating a new blog And changing the user for One 2 One relation") {
             Platypus.newTestBlog {
                 val john1 = env.userMokRepo.new {
                     name = "John Smith 1"
@@ -168,7 +172,7 @@ object CacheCreateUpdateSpek : Spek({
                     profileJohn.user shouldEqual john1
                     john2.profile.shouldBeNull()
                 }
-                it("The profile should change automaticaly of co_creator") {
+                it("The profile should change automaticaly of user") {
                     john2.profile = profileJohn
                     john2.profile shouldEqual profileJohn
                     profileJohn.user shouldEqual john2

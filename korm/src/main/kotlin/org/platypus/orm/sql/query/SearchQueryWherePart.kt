@@ -4,41 +4,45 @@ import org.platypus.model.Alias
 import org.platypus.model.IModel
 import org.platypus.model.field.impl.Many2OneField
 import org.platypus.orm.sql.dml.ColumnSet
-import org.platypus.orm.sql.expression.Expression
+import org.platypus.orm.sql.predicate.PredicateField
 
 interface SearchQueryWherePart<M : IModel<M>> : FieldJoiner<M> {
 
-    infix fun <M1: IModel<M1>, T : Any> Many2OneField<M, M1>.predicate(getter: M1.() -> Expression<T>): Expression<T>
+    infix fun <M1: IModel<M1>> Many2OneField<M, M1>.predicate(getter: M1.() -> PredicateField): PredicateField
+
+    infix fun <
+            M1: IModel<M1>,
+            M2: IModel<M2>>
+            Join3<M, M1, M2>.predicate(getter: M2.() -> PredicateField): PredicateField
+
 
     infix fun <
             M1: IModel<M1>,
             M2: IModel<M2>,
-            T : Any>
-            Join3<M, M1, M2>.predicate(getter: M2.() -> Expression<T>): Expression<T>
-
-
-    infix fun <
-            M1: IModel<M1>,
-            M2: IModel<M2>,
-            M3: IModel<M3>,
-            T : Any>
-            Join4<M, M1, M2, M3>.predicate(getter: M3.() -> Expression<T>): Expression<T>
+            M3: IModel<M3>>
+            Join4<M, M1, M2, M3>.predicate(getter: M3.() -> PredicateField): PredicateField
 
 
     fun <M1: IModel<M1>,
             M2: IModel<M2>,
             M3: IModel<M3>,
+            M4: IModel<M4>>
+            Join5<M, M1, M2, M3, M4>.predicate(getter: M4.() -> PredicateField): PredicateField
+
+    fun <M1: IModel<M1>,
+            M2: IModel<M2>,
+            M3: IModel<M3>,
             M4: IModel<M4>,
-            T : Any>
-            Join5<M, M1, M2, M3, M4>.predicate(getter: M4.() -> Expression<T>): Expression<T>
+            M5: IModel<M5>>
+            Join6<M, M1, M2, M3, M4, M5>.predicate(getter: M5.() -> PredicateField): PredicateField
 
     fun <M1: IModel<M1>,
             M2: IModel<M2>,
             M3: IModel<M3>,
             M4: IModel<M4>,
             M5: IModel<M5>,
-            T : Any>
-            Join6<M, M1, M2, M3, M4, M5>.predicate(getter: M5.() -> Expression<T>): Expression<T>
+            M6: IModel<M6>>
+            Join7<M, M1, M2, M3, M4, M5, M6>.predicate(getter: M6.() -> PredicateField): PredicateField
 
     fun <M1: IModel<M1>,
             M2: IModel<M2>,
@@ -46,8 +50,8 @@ interface SearchQueryWherePart<M : IModel<M>> : FieldJoiner<M> {
             M4: IModel<M4>,
             M5: IModel<M5>,
             M6: IModel<M6>,
-            T : Any>
-            Join7<M, M1, M2, M3, M4, M5, M6>.predicate(getter: M6.() -> Expression<T>): Expression<T>
+            M7: IModel<M7>>
+            Join8<M, M1, M2, M3, M4, M5, M6, M7>.predicate(getter: M7.() -> PredicateField): PredicateField
 
     fun <M1: IModel<M1>,
             M2: IModel<M2>,
@@ -56,8 +60,8 @@ interface SearchQueryWherePart<M : IModel<M>> : FieldJoiner<M> {
             M5: IModel<M5>,
             M6: IModel<M6>,
             M7: IModel<M7>,
-            T : Any>
-            Join8<M, M1, M2, M3, M4, M5, M6, M7>.predicate(getter: M7.() -> Expression<T>): Expression<T>
+            M8: IModel<M8>>
+            Join9<M, M1, M2, M3, M4, M5, M6, M7, M8>.predicate(getter: M8.() -> PredicateField): PredicateField
 
     fun <M1: IModel<M1>,
             M2: IModel<M2>,
@@ -67,71 +71,58 @@ interface SearchQueryWherePart<M : IModel<M>> : FieldJoiner<M> {
             M6: IModel<M6>,
             M7: IModel<M7>,
             M8: IModel<M8>,
-            T : Any>
-            Join9<M, M1, M2, M3, M4, M5, M6, M7, M8>.predicate(getter: M8.() -> Expression<T>): Expression<T>
-
-    fun <M1: IModel<M1>,
-            M2: IModel<M2>,
-            M3: IModel<M3>,
-            M4: IModel<M4>,
-            M5: IModel<M5>,
-            M6: IModel<M6>,
-            M7: IModel<M7>,
-            M8: IModel<M8>,
-            M9: IModel<M9>,
-            T : Any>
-            Join10<M, M1, M2, M3, M4, M5, M6, M7, M8, M9>.predicate(getter: M9.() -> Expression<T>): Expression<T>
+            M9: IModel<M9>>
+            Join10<M, M1, M2, M3, M4, M5, M6, M7, M8, M9>.predicate(getter: M9.() -> PredicateField): PredicateField
 }
 
 class SearchQueryWherePartImpl<M : IModel<M>>(
         private val model: M,
-        private val from: Alias<M>,
-        private var currentColumnSet: ColumnSet = from
+        private var currentColumnSet: ColumnSet = model
 ) : SearchQueryWherePart<M> {
 
-    override fun <M1: IModel<M1>, T : Any> Many2OneField<M, M1>.predicate(getter: M1.() -> Expression<T>): Expression<T> {
+    override fun <M1: IModel<M1>> Many2OneField<M, M1>.predicate(getter: M1.() -> PredicateField): PredicateField {
         val join = this.createJoin()
         val expr = join.field.target.getter()
         currentColumnSet = join.queryJoin(currentColumnSet)
         return expr
     }
 
-    override fun <M1: IModel<M1>, M2: IModel<M2>, T : Any> Join3<M, M1, M2>.predicate(getter: M2.() -> Expression<T>): Expression<T> {
+    override fun <M1: IModel<M1>, M2: IModel<M2>> Join3<M, M1, M2>.predicate(getter: M2.() -> PredicateField): PredicateField {
         currentColumnSet = this.queryJoin(currentColumnSet)
         return field.target.getter()
     }
 
-    override fun <M1: IModel<M1>, M2: IModel<M2>, M3: IModel<M3>, T : Any> Join4<M, M1, M2, M3>.predicate(getter: M3.() -> Expression<T>): Expression<T> {
+    override fun <M1: IModel<M1>, M2: IModel<M2>, M3: IModel<M3>> Join4<M, M1, M2, M3>.predicate(getter: M3.() -> PredicateField): PredicateField {
         currentColumnSet = this.queryJoin(currentColumnSet)
         return field.target.getter()
     }
 
-    override fun <M1: IModel<M1>, M2: IModel<M2>, M3: IModel<M3>, M4: IModel<M4>, T : Any> Join5<M, M1, M2, M3, M4>.predicate(getter: M4.() -> Expression<T>): Expression<T> {
+    override fun <M1: IModel<M1>, M2: IModel<M2>, M3: IModel<M3>, M4: IModel<M4>> Join5<M, M1, M2, M3, M4>.predicate(getter: M4.() -> PredicateField): PredicateField {
         currentColumnSet = this.queryJoin(currentColumnSet)
         return field.target.getter()
     }
 
-    override fun <M1: IModel<M1>, M2: IModel<M2>, M3: IModel<M3>, M4: IModel<M4>, M5: IModel<M5>, T : Any> Join6<M, M1, M2, M3, M4, M5>.predicate(getter: M5.() -> Expression<T>): Expression<T> {
+    override fun <M1: IModel<M1>, M2: IModel<M2>, M3: IModel<M3>, M4: IModel<M4>, M5: IModel<M5>> Join6<M, M1, M2, M3, M4, M5>.predicate(getter: M5.() -> PredicateField): PredicateField {
         currentColumnSet = this.queryJoin(currentColumnSet)
         return field.target.getter()
     }
 
-    override fun <M1: IModel<M1>, M2: IModel<M2>, M3: IModel<M3>, M4: IModel<M4>, M5: IModel<M5>, M6: IModel<M6>, T : Any> Join7<M, M1, M2, M3, M4, M5, M6>.predicate(getter: M6.() -> Expression<T>): Expression<T> {
+    override fun <M1: IModel<M1>, M2: IModel<M2>, M3: IModel<M3>, M4: IModel<M4>, M5: IModel<M5>, M6: IModel<M6>> Join7<M, M1, M2, M3, M4, M5, M6>.predicate(getter: M6.() -> PredicateField): PredicateField {
         currentColumnSet = this.queryJoin(currentColumnSet)
         return field.target.getter()
     }
 
-    override fun <M1: IModel<M1>, M2: IModel<M2>, M3: IModel<M3>, M4: IModel<M4>, M5: IModel<M5>, M6: IModel<M6>, M7: IModel<M7>, T : Any> Join8<M, M1, M2, M3, M4, M5, M6, M7>.predicate(getter: M7.() -> Expression<T>): Expression<T> {
+    override fun <M1: IModel<M1>, M2: IModel<M2>, M3: IModel<M3>, M4: IModel<M4>, M5: IModel<M5>, M6: IModel<M6>, M7: IModel<M7>> Join8<M, M1, M2, M3, M4, M5, M6, M7>.predicate(getter: M7.() -> PredicateField): PredicateField {
         currentColumnSet = this.queryJoin(currentColumnSet)
         return field.target.getter()
     }
 
-    override fun <M1: IModel<M1>, M2: IModel<M2>, M3: IModel<M3>, M4: IModel<M4>, M5: IModel<M5>, M6: IModel<M6>, M7: IModel<M7>, M8: IModel<M8>, T : Any> Join9<M, M1, M2, M3, M4, M5, M6, M7, M8>.predicate(getter: M8.() -> Expression<T>): Expression<T> {
+    override fun <M1: IModel<M1>, M2: IModel<M2>, M3: IModel<M3>, M4: IModel<M4>, M5: IModel<M5>, M6: IModel<M6>, M7: IModel<M7>, M8: IModel<M8>> Join9<M, M1, M2, M3, M4, M5, M6, M7, M8>.predicate(getter: M8.() -> PredicateField): PredicateField {
         currentColumnSet = this.queryJoin(currentColumnSet)
         return field.target.getter()
     }
 
-    override fun <M1: IModel<M1>, M2: IModel<M2>, M3: IModel<M3>, M4: IModel<M4>, M5: IModel<M5>, M6: IModel<M6>, M7: IModel<M7>, M8: IModel<M8>, M9: IModel<M9>, T : Any> Join10<M, M1, M2, M3, M4, M5, M6, M7, M8, M9>.predicate(getter: M9.() -> Expression<T>): Expression<T> {
+    override fun <M1: IModel<M1>, M2: IModel<M2>, M3: IModel<M3>, M4: IModel<M4>, M5: IModel<M5>, M6: IModel<M6>, M7: IModel<M7>, M8: IModel<M8>, M9: IModel<M9>> Join10<M, M1, M2, M3, M4, M5, M6, M7, M8, M9>.predicate(getter: M9.() -> PredicateField): PredicateField {
         currentColumnSet = this.queryJoin(currentColumnSet)
         return field.target.getter()
     }
@@ -179,7 +170,7 @@ class SearchQueryWherePartImpl<M : IModel<M>>(
     }
 
     private fun <M1: IModel<M1>> Many2OneField<M, M1>.createJoin(): Join2<M, M1> {
-        return Join2(from, this, Alias(this.target, this.fieldName))
+        return Join2(model, this, Alias(this.target, this.fieldName))
     }
 
 }

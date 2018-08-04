@@ -13,7 +13,7 @@ class CreateDateModelField<M: IModel<M>>(model: M)
 
     override val store: Boolean
         get() {
-            return model.slots.type in needCommonField
+            return true
         }
 
     override val type: SqlFieldType = DateTimeSqlFieldType(required)

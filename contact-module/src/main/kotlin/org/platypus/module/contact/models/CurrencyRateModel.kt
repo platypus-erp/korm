@@ -26,7 +26,7 @@ object CurrencyRateModel : Model<CurrencyRateModel>("res.currency.rate") {
     }
 
     init {
-        name extends {
+        name extend {
             TODO("onGet date")
         }
 //        nameSearch extends { self, param ->
