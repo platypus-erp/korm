@@ -154,7 +154,7 @@ object SelectSpek : Spek({
                     }
                 }
             }
-            xon("Select a One2Many Field") {
+            xon("Select a One2ManyField Field") {
                 platy.newEnv().use { env ->
                     val nbQ = { env.internal.cr.stat.nbSelect }
                     val nbQuery = env.internal.cr.stat.nbSelect

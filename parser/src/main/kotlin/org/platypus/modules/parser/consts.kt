@@ -39,7 +39,7 @@ val types = mapOf(
         Pair("datetime", "LocalDateTime"),
         Pair("decimal", "BigDecimal"),
         Pair("time", "LocalTime"),
-        Pair("one2many", "One2Many"),
+        Pair("one2many", "One2ManyField"),
         Pair("many2many", "Many2Many"),
         Pair("many2one", "Many2OneField")
 )

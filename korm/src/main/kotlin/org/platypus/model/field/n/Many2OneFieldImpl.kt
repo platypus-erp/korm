@@ -18,7 +18,7 @@ class Many2OneFieldImpl<M : IModel<M>, MT : IModel<MT>>(
         TODO("not implemented")
     }
 
-    override val revertOne2Many: One2Many<MT, M>
+    override val revertOne2Many: One2ManyField<MT, M>
         get() = TODO("not implemented")
     override var domain: Boolean = false
         private set
