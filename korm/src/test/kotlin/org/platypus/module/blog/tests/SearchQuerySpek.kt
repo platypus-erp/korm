@@ -12,7 +12,7 @@ import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.jetbrains.spek.api.dsl.xon
-import org.platypus.Platypus
+import org.platypus.v2.env.Platypus
 import org.platypus.cache.CacheState
 import org.platypus.cache.of
 import org.platypus.module.base.entities.dateFormat
@@ -181,7 +181,7 @@ object SelectSpek : Spek({
                     }
                 }
             }
-            xon("Select a Many2Many Field") {
+            xon("Select a Many2ManyField Field") {
                 platy.newEnv().use { env ->
                     val nbQ = { env.internal.cr.stat.nbSelect }
                     // I doing that to not load this id in the cache

@@ -40,6 +40,6 @@ val types = mapOf(
         Pair("decimal", "BigDecimal"),
         Pair("time", "LocalTime"),
         Pair("one2many", "One2ManyField"),
-        Pair("many2many", "Many2Many"),
+        Pair("many2many", "Many2ManyField"),
         Pair("many2one", "Many2OneField")
 )

@@ -12,7 +12,7 @@ import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import org.platypus.Platypus
+import org.platypus.v2.env.Platypus
 import org.platypus.module.blog.gen.blog.blog.blogRepo
 import org.platypus.module.blog.gen.blog.blog.posts
 import org.platypus.module.blog.gen.blog.blog.tags

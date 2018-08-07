@@ -1,6 +1,6 @@
 package org.platypus.module.contact
 
-import org.platypus.Platypus
+import org.platypus.v2.env.Platypus
 
 fun main(args: Array<String>) {
     val platypus = Platypus.create {

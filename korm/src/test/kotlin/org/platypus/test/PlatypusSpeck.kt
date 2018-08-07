@@ -1,6 +1,6 @@
 package org.platypus.test
 
-import org.platypus.Platypus
+import org.platypus.v2.env.Platypus
 import org.platypus.PlatypusEnvironment
 import org.platypus.module.ModuleBuilder
 import org.platypus.newTest

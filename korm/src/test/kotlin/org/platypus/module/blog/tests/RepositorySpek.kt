@@ -18,7 +18,7 @@ import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.junit.jupiter.api.assertThrows
-import org.platypus.Platypus
+import org.platypus.v2.env.Platypus
 import org.platypus.entity.EntityState
 import org.platypus.entity.EntityValidateMode
 import org.platypus.module.blog.BaseBlogModule

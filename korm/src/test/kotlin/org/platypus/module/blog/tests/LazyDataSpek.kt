@@ -6,7 +6,7 @@ import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
-import org.platypus.Platypus
+import org.platypus.v2.env.Platypus
 import org.platypus.newTestBlog
 import org.platypus.security.ROOT_USER
 

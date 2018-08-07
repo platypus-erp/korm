@@ -30,10 +30,10 @@ fun dropDb(module: ModuleBuilder) {
     }
 }
 
-fun Platypus.Companion.newTestBlog(action: EnvHolder.() -> Unit) = Platypus.Companion.newTest(BaseBlogModule).withNewEnv(action)
-fun Platypus.Companion.newTestBlogEnv() = Platypus.Companion.newTest(BaseBlogModule).newEnv()
+fun org.platypus.v2.env.Platypus.Companion.newTestBlog(action: EnvHolder.() -> Unit) = org.platypus.v2.env.Platypus.Companion.newTest(BaseBlogModule).withNewEnv(action)
+fun org.platypus.v2.env.Platypus.Companion.newTestBlogEnv() = org.platypus.v2.env.Platypus.Companion.newTest(BaseBlogModule).newEnv()
 
-fun Platypus.Companion.newTest(module: ModuleBuilder): Platypus {
+fun org.platypus.v2.env.Platypus.Companion.newTest(module: ModuleBuilder): org.platypus.v2.env.Platypus {
     return create {
         loadModule = module
         debug = true
@@ -49,7 +49,7 @@ fun Platypus.Companion.newTest(module: ModuleBuilder): Platypus {
     }
 }
 
-private fun Platypus.withNewEnv(action: EnvHolder.() -> Unit) {
+private fun org.platypus.v2.env.Platypus.withNewEnv(action: EnvHolder.() -> Unit) {
     val holder = EnvHolder(newEnv())
     holder.action()
     holder.env.close()
