@@ -3,7 +3,6 @@ package org.platypus.orm.sql.dml.statements
 import org.platypus.PlatypusEnvironment
 import org.platypus.model.Model
 import org.platypus.model.field.api.IModelField
-import org.platypus.model.field.api.ModelField
 import org.platypus.orm.sql.dml.DefaultValueMarker
 import java.sql.ResultSet
 import java.util.*

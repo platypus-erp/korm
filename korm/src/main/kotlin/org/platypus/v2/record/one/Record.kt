@@ -2,6 +2,7 @@ package org.platypus.v2.record.one
 
 import org.platypus.ContextAble
 import org.platypus.Environmentable
+import org.platypus.Identifiable
 import org.platypus.SudoAble
 import org.platypus.cache.PlatypusCache
 import org.platypus.entity.EntityState
@@ -37,16 +38,31 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import kotlin.reflect.KProperty
 
-interface Record<M : BaseModel<M>> : SudoAble<Record<M>>,ContextAble<Record<M>>, Environmentable {
+interface Record<M : BaseModel<M>> : SudoAble<Record<M>>,ContextAble<Record<M>>, Environmentable, Identifiable {
 
     /**
      * The string representation of the current Record
      */
     val displayName: String
-    val createDate: LocalDateTime?
-    val writeDate: LocalDateTime?
+    /**
+     * The creation date of this record, the [LocalDateTime.now] is used when this record is created
+     */
+    val createDate: LocalDateTime
+    /**
+     * The last write date of this record, the [LocalDateTime.now] is used when this record is created
+     */
+    val writeDate: LocalDateTime
+    /**
+     * The [ReadOnlyPlatypusEnvironment.envUser] who create this record
+     */
     val createUid: User
+    /**
+     * The [ReadOnlyPlatypusEnvironment.envUser] who update the last time this record
+     */
     val writeUid: User
+    /**
+     * The external refeterence to used in the method [Repository.byRef]
+     */
     val externalRef: String?
 
     /**
@@ -119,39 +135,39 @@ interface Record<M : BaseModel<M>> : SudoAble<Record<M>>,ContextAble<Record<M>>,
     operator fun set(fieldName:String, value:Any?)
 
     //region GETTER
-    operator fun TimeField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): LocalTime?
-    operator fun ExternalRefField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): String?
-    operator fun StringField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): String?
-    operator fun TextField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): String?
-    operator fun DateField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): LocalDate?
-    operator fun DateTimeField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): LocalDateTime?
-    operator fun BooleanField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Boolean
-    operator fun DecimalField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): BigDecimal
-    operator fun IntField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Int
-    operator fun <D : Selection<D>> SelectionField<M, D>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): SelectionValue<D>?
-    operator fun BinaryField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): ByteArray?
-    operator fun CreateUserField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): User
-    operator fun WriteUserField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): User
-    operator fun <TM : BaseModel<TM>> One2ManyField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Bag<TM>
-    operator fun <TM : BaseModel<TM>> Many2ManyField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Bag<TM>
-    operator fun <TM : BaseModel<TM>> Many2OneField<M, TM>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): Record<TM>
-    operator fun CreateDateField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): LocalDateTime
-    operator fun WriteDateField<M>.getValue(o: RecordDelegate<M>, desc: KProperty<*>): LocalDateTime?
+    operator fun TimeField<M>.getValue(o: Record<M>, desc: KProperty<*>): LocalTime?
+    operator fun ExternalRefField<M>.getValue(o: Record<M>, desc: KProperty<*>): String?
+    operator fun StringField<M>.getValue(o: Record<M>, desc: KProperty<*>): String?
+    operator fun TextField<M>.getValue(o: Record<M>, desc: KProperty<*>): String?
+    operator fun DateField<M>.getValue(o: Record<M>, desc: KProperty<*>): LocalDate?
+    operator fun DateTimeField<M>.getValue(o: Record<M>, desc: KProperty<*>): LocalDateTime?
+    operator fun BooleanField<M>.getValue(o: Record<M>, desc: KProperty<*>): Boolean
+    operator fun DecimalField<M>.getValue(o: Record<M>, desc: KProperty<*>): BigDecimal
+    operator fun IntField<M>.getValue(o: Record<M>, desc: KProperty<*>): Int
+    operator fun <D : Selection<D>> SelectionField<M, D>.getValue(o: Record<M>, desc: KProperty<*>): SelectionValue<D>?
+    operator fun BinaryField<M>.getValue(o: Record<M>, desc: KProperty<*>): ByteArray?
+    operator fun CreateUserField<M>.getValue(o: Record<M>, desc: KProperty<*>): User
+    operator fun WriteUserField<M>.getValue(o: Record<M>, desc: KProperty<*>): User
+    operator fun <TM : BaseModel<TM>> One2ManyField<M, TM>.getValue(o: Record<M>, desc: KProperty<*>): Bag<TM>
+    operator fun <TM : BaseModel<TM>> Many2ManyField<M, TM>.getValue(o: Record<M>, desc: KProperty<*>): Bag<TM>
+    operator fun <TM : BaseModel<TM>> Many2OneField<M, TM>.getValue(o: Record<M>, desc: KProperty<*>): Record<TM>
+    operator fun CreateDateField<M>.getValue(o: Record<M>, desc: KProperty<*>): LocalDateTime
+    operator fun WriteDateField<M>.getValue(o: Record<M>, desc: KProperty<*>): LocalDateTime?
     //endregion
 
     //region SETTER
-    operator fun IntField<M>.setValue(o: MutableRecord<M>, desc: KProperty<*>, value: Int?)
-    operator fun StringField<M>.setValue(o: MutableRecord<M>, desc: KProperty<*>, value: String?)
-    operator fun <D : Selection<D>> SelectionField<M, D>.setValue(o: MutableRecord<M>, desc: KProperty<*>, value: SelectionValue<D>?)
-    operator fun TextField<M>.setValue(o: MutableRecord<M>, desc: KProperty<*>, value: String?)
-    operator fun DateField<M>.setValue(o: MutableRecord<M>, desc: KProperty<*>, value: LocalDate?)
-    operator fun DateTimeField<M>.setValue(o: MutableRecord<M>, desc: KProperty<*>, value: LocalDateTime?)
-    operator fun TimeField<M>.setValue(o: MutableRecord<M>, desc: KProperty<*>, value: LocalTime?)
-    operator fun BooleanField<M>.setValue(o: MutableRecord<M>, desc: KProperty<*>, value: Boolean?)
-    operator fun DecimalField<M>.setValue(o: MutableRecord<M>, desc: KProperty<*>, value: BigDecimal?)
-    operator fun BinaryField<M>.setValue(o: MutableRecord<M>, desc: KProperty<*>, value: ByteArray?)
-    operator fun <TM : BaseModel<TM>> Many2OneField<M, TM>.setValue(o: MutableRecord<M>, desc: KProperty<*>, value: Record<TM>?)
-    operator fun <TM : BaseModel<TM>> One2ManyField<M, TM>.setValue(o: MutableRecord<M>, desc: KProperty<*>, value: Iterable<Record<TM>>)
-    operator fun <TM : BaseModel<TM>> Many2ManyField<M, TM>.setValue(o: MutableRecord<M>, desc: KProperty<*>, value: Iterable<Record<TM>>)
+    operator fun IntField<M>.setValue(o: Record<M>, desc: KProperty<*>, value: Int?)
+    operator fun StringField<M>.setValue(o: Record<M>, desc: KProperty<*>, value: String?)
+    operator fun <D : Selection<D>> SelectionField<M, D>.setValue(o: Record<M>, desc: KProperty<*>, value: SelectionValue<D>?)
+    operator fun TextField<M>.setValue(o: Record<M>, desc: KProperty<*>, value: String?)
+    operator fun DateField<M>.setValue(o: Record<M>, desc: KProperty<*>, value: LocalDate?)
+    operator fun DateTimeField<M>.setValue(o: Record<M>, desc: KProperty<*>, value: LocalDateTime?)
+    operator fun TimeField<M>.setValue(o: Record<M>, desc: KProperty<*>, value: LocalTime?)
+    operator fun BooleanField<M>.setValue(o: Record<M>, desc: KProperty<*>, value: Boolean?)
+    operator fun DecimalField<M>.setValue(o: Record<M>, desc: KProperty<*>, value: BigDecimal?)
+    operator fun BinaryField<M>.setValue(o: Record<M>, desc: KProperty<*>, value: ByteArray?)
+    operator fun <TM : BaseModel<TM>> Many2OneField<M, TM>.setValue(o: Record<M>, desc: KProperty<*>, value: Record<TM>?)
+    operator fun <TM : BaseModel<TM>> One2ManyField<M, TM>.setValue(o: Record<M>, desc: KProperty<*>, value: Iterable<Record<TM>>)
+    operator fun <TM : BaseModel<TM>> Many2ManyField<M, TM>.setValue(o: Record<M>, desc: KProperty<*>, value: Iterable<Record<TM>>)
     //endregion
 }

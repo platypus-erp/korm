@@ -120,13 +120,7 @@ class StatementContext(val statement: Statement<*>, val args: Iterable<Pair<SqlF
 }
 
 
-fun PreparedStatement.fillParameters(args: Iterable<Pair<SqlFieldType, Any?>>): Int {
-    args.forEachIndexed { index, (c, v) ->
-        c.setParameter(this, index + 1, c.valueToDB(v))
-    }
 
-    return args.count() + 1
-}
 
 enum class StatementGroup {
     DDL, DML
